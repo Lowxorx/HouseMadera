@@ -88,8 +88,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controleurs\" />
     <Folder Include="Modèles\" />
+    <Folder Include="Vue - Modèle\" />
     <Folder Include="Vues\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
