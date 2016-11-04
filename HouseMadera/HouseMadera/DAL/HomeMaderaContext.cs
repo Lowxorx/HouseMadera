@@ -10,7 +10,7 @@ namespace HomeMadera.DataLayer
 {
     public class HomeMaderaContext:DbContext
     {
-        public HomeMaderaContext() : base("HomeMaderaDB")
+        public HomeMaderaContext() : base("HouseMaderaDb")
         {
             Database.SetInitializer<HomeMaderaContext>(new HomeMaderaContextInitializer());
         }
