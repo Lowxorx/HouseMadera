@@ -9,24 +9,18 @@
         Title="Connexion - Mader'House" Height="1024" Width="1536" WindowStartupLocation="CenterScreen" MinHeight="1024" MinWidth="1536" ShowTitleBar="False" ShowMinButton="False" ShowMaxRestoreButton="False" ShowIconOnTitleBar="False" ShowCloseButton="False" WindowStyle="None" FontFamily="Verdana" ForceCursor="True">
     <Grid>
         <Grid Margin="0,0,0,968" Background="#FF676767">
-
-
         </Grid>
         <Grid Margin="0,53">
-            <Rectangle Fill="#FFF4F4F5" Margin="422,263" Stroke="Black"/>
+            <Rectangle Fill="#FFF4F4F5" Margin="422,269,422,257" Stroke="Black"/>
             <Label x:Name="label" Content="Connectez - Vous" HorizontalAlignment="Left" Margin="477,291,0,0" VerticalAlignment="Top" Height="78" Width="372" FontSize="30" VerticalContentAlignment="Center"/>
             <Label x:Name="label1" Content="Nom d'Utilisateur" HorizontalAlignment="Left" Margin="514,440,0,0" VerticalAlignment="Top" FontSize="18"/>
             <Label x:Name="label2" Content="Mot de Passe" HorizontalAlignment="Left" Margin="552,483,0,0" VerticalAlignment="Top" FontSize="18"/>
             <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="32" Margin="742,440,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
             <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="32" Margin="742,483,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="261"/>
-            <Button x:Name="button" Content="Connexion" HorizontalAlignment="Left" Margin="825,530,0,0" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="button" Content="Connexion" HorizontalAlignment="Left" Margin="784,530,0,0" VerticalAlignment="Top" Width="189" Height="66"/>
             <Image x:Name="image" Height="248" Margin="422,10,422,0" VerticalAlignment="Top" Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png"/>
-
-
         </Grid>
         <Grid Margin="0,968,0,0" Background="#FF676767">
-
-
         </Grid>
     </Grid>
 </Controls:MetroWindow>
