@@ -43,6 +43,10 @@
       <HintPath>..\packages\MahApps.Metro.IconPacks.Material.1.6.0\lib\net45\MahApps.Metro.IconPacks.Material.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -72,8 +76,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Vues\Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
+    <Compile Include="Modèles\CheckCred.cs" />
+    <Compile Include="Modèles\Commercial.cs" />
+    <Compile Include="Vue - Modèle\VueModeleLogin.cs" />
+    <Compile Include="Vues\VueLogin.xaml.cs">
+      <DependentUpon>VueLogin.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -102,14 +109,13 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Modèles\" />
-    <Folder Include="Vue - Modèle\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Vues\Login.xaml">
+    <Page Include="Vues\VueLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
