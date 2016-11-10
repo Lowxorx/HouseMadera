@@ -1,6 +1,7 @@
-﻿using HouseMadera.Modèles;
+﻿using System;
 using MahApps.Metro.Controls;
-using System.Security;
+using MahApps.Metro.Controls.Dialogs;
+using System.Windows.Forms;
 
 namespace HouseMadera.Vues
 {
@@ -13,6 +14,5 @@ namespace HouseMadera.Vues
         {
             InitializeComponent();
         }
-
     }
 }

@@ -1,9 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HouseMadera.Modèles
 {
@@ -41,7 +37,7 @@ namespace HouseMadera.Modèles
             }
             catch (MySqlException)
             {
-                System.Windows.MessageBox.Show("Timeout connexion bdd");
+                Console.WriteLine("Timeout connexion bdd");
                 return false;
             }
         }

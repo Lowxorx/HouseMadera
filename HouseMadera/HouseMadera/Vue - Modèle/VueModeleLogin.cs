@@ -3,18 +3,20 @@ using GalaSoft.MvvmLight.Command;
 using HouseMadera.Modèles;
 using HouseMadera.Vues;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using MahApps.Metro.Controls.Dialogs;
+using System.Windows.Threading;
+using GalaSoft.MvvmLight.Ioc;
+using System.Windows;
+using MahApps.Metro.Controls;
+using System.Linq;
 
 namespace HouseMadera.Vue___Modèle
 {
     public class VueModeleLogin : ViewModelBase
     {
 
+        [PreferredConstructor]
         public VueModeleLogin()
         {
             Connexion = new RelayCommand(ConnexionExec);
@@ -49,21 +51,35 @@ namespace HouseMadera.Vue___Modèle
 
         public ICommand Connexion { get; private set; }
 
-        private void ConnexionExec()
+        private async void ConnexionExec()
         {
-            if (pwCommercial != null)
+            if (pwCommercial != null && loginCommercial != null)
             {
                 Console.WriteLine(pwCommercial);
                 Console.WriteLine(loginCommercial);
                 var newCommercial = new Commercial{ NomUtilisateur = LoginCommercial, Password = PwCommercial };
                 CommercialConnect c = new CommercialConnect();
                 bool connected = c.Connect(newCommercial);
-                Console.WriteLine(connected);
+                if (connected)
+                {
+                    Console.WriteLine(connected);
+                }
+                else
+                {
+                    var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+                    if (window != null)
+                        await window.ShowMessageAsync("Erreur", "Impossible de se connecter à la base de données.");
+                }
+
             }
             else
             {
+                var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+                if (window != null)
+                    await window.ShowMessageAsync("Avertissement", "Merci de saisir vos identifiants.");
                 Console.WriteLine("Pw conteneur est null");
             }
         }
+
     }
 }
