@@ -1,19 +1,28 @@
-﻿<Application x:Class="HouseMadera.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:HouseMadera"
-             StartupUri="Vues\VueLogin.xaml">
+﻿<Application
+    x:Class="HouseMadera.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:HouseMadera"
+    xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
+    d1p1:Ignorable="d"
+    StartupUri="Vues\VueLogin.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+                <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <!-- Accent and AppTheme setting -->
+                <!--  Accent and AppTheme setting  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <vm:VueModeleLocator
+                xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
+                x:Key="Locator"
+                d:IsDataSource="True" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
