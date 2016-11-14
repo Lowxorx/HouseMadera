@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCMadera.CSharp", "POCMadera.CSharp.csproj", "{6A130706-95BE-2F5D-DAB9-C5C93130A4FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POCMadera.CSharp.Editor", "POCMadera.CSharp.Editor.csproj", "{AC251ED8-000C-5B94-0F96-710A3539A6B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A130706-95BE-2F5D-DAB9-C5C93130A4FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A130706-95BE-2F5D-DAB9-C5C93130A4FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A130706-95BE-2F5D-DAB9-C5C93130A4FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A130706-95BE-2F5D-DAB9-C5C93130A4FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC251ED8-000C-5B94-0F96-710A3539A6B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC251ED8-000C-5B94-0F96-710A3539A6B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC251ED8-000C-5B94-0F96-710A3539A6B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC251ED8-000C-5B94-0F96-710A3539A6B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
