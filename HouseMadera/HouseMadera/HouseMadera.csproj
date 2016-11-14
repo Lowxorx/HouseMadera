@@ -105,6 +105,7 @@
     <Compile Include="Modèles\Isolant.cs" />
     <Compile Include="Modèles\Module.cs" />
     <Compile Include="Modèles\ModulePlace.cs" />
+    <Compile Include="Modèles\MysqlConnector.cs" />
     <Compile Include="Modèles\Plan.cs" />
     <Compile Include="Modèles\Produit.cs" />
     <Compile Include="Modèles\Projet.cs" />
