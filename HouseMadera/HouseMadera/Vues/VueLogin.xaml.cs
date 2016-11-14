@@ -1,7 +1,4 @@
-﻿using System;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using System.Windows.Forms;
+﻿using MahApps.Metro.Controls;
 
 namespace HouseMadera.Vues
 {

@@ -1,15 +1,13 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using HouseMadera.Modèles;
-using HouseMadera.Vues;
-using System;
-using System.Windows.Input;
-using MahApps.Metro.Controls.Dialogs;
-using System.Windows.Threading;
 using GalaSoft.MvvmLight.Ioc;
-using System.Windows;
+using HouseMadera.Modèles;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
 namespace HouseMadera.Vue___Modèle
 {
