@@ -1,20 +1,24 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 
 namespace HouseMadera.Modèles
 {
     public class Commercial
     {
-        public string NomUtilisateur { get; set; }
+        public int Id { get; set; }
+        public string Login { get; set; }
+        public string Nom { get; set; }
         public string Password { get; set; }
+        public string Prenom { get; set; }
+        public virtual ICollection<Projet> Projets { get; set; }
     }
-
-    public interface ICommercialConnect
+    public interface ICommercial
     {
         bool Connect(Commercial commercial);
     }
 
-    public class CommercialConnect : ICommercialConnect
+    public class CommercialConnect : ICommercial
     {
         public bool Connect(Commercial commercial)
         {
@@ -25,7 +29,7 @@ namespace HouseMadera.Modèles
                 connexion.Open();
                 MySqlCommand command = connexion.CreateCommand();
                 Console.WriteLine("Requete BDD");
-                command.CommandText = "SELECT * FROM Commercials WHERE Login = '" + commercial.NomUtilisateur + "' AND Password = '" + commercial.Password + "'";
+                command.CommandText = "SELECT * FROM Commercials WHERE Login = '" + commercial.Login + "' AND Password = '" + commercial.Password + "'";
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
@@ -42,14 +46,4 @@ namespace HouseMadera.Modèles
             }
         }
     }
-
-    public class DesignCommercialConnect : ICommercialConnect
-    {
-        public bool Connect(Commercial commercial)
-        {
-            return true;
-        }
-    }
-
-
 }

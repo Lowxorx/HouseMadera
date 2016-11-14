@@ -7,12 +7,12 @@
     xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mod="clr-namespace:HouseMadera.Modèles"
+    xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
     Title="Connexion - Mader'House"
     Width="1536"
     Height="1024"
     MinWidth="1536"
     MinHeight="1024"
-    DataContext="{Binding VMLogin, Source={StaticResource Locator}}"
     FontFamily="Verdana"
     ForceCursor="True"
     ShowCloseButton="False"
@@ -23,6 +23,9 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
+    <Window.DataContext>
+        <vm:VueModeleLogin />
+    </Window.DataContext>
     <Grid>
         <Grid Margin="0,0,0,968" Background="#FF676767" />
         <Grid Margin="0,53">

@@ -93,10 +93,32 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Modèles\Client.cs" />
     <Compile Include="Modèles\Commercial.cs" />
+    <Compile Include="Modèles\Composant.cs" />
+    <Compile Include="Modèles\ConnectivityMonitor.cs" />
+    <Compile Include="Modèles\CoupePrincipe.cs" />
+    <Compile Include="Modèles\Devis.cs" />
     <Compile Include="Modèles\EncryptPw.cs" />
+    <Compile Include="Modèles\Finition.cs" />
+    <Compile Include="Modèles\Gamme.cs" />
+    <Compile Include="Modèles\Isolant.cs" />
+    <Compile Include="Modèles\Module.cs" />
+    <Compile Include="Modèles\ModulePlace.cs" />
+    <Compile Include="Modèles\Plan.cs" />
+    <Compile Include="Modèles\Produit.cs" />
+    <Compile Include="Modèles\Projet.cs" />
     <Compile Include="Modèles\PwBoxAssistant.cs" />
-    <Compile Include="Vue - Modèle\VueModeleLocator.cs" />
+    <Compile Include="Modèles\Qualite.cs" />
+    <Compile Include="Modèles\Slot.cs" />
+    <Compile Include="Modèles\SlotPlace.cs" />
+    <Compile Include="Modèles\StatutClient.cs" />
+    <Compile Include="Modèles\StatutDevis.cs" />
+    <Compile Include="Modèles\TypeComposant.cs" />
+    <Compile Include="Modèles\TypeFinition.cs" />
+    <Compile Include="Modèles\TypeIsolant.cs" />
+    <Compile Include="Modèles\TypeModule.cs" />
+    <Compile Include="Modèles\TypeSlot.cs" />
     <Compile Include="Vue - Modèle\VueModeleLogin.cs" />
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
