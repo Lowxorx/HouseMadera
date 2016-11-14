@@ -98,6 +98,9 @@
     <Compile Include="Modèles\PwBoxAssistant.cs" />
     <Compile Include="Vue - Modèle\VueModeleLocator.cs" />
     <Compile Include="Vue - Modèle\VueModeleLogin.cs" />
+    <Compile Include="Vues\VueClient.xaml.cs">
+      <DependentUpon>VueClient.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Vues\VueClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vues\VueLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
