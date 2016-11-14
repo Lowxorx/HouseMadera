@@ -129,6 +129,9 @@
     <Compile Include="Entities\TypeSlot.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Vues\VueChoixProjet.xaml.cs">
+      <DependentUpon>VueChoixProjet.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\201611040935473_InitialCreate.cs" />
@@ -168,9 +171,18 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Vues\VueChoixProjet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logomaderacolor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Modèles\" />
+    <Folder Include="Vue - Modèle\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
