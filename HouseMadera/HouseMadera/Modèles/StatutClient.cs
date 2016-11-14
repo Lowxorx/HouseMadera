@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace HomeMadera.Entities
+namespace HouseMadera.Modèles
 {
-    public class TypeIsolant
+    public class StatutClient
     {
+        public virtual ICollection<Client> Clients { get; set; }
         public int Id { get; set; }
-        public virtual ICollection<Isolant> MyProperty { get; set; }
         public string Nom { get; set; }
     }
 }

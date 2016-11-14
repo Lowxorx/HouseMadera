@@ -1,4 +1,4 @@
-﻿namespace HomeMadera.Entities
+﻿namespace HouseMadera.Modèles
 {
     public class Produit
     {

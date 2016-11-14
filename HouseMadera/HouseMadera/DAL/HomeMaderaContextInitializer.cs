@@ -8,7 +8,7 @@ namespace HomeMadera.DataLayer
         {
             base.Seed(context);
         }
-            //TODO seed 
-    }
 
+        //TODO seed
+    }
 }

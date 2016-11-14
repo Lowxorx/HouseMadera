@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace HomeMadera.Entities
+namespace HouseMadera.Modèles
 {
-    public class TypeComposant
+    public class TypeFinition
     {
-        public virtual ICollection<Composant> Composants { get; set; }
+        public virtual ICollection<Finition> Finitions { get; set; }
         public int Id { get; set; }
         public string Nom { get; set; }
         public Qualite Qualite { get; set; }

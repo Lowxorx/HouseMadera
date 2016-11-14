@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace HomeMadera.Entities
 {
     public class StatutClient
     {
+        public virtual ICollection<Client> Clients { get; set; }
         public int Id { get; set; }
         public string Nom { get; set; }
-
-        public virtual ICollection<Client> Clients { get; set; }
     }
 }

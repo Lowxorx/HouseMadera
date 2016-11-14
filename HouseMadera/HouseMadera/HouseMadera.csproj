@@ -127,8 +127,30 @@
     <Compile Include="Entities\TypeIsolant.cs" />
     <Compile Include="Entities\TypeModule.cs" />
     <Compile Include="Entities\TypeSlot.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Modèles\Client.cs" />
+    <Compile Include="Modèles\Commercial.cs" />
+    <Compile Include="Modèles\Composant.cs" />
+    <Compile Include="Modèles\CoupePrincipe.cs" />
+    <Compile Include="Modèles\Devis.cs" />
+    <Compile Include="Modèles\Finition.cs" />
+    <Compile Include="Modèles\Gamme.cs" />
+    <Compile Include="Modèles\Isolant.cs" />
+    <Compile Include="Modèles\Module.cs" />
+    <Compile Include="Modèles\ModulePlace.cs" />
+    <Compile Include="Modèles\Plan.cs" />
+    <Compile Include="Modèles\Produit.cs" />
+    <Compile Include="Modèles\Projet.cs" />
+    <Compile Include="Modèles\Qualite.cs" />
+    <Compile Include="Modèles\Slot.cs" />
+    <Compile Include="Modèles\SlotPlace.cs" />
+    <Compile Include="Modèles\StatutClient.cs" />
+    <Compile Include="Modèles\StatutDevis.cs" />
+    <Compile Include="Modèles\TypeComposant.cs" />
+    <Compile Include="Modèles\TypeFinition.cs" />
+    <Compile Include="Modèles\TypeIsolant.cs" />
+    <Compile Include="Modèles\TypeModule.cs" />
+    <Compile Include="Modèles\TypeSlot.cs" />
+    <Compile Include="Vue - Modèle\VueModeleChoixProjet.cs" />
     <Compile Include="Vues\VueChoixProjet.xaml.cs">
       <DependentUpon>VueChoixProjet.xaml</DependentUpon>
     </Compile>
@@ -178,12 +200,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\logomaderacolor.png" />
+    <Content Include="Resources\logomaderacolor.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modèles\" />
-    <Folder Include="Vue - Modèle\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,355 +1,9 @@
 namespace HouseMadera.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class InitialCreate : DbMigration
     {
-        public override void Up()
-        {
-            CreateTable(
-                "dbo.Clients",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Prenom = c.String(unicode: false),
-                        Adresse1 = c.String(unicode: false),
-                        Adresse2 = c.String(unicode: false),
-                        Adresse3 = c.String(unicode: false),
-                        CodePostal = c.String(unicode: false),
-                        Email = c.String(unicode: false),
-                        Telephone = c.String(unicode: false),
-                        Mobile = c.String(unicode: false),
-                        StatutClient_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.StatutClients", t => t.StatutClient_Id)
-                .Index(t => t.StatutClient_Id);
-            
-            CreateTable(
-                "dbo.Projets",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Reference = c.String(unicode: false),
-                        UpdateDate = c.DateTime(nullable: false, precision: 0),
-                        CreateDate = c.DateTime(nullable: false, precision: 0),
-                        Client_Id = c.Int(),
-                        Commercial_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Clients", t => t.Client_Id)
-                .ForeignKey("dbo.Commercials", t => t.Commercial_Id)
-                .Index(t => t.Client_Id)
-                .Index(t => t.Commercial_Id);
-            
-            CreateTable(
-                "dbo.Commercials",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Prenom = c.String(unicode: false),
-                        Login = c.String(unicode: false),
-                        Password = c.String(unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Produits",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Devis_Id = c.Int(),
-                        Plan_Id = c.Int(),
-                        Projet_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Devis", t => t.Devis_Id)
-                .ForeignKey("dbo.Plans", t => t.Plan_Id)
-                .ForeignKey("dbo.Projets", t => t.Projet_Id)
-                .Index(t => t.Devis_Id)
-                .Index(t => t.Plan_Id)
-                .Index(t => t.Projet_Id);
-            
-            CreateTable(
-                "dbo.Devis",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        DateCreation = c.DateTime(nullable: false, precision: 0),
-                        PrixHT = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        PrixTTC = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        StatutDevis_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.StatutDevis", t => t.StatutDevis_Id)
-                .Index(t => t.StatutDevis_Id);
-            
-            CreateTable(
-                "dbo.StatutDevis",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Plans",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        CreateDate = c.DateTime(nullable: false, precision: 0),
-                        CoupePrincipe_Id = c.Int(),
-                        Gamme_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.CoupePrincipes", t => t.CoupePrincipe_Id)
-                .ForeignKey("dbo.Gammes", t => t.Gamme_Id)
-                .Index(t => t.CoupePrincipe_Id)
-                .Index(t => t.Gamme_Id);
-            
-            CreateTable(
-                "dbo.CoupePrincipes",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Gammes",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Isolant_Id = c.Int(),
-                        Finition_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Isolants", t => t.Isolant_Id)
-                .ForeignKey("dbo.Finitions", t => t.Finition_Id)
-                .Index(t => t.Isolant_Id)
-                .Index(t => t.Finition_Id);
-            
-            CreateTable(
-                "dbo.Finitions",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        TypeFinition_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.TypeFinitions", t => t.TypeFinition_Id)
-                .Index(t => t.TypeFinition_Id);
-            
-            CreateTable(
-                "dbo.TypeFinitions",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Qualite_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Qualites", t => t.Qualite_Id)
-                .Index(t => t.Qualite_Id);
-            
-            CreateTable(
-                "dbo.Qualites",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.TypeIsolants",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Qualite_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Qualites", t => t.Qualite_Id)
-                .Index(t => t.Qualite_Id);
-            
-            CreateTable(
-                "dbo.Isolants",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        TypeIsolant_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.TypeIsolants", t => t.TypeIsolant_Id)
-                .Index(t => t.TypeIsolant_Id);
-            
-            CreateTable(
-                "dbo.Modules",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Hauteur = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Largeur = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Gamme_Id = c.Int(),
-                        TypeModule_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Gammes", t => t.Gamme_Id)
-                .ForeignKey("dbo.TypeModules", t => t.TypeModule_Id)
-                .Index(t => t.Gamme_Id)
-                .Index(t => t.TypeModule_Id);
-            
-            CreateTable(
-                "dbo.Composants",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Prix = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        TypeComposant_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.TypeComposants", t => t.TypeComposant_Id)
-                .Index(t => t.TypeComposant_Id);
-            
-            CreateTable(
-                "dbo.TypeComposants",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Qualite_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Qualites", t => t.Qualite_Id)
-                .Index(t => t.Qualite_Id);
-            
-            CreateTable(
-                "dbo.SlotPlaces",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Abscisse = c.Int(nullable: false),
-                        Ordonnee = c.Int(nullable: false),
-                        Module_Id = c.Int(),
-                        Slot_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Modules", t => t.Module_Id)
-                .ForeignKey("dbo.Slots", t => t.Slot_Id)
-                .Index(t => t.Module_Id)
-                .Index(t => t.Slot_Id);
-            
-            CreateTable(
-                "dbo.ModulePlaces",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Module_Id = c.Int(),
-                        SlotPlace_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Modules", t => t.Module_Id)
-                .ForeignKey("dbo.SlotPlaces", t => t.SlotPlace_Id)
-                .Index(t => t.Module_Id)
-                .Index(t => t.SlotPlace_Id);
-            
-            CreateTable(
-                "dbo.Slots",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                        Hauteur = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Largeur = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        TypeSlot_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.TypeSlots", t => t.TypeSlot_Id)
-                .Index(t => t.TypeSlot_Id);
-            
-            CreateTable(
-                "dbo.TypeSlots",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.TypeModules",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.StatutClients",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Nom = c.String(unicode: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.ComposantModules",
-                c => new
-                    {
-                        Composant_Id = c.Int(nullable: false),
-                        Module_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Composant_Id, t.Module_Id })
-                .ForeignKey("dbo.Composants", t => t.Composant_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Modules", t => t.Module_Id, cascadeDelete: true)
-                .Index(t => t.Composant_Id)
-                .Index(t => t.Module_Id);
-            
-            CreateTable(
-                "dbo.ModulePlacePlans",
-                c => new
-                    {
-                        ModulePlace_Id = c.Int(nullable: false),
-                        Plan_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.ModulePlace_Id, t.Plan_Id })
-                .ForeignKey("dbo.ModulePlaces", t => t.ModulePlace_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Plans", t => t.Plan_Id, cascadeDelete: true)
-                .Index(t => t.ModulePlace_Id)
-                .Index(t => t.Plan_Id);
-            
-            CreateTable(
-                "dbo.TypeModuleTypeSlots",
-                c => new
-                    {
-                        TypeModule_Id = c.Int(nullable: false),
-                        TypeSlot_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.TypeModule_Id, t.TypeSlot_Id })
-                .ForeignKey("dbo.TypeModules", t => t.TypeModule_Id, cascadeDelete: true)
-                .ForeignKey("dbo.TypeSlots", t => t.TypeSlot_Id, cascadeDelete: true)
-                .Index(t => t.TypeModule_Id)
-                .Index(t => t.TypeSlot_Id);
-            
-        }
-        
         public override void Down()
         {
             DropForeignKey("dbo.Clients", "StatutClient_Id", "dbo.StatutClients");
@@ -438,6 +92,350 @@ namespace HouseMadera.Migrations
             DropTable("dbo.Commercials");
             DropTable("dbo.Projets");
             DropTable("dbo.Clients");
+        }
+
+        public override void Up()
+        {
+            CreateTable(
+                "dbo.Clients",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Prenom = c.String(unicode: false),
+                    Adresse1 = c.String(unicode: false),
+                    Adresse2 = c.String(unicode: false),
+                    Adresse3 = c.String(unicode: false),
+                    CodePostal = c.String(unicode: false),
+                    Email = c.String(unicode: false),
+                    Telephone = c.String(unicode: false),
+                    Mobile = c.String(unicode: false),
+                    StatutClient_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.StatutClients", t => t.StatutClient_Id)
+                .Index(t => t.StatutClient_Id);
+
+            CreateTable(
+                "dbo.Projets",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Reference = c.String(unicode: false),
+                    UpdateDate = c.DateTime(nullable: false, precision: 0),
+                    CreateDate = c.DateTime(nullable: false, precision: 0),
+                    Client_Id = c.Int(),
+                    Commercial_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Clients", t => t.Client_Id)
+                .ForeignKey("dbo.Commercials", t => t.Commercial_Id)
+                .Index(t => t.Client_Id)
+                .Index(t => t.Commercial_Id);
+
+            CreateTable(
+                "dbo.Commercials",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Prenom = c.String(unicode: false),
+                    Login = c.String(unicode: false),
+                    Password = c.String(unicode: false),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.Produits",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Devis_Id = c.Int(),
+                    Plan_Id = c.Int(),
+                    Projet_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Devis", t => t.Devis_Id)
+                .ForeignKey("dbo.Plans", t => t.Plan_Id)
+                .ForeignKey("dbo.Projets", t => t.Projet_Id)
+                .Index(t => t.Devis_Id)
+                .Index(t => t.Plan_Id)
+                .Index(t => t.Projet_Id);
+
+            CreateTable(
+                "dbo.Devis",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    DateCreation = c.DateTime(nullable: false, precision: 0),
+                    PrixHT = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    PrixTTC = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    StatutDevis_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.StatutDevis", t => t.StatutDevis_Id)
+                .Index(t => t.StatutDevis_Id);
+
+            CreateTable(
+                "dbo.StatutDevis",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.Plans",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    CreateDate = c.DateTime(nullable: false, precision: 0),
+                    CoupePrincipe_Id = c.Int(),
+                    Gamme_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.CoupePrincipes", t => t.CoupePrincipe_Id)
+                .ForeignKey("dbo.Gammes", t => t.Gamme_Id)
+                .Index(t => t.CoupePrincipe_Id)
+                .Index(t => t.Gamme_Id);
+
+            CreateTable(
+                "dbo.CoupePrincipes",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.Gammes",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Isolant_Id = c.Int(),
+                    Finition_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Isolants", t => t.Isolant_Id)
+                .ForeignKey("dbo.Finitions", t => t.Finition_Id)
+                .Index(t => t.Isolant_Id)
+                .Index(t => t.Finition_Id);
+
+            CreateTable(
+                "dbo.Finitions",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    TypeFinition_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.TypeFinitions", t => t.TypeFinition_Id)
+                .Index(t => t.TypeFinition_Id);
+
+            CreateTable(
+                "dbo.TypeFinitions",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Qualite_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Qualites", t => t.Qualite_Id)
+                .Index(t => t.Qualite_Id);
+
+            CreateTable(
+                "dbo.Qualites",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.TypeIsolants",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Qualite_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Qualites", t => t.Qualite_Id)
+                .Index(t => t.Qualite_Id);
+
+            CreateTable(
+                "dbo.Isolants",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    TypeIsolant_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.TypeIsolants", t => t.TypeIsolant_Id)
+                .Index(t => t.TypeIsolant_Id);
+
+            CreateTable(
+                "dbo.Modules",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Hauteur = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    Largeur = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    Gamme_Id = c.Int(),
+                    TypeModule_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Gammes", t => t.Gamme_Id)
+                .ForeignKey("dbo.TypeModules", t => t.TypeModule_Id)
+                .Index(t => t.Gamme_Id)
+                .Index(t => t.TypeModule_Id);
+
+            CreateTable(
+                "dbo.Composants",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Prix = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    TypeComposant_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.TypeComposants", t => t.TypeComposant_Id)
+                .Index(t => t.TypeComposant_Id);
+
+            CreateTable(
+                "dbo.TypeComposants",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Qualite_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Qualites", t => t.Qualite_Id)
+                .Index(t => t.Qualite_Id);
+
+            CreateTable(
+                "dbo.SlotPlaces",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Abscisse = c.Int(nullable: false),
+                    Ordonnee = c.Int(nullable: false),
+                    Module_Id = c.Int(),
+                    Slot_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Modules", t => t.Module_Id)
+                .ForeignKey("dbo.Slots", t => t.Slot_Id)
+                .Index(t => t.Module_Id)
+                .Index(t => t.Slot_Id);
+
+            CreateTable(
+                "dbo.ModulePlaces",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Module_Id = c.Int(),
+                    SlotPlace_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Modules", t => t.Module_Id)
+                .ForeignKey("dbo.SlotPlaces", t => t.SlotPlace_Id)
+                .Index(t => t.Module_Id)
+                .Index(t => t.SlotPlace_Id);
+
+            CreateTable(
+                "dbo.Slots",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                    Hauteur = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    Largeur = c.Decimal(nullable: false, precision: 18, scale: 2),
+                    TypeSlot_Id = c.Int(),
+                })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.TypeSlots", t => t.TypeSlot_Id)
+                .Index(t => t.TypeSlot_Id);
+
+            CreateTable(
+                "dbo.TypeSlots",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.TypeModules",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.StatutClients",
+                c => new
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Nom = c.String(unicode: false),
+                })
+                .PrimaryKey(t => t.Id);
+
+            CreateTable(
+                "dbo.ComposantModules",
+                c => new
+                {
+                    Composant_Id = c.Int(nullable: false),
+                    Module_Id = c.Int(nullable: false),
+                })
+                .PrimaryKey(t => new { t.Composant_Id, t.Module_Id })
+                .ForeignKey("dbo.Composants", t => t.Composant_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Modules", t => t.Module_Id, cascadeDelete: true)
+                .Index(t => t.Composant_Id)
+                .Index(t => t.Module_Id);
+
+            CreateTable(
+                "dbo.ModulePlacePlans",
+                c => new
+                {
+                    ModulePlace_Id = c.Int(nullable: false),
+                    Plan_Id = c.Int(nullable: false),
+                })
+                .PrimaryKey(t => new { t.ModulePlace_Id, t.Plan_Id })
+                .ForeignKey("dbo.ModulePlaces", t => t.ModulePlace_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Plans", t => t.Plan_Id, cascadeDelete: true)
+                .Index(t => t.ModulePlace_Id)
+                .Index(t => t.Plan_Id);
+
+            CreateTable(
+                "dbo.TypeModuleTypeSlots",
+                c => new
+                {
+                    TypeModule_Id = c.Int(nullable: false),
+                    TypeSlot_Id = c.Int(nullable: false),
+                })
+                .PrimaryKey(t => new { t.TypeModule_Id, t.TypeSlot_Id })
+                .ForeignKey("dbo.TypeModules", t => t.TypeModule_Id, cascadeDelete: true)
+                .ForeignKey("dbo.TypeSlots", t => t.TypeSlot_Id, cascadeDelete: true)
+                .Index(t => t.TypeModule_Id)
+                .Index(t => t.TypeSlot_Id);
         }
     }
 }
