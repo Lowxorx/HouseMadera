@@ -6,13 +6,17 @@ using System.Collections.Generic;
 public class EditWall : MonoBehaviour {
 
     List<GameObject> wallList = new List<GameObject> ();
+    public List<GameObject> doorList = new List<GameObject>();
     public Texture texture1;
     public Texture texture2;
     public Texture texture3;
     private bool addElementSelected = false;
     public GameObject wallSelected;
+    public GameObject moduleSelected;
+    GameObject UIManager;
     void Start ()
     {
+        UIManager = GameObject.Find("UIManager");
         foreach (GameObject fooObj in GameObject.FindGameObjectsWithTag("Wall"))
         {
             wallList.Add(fooObj);
@@ -30,19 +34,36 @@ public class EditWall : MonoBehaviour {
             {
                 if(hit.collider.gameObject.tag == "Wall")
                 {
-                   for (int i = 0; i< wallList.Count; i++)
+                    if (hit.collider.gameObject.GetComponent<WallSelection>().wallPlaced)
                     {
-                        wallList[i].transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
-                        wallList[i].transform.GetChild(1).GetComponent<Renderer>().material.color = Color.white;
+                        UIManager.GetComponent<UIManager>().ShowPanels();
+                        for (int i = 0; i < wallList.Count; i++)
+                        {
+                            wallList[i].transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                            wallList[i].transform.GetChild(1).GetComponent<Renderer>().material.color = Color.white;
+                        }
+                        hit.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.blue;
+                        hit.transform.GetChild(1).GetComponent<Renderer>().material.color = Color.blue;
+                        wallSelected = hit.transform.gameObject;
+                        if (addElementSelected)
+                        {
+                            //AddElement();
+                        }
                     }
-                    hit.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.blue;
-                    hit.transform.GetChild(1).GetComponent<Renderer>().material.color = Color.blue;
-                    wallSelected = hit.transform.gameObject;
-                    if (addElementSelected)
+                   
+                }
+                else
+                {
+                    foreach(var item in wallList)
                     {
-                        AddElement();
+                        item.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                        item.transform.GetChild(1).GetComponent<Renderer>().material.color = Color.white;
                     }
-                    
+
+                    foreach (var item in doorList)
+                    {
+                        item.transform.GetComponent<Renderer>().material.color = Color.red;
+                    }
                 }
             }
         }
@@ -65,11 +86,23 @@ public class EditWall : MonoBehaviour {
 
     public void AddElementSelected()
     {
-        addElementSelected = true;
+        if(wallSelected != null)
+        {
+            AddElement();
+        }
     }
+
     public void AddElement()
     {
+        foreach(var item in wallSelected.GetComponent<WallSelection>().listModule)
+        {
+            doorList.Remove(item.gameObject);
+            GameObject.Find("Event").GetComponent<EditSlot>().moduleList.Remove(item.gameObject);
+            Destroy(item.gameObject);
+        }
         GameObject door = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
+        doorList.Add(door);
+        wallSelected.GetComponent<WallSelection>().listModule.Add(door);
         float width = wallSelected.transform.GetChild(0).gameObject.GetComponent<RectTransform>().localScale.z / 3;
         Debug.Log("WIDTH : " + width);
         door.transform.position = new Vector3(wallSelected.transform.position.x, wallSelected.transform.position.y, wallSelected.transform.position.z);

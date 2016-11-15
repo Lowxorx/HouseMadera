@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 
 public class WallSelection : MonoBehaviour {
 
     private GameObject childrenInside;
     private GameObject childrenOutside;
+    public List<GameObject> listModule;
     public bool wallPlaced = false;
     private bool wallSelected = false;
 	void Start ()
@@ -15,7 +17,7 @@ public class WallSelection : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetMouseButtonDown(0) && wallSelected && !wallPlaced)
+        if (Input.GetMouseButtonUp(0) && wallSelected && !wallPlaced)
         {
             wallPlaced = true;
             childrenOutside.GetComponent<Renderer>().material.color = Color.white;
