@@ -170,6 +170,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\logomaderacolorgreyclean.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\Entypo-license.txt" />
     <Content Include="Resources\logomaderacolorgrey.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

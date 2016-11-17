@@ -30,8 +30,7 @@
         <Grid Margin="0,0,0,928" Background="#FFA29A9A">
             <Label
                 x:Name="label"
-                Margin="650,16,0,0"
-                HorizontalAlignment="Left"
+                Margin="618,10,616,0"
                 VerticalAlignment="Top"
                 Content="Titre de la page"
                 FontFamily="Verdana"
@@ -61,7 +60,7 @@
                 Height="82"
                 Margin="10,-50,410,0"
                 VerticalAlignment="Top"
-                Source="../Resources/logomaderacolorgrey.png" />
+                Source="../Resources/logomaderacolorgreyclean.png" />
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
     </Grid>
