@@ -26,17 +26,25 @@ namespace HouseMadera.Modèles
             {
                 var newConnexion = new MysqlConnector();
                 var connexion = newConnexion.Connect();
-                MySqlCommand command = connexion.CreateCommand();
-                Console.WriteLine("Requete BDD");
-                command.CommandText = "SELECT * FROM Commercials WHERE Login = '" + commercial.Login + "' AND Password = '" + commercial.Password + "'";
-                MySqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
+                if (connexion != null)
                 {
-                    Console.WriteLine(String.Format("{0}", reader[0]));
+                    MySqlCommand command = connexion.CreateCommand();
+                    Console.WriteLine("Requete BDD");
+                    command.CommandText = "SELECT * FROM Commercials WHERE Login = '" + commercial.Login + "' AND Password = '" + commercial.Password + "'";
+                    MySqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Console.WriteLine(String.Format("{0}", reader[0]));
+                    }
+                    reader.Close();
+                    connexion.Close();
+                    return true;
                 }
-                reader.Close();
-                connexion.Close();
-                return true;
+                else
+                {
+                    return false;
+                }
+
             }
             catch (MySqlException)
             {
