@@ -55,7 +55,7 @@ namespace HouseMadera.Vue___Modèle
             {
                 Console.WriteLine(pwCommercial);
                 Console.WriteLine(loginCommercial);
-                var newCommercial = new Commercial{ NomUtilisateur = LoginCommercial, Password = PwCommercial };
+                var newCommercial = new Commercial{ Login = LoginCommercial, Password = PwCommercial };
                 CommercialConnect c = new CommercialConnect();
                 bool connected = c.Connect(newCommercial);
                 if (connected)
