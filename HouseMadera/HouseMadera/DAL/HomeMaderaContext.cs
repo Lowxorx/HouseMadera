@@ -1,24 +1,17 @@
-﻿using HomeMadera.Entities;
-using System;
-using System.Collections.Generic;
+﻿using HouseMadera.Entities;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace HomeMadera.DataLayer
+namespace HouseMadera.DataLayer
 {
-    public class HomeMaderaContext:DbContext
+    public class HouseMaderaContext : DbContext
     {
-        public HomeMaderaContext() : base("HouseMaderaDb")
+        public HouseMaderaContext() : base("HouseMaderaDb")
         {
-            Database.SetInitializer<HomeMaderaContext>(new HomeMaderaContextInitializer());
+            Database.SetInitializer<HouseMaderaContext>(new HouseMaderaContextInitializer());
         }
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<Commercial> Commercials { get; set; }
-        public DbSet<Projet> Projets { get; set; }
-        public DbSet<Produit> Produits { get; set; }
         public DbSet<Composant> Composants { get; set; }
         public DbSet<CoupePrincipe> CoupesPrincipes { get; set; }
         public DbSet<Devis> Devis { get; set; }
@@ -28,6 +21,8 @@ namespace HomeMadera.DataLayer
         public DbSet<Module> Modules { get; set; }
         public DbSet<ModulePlace> ModulesPlaces { get; set; }
         public DbSet<Plan> Plans { get; set; }
+        public DbSet<Produit> Produits { get; set; }
+        public DbSet<Projet> Projets { get; set; }
         public DbSet<Qualite> Qualites { get; set; }
         public DbSet<Slot> Slots { get; set; }
         public DbSet<SlotPlace> SlotsPlaces { get; set; }
@@ -38,6 +33,5 @@ namespace HomeMadera.DataLayer
         public DbSet<TypeIsolant> TypesIsolants { get; set; }
         public DbSet<TypeModule> TypesModules { get; set; }
         public DbSet<TypeSlot> TypesSlots { get; set; }
-
     }
 }

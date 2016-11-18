@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace HomeMadera.Entities
+namespace HouseMadera.Entities
 {
     public class Slot
     {
-        public int Id { get; set; }
-        [StringLength(255)]
-        public string Nom { get; set; }
         public decimal Hauteur { get; set; }
+        public int Id { get; set; }
         public decimal Largeur { get; set; }
 
-        public TypeSlot TypeSlot { get; set; }
+        [StringLength(255)]
+        public string Nom { get; set; }
 
         public virtual ICollection<SlotPlace> SlotsPlaces { get; set; }
+        public TypeSlot TypeSlot { get; set; }
     }
 }

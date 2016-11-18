@@ -1,14 +1,14 @@
 ﻿using System.Data.Entity;
 
-namespace HomeMadera.DataLayer
+namespace HouseMadera.DataLayer
 {
-    public class HomeMaderaContextInitializer : CreateDatabaseIfNotExists<HomeMaderaContext>
+    public class HouseMaderaContextInitializer : CreateDatabaseIfNotExists<HouseMaderaContext>
     {
-        protected override void Seed(HomeMaderaContext context)
+        protected override void Seed(HouseMaderaContext context)
         {
             base.Seed(context);
         }
-            //TODO seed 
-    }
 
+        //TODO seed
+    }
 }
