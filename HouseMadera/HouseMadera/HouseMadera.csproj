@@ -102,31 +102,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DAL\HomeMaderaContext.cs" />
-    <Compile Include="DAL\HomeMaderaContextInitializer.cs" />
-    <Compile Include="Entities\Client.cs" />
-    <Compile Include="Entities\Commercial.cs" />
-    <Compile Include="Entities\Composant.cs" />
-    <Compile Include="Entities\CoupePrincipe.cs" />
-    <Compile Include="Entities\Devis.cs" />
-    <Compile Include="Entities\Finition.cs" />
-    <Compile Include="Entities\Gamme.cs" />
-    <Compile Include="Entities\Isolant.cs" />
-    <Compile Include="Entities\Module.cs" />
-    <Compile Include="Entities\ModulePlace.cs" />
-    <Compile Include="Entities\Plan.cs" />
-    <Compile Include="Entities\Produit.cs" />
-    <Compile Include="Entities\Projet.cs" />
-    <Compile Include="Entities\Qualite.cs" />
-    <Compile Include="Entities\Slot.cs" />
-    <Compile Include="Entities\SlotPlace.cs" />
-    <Compile Include="Entities\StatutClient.cs" />
-    <Compile Include="Entities\StatutDevis.cs" />
-    <Compile Include="Entities\TypeComposant.cs" />
-    <Compile Include="Entities\TypeFinition.cs" />
-    <Compile Include="Entities\TypeIsolant.cs" />
-    <Compile Include="Entities\TypeModule.cs" />
-    <Compile Include="Entities\TypeSlot.cs" />
     <Compile Include="Modèles\Client.cs" />
     <Compile Include="Modèles\Commercial.cs" />
     <Compile Include="Modèles\Composant.cs" />
