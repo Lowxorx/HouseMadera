@@ -52,7 +52,7 @@
                 FontFamily="Verdana"
                 FontSize="36" />
             <Button
-                x:Name="button"
+                x:Name="btLogout"
                 Width="65"
                 Height="65"
                 Margin="1453,10,0,0"
@@ -60,6 +60,7 @@
                 VerticalAlignment="Top"
                 Background="#FFF7F7F7"
                 BorderThickness="0"
+                Command="{Binding Deconnexion}"
                 Content="{iconPacks:PackIconFontAwesome signout,
                                                         Width=32,
                                                         Height=32}" />
@@ -108,6 +109,8 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 BorderThickness="1"
+                DisplayMemberPath="Nom"
+                ItemsSource="{Binding ListProjets}"
                 SelectedItem="{Binding SelectProjet}" />
             <TextBox
                 x:Name="tbFiltreProjets"
@@ -117,7 +120,6 @@
                 VerticalContentAlignment="Center"
                 Controls:TextBoxHelper.Watermark="Rechercher un projet"
                 FontSize="18"
-                Text=""
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
         </Grid>
