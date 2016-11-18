@@ -8,5 +8,6 @@ namespace HouseMadera.Modèles
         public string Nom { get; set; }
         public virtual ICollection<Slot> Slots { get; set; }
         public virtual ICollection<TypeModule> TypesModules { get; set; }
+
     }
 }

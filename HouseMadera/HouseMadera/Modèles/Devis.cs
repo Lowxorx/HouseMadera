@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HouseMadera.Modèles
 {
     public class Devis
     {
-        public DateTime DateCreation { get; set; }
         public int Id { get; set; }
         public string Nom { get; set; }
+        public DateTime DateCreation { get; set; }
         public Decimal PrixHT { get; set; }
         public Decimal PrixTTC { get; set; }
 
-        public virtual ICollection<Produit> Produits { get; set; }
         public StatutDevis StatutDevis { get; set; }
+        public virtual ICollection<Produit> Produits { get; set; }
     }
 }
