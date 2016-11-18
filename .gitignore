@@ -243,3 +243,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/gitbast.ps1
+/gitpaul.ps1

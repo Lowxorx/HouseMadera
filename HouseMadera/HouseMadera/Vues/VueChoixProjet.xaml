@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
-    Title="Connexion - Mader'House"
+    Title="Selection d'un projet - Mader'House"
     Width="1536"
     Height="1024"
     MinWidth="1536"
@@ -23,6 +24,13 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Window.DataContext>
         <vm:VueModeleChoixProjet />
     </Window.DataContext>
@@ -32,17 +40,38 @@
         </intr:EventTrigger>
     </intr:Interaction.Triggers>
     <Grid>
-        <Grid
-            Height="46"
-            Margin="0,0,0,970"
-            Background="#FF676767" />
-        <Grid Margin="0,44,0,55">
+        <Grid Margin="0,0,0,928" Background="#FFA29A9A">
+            <Label
+                x:Name="label"
+                Height="65"
+                Margin="245,10,80,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                VerticalContentAlignment="Center"
+                Content="Sélection d'un projet"
+                FontFamily="Verdana"
+                FontSize="36" />
+            <Button
+                x:Name="button"
+                Width="65"
+                Height="65"
+                Margin="1453,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="#FFF7F7F7"
+                BorderThickness="0"
+                Content="{iconPacks:PackIconFontAwesome signout,
+                                                        Width=32,
+                                                        Height=32}" />
+        </Grid>
+        <Grid Margin="0,53">
+
             <Image
                 x:Name="image"
-                Height="148"
-                Margin="-6,-45,1202,0"
+                Height="82"
+                Margin="10,-50,1296,0"
                 VerticalAlignment="Top"
-                Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png" />
+                Source="../Resources/logomaderacolorgreyclean.png" />
             <Button
                 x:Name="btReprendreProjet"
                 Width="490"
@@ -92,6 +121,6 @@
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
         </Grid>
-        <Grid Margin="0,968,0,0" Background="#FF676767" />
+        <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
     </Grid>
 </Controls:MetroWindow>
