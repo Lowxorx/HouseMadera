@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System.Data;
+using Mono.Data.Sqlite;
+using System;
 
 public class UIManager : MonoBehaviour {
 
@@ -17,7 +20,21 @@ public class UIManager : MonoBehaviour {
     {
         textureInitialPosition = panelTexture.transform.position;
         modulePositionInitial = panelModule.transform.position;
-	}
+        try
+        {
+            string conn = "URI=file:" + Application.dataPath + "/HouseMaderaDB.db";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(conn);
+            dbconn.Open();
+        }
+        catch
+        {
+            Debug.LogError("Fail database");
+        }
+        
+
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
