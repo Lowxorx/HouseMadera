@@ -33,7 +33,7 @@ namespace HouseMadera.Modèles
             try
             {
                 Console.WriteLine("Connexion BDD");
-                MySqlConnection connexion = new MySqlConnection("Server=212.129.41.100;Port=20;Database=HouseMaderaDb;Uid=root;Pwd=Rila2016");
+                MySqlConnection connexion = new MySqlConnection("Server=212.129.41.100;Port=16081;Database=HouseMaderaDb;Uid=root;Pwd=Rila2016");
                 connexion.Open();
                 MySqlCommand command = connexion.CreateCommand();
                 Console.WriteLine("Requete BDD");
