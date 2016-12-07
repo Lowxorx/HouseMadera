@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Data;
 using Mono.Data.Sqlite;
+using System;
+using UnityEngine.UI;
 
 public class PanelModule : MonoBehaviour {
 
     public GameObject slot;
+    public Sprite fenêtre;
 	void Start ()
     {
         SelectModules();
@@ -29,14 +32,16 @@ public class PanelModule : MonoBehaviour {
                 module = Instantiate(Resources.Load("module", typeof(GameObject))) as GameObject;
                 module.transform.SetParent(slot.transform);
                 module.name = reader.GetString(1);
-                module.transform.position = slot.transform.position;
+                module.transform.localScale = new Vector3(1, 1, 1);
+                module.GetComponent<Image>().sprite = fenêtre;
+                //module.transform.position = slot.transform.position;
                 Debug.Log("id : "+reader.GetInt32(0) + " Slot : " + reader.GetString(1));
             }
             dbconn.Close();
          }
-        catch
+        catch (Exception e)
         {
-            Debug.LogError("Fail database");
+            Debug.LogError(e);
         }
     }
 	
