@@ -5,6 +5,14 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseMadera", "HouseMadera\HouseMadera.csproj", "{025E8AEB-248A-4B31-BF0F-28DC550B7B10}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DAL", "DAL", "{88D61EED-4FEB-4313-A23B-93F960758540}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseMadera.Sqlite", "HouseMadera.Sqlite\HouseMadera.Sqlite.csproj", "{34797C77-031D-46B4-8C27-F31260D21476}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseMadera.Mysql", "HouseMadera.Mysql\HouseMadera.Mysql.csproj", "{71E94A09-F485-468B-8528-95084CB4829A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{5ABB6C05-9A16-40E3-AC49-FC011ADE2DF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +23,21 @@ Global
 		{025E8AEB-248A-4B31-BF0F-28DC550B7B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{025E8AEB-248A-4B31-BF0F-28DC550B7B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{025E8AEB-248A-4B31-BF0F-28DC550B7B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34797C77-031D-46B4-8C27-F31260D21476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34797C77-031D-46B4-8C27-F31260D21476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34797C77-031D-46B4-8C27-F31260D21476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34797C77-031D-46B4-8C27-F31260D21476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71E94A09-F485-468B-8528-95084CB4829A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71E94A09-F485-468B-8528-95084CB4829A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71E94A09-F485-468B-8528-95084CB4829A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71E94A09-F485-468B-8528-95084CB4829A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{025E8AEB-248A-4B31-BF0F-28DC550B7B10} = {5ABB6C05-9A16-40E3-AC49-FC011ADE2DF2}
+		{34797C77-031D-46B4-8C27-F31260D21476} = {88D61EED-4FEB-4313-A23B-93F960758540}
+		{71E94A09-F485-468B-8528-95084CB4829A} = {88D61EED-4FEB-4313-A23B-93F960758540}
 	EndGlobalSection
 EndGlobal
