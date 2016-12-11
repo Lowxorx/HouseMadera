@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        
         textureInitialPosition = panelTexture.transform.position;
         modulePositionInitial = panelModule.transform.position;
         try
@@ -39,6 +40,7 @@ public class UIManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        Cursor.visible = true;
         if (Input.GetMouseButtonDown(0))
         { // if left button pressed...
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
