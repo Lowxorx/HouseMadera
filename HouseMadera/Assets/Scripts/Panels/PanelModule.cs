@@ -80,88 +80,78 @@ public class PanelModule : MonoBehaviour {
                     switch (objectToInstantiate.Count)
                     {
                         case 1:
-                                if(objectToInstantiate[0].name.Equals("window"))
+                            for (int i = 0; i< objectToInstantiate.Count; i++)
+                            {
+                                if (objectToInstantiate[i].name.Equals("window"))
                                 {
-                                    objectToInstantiate[0] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[0].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3).transform.position;
-                                    objectToInstantiate[0].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
-
+                                    objectToInstantiate[i] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                                    objectToInstantiate[i].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3).transform.position;
+                                    objectToInstantiate[i].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i].tag = "Window";
                                 }
                                 else
                                 {
-                                    objectToInstantiate[0] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[0].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3).transform.position;
-                                    objectToInstantiate[0].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
+                                    objectToInstantiate[i].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3).transform.position;
+                                    objectToInstantiate[i].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i].tag = "Door";
                                 }
+                                objectToInstantiate[i].gameObject.transform.SetParent(GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2));
+                                objectToInstantiate[i].gameObject.GetComponent<Renderer>().material.color = Color.red;
+                            }
                             break;
 
                         case 2:
-                                if(objectToInstantiate[0].name.Equals("window"))
+                            for (int i = 0; i < objectToInstantiate.Count; i++)
+                            {
+                                if (objectToInstantiate[i].name.Equals("window"))
                                 {
-                                    objectToInstantiate[0] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[0].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2).transform.position;
-                                    objectToInstantiate[0].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation; 
+                                    int index = i;
+                                    if(index != 0) { index++; }
+                                    objectToInstantiate[i] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                                    objectToInstantiate[i].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2 + index).transform.position;
+                                    objectToInstantiate[i].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i].tag = "Window";
                                 }
                                 else
                                 {
-                                    objectToInstantiate[0] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[0].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2).transform.position;
-                                    objectToInstantiate[0].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation; 
+                                    int index = i;
+                                    if (index != 0) { index++; }
+                                    objectToInstantiate[i] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
+                                    objectToInstantiate[i].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2 + index).transform.position;
+                                    objectToInstantiate[i].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i].tag = "Door";
                                 }
-
-                                if (objectToInstantiate[1].name.Equals("window"))
-                                {
-                                    objectToInstantiate[1] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[1].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(4).transform.position;
-                                    objectToInstantiate[1].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation; 
-                                }
-                                else
-                                {
-                                    objectToInstantiate[1] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[1].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(4).transform.position;
-                                    objectToInstantiate[1].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation; 
-                                }
+                                
+                                objectToInstantiate[i].gameObject.GetComponent<Renderer>().material.color = Color.red;
+                                if(i == 0) { objectToInstantiate[i].gameObject.transform.SetParent(GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2)); }
+                                if (i == 1) { objectToInstantiate[i].gameObject.transform.SetParent(GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3)); }
+                            }
                             break;
 
                         case 3:
-                                if (objectToInstantiate[0].name.Equals("window"))
+                            for (int i = 0; i < objectToInstantiate.Count; i++)
+                            {
+                                Debug.Log("Iteration :" + i);
+                                if (objectToInstantiate[i].name.Equals("window"))
                                 {
-                                    objectToInstantiate[0] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[0].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2).transform.position;
-                                    objectToInstantiate[0].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                                    objectToInstantiate[i].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2 + i).transform.position;
+                                    objectToInstantiate[i].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i].tag = "Window";
                                 }
                                 else
                                 {
-                                    objectToInstantiate[0] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[0].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2).transform.position;
-                                    objectToInstantiate[0].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
+                                    objectToInstantiate[i].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2 + i).transform.position;
+                                    objectToInstantiate[i].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
+                                    objectToInstantiate[i].tag = "Door";
                                 }
-
-                                if (objectToInstantiate[1].name.Equals("window"))
-                                {
-                                    objectToInstantiate[1] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[1].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3).transform.position;
-                                    objectToInstantiate[1].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
-                                }
-                                else
-                                {
-                                    objectToInstantiate[1] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[1].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3).transform.position;
-                                    objectToInstantiate[1].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
-                                }
-
-                                if (objectToInstantiate[2].name.Equals("window"))
-                                {
-                                    objectToInstantiate[2] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[2].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(4).transform.position;
-                                    objectToInstantiate[2].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
-                                }
-                                else
-                                {
-                                    objectToInstantiate[2] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                                    objectToInstantiate[2].transform.position = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(4).transform.position;
-                                    objectToInstantiate[2].transform.rotation = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(0).gameObject.transform.rotation;
-                                }
+                                if (i == 0) { objectToInstantiate[i].gameObject.transform.SetParent(GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(2)); }
+                                if (i == 1) { objectToInstantiate[i].gameObject.transform.SetParent(GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(3)); }
+                                if (i == 2) { objectToInstantiate[i].gameObject.transform.SetParent(GameObject.Find("Event").GetComponent<EditWall>().wallSelected.transform.GetChild(4)); }
+                                objectToInstantiate[i].gameObject.GetComponent<Renderer>().material.color = Color.red;
+                            }
                             break;
                     }
                 });
