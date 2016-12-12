@@ -20,6 +20,13 @@ public class EditSlot : MonoBehaviour {
             {
                 if (hit.collider.gameObject.tag == "Door")
                 {
+                    foreach (Transform target in hit.collider.transform.parent.transform.parent)
+                    {
+                        if (target.childCount > 0)
+                        {
+                            target.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                        }
+                    }
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                     GameObject.Find("Event").GetComponent<EditWall>().moduleSelected = hit.collider.gameObject;
                     //GameObject door = hit.transform.gameObject;
@@ -30,6 +37,19 @@ public class EditSlot : MonoBehaviour {
                 }
                 else if(hit.collider.gameObject.tag == "Window")
                 {
+                    foreach (Transform target in hit.collider.transform.parent.transform.parent.transform.parent)
+                    {
+                        if (target.childCount > 0 && target.gameObject.name.Contains("Wall"))
+                        {
+                            foreach(Transform target2 in target.transform)
+                            {
+                                if (target2.name.Contains("Slot") && target2.childCount > 0)
+                                {
+                                    target2.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                                }
+                            }
+                        }
+                    }
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                     GameObject.Find("Event").GetComponent<EditWall>().moduleSelected = hit.collider.gameObject;
                     //GameObject door = hit.transform.gameObject;
