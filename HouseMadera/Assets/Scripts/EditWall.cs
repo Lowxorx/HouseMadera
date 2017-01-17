@@ -36,7 +36,9 @@ public class EditWall : MonoBehaviour {
                 {
                     if (hit.collider.gameObject.GetComponent<WallSelection>().wallPlaced)
                     {
-                        UIManager.GetComponent<UIManager>().ShowPanels();
+                        UIManager.GetComponent<UIManager>().texture = true;
+                        UIManager.GetComponent<UIManager>().moduleGeneral = true;
+
                         for (int i = 0; i < wallList.Count; i++)
                         {
                             wallList[i].transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
@@ -54,7 +56,9 @@ public class EditWall : MonoBehaviour {
                 }
                 else
                 {
-                    foreach(var item in wallList)
+                    UIManager.GetComponent<UIManager>().texture = false;
+                    UIManager.GetComponent<UIManager>().moduleGeneral = false;
+                    foreach (var item in wallList)
                     {
                         item.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
                         item.transform.GetChild(1).GetComponent<Renderer>().material.color = Color.white;

@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class EditSlot : MonoBehaviour {
 
     public List<GameObject> moduleList;
-	void Start () {
+	void Start ()
+    {
 	
 	}
 	
@@ -20,6 +21,7 @@ public class EditSlot : MonoBehaviour {
             {
                 if (hit.collider.gameObject.tag == "Door")
                 {
+                    ClearModule();
                     foreach (Transform target in hit.collider.transform.parent.transform.parent)
                     {
                         if (target.childCount > 0)
@@ -29,14 +31,11 @@ public class EditSlot : MonoBehaviour {
                     }
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                     GameObject.Find("Event").GetComponent<EditWall>().moduleSelected = hit.collider.gameObject;
-                    //GameObject door = hit.transform.gameObject;
-                    //door = Instantiate(Resources.Load("Door", typeof(GameObject))) as GameObject;
-                    //door.transform.position = hit.transform.position;
-                    //door.transform.rotation = hit.transform.rotation;
-                    //Destroy(hit.transform.gameObject);
+                    
                 }
                 else if(hit.collider.gameObject.tag == "Window")
                 {
+                    ClearModule();
                     foreach (Transform target in hit.collider.transform.parent.transform.parent.transform.parent)
                     {
                         if (target.childCount > 0 && target.gameObject.name.Contains("Wall"))
@@ -52,11 +51,25 @@ public class EditSlot : MonoBehaviour {
                     }
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                     GameObject.Find("Event").GetComponent<EditWall>().moduleSelected = hit.collider.gameObject;
-                    //GameObject door = hit.transform.gameObject;
-                    //door = Instantiate(Resources.Load("Door", typeof(GameObject))) as GameObject;
-                    //door.transform.position = hit.transform.position;
-                    //door.transform.rotation = hit.transform.rotation;
-                    //Destroy(hit.transform.gameObject);
+                    
+                }
+            }
+        }
+    }
+
+    void ClearModule()
+    {
+        GameObject house = GameObject.Find("House");
+        foreach(Transform child in house.transform)
+        {
+            if (child.name.Contains("Wall"))
+            {
+                foreach(Transform mod in child)
+                {
+                    if (mod.name.Contains("clone"))
+                    {
+                        mod.gameObject.GetComponent<Renderer>().material.color = Color.red;
+                    }
                 }
             }
         }

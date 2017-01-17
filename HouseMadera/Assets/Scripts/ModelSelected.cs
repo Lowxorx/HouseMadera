@@ -24,6 +24,7 @@ public class ModelSelected : MonoBehaviour {
         floor.SetActive(true);
         selectionModel.SetActive(false);
         GameObject house = Instantiate(modelA);
+        house.name = "House";
     }
 
     public void ModelBSelected()

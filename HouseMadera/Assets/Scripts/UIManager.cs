@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour {
     Vector3 modulePositionInitial;
     bool show = false;
     bool hide = true;
+    public bool texture = false;
+    public bool moduleGeneral = false;
 	// Use this for initialization
 	void Start ()
     {
@@ -55,31 +57,63 @@ public class UIManager : MonoBehaviour {
                 }
             }
         }
-        if (show)
+
+        if (texture)
         {
             if (panelTexture.transform.position.x < texturePosition.transform.position.x)
             {
                 panelTexture.transform.Translate(Vector3.right * Time.deltaTime * 300);
             }
-
-            if (panelModule.transform.position.x > modulePosition.transform.position.x)
-            {
-                panelModule.transform.Translate(Vector3.left * Time.deltaTime * 300);
-            }
         }
-
-        if (hide)
+        else
         {
             if (panelTexture.transform.position.x > textureInitialPosition.x)
             {
                 panelTexture.transform.Translate(Vector3.left * Time.deltaTime * 300);
             }
+        }
 
+        if (moduleGeneral)
+        {
+            if (panelModule.transform.position.x > modulePosition.transform.position.x)
+            {
+                panelModule.transform.Translate(Vector3.left * Time.deltaTime * 300);
+            }
+        }
+        else
+        {
             if (panelModule.transform.position.x < modulePositionInitial.x)
             {
                 panelModule.transform.Translate(Vector3.right * Time.deltaTime * 300);
             }
         }
+
+
+        //if (show)
+        //{
+        //    if (panelTexture.transform.position.x < texturePosition.transform.position.x)
+        //    {
+        //        panelTexture.transform.Translate(Vector3.right * Time.deltaTime * 300);
+        //    }
+
+        //    if (panelModule.transform.position.x > modulePosition.transform.position.x)
+        //    {
+        //        panelModule.transform.Translate(Vector3.left * Time.deltaTime * 300);
+        //    }
+        //}
+
+        //if (hide)
+        //{
+        //    if (panelTexture.transform.position.x > textureInitialPosition.x)
+        //    {
+        //        panelTexture.transform.Translate(Vector3.left * Time.deltaTime * 300);
+        //    }
+
+        //    if (panelModule.transform.position.x < modulePositionInitial.x)
+        //    {
+        //        panelModule.transform.Translate(Vector3.right * Time.deltaTime * 300);
+        //    }
+        //}
     }
 
     public void ShowPanels()
