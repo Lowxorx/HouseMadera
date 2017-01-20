@@ -1,10 +1,12 @@
-﻿using MySql.Data.MySqlClient;
+﻿using GalaSoft.MvvmLight;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace HouseMadera.Modèles
 {
-    public class Projet
+    public class Projet : ObservableObject
     {
         public int Id { get; set; }
         public string Nom { get; set; }
@@ -15,31 +17,30 @@ namespace HouseMadera.Modèles
         public Client Client { get; set; }
         public virtual ICollection<Produit> Produits { get; set; }
     }
-	
-	    public interface IProjet
-    {
-        bool CreerProjet(Projet projet);
-        Projet SelectionnerProjet(string nomProjet);
-        List<Projet> ChargerProjets();
-    }
 
-    public class Projets : IProjet
+    public class Projets
     {
-        public List<Projet> ChargerProjets()
+        public static ObservableCollection<Projet> ChargerProjets()
         {
+            ObservableCollection<Projet> listeProjetEnCours = new ObservableCollection<Projet>();
             try
             {
-                var listeProjetEnCours = new List<Projet>();
                 Console.WriteLine("Connexion BDD");
-                MySqlConnection connexion = new MySqlConnection("Server=212.129.41.100;Port=20;Database=HouseMaderaDb;Uid=root;Pwd=Rila2016");
-                connexion.Open();
+                BddConnector co = new BddConnector();
+                MySqlConnection connexion = co.MyConnectToBdd();
+                if (connexion == null)
+                {
+                    Console.WriteLine("connect bdd fail");
+                    return null;
+                }
                 MySqlCommand command = connexion.CreateCommand();
                 Console.WriteLine("Requete BDD");
                 command.CommandText = "SELECT * FROM Projets";
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    Console.WriteLine(String.Format("{0}", reader[0]));
+                    Projet p = new Projet() { Nom = reader.GetString(reader.GetOrdinal("Nom")) };
+                    listeProjetEnCours.Add(p);
                 }
                 reader.Close();
                 connexion.Close();
@@ -57,7 +58,7 @@ namespace HouseMadera.Modèles
             try
             {
                 Console.WriteLine("Connexion BDD");
-                MySqlConnection connexion = new MySqlConnection("Server=212.129.41.100;Port=20;Database=HouseMaderaDb;Uid=root;Pwd=Rila2016");
+                MySqlConnection connexion = new MySqlConnection("Server=212.129.41.100;Port=16081;Database=HouseMaderaDb;Uid=root;Pwd=Rila2016");
                 connexion.Open();
                 MySqlCommand command = connexion.CreateCommand();
                 Console.WriteLine("Requete BDD");
@@ -82,40 +83,6 @@ namespace HouseMadera.Modèles
         {
             throw new NotImplementedException();
             // TODO
-        }
-    }
-
-    public class DesignNouveauProjet : IProjet
-    {
-        public List<Projet> ChargerProjets()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool CreerProjet(Projet projet)
-        {
-            try
-            {
-                return true;
-            }
-            catch (MySqlException)
-            {
-                Console.WriteLine("Timeout connexion bdd");
-                return false;
-            }
-        }
-
-        public Projet selectionnerProjet(string nomProjet)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Projet SelectionnerProjet(string nomProjet)
-        {
-            Projet projetDesign = new Projet();
-            projetDesign.Nom = "projet test";
-            projetDesign.Reference = "test";
-            return projetDesign;
         }
     }
 }

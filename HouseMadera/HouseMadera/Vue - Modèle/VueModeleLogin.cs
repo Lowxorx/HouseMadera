@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using HouseMadera.Modèles;
+using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
@@ -13,11 +14,14 @@ namespace HouseMadera.Vue___Modèle
 {
     public class VueModeleLogin : ViewModelBase
     {
+        public ICommand Connexion { get; private set; }
+        public ICommand Quitter { get; private set; }
 
         [PreferredConstructor]
         public VueModeleLogin()
         {
             Connexion = new RelayCommand(ConnexionExec);
+            Quitter = new RelayCommand(Exit);
         }
 
         private string loginCommercial;
@@ -47,35 +51,58 @@ namespace HouseMadera.Vue___Modèle
             }
         }
 
-        public ICommand Connexion { get; private set; }
+        private async void Exit()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment quitter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
 
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    window.Close();
+                }
+            }
+        }
         private async void ConnexionExec()
         {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+
             if (pwCommercial != null && loginCommercial != null)
             {
-                Console.WriteLine(pwCommercial);
-                Console.WriteLine(loginCommercial);
+
                 var newCommercial = new Commercial{ Login = LoginCommercial, Password = PwCommercial };
                 CommercialConnect c = new CommercialConnect();
-                bool connected = c.Connect(newCommercial);
-                if (connected)
+                string loginstatus = c.Connect(newCommercial);
+                Console.WriteLine("Code retour login : " + loginstatus);
+                if (loginstatus == "0")
                 {
-                    Console.WriteLine(connected);
+                    VueChoixProjet vcp = new VueChoixProjet();
+                    vcp.Show();
+                    window.Close();
                 }
-                else
+                else if (loginstatus == "1")
                 {
-                    var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
                     if (window != null)
-                        await window.ShowMessageAsync("Erreur", "Impossible de se connecter à la base de données.");
+                        await window.ShowMessageAsync("Erreur", "Nom d'utilisateur ou mot de passe incorrect");
+                }
+                else if (loginstatus == "2")
+                {
+                    if (window != null)
+                        await window.ShowMessageAsync("Erreur", "Impossible de se connecter à la base de données");
                 }
 
             }
             else
             {
-                var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
                 if (window != null)
                     await window.ShowMessageAsync("Avertissement", "Merci de saisir vos identifiants.");
-                Console.WriteLine("Pw conteneur est null");
             }
         }
 

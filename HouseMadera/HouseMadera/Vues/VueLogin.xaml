@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mod="clr-namespace:HouseMadera.Modèles"
@@ -27,7 +28,27 @@
         <vm:VueModeleLogin />
     </Window.DataContext>
     <Grid>
-        <Grid Margin="0,0,0,968" Background="#FF676767" />
+        <Grid Margin="0,0,0,968" Background="#FF676767">
+            <Button
+                x:Name="btLogout"
+                Width="44"
+                Height="44"
+                Margin="1482,4,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderThickness="0"
+                Command="{Binding Quitter}"
+                Content="{iconPacks:PackIconFontAwesome times,
+                                                        Width=32,
+                                                        Height=32}">
+                <Button.BorderBrush>
+                    <SolidColorBrush Opacity="0" Color="{DynamicResource Gray6}" />
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Opacity="0" Color="#FFF7F7F7" />
+                </Button.Background>
+            </Button>
+        </Grid>
         <Grid Margin="0,53">
             <Rectangle
                 Margin="422,269,422,257"
@@ -64,6 +85,7 @@
                 Margin="742,440,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                VerticalContentAlignment="Center"
                 Text="{Binding LoginCommercial}"
                 TextWrapping="Wrap" />
             <PasswordBox
@@ -73,8 +95,16 @@
                 Margin="742,483,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                VerticalContentAlignment="Center"
                 mod:PwBoxAssistant.BindPassword="True"
-                mod:PwBoxAssistant.BoundPassword="{Binding Path=PwCommercial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                mod:PwBoxAssistant.BoundPassword="{Binding Path=PwCommercial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <PasswordBox.InputBindings>
+                    <KeyBinding
+                        Key="Enter"
+                        Command="{Binding Connexion}"
+                        CommandParameter="{Binding Path=Password, RelativeSource={RelativeSource AncestorType={x:Type PasswordBox}}}" />
+                </PasswordBox.InputBindings>
+            </PasswordBox>
             <Button
                 x:Name="btConnexion"
                 Width="189"
@@ -87,10 +117,8 @@
                 Content="Connexion" />
             <Image
                 x:Name="image"
-                Height="248"
-                Margin="422,10,422,0"
-                VerticalAlignment="Top"
-                Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png" />
+                Margin="422,0,422,652"
+                Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png" Height="248" VerticalAlignment="Bottom" />
         </Grid>
         <Grid Margin="0,968,0,0" Background="#FF676767" />
     </Grid>
