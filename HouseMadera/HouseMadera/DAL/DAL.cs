@@ -1,115 +1,113 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Data.SQLite;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Common;
 
 
 namespace HouseMadera.DAL
 {
     public class DAL : IDisposable
     {
-        private const string CONNEXION_MYSQL = "Server=212.129.41.100;Port=16081;Uid=root;Pwd=Rila2016;Database=HouseMaderaDb;CharSet=utf8;";
-        private const string CONNEXION_SQLITE = "Data Source=C:/Users/remy/Documents/HouseMaderaDB-sqlite/HouseMaderaDB.db;version=3";
+        private string ConnectionStringMySql { get; set; }
+        private string ConnectionStringSQLite { get; set; }
 
         public string Bdd { get; set; }
-        public MySqlConnection BddMySql { get; set; }
-        public SQLiteConnection BddSQLite { get; set; }
-        public MySqlCommand CommandeMySql { get; set; }
-        public SQLiteCommand CommandeSQLite { get; set; }
-        public MySqlDataReader ReaderMySql { get; set; }
-        public SQLiteDataReader ReaderSQLite { get; set; }
+        protected IDbConnection Connection { get; set; }
+
 
         public DAL(string nomBdd)
         {
+            ConnectionStringMySql = ConfigurationManager.AppSettings["connectionStringMySql"];
+            ConnectionStringSQLite = ConfigurationManager.AppSettings["connectionStringSQLite"];
+
             Bdd = nomBdd;
-            BddMySql = null;
-            BddSQLite = null;
+            switch (Bdd)
+            {
+                case "MYSQL":
+                    Connection = new MySqlConnect(ConnectionStringMySql);
+                    Connection.Open();
+                    break;
+                case "SQLITE":
+                    Connection = new SQLiteConnect(ConnectionStringSQLite);
+                    Connection.Open();
+                    break;
+                default: break;
+
+            }
 
         }
 
-        public void Initialiser()
+
+        private DbCommand GetCommand(string requete, IDictionary<string, object> parameters = null)
         {
-
-            try
+            var command = Connection.GetCommand();
+            command.CommandText = requete;
+            if(parameters != null)
             {
-                //Suivant la base de donnée utilisée on créé la connexion
-                switch (Bdd)
-                {
-                    case "MYSQL":
-                        BddMySql = new MySqlConnection(CONNEXION_MYSQL);
-                        BddMySql.Open();
-                        break;
-                    case "SQLITE":
-                        BddSQLite = new SQLiteConnection(CONNEXION_SQLITE);
-                        BddSQLite.Open();
-                        break;
-                    default: break;
-
-                }
+                foreach (var parameter in parameters)
+                    command.Parameters.Add(Connection.GetDbParameter(parameter.Key, parameter.Value));
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("DAL.Initialiser() :\t" + e.Message);
-            }
+            
+            return command;
         }
 
-        public void Command(string requete)
+        public int Insert(string requete, IDictionary<string, object> parameters)
         {
-            try
+            using (var command = GetCommand(requete, parameters))
             {
-                switch (Bdd)
-                {
-                    case "MYSQL":
-                        CommandeMySql = new MySqlCommand(requete, BddMySql);
-                        break;
-
-                    case "SQLITE":
-                        CommandeSQLite = new SQLiteCommand(requete, BddSQLite);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("DAL.Command() :\t" + e.Message);
+                return command.ExecuteNonQuery();
             }
         }
 
-        private void Reader()
+        public int Update(string requete, IDictionary<string, object> parameters)
         {
-            try
+            using (var command = GetCommand(requete, parameters))
             {
-                switch (Bdd)
-                {
-                    case "MYSQL":
-                        if (CommandeMySql != null)
-                           ReaderMySql = CommandeMySql.ExecuteReader();
-                        break;
-                       
-                    case "SQLITE":
-                        if (CommandeSQLite != null)
-                            ReaderSQLite = CommandeSQLite.ExecuteReader();
-                        break;
-                }
-               
+                return command.ExecuteNonQuery();
             }
-            catch (Exception e)
+        }
+
+        public int Delete(string requete, IDictionary<string, object> parameters)
+        {
+            using (var command = GetCommand(requete, parameters))
             {
-                Console.WriteLine("DAL.Reader() :\t" + e.Message);
+                return command.ExecuteNonQuery();
             }
-           
+        }
+
+        //public DataSet Get(string requete, IDictionary<string, object> parameters = null)
+        //{
+        //    using (var adptSQL = Connection.GetAdapter())
+        //    {
+        //        adptSQL.SelectCommand = GetCommand(requete, parameters);
+
+        //        var ds = new DataSet();
+        //        adptSQL.Fill(ds);
+        //        return ds;
+        //    }
+        //}
+        public DbDataReader GetDataReader(DbCommand command)
+        {
+            return Connection.GetDataReader(command);
+        }
+
+        public DbDataReader Get(string requete, IDictionary<string, object> parameters = null)
+        {
+            using (var command = GetCommand(requete, parameters))
+            {
+                var dataReader = GetDataReader(command);
+                return dataReader;
+
+            }
         }
 
 
-        
 
         public void Dispose()
         {
-            if (BddMySql != null)
-                BddMySql.Close();
-            if (BddSQLite != null)
-                BddSQLite.Close();
+            if (Connection != null)
+                Connection.Dispose();
+
         }
     }
 }
