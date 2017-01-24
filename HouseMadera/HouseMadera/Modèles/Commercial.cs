@@ -38,7 +38,7 @@ namespace HouseMadera.Modèles
                     {
                         MySqlCommand command = connexion.CreateCommand();
                         Console.WriteLine("Requete BDD");
-                        command.CommandText = "SELECT * FROM Commercials";
+                        command.CommandText = "SELECT * FROM Commercial";
                         MySqlDataReader reader = command.ExecuteReader();
                         while (reader.Read())
                         {
@@ -98,7 +98,7 @@ namespace HouseMadera.Modèles
                         Console.WriteLine("connecté à la bdd");
                         Console.WriteLine("Requete BDD");
                         
-                        adapter.SelectCommand = new MySqlCommand("SELECT * FROM Commercials WHERE Login = ? AND Password = ?", connexion);
+                        adapter.SelectCommand = new MySqlCommand("SELECT * FROM Commercial WHERE Login = ? AND Password = ?", connexion);
                         adapter.SelectCommand.Parameters.AddWithValue("@Username", commercial.Login);
                         adapter.SelectCommand.Parameters.AddWithValue("@Password", commercial.Password);
 
