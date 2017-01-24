@@ -17,7 +17,7 @@ namespace HouseMadera.DAL.Client
 
         public List<Modeles.Client> GetAllClients()
         {
-            string sql = "select * from Client order by Nom desc";
+            string sql = "SELECT * FROM Client ORDER BY Nom DESC";
             var clients = new List<Modeles.Client>();
             var reader = Get(sql, null);
             while (reader.Read())
