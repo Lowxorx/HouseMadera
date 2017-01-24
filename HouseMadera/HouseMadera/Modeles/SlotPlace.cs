@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HouseMadera.Mysql.Entities
+namespace HouseMadera.Modeles
 {
     public class SlotPlace
     {

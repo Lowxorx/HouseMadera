@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HouseMadera.Mysql.Entities
+namespace HouseMadera.Modeles
 {
-    public class CoupePrincipe
+    public class ModulePlace
     {
         public int Id { get; set; }
 
-        public string Nom { get; set; }
-        //TODO champs de type blob
+        public Module Module { get; set; }
+        public SlotPlace SlotPlace { get; set; }
 
         public virtual ICollection<Plan> Plans { get; set; }
     }
