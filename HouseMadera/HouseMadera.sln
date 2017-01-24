@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseMadera", "HouseMadera\HouseMadera.csproj", "{025E8AEB-248A-4B31-BF0F-28DC550B7B10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConnection", "TestConnection\TestConnection.csproj", "{F0B9F258-CBFF-4EC2-AA9A-FDBD7E4710D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{025E8AEB-248A-4B31-BF0F-28DC550B7B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{025E8AEB-248A-4B31-BF0F-28DC550B7B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{025E8AEB-248A-4B31-BF0F-28DC550B7B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0B9F258-CBFF-4EC2-AA9A-FDBD7E4710D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0B9F258-CBFF-4EC2-AA9A-FDBD7E4710D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0B9F258-CBFF-4EC2-AA9A-FDBD7E4710D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0B9F258-CBFF-4EC2-AA9A-FDBD7E4710D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

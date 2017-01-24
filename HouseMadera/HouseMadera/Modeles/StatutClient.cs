@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeMadera.Entities
+namespace HouseMadera.Modeles
 {
-    public class StatutDevis
+    public class StatutClient
     {
         public int Id { get; set; }
         public string Nom { get; set; }
 
-        public virtual ICollection<Devis> Devis { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
     }
 }

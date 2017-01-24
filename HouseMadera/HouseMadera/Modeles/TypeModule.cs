@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 
-namespace HomeMadera.Entities
+namespace HouseMadera.Modeles
 {
-    public class Composant
+    public class TypeModule
     {
         public int Id { get; set; }
-
         public string Nom { get; set; }
-        public decimal Prix { get; set; }
 
-        public TypeComposant TypeComposant { get; set; }
         public virtual ICollection<Module> Modules { get; set; }
+        public virtual ICollection<TypeSlot> TypesSlots { get; set; }
     }
 }

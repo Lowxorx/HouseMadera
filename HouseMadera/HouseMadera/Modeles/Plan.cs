@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HomeMadera.Entities
+namespace HouseMadera.Modeles
 {
     public class Plan
     {

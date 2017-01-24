@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HomeMadera.Entities
+namespace HouseMadera.Modeles
 {
     public class Qualite
     {

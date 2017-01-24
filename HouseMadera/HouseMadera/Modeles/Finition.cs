@@ -1,4 +1,4 @@
-﻿namespace HomeMadera.Entities
+﻿namespace HouseMadera.Modeles
 {
     public class Finition
     {
