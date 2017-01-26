@@ -12,7 +12,7 @@ namespace HouseMadera.Utilites
         {
             invalid = false;
             if (String.IsNullOrEmpty(email))
-                return false;
+                return true;
 
             // Use IdnMapping class to convert Unicode domain names.
             try
@@ -65,6 +65,8 @@ namespace HouseMadera.Utilites
 
             try
             {
+                if (string.IsNullOrEmpty(telephone))
+                    return true;
                 return Regex.IsMatch(telephone,
                       @"^[0]\d\d\d\d\d\d\d\d\d",
                       RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
