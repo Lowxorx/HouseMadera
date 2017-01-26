@@ -42,12 +42,12 @@ namespace HouseMadera.DAL
         {
             var command = Connection.GetCommand();
             command.CommandText = requete;
-            if(parameters != null)
+            if (parameters != null)
             {
                 foreach (var parameter in parameters)
                     command.Parameters.Add(Connection.GetDbParameter(parameter.Key, parameter.Value));
             }
-            
+
             return command;
         }
 
@@ -88,7 +88,9 @@ namespace HouseMadera.DAL
         //}
         public DbDataReader GetDataReader(DbCommand command)
         {
+
             return Connection.GetDataReader(command);
+
         }
 
         public DbDataReader Get(string requete, IDictionary<string, object> parameters = null)

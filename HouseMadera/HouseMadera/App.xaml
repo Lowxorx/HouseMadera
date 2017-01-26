@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:HouseMadera"
-    xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
+    xmlns:vm="clr-namespace:HouseMadera.ViewModel"
     d1p1:Ignorable="d"
     StartupUri="Vues\VueClient.xaml">
     <Application.Resources>
@@ -19,8 +19,8 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <vm:VueModeleLocator
-                xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
+            <vm:ViewModelLocator
+                xmlns:vm="clr-namespace:HouseMadera.ViewModel"
                 x:Key="Locator"
                 d:IsDataSource="True" />
         </ResourceDictionary>

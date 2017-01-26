@@ -16,12 +16,13 @@ namespace HouseMadera.Modeles
         public string Adresse2 { get; set; }
         public string Adresse3 { get; set; }
         public string CodePostal { get; set; }
+        public string Ville { get; set; }
         public string Email { get; set; }
         public string Telephone { get; set; }
         public string Mobile { get; set; }
 
-        public StatutClient StatutClient { get; set; }
+        public int StatutClient { get; set; }
 
-        public virtual  ICollection<Projet> Projets { get; set; }
+        public List<Projet> Projets { get; set; }
     }
 }
