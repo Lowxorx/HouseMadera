@@ -24,7 +24,7 @@ namespace HouseMadera.DAL
         /// <returns>Une liste d'objets Client</returns>
         public List<Client> GetAllClients()
         {
-            string sql = "select * from Client_view order by Nom desc";
+            string sql = "select * from Client order by Nom desc";
             var clients = new List<Client>();
             var reader = Get(sql, null);
             while (reader.Read())

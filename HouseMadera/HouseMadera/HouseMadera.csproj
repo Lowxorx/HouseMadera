@@ -127,6 +127,7 @@
     <Compile Include="Modeles\TypeIsolant.cs" />
     <Compile Include="Modeles\TypeModule.cs" />
     <Compile Include="Modeles\TypeSlot.cs" />
+    <Compile Include="Utilites\ConnectivityMonitor.cs" />
     <Compile Include="Utilites\RegexUtilities.cs" />
     <Compile Include="Vue-Modele\MainViewModel.cs" />
     <Compile Include="Vue-Modele\ViewModelLocator.cs" />
