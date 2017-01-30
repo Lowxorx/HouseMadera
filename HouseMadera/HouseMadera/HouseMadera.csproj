@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HouseMadera</RootNamespace>
     <AssemblyName>HouseMadera</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -76,6 +76,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.103\lib\net46\System.Data.SQLite.dll</HintPath>
@@ -118,37 +119,39 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
+    <Compile Include="DAL\Commercial\CommercialDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
+    <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
-    <Compile Include="Modèles\Client.cs" />
-    <Compile Include="Modèles\Commercial.cs" />
-    <Compile Include="Modèles\Composant.cs" />
-    <Compile Include="Modèles\ConnectivityMonitor.cs" />
-    <Compile Include="Modèles\CoupePrincipe.cs" />
-    <Compile Include="Modèles\Devis.cs" />
-    <Compile Include="Modèles\EncryptPw.cs" />
-    <Compile Include="Modèles\Finition.cs" />
-    <Compile Include="Modèles\Gamme.cs" />
-    <Compile Include="Modèles\Isolant.cs" />
-    <Compile Include="Modèles\Module.cs" />
-    <Compile Include="Modèles\ModulePlace.cs" />
-    <Compile Include="Modèles\BddConnector.cs" />
-    <Compile Include="Modèles\Plan.cs" />
-    <Compile Include="Modèles\Produit.cs" />
-    <Compile Include="Modèles\Projet.cs" />
-    <Compile Include="Modèles\PwBoxAssistant.cs" />
-    <Compile Include="Modèles\Qualite.cs" />
-    <Compile Include="Modèles\Slot.cs" />
-    <Compile Include="Modèles\SlotPlace.cs" />
-    <Compile Include="Modèles\StatutClient.cs" />
-    <Compile Include="Modèles\StatutDevis.cs" />
-    <Compile Include="Modèles\TypeComposant.cs" />
-    <Compile Include="Modèles\TypeFinition.cs" />
-    <Compile Include="Modèles\TypeIsolant.cs" />
-    <Compile Include="Modèles\TypeModule.cs" />
-    <Compile Include="Modèles\TypeSlot.cs" />
+    <Compile Include="Modeles\Client.cs" />
+    <Compile Include="Modeles\Commercial.cs" />
+    <Compile Include="Modeles\Composant.cs" />
+    <Compile Include="Modeles\CoupePrincipe.cs" />
+    <Compile Include="Modeles\Devis.cs" />
+    <Compile Include="Utilities\EncryptPw.cs" />
+    <Compile Include="Modeles\Finition.cs" />
+    <Compile Include="Modeles\Gamme.cs" />
+    <Compile Include="Modeles\Isolant.cs" />
+    <Compile Include="Modeles\Module.cs" />
+    <Compile Include="Modeles\ModulePlace.cs" />
+    <Compile Include="Modeles\Plan.cs" />
+    <Compile Include="Modeles\Produit.cs" />
+    <Compile Include="Modeles\Projet.cs" />
+    <Compile Include="Utilities\PwBoxAssistant.cs" />
+    <Compile Include="Modeles\Qualite.cs" />
+    <Compile Include="Modeles\Slot.cs" />
+    <Compile Include="Modeles\SlotPlace.cs" />
+    <Compile Include="Modeles\StatutClient.cs" />
+    <Compile Include="Modeles\StatutDevis.cs" />
+    <Compile Include="Modeles\TypeComposant.cs" />
+    <Compile Include="Modeles\TypeFinition.cs" />
+    <Compile Include="Modeles\TypeIsolant.cs" />
+    <Compile Include="Modeles\TypeModule.cs" />
+    <Compile Include="Modeles\TypeSlot.cs" />
+    <Compile Include="Utilities\ConnectivityMonitor.cs" />
+    <Compile Include="Utilities\RegexUtilities.cs" />
     <Compile Include="Vue - Modèle\VueModeleChoixProjet.cs" />
     <Compile Include="Vue - Modèle\VueModeleLogin.cs" />
     <Compile Include="Vues\VueChoixProjet.xaml.cs">

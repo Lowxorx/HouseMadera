@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using HouseMadera.Utilites;
+using HouseMadera.Modeles;
 
 namespace HouseMadera.DAL
 {
@@ -12,6 +14,7 @@ namespace HouseMadera.DAL
         {
 
         }
+
         #region READ
 
         /// <summary>
@@ -108,7 +111,6 @@ namespace HouseMadera.DAL
                 client.Mobile = Convert.ToString(reader["mobile"]);
                 client.Telephone = Convert.ToString(reader["telephone"]);
             }
-
             return client;
 
         }
@@ -159,8 +161,7 @@ namespace HouseMadera.DAL
             if (IsClientExist(client))
                 throw new Exception("le client est déjà enregistré");
 
-            var sql = @"
-                        INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id)
+            var sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id)
                         VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11)";
             var parameters = new Dictionary<string, object>() {
                 {"@1",client.Nom },
@@ -270,7 +271,10 @@ namespace HouseMadera.DAL
            
             //statutClient ne doit pas être null
             if (client.StatutClient > 2 || client.StatutClient == 0)
+            {
                 erreur = "Le client n'a pas de statut \n";
+            }
+
             var utils = new RegexUtilities();
             //Test de validite de l'email si vide
             if (!utils.IsValidEmail(client.Email))

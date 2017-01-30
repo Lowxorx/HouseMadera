@@ -62,7 +62,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
-                Content="Connectez - Vous"
+                Content="Connectez-vous"
                 FontSize="30" />
             <Label
                 x:Name="label1"

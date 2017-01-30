@@ -1,7 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
-using HouseMadera.Modèles;
+using HouseMadera.DAL.Commercial;
+using HouseMadera.Modeles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -78,26 +79,27 @@ namespace HouseMadera.Vue___Modèle
             {
 
                 var newCommercial = new Commercial{ Login = LoginCommercial, Password = PwCommercial };
-                CommercialConnect c = new CommercialConnect();
-                string loginstatus = c.Connect(newCommercial);
-                Console.WriteLine("Code retour login : " + loginstatus);
-                if (loginstatus == "0")
+                using (var dal = new CommercialDAL(DAL.DAL.Bdd))
                 {
-                    VueChoixProjet vcp = new VueChoixProjet();
-                    vcp.Show();
-                    window.Close();
+                    string loginstatus = dal.Connect(newCommercial);
+                    Console.WriteLine("Code retour login : " + loginstatus);
+                    if (loginstatus == "0")
+                    {
+                        VueChoixProjet vcp = new VueChoixProjet();
+                        vcp.Show();
+                        window.Close();
+                    }
+                    else if (loginstatus == "1")
+                    {
+                        if (window != null)
+                            await window.ShowMessageAsync("Erreur", "Nom d'utilisateur ou mot de passe incorrect");
+                    }
+                    else if (loginstatus == "2")
+                    {
+                        if (window != null)
+                            await window.ShowMessageAsync("Erreur", "Impossible de se connecter à la base de données");
+                    }
                 }
-                else if (loginstatus == "1")
-                {
-                    if (window != null)
-                        await window.ShowMessageAsync("Erreur", "Nom d'utilisateur ou mot de passe incorrect");
-                }
-                else if (loginstatus == "2")
-                {
-                    if (window != null)
-                        await window.ShowMessageAsync("Erreur", "Impossible de se connecter à la base de données");
-                }
-
             }
             else
             {

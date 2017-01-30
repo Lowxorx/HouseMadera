@@ -1,22 +1,20 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HouseMadera.Modèles
+namespace HouseMadera.Utilites
 {
     public class ConnectivityMonitor
     {
         public bool IsOnline()
         {
             Ping myPing = new Ping();
-            String host = "8.8.8.8";
-            byte[] buffer = new byte[32];
+            var host = "8.8.4.4";
             int timeout = 1000;
-            PingOptions pingOptions = new PingOptions();
-            PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
+            PingReply reply = myPing.Send(host, timeout);
             if (reply.Status == IPStatus.Success)
             {
                 Console.WriteLine("online");
@@ -27,7 +25,7 @@ namespace HouseMadera.Modèles
             {
                 Console.WriteLine("offline");
                 ConnectivityStatus = false;
-                return false;
+                return true;
             }
         }
 

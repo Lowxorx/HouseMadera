@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
+using HouseMadera.DAL.Commercial;
+using HouseMadera.DAL.Projet;
 using HouseMadera.Modèles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
@@ -52,8 +54,8 @@ namespace HouseMadera.Vue___Modèle
             }
         }
 
-        private ObservableCollection<Commercial> listCommerciaux;
-        public ObservableCollection<Commercial> ListCommerciaux
+        private ObservableCollection<Modeles.Commercial> listCommerciaux;
+        public ObservableCollection<Modeles.Commercial> ListCommerciaux
         {
             get
             {
@@ -83,9 +85,9 @@ namespace HouseMadera.Vue___Modèle
         private void WindowLoadedEvent()
         {
             Console.WriteLine("window loaded event");
-            listProjets = Projets.ChargerProjets();
+            listProjets = ProjetDAL.ChargerProjets();
             RaisePropertyChanged(() => ListProjets);
-            listCommerciaux = Commerciaux.ChargerCommerciaux();
+            listCommerciaux = CommercialDAL.ChargerCommerciaux();
             RaisePropertyChanged(() => ListCommerciaux);
         }
 

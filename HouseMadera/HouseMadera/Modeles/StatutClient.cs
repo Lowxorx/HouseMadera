@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using HouseMadera.Modeles;
+using System.Collections.Generic;
 
 namespace HouseMadera.Modèles
 {
