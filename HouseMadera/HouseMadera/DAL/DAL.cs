@@ -17,9 +17,8 @@ namespace HouseMadera.DAL
 
         public DAL(string nomBdd)
         {
-            ConnectionStringMySql = ConfigurationManager.AppSettings["connectionStringMySql"];
-            ConnectionStringSQLite = ConfigurationManager.AppSettings["connectionStringSQLite"];
-
+            ConnectionStringMySql = ConfigurationManager.ConnectionStrings["HouseMaderaDBMySql"].ConnectionString;
+            ConnectionStringSQLite = ConfigurationManager.ConnectionStrings["HouseMaderaDBSQlite"].ConnectionString;
             Bdd = nomBdd;
             switch (Bdd)
             {

@@ -119,20 +119,6 @@
                 DisplayMemberPath="Nom"
                 ItemsSource="{Binding ListProjets}"
                 SelectedItem="{Binding SelectProjet}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0} - {1} - {2} - {3} ">
-                                    <Binding Path="Nom" />
-                                    <Binding Path="Client.Nom" />
-                                    <Binding Path="Status" />
-                                    <Binding Path="CreateDate" />
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
             </ListBox>
             <TextBox
                 x:Name="tbFiltreProjets"
