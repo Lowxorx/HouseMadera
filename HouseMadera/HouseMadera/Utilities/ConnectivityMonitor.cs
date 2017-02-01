@@ -25,7 +25,7 @@ namespace HouseMadera.Utilites
             {
                 Console.WriteLine("offline");
                 ConnectivityStatus = false;
-                return true;
+                return false;
             }
         }
 

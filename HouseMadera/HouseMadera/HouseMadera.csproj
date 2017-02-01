@@ -139,6 +139,7 @@
     <Compile Include="Modeles\Plan.cs" />
     <Compile Include="Modeles\Produit.cs" />
     <Compile Include="Modeles\Projet.cs" />
+    <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\PwBoxAssistant.cs" />
     <Compile Include="Modeles\Qualite.cs" />
     <Compile Include="Modeles\Slot.cs" />
