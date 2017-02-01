@@ -17,8 +17,8 @@ namespace HouseMadera.DAL
 
         public DAL(string nomBdd)
         {
-            ConnectionStringMySql = ConfigurationManager.AppSettings["connectionStringMySql"];
-            ConnectionStringSQLite = ConfigurationManager.AppSettings["connectionStringSQLite"];
+            ConnectionStringMySql = ConfigurationManager.ConnectionStrings["HouseMaderaDBMySql"].ConnectionString;
+            ConnectionStringSQLite = ConfigurationManager.ConnectionStrings["HouseMaderaDBSQlite"].ConnectionString;
 
             Bdd = nomBdd;
             switch (Bdd)
@@ -31,10 +31,9 @@ namespace HouseMadera.DAL
                     Connection = new SQLiteConnect(ConnectionStringSQLite);
                     Connection.Open();
                     break;
-                default: break;
-
+                default:
+                    throw new Exception("La base de donnée spécifiée n'est pas reconnue");
             }
-
         }
 
 
