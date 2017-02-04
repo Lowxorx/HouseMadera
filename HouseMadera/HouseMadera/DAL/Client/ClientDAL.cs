@@ -47,9 +47,9 @@ namespace HouseMadera.DAL
 
         public List<Client> GetFilteredClient(string filter, string value)
         {
-
+            //si la valeur value est nulle alors on récupère tous les clients
             if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
-                return new List<Client>();
+                return GetAllClients();
 
             filter = filter.Replace(" ", string.Empty);
             var colonne = (filter == "Adresse") ? "Adresse" + "1" : filter;

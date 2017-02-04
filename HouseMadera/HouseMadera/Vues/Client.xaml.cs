@@ -18,6 +18,7 @@ namespace HouseMadera.Vues
 
         private void AfficherClients(object sender, RoutedEventArgs e)
         {
+            //TODO modifier "SQLITE" par Bdd
             var clients = new List<Modeles.Client>();
             using (var dal = new ClientDAL("SQLITE"))
             {
@@ -30,7 +31,7 @@ namespace HouseMadera.Vues
         private void RechercherClient(object sender, TextChangedEventArgs e)
         {
             var clients = new List<Modeles.Client>();
-
+            //TODO modifier "SQLITE" par Bdd
             using (var dal = new ClientDAL("SQLITE"))
             {
                 clients = dal.GetFilteredClient(comboBox_recherche.SelectionBoxItem.ToString(), textBox_recherche.Text);
@@ -38,6 +39,25 @@ namespace HouseMadera.Vues
             dataGrid.ItemsSource = clients;
         }
 
-       
+        private void AfficherSignUp(object sender, RoutedEventArgs e)
+        {
+            flyout_SignUp.IsOpen = true;
+
+        }
+
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -15,7 +15,7 @@
     ShowIconOnTitleBar="False"
     ShowMaxRestoreButton="False"
     ShowMinButton="False"
-    ShowTitleBar="True"
+    ShowTitleBar="False"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d"
@@ -28,8 +28,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    <!--<Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl x:Name="flyout_SignUp" FlowDirection="LeftToRight" Width="500">
+            <Label>COU</Label>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>-->
+
     <Grid>
-        <Grid Margin="0,-3,0,931" Background="#FFA29A9A">
+        <Grid Margin="0,-3,0,931" Background="#FFA29A9A" Panel.ZIndex="1500">
             <Label
                 x:Name="label"
                 Margin="618,10,616,0"
@@ -58,6 +64,7 @@
                 <ColumnDefinition Width="866*" />
                 <ColumnDefinition Width="38*"/>
             </Grid.ColumnDefinitions>
+
             <Image
                 x:Name="image"
                 Grid.ColumnSpan="2"
@@ -65,15 +72,79 @@
                 Margin="10,-50,410,0"
                 VerticalAlignment="Top"
                 Source="../Resources/logomaderacolorgreyclean.png" />
+            <Controls:Flyout x:Name="flyout_SignUp" 
+                             Position="Right"
+                             Grid.ColumnSpan="2"
+                             Header="Nouveau Client"
+                             Grid.Column="2"
+                             Margin="153,33,0,24"
+                             Background="#FF686868"
+                             Foreground="#BF000000"
+                             Panel.ZIndex="1000"
+                             FontWeight="Bold"
+                             Controls:ControlsHelper.HeaderFontWeight="Light">
+                <Canvas HorizontalAlignment="Left" Height="750" Margin="24,0,0,0" Width="700">
+                    <Label x:Name="label_ClientSignUp" Content="{iconPacks:PackIconFontAwesome Kind=User,
+                                                        Width=32,
+                                                        Height=32}" Height="50" Width="50"/>
+                    <Label x:Name="label_Nom" Content="Nom" Canvas.Left="20" Canvas.Top="58"/>
+                    <TextBox x:Name="textBox_Nom" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="58" Width="560" TextChanged="textBox_TextChanged"/>
+                    <Label x:Name="label_Prenom" Content="Prénom"  Canvas.Top="108" Canvas.Left="20"/>
+                    <TextBox x:Name="textBox_Prenom" Height="25"  TextWrapping="Wrap"  Canvas.Top="108" Width="560" TextChanged="textBox_TextChanged" Canvas.Right="20" Canvas.Left="120"/>
+
+                    <Label x:Name="label_AdresseSignUp" Content="{iconPacks:PackIconFontAwesome Kind=Home,
+                                                        Width=32,
+                                                        Height=32}" Height="50" Width="50" Canvas.Top="156"/>
+
+                    <Label x:Name="label_AdresseNumero" Content="N°" Canvas.Left="20" Canvas.Top="211"/>
+                    <TextBox x:Name="textBox_Numero" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="211" Width="60" />
+                    <Label x:Name="label_AdresseVoie" Content="Voie" Canvas.Left="360" Canvas.Top="212"/>
+                    <ComboBox Canvas.Left="445" Canvas.Top="211" Height="25">
+                        <ComboBoxItem IsSelected="True">Rue</ComboBoxItem>
+                        <ComboBoxItem >Chemin</ComboBoxItem>
+                        <ComboBoxItem>Avenue</ComboBoxItem>
+                        <ComboBoxItem>Boulevard</ComboBoxItem>
+                        <ComboBoxItem>LieuDit</ComboBoxItem>
+                    </ComboBox>
+                    <Label x:Name="label_NomVoie" Content="Nom" Canvas.Left="20" Canvas.Top="261"/>
+                    <TextBox x:Name="textBox_NomVoie" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="261" Width="560" ></TextBox>
+                    <Label x:Name="label_AdresseComplement" Content="Complement" Canvas.Left="20" Canvas.Top="311"/>
+                    <TextBox x:Name="textBox_ComplementVoie" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="311" Width="560" ></TextBox>
+                    <Label x:Name="label_CodePostal" Content="Code Postal" Canvas.Left="20" Canvas.Top="371"/>
+                    <TextBox x:Name="textBox_CodePostal" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="361" Width="183" ></TextBox>
+                    <Label x:Name="label_Localite" Content="Localite" Canvas.Left="360" Canvas.Top="361"/>
+                    <TextBox x:Name="textBox_Localite" Height="25" Canvas.Left="445" TextWrapping="Wrap"  Canvas.Top="360" Width="235" ></TextBox>
+                    <Label x:Name="label_TelephoneSignUp" Content="{iconPacks:PackIconFontAwesome Kind=Mobile,
+                                                        Width=32,
+                                                        Height=32}" Height="50" Width="50" Canvas.Top="420"/>
+                    <Label x:Name="label_Mobile" Content="Mobile" Canvas.Left="20" Canvas.Top="483"/>
+                    <TextBox x:Name="textBox_Mobile" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="483" Width="180" ></TextBox>
+                    <Label x:Name="label_Telephone" Content="Telephone" Canvas.Left="360" Canvas.Top="482"/>
+                    <TextBox x:Name="textBox_Telephone" Height="25" Canvas.Left="500" TextWrapping="Wrap"  Canvas.Top="481" Width="180" ></TextBox>
+                    <Label x:Name="label_EmailSignUp" Content="{iconPacks:PackIconFontAwesome Kind=Envelope,
+                                                        Width=32,
+                                                        Height=32}" Height="50" Width="50" Canvas.Top="535"/>
+                    <Label x:Name="label_Email" Content="Email" Canvas.Left="20" Canvas.Top="595"/>
+                    <TextBox x:Name="textBox_Email" Height="25" Canvas.Left="123" TextWrapping="Wrap"  Canvas.Top="594" Width="180" ></TextBox>
+                    <Button Name="Enregistrer" Canvas.Left="500" Canvas.Top="675" Width="180" Height="46" Content="{iconPacks:PackIconFontAwesome Kind=FloppyOutline,
+                                                        Width=32,
+                                                        Height=32}" Click="Button_Click" Background="LightGray">
+
+                    </Button>
+                </Canvas>
+
+
+
+            </Controls:Flyout>
             <Button x:Name="btn_Nouveau_Client"
                     Grid.ColumnSpan="2"
-                    
                     HorizontalAlignment="Left"
                     Height="78"
                     Margin="83,111,0,0"
                     VerticalAlignment="Top"
                     Width="237"
-                    Content="{iconPacks:PackIconFontAwesome Kind=UserPlus, Width=64, Height=64 }"/>
+                    Content="{iconPacks:PackIconFontAwesome Kind=UserPlus, Width=64, Height=64 }"
+                    Click="AfficherSignUp" Foreground="#FF65C973"/>
             <Canvas Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="90" Margin="192,284,0,0" VerticalAlignment="Top" Width="982" Background="LightGray" Grid.Column="1">
                 <Label x:Name="label_recherche" Content="{iconPacks:PackIconFontAwesome Kind=Search,  Width=16 ,Height=16 }" Height="41" Canvas.Left="920" Canvas.Top="25" Width="32" RenderTransformOrigin="0.498,0.431" />
             </Canvas>
@@ -83,7 +154,7 @@
 
             </ComboBox>
             <TextBox x:Name="textBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="319,308,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="761" Grid.ColumnSpan="2" TextChanged="RechercherClient"/>
-            <DataGrid x:Name="dataGrid" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="400" Margin="83,429,0,0" VerticalAlignment="Top" Width="1356" AutoGenerateColumns="False" Style="{StaticResource ResourceKey=AzureDataGrid}">
+            <DataGrid x:Name="dataGrid" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="400" Margin="83,429,0,0" VerticalAlignment="Top" Width="1356" AutoGenerateColumns="False" Style="{StaticResource ResourceKey=AzureDataGrid}" SelectionChanged="dataGrid_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
                     <DataGridTextColumn Header="Prenom" Binding="{Binding Prenom}"/>
