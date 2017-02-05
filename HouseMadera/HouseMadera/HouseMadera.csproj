@@ -133,6 +133,8 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilites\ConnectivityMonitor.cs" />
     <Compile Include="Utilites\RegexUtilities.cs" />
+    <Compile Include="Utilites\StringToIntValidationRule.cs" />
+    <Compile Include="Vue-Modele\ClientViewModel.cs" />
     <Compile Include="Vue-Modele\MainViewModel.cs" />
     <Compile Include="Vue-Modele\ViewModelLocator.cs" />
     <Compile Include="Vues\Client.xaml.cs">
