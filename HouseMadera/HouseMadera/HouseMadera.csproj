@@ -133,8 +133,6 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilites\ConnectivityMonitor.cs" />
     <Compile Include="Utilites\RegexUtilities.cs" />
-    <Compile Include="Vue-Modele\MainViewModel.cs" />
-    <Compile Include="Vue-Modele\ViewModelLocator.cs" />
     <Compile Include="Vues\Client.xaml.cs">
       <DependentUpon>Client.xaml</DependentUpon>
     </Compile>
@@ -182,7 +180,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="VueModele\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>
