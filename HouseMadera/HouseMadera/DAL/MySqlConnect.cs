@@ -11,7 +11,6 @@ namespace HouseMadera.DAL
 
         public MySqlConnect(string connectionString)
         {
-            System.Console.WriteLine(connectionString);
             Connection = new MySqlConnection { ConnectionString = connectionString };
         }
 

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using MySql.Data.MySqlClient;
 using System.Data.SQLite;
 using System.Collections.Generic;
+using HouseMadera.Utilites;
 
 namespace HouseMadera.DAL.Commercial
 {
@@ -37,9 +38,11 @@ namespace HouseMadera.DAL.Commercial
             {
                 if (ex is MySqlException || ex is SQLiteException)
                 {
-                    Console.WriteLine("Timeout connexion bdd");
+                    Logger.WriteEx(ex);
+                    Logger.WriteTrace("Timeout connexion BDD");
                     return null;
                 }
+                Logger.WriteEx(ex);
                 return null;
             }
         }
@@ -66,16 +69,18 @@ namespace HouseMadera.DAL.Commercial
                 {
                     Console.WriteLine("{0}\t{1}", reader.GetInt32(0),reader.GetString(1));
                 }
+                reader.Close();
                 return "0";
             }
             catch (Exception ex)
             {
                 if (ex is MySqlException || ex is SQLiteException)
                 {
-                    Console.WriteLine("Timeout connexion bdd");
+                    Logger.WriteEx(ex);
+                    Logger.WriteTrace("Timeout connexion BDD");
                     return null;
                 }
-                Console.WriteLine(ex);
+                Logger.WriteEx(ex);
                 return null;
             }
         }
