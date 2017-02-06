@@ -104,12 +104,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
+    <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
+    <Compile Include="Modeles\Commune.cs" />
     <Compile Include="Modeles\Composant.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Utilites\RegexUtilities.cs" />
     <Compile Include="Utilites\StringToIntValidationRule.cs" />
     <Compile Include="Vue-Modele\ClientViewModel.cs" />
+    <Compile Include="Vue-Modele\CommuneViewModel.cs" />
     <Compile Include="Vue-Modele\MainViewModel.cs" />
     <Compile Include="Vue-Modele\ViewModelLocator.cs" />
     <Compile Include="Vues\Client.xaml.cs">
