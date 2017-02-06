@@ -8,7 +8,7 @@
     xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
+    xmlns:vm="clr-namespace:HouseMadera.VueModele"
     Title="Selection d'un projet - Mader'House"
     Width="1536"
     Height="1024"
@@ -118,8 +118,7 @@
                 BorderThickness="1"
                 DisplayMemberPath="Nom"
                 ItemsSource="{Binding ListProjets}"
-                SelectedItem="{Binding SelectProjet}">
-            </ListBox>
+                SelectedItem="{Binding SelectProjet}" />
             <TextBox
                 x:Name="tbFiltreProjets"
                 Width="215"

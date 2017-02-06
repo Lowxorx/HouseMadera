@@ -1,9 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
-using HouseMadera.DAL.Commercial;
-using HouseMadera.DAL.Projet;
-using HouseMadera.Modèles;
+using HouseMadera.Modeles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -11,9 +9,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using HouseMadera.DAL;
 using System.Windows.Input;
 
-namespace HouseMadera.Vue___Modèle
+namespace HouseMadera.VueModele
 {
     public class VueModeleChoixProjet : ViewModelBase
     {
@@ -32,16 +31,13 @@ namespace HouseMadera.Vue___Modèle
             Deconnexion = new RelayCommand(Logout);
         }
 
-        private string selectProjet;
-        public string SelectProjet
+        private Projet selectProjet;
+        public Projet SelectProjet
         {
             get { return selectProjet; }
             set
             {
-                if (selectProjet != null)
-                {
-
-                }
+                selectProjet = value;
             }
         }
 
@@ -63,22 +59,28 @@ namespace HouseMadera.Vue___Modèle
             }
         }
 
-        private async void CreationProjet()
+        private void CreationProjet()
         {
 
         }
 
         private async void RepriseProjet()
         {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+
             if (selectProjet != null)
             {
-
+                VueDetailsProjet vdp = new VueDetailsProjet();
+                ((VueModeleDetailsProjet)vdp.DataContext).TitreProjet = @"Détails du projet " + selectProjet.Nom;
+                vdp.Show();
+                window.Close();
             }
             else
             {
-                var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
                 if (window != null)
+                {
                     await window.ShowMessageAsync("Avertissement", "Merci de sélectionner un projet.");
+                }
             }
         }
 

@@ -1,8 +1,11 @@
-﻿using MySql.Data.MySqlClient;
+﻿using HouseMadera.Modeles;
+using HouseMadera.Utilites;
+using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace HouseMadera.DAL.Projet
+namespace HouseMadera.DAL
 {
     public class ProjetDAL : DAL
     {
@@ -17,9 +20,9 @@ namespace HouseMadera.DAL.Projet
         /// Selectionne tous les projets enregistrés en base
         /// </summary>
         /// <returns>Une liste d'objets Projet</returns>
-        public static ObservableCollection<Modèles.Projet> ChargerProjets()
+        public static ObservableCollection<Projet> ChargerProjets()
         {
-            ObservableCollection<Modèles.Projet> listeProjetEnCours = new ObservableCollection<Modèles.Projet>();
+            ObservableCollection<Modeles.Projet> listeProjetEnCours = new ObservableCollection<Modeles.Projet>();
             try
             {
                 Console.WriteLine("Connexion BDD");
@@ -27,7 +30,7 @@ namespace HouseMadera.DAL.Projet
                 var reader = Get(sql, null);
                 while (reader.Read())
                 {
-                    Modèles.Projet p = new Modèles.Projet() { Nom = reader.GetString(reader.GetOrdinal("Nom")) };
+                    Modeles.Projet p = new Modeles.Projet() { Nom = reader.GetString(reader.GetOrdinal("Nom")) };
                     listeProjetEnCours.Add(p);
                 }
                 reader.Close();
@@ -40,10 +43,41 @@ namespace HouseMadera.DAL.Projet
             }
         }
 
-        public Modèles.Projet SelectionnerProjet(string nomProjet)
+
+        /// <summary>
+        /// Selectionne le premier projet avec l'ID du projet en paramètre
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Un objet Projet</returns>
+        public static Projet SelectionnerProjet(string nomProjet)
         {
-            throw new NotImplementedException();
-            // TODO
+            try
+            {
+                Modeles.Projet p = new Modeles.Projet();
+                Console.WriteLine("Connexion BDD");
+                string sql = @"SELECT * FROM Projet WHERE Nom=@1";
+                var parameters = new Dictionary<string, object>
+                {
+                    {"@1", nomProjet }
+                };
+                var reader = Get(sql, null);
+                while (reader.Read())
+                {
+                    p.Nom = reader.GetString(reader.GetOrdinal("Nom"));
+                    p.Reference = reader.GetString(reader.GetOrdinal("Reference"));
+                    p.UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate"));
+                    p.CreateDate = reader.GetDateTime(reader.GetOrdinal("CreateDate"));
+                    p.Client = ClientDAL.GetClient(reader.GetOrdinal("Client_Id"));
+                    p.Commercial = CommercialDAL.GetCommercial(Convert.ToInt32(reader.GetOrdinal("Commercial_Id")));
+                }
+                reader.Close();
+                return p;
+            }
+            catch (MySqlException)
+            {
+                Logger.WriteTrace("Timeout connexion bdd");
+                return null;
+            }
         }
 
         #endregion
@@ -56,7 +90,7 @@ namespace HouseMadera.DAL.Projet
         /// </summary>
         /// <param name="client"></param>
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne insérée</returns>
-        public bool CreerProjet(Modèles.Projet projet)
+        public bool CreerProjet(Modeles.Projet projet)
         {
             try
             {

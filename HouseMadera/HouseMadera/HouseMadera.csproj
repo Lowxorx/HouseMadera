@@ -121,8 +121,10 @@
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
+    <Compile Include="DAL\Devis\DevisDAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
+    <Compile Include="DAL\Produit\ProduitDAL.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
     <Compile Include="Modeles\Client.cs" />
@@ -153,10 +155,14 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilities\ConnectivityMonitor.cs" />
     <Compile Include="Utilities\RegexUtilities.cs" />
-    <Compile Include="Vue - Modèle\VueModeleChoixProjet.cs" />
-    <Compile Include="Vue - Modèle\VueModeleLogin.cs" />
+    <Compile Include="VueModele\VueModeleChoixProjet.cs" />
+    <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
+    <Compile Include="VueModele\VueModeleLogin.cs" />
     <Compile Include="Vues\VueChoixProjet.xaml.cs">
       <DependentUpon>VueChoixProjet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueDetailsProjet.xaml.cs">
+      <DependentUpon>VueDetailsProjet.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
@@ -193,9 +199,15 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="DAL\Plan\" />
+  </ItemGroup>
   <ItemGroup>
     <Page Include="Vues\VueChoixProjet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueDetailsProjet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

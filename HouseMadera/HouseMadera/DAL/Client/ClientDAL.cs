@@ -88,12 +88,10 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un objet Client</returns>
-        public Client GetClient(int id)
+        public static Client GetClient(int id)
         {
 
-            string sql = @"
-                            SELECT * FROM Client
-                            WHERE Id = @1";
+            string sql = @"SELECT * FROM Client WHERE Id = @1";
             var parametres = new Dictionary<string, object>()
             {
                 {"@1", id}
@@ -112,7 +110,6 @@ namespace HouseMadera.DAL
                 client.Telephone = Convert.ToString(reader["telephone"]);
             }
             return client;
-
         }
 
         /// <summary>

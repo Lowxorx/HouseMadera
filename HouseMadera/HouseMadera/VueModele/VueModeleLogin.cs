@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
-using HouseMadera.DAL.Commercial;
+using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace HouseMadera.Vue___Modèle
+namespace HouseMadera.VueModele
 {
     public class VueModeleLogin : ViewModelBase
     {

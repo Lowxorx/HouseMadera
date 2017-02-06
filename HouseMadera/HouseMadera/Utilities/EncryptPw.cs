@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace HouseMadera.Modèles
+namespace HouseMadera.Modeles
 {
     public class EncryptPw
     {

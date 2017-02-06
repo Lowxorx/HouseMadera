@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace HouseMadera.Modèles
+namespace HouseMadera.Modeles
 {
     public static class PwBoxAssistant
     {
