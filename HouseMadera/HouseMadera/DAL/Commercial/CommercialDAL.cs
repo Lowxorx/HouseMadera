@@ -12,15 +12,16 @@ namespace HouseMadera.DAL
     {
         public CommercialDAL(string nomBdd) : base(nomBdd)
         {
-
+            // Constructeur par défaut de la classe CommercialDAL
         }
 
         #region READ
+
         /// <summary>
         /// Selectionne tous les Commerciaux enregistrés en base
         /// </summary>
         /// <returns>Une collection d'objets Commercial</returns>
-        public static ObservableCollection<Commercial> ChargerCommerciaux()
+        public ObservableCollection<Commercial> ChargerCommerciaux()
         {
             ObservableCollection<Modeles.Commercial> listeCommerciaux = new ObservableCollection<Modeles.Commercial>();
             try
@@ -51,6 +52,7 @@ namespace HouseMadera.DAL
         /// <summary>
         /// Vérifie que le mot de passe et le login du commercial sont corrects
         /// </summary>
+        /// <param name="Commercial"></param>
         /// <returns>Un chiffre contenant le résultat : 0 pour un succès, 1 pour un utilisateur incorrect, 2 pour un échec de connexion à la bdd. </returns>
         public string Connect(Commercial commercial)
         {
@@ -64,14 +66,16 @@ namespace HouseMadera.DAL
                     {"@1",commercial.Login },
                     {"@2",commercial.Password }
                 };
+                string connexionStatus = "1";
 
                 var reader = Get(sql, parameters);
                 while (reader.Read())
                 {
                     Console.WriteLine("{0}\t{1}", reader.GetInt32(0),reader.GetString(1));
+                    connexionStatus = "0";
                 }
                 reader.Close();
-                return "0";
+                return connexionStatus;
             }
             catch (Exception ex)
             {
@@ -79,10 +83,10 @@ namespace HouseMadera.DAL
                 {
                     Logger.WriteEx(ex);
                     Logger.WriteTrace("Timeout connexion BDD");
-                    return null;
+                    return "2";
                 }
                 Logger.WriteEx(ex);
-                return null;
+                return "2";
             }
         }
 
@@ -114,9 +118,11 @@ namespace HouseMadera.DAL
             return commercial;
 
         }
+
         #endregion
 
         #region DELETE
+
         /// <summary>
         /// Efface en base le commercial avec l'Id en paramètre
         /// </summary>
@@ -144,6 +150,7 @@ namespace HouseMadera.DAL
 
             return result;
         }
+
         #endregion
     }
 }

@@ -71,13 +71,13 @@ namespace HouseMadera.VueModele
                 }
             }
         }
+
         private async void ConnexionExec()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
 
             if (pwCommercial != null && loginCommercial != null)
             {
-
                 var newCommercial = new Commercial{ Login = LoginCommercial, Password = PwCommercial };
                 using (var dal = new CommercialDAL(DAL.DAL.Bdd))
                 {

@@ -69,8 +69,8 @@
             <Button
                 x:Name="btReprendreProjet"
                 Width="490"
-                Height="93"
-                Margin="1028,650,0,0"
+                Height="132"
+                Margin="1028,656,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding ReprendreProjet}"
@@ -88,9 +88,9 @@
                 FontSize="23" />
             <ComboBox
                 x:Name="cbListeCommerciaux"
-                Width="270"
-                Height="53"
-                Margin="1028,247,0,0"
+                Width="490"
+                Height="58"
+                Margin="1028,166,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="18"
@@ -117,16 +117,20 @@
                 VerticalAlignment="Top"
                 BorderThickness="1"
                 DisplayMemberPath="Nom"
-                ItemsSource="{Binding ListProjets}"
-                SelectedItem="{Binding SelectProjet}" />
+                FontSize="20"
+                ItemsSource="{Binding ListeProjets}"
+                SelectedItem="{Binding SelectedProjet}" />
             <TextBox
                 x:Name="tbFiltreProjets"
-                Width="215"
-                Height="53"
-                Margin="1303,243,10,614"
+                Width="490"
+                Height="64"
+                Margin="1028,234,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
                 Controls:TextBoxHelper.Watermark="Rechercher un projet"
-                FontSize="18"
+                FontSize="22"
+                Text="{Binding FiltreProjet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
         </Grid>

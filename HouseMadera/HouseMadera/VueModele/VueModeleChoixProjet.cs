@@ -11,6 +11,8 @@ using System.Linq;
 using System.Windows;
 using HouseMadera.DAL;
 using System.Windows.Input;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace HouseMadera.VueModele
 {
@@ -29,29 +31,39 @@ namespace HouseMadera.VueModele
             ReprendreProjet = new RelayCommand(RepriseProjet);
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
             Deconnexion = new RelayCommand(Logout);
-        }
 
-        private Projet selectProjet;
-        public Projet SelectProjet
-        {
-            get { return selectProjet; }
-            set
+            using (var dal = new ProjetDAL(DAL.DAL.Bdd))
             {
-                selectProjet = value;
+                ListeProjets = new ObservableCollection<Projet>(dal.ChargerProjets());
             }
         }
 
-        private ObservableCollection<Projet> listProjets;
-        public ObservableCollection<Projet> ListProjets
+        private Projet selectedProjet;
+        public Projet SelectedProjet
+        {
+            get { return selectedProjet; }
+            set
+            {
+                selectedProjet = value;
+            }
+        }
+
+        private ObservableCollection<Projet> listeProjets;
+        public ObservableCollection<Projet> ListeProjets
         {
             get
             {
-                return listProjets;
+                return listeProjets;
+            }
+            set
+            {
+                listeProjets = value;
+                RaisePropertyChanged("ListeProjets");
             }
         }
 
-        private ObservableCollection<Modeles.Commercial> listCommerciaux;
-        public ObservableCollection<Modeles.Commercial> ListCommerciaux
+        private ObservableCollection<Commercial> listCommerciaux;
+        public ObservableCollection<Commercial> ListCommerciaux
         {
             get
             {
@@ -68,12 +80,13 @@ namespace HouseMadera.VueModele
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
 
-            if (selectProjet != null)
+            if (selectedProjet != null)
             {
                 VueDetailsProjet vdp = new VueDetailsProjet();
-                ((VueModeleDetailsProjet)vdp.DataContext).TitreProjet = @"Détails du projet " + selectProjet.Nom;
+                ((VueModeleDetailsProjet)vdp.DataContext).VuePrecedente = window;
+                ((VueModeleDetailsProjet)vdp.DataContext).SelectedProjet = selectedProjet;
                 vdp.Show();
-                window.Close();
+                window.Hide();
             }
             else
             {
@@ -87,10 +100,16 @@ namespace HouseMadera.VueModele
         private void WindowLoadedEvent()
         {
             Console.WriteLine("window loaded event");
-            listProjets = ProjetDAL.ChargerProjets();
-            RaisePropertyChanged(() => ListProjets);
-            listCommerciaux = CommercialDAL.ChargerCommerciaux();
-            RaisePropertyChanged(() => ListCommerciaux);
+            //using (var dal = new ProjetDAL(DAL.DAL.Bdd))
+            //{
+            //    listeProjets = dal.ChargerProjets();
+            //    RaisePropertyChanged(() => ListeProjets);
+            //}
+            using (var dal = new CommercialDAL(DAL.DAL.Bdd))
+            {
+                listCommerciaux = dal.ChargerCommerciaux();
+                RaisePropertyChanged(() => ListCommerciaux);
+            }
         }
 
         private async void Logout()

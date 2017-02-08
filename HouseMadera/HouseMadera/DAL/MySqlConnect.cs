@@ -5,7 +5,7 @@ using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    public class MySqlConnect: IDbConnection
+    public class MySqlConnect : IDbConnection
     {
         public MySqlConnection Connection { get; set; }
 
@@ -60,7 +60,7 @@ namespace HouseMadera.DAL
             return command.ExecuteReader();
         }
 
-        
+
     }
 }
 

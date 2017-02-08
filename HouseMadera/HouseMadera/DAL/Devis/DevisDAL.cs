@@ -2,6 +2,7 @@
 using HouseMadera.Utilites;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace HouseMadera.DAL
 
         public DevisDAL(string nomBdd) : base(nomBdd)
         {
-
+            // Constructeur par défaut de la classe DevisDAL
         }
 
         #region READ
@@ -50,10 +51,10 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="projet"></param>
         /// <returns>Une liste d'objets Devis</returns>
-        public List<Devis> GetAllDevisByproject(Projet p)
+        public static ObservableCollection<Devis> GetAllDevisByproject(Projet p)
         {
             string sql = @"SELECT * FROM Devis WHERE ";
-            var listeDevis = new List<Devis>();
+            ObservableCollection<Devis> listeDevis = new ObservableCollection<Devis>();
             var reader = Get(sql, null);
             while (reader.Read())
             {
@@ -159,6 +160,7 @@ namespace HouseMadera.DAL
 
             return result;
         }
+
         #endregion
 
         #region UPDATE
@@ -166,6 +168,7 @@ namespace HouseMadera.DAL
         #endregion
 
         #region DELETE
+
         /// <summary>
         /// Efface en base le devis avec l'Id en paramètre
         /// </summary>
@@ -192,6 +195,7 @@ namespace HouseMadera.DAL
             }
             return result;
         }
+
         #endregion
 
     }

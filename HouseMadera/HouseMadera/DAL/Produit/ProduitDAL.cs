@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using HouseMadera.Modeles;
+using System.Collections.ObjectModel;
+using HouseMadera.Utilites;
 
 namespace HouseMadera.DAL
 {
@@ -18,26 +20,34 @@ namespace HouseMadera.DAL
         /// Selectionne tous les produits correspondant à un Projet
         /// </summary>
         /// <returns>Une liste d'objets Produit</returns>
-        public List<Produit> GetAllProduitsByProjet(Projet p)
+        public ObservableCollection<Produit> GetAllProduitsByProjet(Projet p)
         {
-            string sql = @"SELECT * FROM Produit WHERE Projet_Id=@1";
-            var parametres = new Dictionary<string, object>()
+            ObservableCollection<Produit> listeProduit = new ObservableCollection<Produit>();
+            try
             {
-                {"@1", p.Id}
-            };
-            var produits = new List<Produit>();
-            var reader = Get(sql, null);
-            while (reader.Read())
-            {
-                var produit = new Produit();
-                produit.Id = Convert.ToInt32(reader["Id"]);
-                produit.Nom = Convert.ToString(reader["Nom"]);
-                //produit.Devis = Convert.ToString(reader["prenom"]);
-                //produit.Plan = Convert.ToString(reader["adresse1"]);
-                produit.Projet = ProjetDAL.SelectionnerProjet(p.Nom);
-                produits.Add(produit);
+                string sql = @"SELECT * FROM Produit WHERE Projet_Id=@1";
+                var parametres = new Dictionary<string, object>()
+                {
+                    {"@1", p.Id}
+                };
+                var reader = Get(sql, parametres);
+                while (reader.Read())
+                {
+                    var produit = new Produit();
+                    produit.Id = Convert.ToInt32(reader["Id"]);
+                    produit.Nom = Convert.ToString(reader["Nom"]);
+                    //produit.Devis = Convert.ToString(reader["prenom"]);
+                    //produit.Plan = Convert.ToString(reader["adresse1"]);
+                    //produit.Projet = ProjetDAL.SelectionnerProjet(p.Nom);
+                    listeProduit.Add(produit);
+                }
+                return listeProduit;
             }
-            return produits;
+            catch (Exception e)
+            {
+                Logger.WriteEx(e);
+                return null;
+            }
         }
 
         /// <summary>

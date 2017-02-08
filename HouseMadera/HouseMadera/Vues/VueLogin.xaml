@@ -117,8 +117,10 @@
                 Content="Connexion" />
             <Image
                 x:Name="image"
+                Height="248"
                 Margin="422,0,422,652"
-                Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png" Height="248" VerticalAlignment="Bottom" />
+                VerticalAlignment="Bottom"
+                Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png" />
         </Grid>
         <Grid Margin="0,968,0,0" Background="#FF676767" />
     </Grid>

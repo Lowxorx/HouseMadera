@@ -20,9 +20,9 @@ namespace HouseMadera.DAL
         /// Selectionne tous les projets enregistrés en base
         /// </summary>
         /// <returns>Une liste d'objets Projet</returns>
-        public static ObservableCollection<Projet> ChargerProjets()
+        public ObservableCollection<Projet> ChargerProjets()
         {
-            ObservableCollection<Modeles.Projet> listeProjetEnCours = new ObservableCollection<Modeles.Projet>();
+            ObservableCollection<Projet> listeProjetEnCours = new ObservableCollection<Projet>();
             try
             {
                 Console.WriteLine("Connexion BDD");
@@ -30,7 +30,14 @@ namespace HouseMadera.DAL
                 var reader = Get(sql, null);
                 while (reader.Read())
                 {
-                    Modeles.Projet p = new Modeles.Projet() { Nom = reader.GetString(reader.GetOrdinal("Nom")) };
+                    Projet p = new Projet()
+                    {
+                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                        Nom = reader.GetString(reader.GetOrdinal("Nom")),
+                        Reference = reader.GetString(reader.GetOrdinal("Reference")),
+                        CreateDate = reader.GetDateTime(reader.GetOrdinal("CreateDate")),
+                        UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate"))
+                    };
                     listeProjetEnCours.Add(p);
                 }
                 reader.Close();
