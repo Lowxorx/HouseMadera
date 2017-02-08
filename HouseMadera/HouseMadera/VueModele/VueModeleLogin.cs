@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
-using HouseMadera.DAL.Commercial;
+using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;

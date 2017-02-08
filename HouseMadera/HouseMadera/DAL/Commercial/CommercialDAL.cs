@@ -4,8 +4,9 @@ using MySql.Data.MySqlClient;
 using System.Data.SQLite;
 using System.Collections.Generic;
 using HouseMadera.Utilites;
+using HouseMadera.Modeles;
 
-namespace HouseMadera.DAL.Commercial
+namespace HouseMadera.DAL
 {
     public class CommercialDAL : DAL
     {
@@ -19,9 +20,9 @@ namespace HouseMadera.DAL.Commercial
         /// Selectionne tous les Commerciaux enregistrés en base
         /// </summary>
         /// <returns>Une collection d'objets Commercial</returns>
-        public static ObservableCollection<Modeles.Commercial> ChargerCommerciaux()
+        public static ObservableCollection<Commercial> ChargerCommerciaux()
         {
-            ObservableCollection<Modeles.Commercial> listeCommerciaux = new ObservableCollection<Modeles.Commercial>();
+            ObservableCollection<Commercial> listeCommerciaux = new ObservableCollection<Commercial>();
             try
             {
                 Console.WriteLine("Connexion BDD");
@@ -29,7 +30,7 @@ namespace HouseMadera.DAL.Commercial
                 var reader = Get(sql, null);
                 while (reader.Read())
                 {
-                    Modeles.Commercial c = new Modeles.Commercial() { Nom = reader.GetString(reader.GetOrdinal("Nom")), Prenom = reader.GetString(reader.GetOrdinal("Prenom")) };
+                    Commercial c = new Commercial() { Nom = reader.GetString(reader.GetOrdinal("Nom")), Prenom = reader.GetString(reader.GetOrdinal("Prenom")) };
                     listeCommerciaux.Add(c);
                 }
                 return listeCommerciaux;
@@ -51,7 +52,7 @@ namespace HouseMadera.DAL.Commercial
         /// Vérifie que le mot de passe et le login du commercial sont corrects
         /// </summary>
         /// <returns>Un chiffre contenant le résultat : 0 pour un succès, 1 pour un utilisateur incorrect, 2 pour un échec de connexion à la bdd. </returns>
-        public string Connect(Modeles.Commercial commercial)
+        public string Connect(Commercial commercial)
         {
             try
             {
