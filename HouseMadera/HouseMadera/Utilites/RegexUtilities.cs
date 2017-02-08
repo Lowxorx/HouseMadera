@@ -14,10 +14,9 @@ namespace HouseMadera.Utilites
             if (String.IsNullOrEmpty(email))
                 return true;
 
-            // Use IdnMapping class to convert Unicode domain names.
             try
             {
-                email = Regex.Replace(email, @"(@)(.+)$", this.DomainMapper,
+                email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
                                       RegexOptions.None, TimeSpan.FromMilliseconds(200));
             }
             catch (RegexMatchTimeoutException)
@@ -27,10 +26,9 @@ namespace HouseMadera.Utilites
 
             if (invalid)
                 return false;
-
-            // Return true if email is in valid e-mail format.
             try
             {
+                //TODO à modifier
                 return Regex.IsMatch(email,
                       @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
                       @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
@@ -62,13 +60,13 @@ namespace HouseMadera.Utilites
         public bool IsValidTelephoneNumber(string telephone)
         {
             invalid = false;
-
+            //TODO à modifier
             try
             {
                 if (string.IsNullOrEmpty(telephone))
                     return true;
                 return Regex.IsMatch(telephone,
-                      @"^[0]\d\d\d\d\d\d\d\d\d",
+                      @"^[0]\d\d\d\d\d\d\d\d\d$",
                       RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
             }
             catch (RegexMatchTimeoutException)
@@ -76,5 +74,27 @@ namespace HouseMadera.Utilites
                 return false;
             }
         }
+
+        public bool IsValidName(string value)
+        {
+            
+            var match = Regex.Match(value, @"\d+");
+            return match.Success;
+               
+        }
+
+        public bool IsValidNumeroVoie(string value)
+        {
+            var match = Regex.Match(value, @"^\d*\s?(bis|ter)?$");
+            return match.Success;
+        }
+
+        public bool HasSpecialCharacters(string value)
+        {
+            var match = Regex.Match(value, @"[a-z\s]");
+            return match.Success;
+        }
+
     }
+    
 }
