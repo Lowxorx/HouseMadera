@@ -1,0 +1,60 @@
+﻿<Controls:MetroWindow
+    x:Class="HouseMadera.Vues.VueChoixAdmin"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vuemod="clr-namespace:HouseMadera.VueModele"
+    Title="Choixdumodule d'administration - Mader'House"
+    Width="1536"
+    Height="1024"
+    MinWidth="1536"
+    MinHeight="1024"
+    FontFamily="Verdana"
+    ForceCursor="True"
+    ShowCloseButton="False"
+    ShowIconOnTitleBar="False"
+    ShowMaxRestoreButton="False"
+    ShowMinButton="False"
+    ShowTitleBar="False"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <vuemod:VueModeleChoixAdmin />
+    </Window.DataContext>
+    <Grid>
+        <Grid Margin="0,0,0,968" Background="#FF676767">
+            <Button
+                x:Name="btLogout"
+                Width="44"
+                Height="44"
+                Margin="1482,4,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderThickness="0"
+                Command="{Binding Logout}"
+                Content="{iconPacks:PackIconMaterial Kind=LogOut,
+                                                        Width=32,
+                                                        Height=32}">
+                <Button.BorderBrush>
+                    <SolidColorBrush Opacity="0" Color="{DynamicResource Gray6}" />
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Opacity="0" Color="#FFF7F7F7" />
+                </Button.Background>
+            </Button>
+        </Grid>
+        <Grid Margin="0,53">
+            <Image
+                x:Name="image"
+                Height="248"
+                Margin="422,0,422,652"
+                VerticalAlignment="Bottom"
+                Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png" />
+        </Grid>
+        <Grid Margin="0,968,0,0" Background="#FF676767" />
+    </Grid>
+</Controls:MetroWindow>

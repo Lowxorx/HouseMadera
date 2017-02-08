@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using HouseMadera.Utilites;
+using MySql.Data.MySqlClient;
+using System;
 using System.Data.Common;
 
 namespace HouseMadera.DAL
@@ -14,7 +16,21 @@ namespace HouseMadera.DAL
 
         public void Open()
         {
-            Connection.Open();
+            try
+            {
+                Connection.Open();
+
+            }
+            catch (MySqlException)
+            {
+                // Time out connexion BDD
+                Logger.WriteTrace("Timeout connexion BDD");
+            }
+            catch (Exception ex)
+            {
+                // Erreur inconnue
+                Logger.WriteEx(ex);
+            }
         }
 
         public void Dispose()
