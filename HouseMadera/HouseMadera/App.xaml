@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:HouseMadera"
-    xmlns:vm="clr-namespace:HouseMadera.Vue___Modèle"
+    xmlns:vm="clr-namespace:HouseMadera.VueModele"
     d1p1:Ignorable="d"
     StartupUri="Vues\VueLogin.xaml">
     <Application.Resources>

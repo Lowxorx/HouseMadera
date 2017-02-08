@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace HouseMadera.Modèles
+namespace HouseMadera.Modeles
 {
     public class Projet
     {

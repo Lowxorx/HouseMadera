@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HouseMadera.Modèles
+namespace HouseMadera.Modeles
 {
     public class Gamme
     {

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace HouseMadera.Vue___Modèle
+namespace HouseMadera.VueModele
 {
     public class VueModeleLogin : ViewModelBase
     {
@@ -85,8 +85,8 @@ namespace HouseMadera.Vue___Modèle
                     Console.WriteLine("Code retour login : " + loginstatus);
                     if (loginstatus == "0")
                     {
-                        VueChoixProjet vcp = new VueChoixProjet();
-                        vcp.Show();
+                        //VueChoixProjet vcp = new VueChoixProjet();
+                        //vcp.Show();
                         window.Close();
                     }
                     else if (loginstatus == "1")

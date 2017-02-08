@@ -3,11 +3,11 @@
 namespace HouseMadera.Vues
 {
     /// <summary>
-    /// Logique d'interaction pour VueChoixProjet.xaml
+    /// Logique d'interaction pour VueChoixAdmin.xaml
     /// </summary>
-    public partial class VueChoixProjet : MetroWindow
+    public partial class VueChoixAdmin : MetroWindow
     {
-        public VueChoixProjet()
+        public VueChoixAdmin()
         {
             InitializeComponent();
         }

@@ -153,10 +153,10 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilities\ConnectivityMonitor.cs" />
     <Compile Include="Utilities\RegexUtilities.cs" />
-    <Compile Include="Vue - Modèle\VueModeleChoixProjet.cs" />
-    <Compile Include="Vue - Modèle\VueModeleLogin.cs" />
-    <Compile Include="Vues\VueChoixProjet.xaml.cs">
-      <DependentUpon>VueChoixProjet.xaml</DependentUpon>
+    <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
+    <Compile Include="VueModele\VueModeleLogin.cs" />
+    <Compile Include="Vues\VueChoixAdmin.xaml.cs">
+      <DependentUpon>VueChoixAdmin.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
@@ -195,7 +195,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="Vues\VueChoixProjet.xaml">
+    <Page Include="Vues\VueChoixAdmin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
