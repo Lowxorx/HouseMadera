@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HouseMadera.Vue_Modele
+namespace HouseMadera.VueModele
 {
-    public class CommuneViewModel
+    public class VueModeleCommune
     {
         public string NomCommune { get; set; }
         public string CodePostal { get; set; }
 
-        public CommuneViewModel(string value)
+        public VueModeleCommune(string value)
         {
             NomCommune = ExtractNomCommune(value);
             CodePostal = ExtractCodePostal(value);

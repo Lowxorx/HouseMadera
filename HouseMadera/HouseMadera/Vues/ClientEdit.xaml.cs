@@ -1,5 +1,5 @@
 ﻿using HouseMadera.DAL;
-using HouseMadera.Vue_Modele;
+using HouseMadera.VueModele;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -13,12 +13,12 @@ namespace HouseMadera.Vues
     public partial class ClientEdit : MetroWindow
     {
 
-        public ClientViewModel vm { get; set; }
+        public VueModeleClient vm { get; set; }
 
         public ClientEdit()
         {
             InitializeComponent();
-            vm = new ClientViewModel();
+            vm = new VueModeleClient();
             DataContext = vm;
         }
 

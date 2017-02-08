@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using HouseMadera.DAL;
 using System.Windows.Controls;
-using HouseMadera.Vue_Modele;
+using HouseMadera.VueModele;
 using HouseMadera.Utilites;
 
 namespace HouseMadera.Vues
@@ -15,13 +15,13 @@ namespace HouseMadera.Vues
     {
 
         //  public Dictionary<int,string> Localite { get; set; }
-        public ClientViewModel vm { get; set; }
+        public VueModeleClient vm { get; set; }
 
         public RegexUtilities regle { get; set; }
         public Client()
         {
             InitializeComponent();
-            vm = new ClientViewModel();
+            vm = new VueModeleClient();
             
 
             // Localite = new Dictionary<int, string>();

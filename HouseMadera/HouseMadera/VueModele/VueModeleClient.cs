@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 
-namespace HouseMadera.Vue_Modele
+namespace HouseMadera.VueModele
 {
-    public class ClientViewModel : IDataErrorInfo
+    public class VueModeleClient : IDataErrorInfo
     {
         private string _nom;
         public string Nom { get; set; }
@@ -39,7 +39,7 @@ namespace HouseMadera.Vue_Modele
 
         public RegexUtilities reg { get; set; }
 
-        public ClientViewModel()
+        public VueModeleClient()
         {
             reg = new RegexUtilities();
             Clients = new List<Client>();
