@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace HouseMadera.Modeles
 {
@@ -11,7 +7,6 @@ namespace HouseMadera.Modeles
         public int Id { get; set; }
         public string Nom { get; set; }
         public Qualite Qualite { get; set; }
-
-        public virtual ICollection<Composant> Composants { get; set; }
+           public virtual ICollection<Composant> Composants { get; set; }
     }
 }

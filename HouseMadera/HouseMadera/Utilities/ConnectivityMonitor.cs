@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HouseMadera.Utilites
 {
@@ -12,11 +8,9 @@ namespace HouseMadera.Utilites
         public bool IsOnline()
         {
             Ping myPing = new Ping();
-            var host = "8.8.8.8";
-            byte[] buffer = new byte[32];
+            var host = "8.8.4.4";
             int timeout = 1000;
-            PingOptions pingOptions = new PingOptions();
-            PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
+            PingReply reply = myPing.Send(host, timeout);
             if (reply.Status == IPStatus.Success)
             {
                 Console.WriteLine("online");
@@ -35,4 +29,3 @@ namespace HouseMadera.Utilites
 
     }
 }
-

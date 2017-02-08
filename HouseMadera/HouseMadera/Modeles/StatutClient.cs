@@ -1,8 +1,5 @@
-﻿using System;
+﻿using HouseMadera.Modeles;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HouseMadera.Modeles
 {
@@ -10,7 +7,6 @@ namespace HouseMadera.Modeles
     {
         public int Id { get; set; }
         public string Nom { get; set; }
-
         public virtual ICollection<Client> Clients { get; set; }
     }
 }

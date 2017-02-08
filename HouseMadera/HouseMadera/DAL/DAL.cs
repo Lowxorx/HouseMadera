@@ -11,15 +11,14 @@ namespace HouseMadera.DAL
         private string ConnectionStringMySql { get; set; }
         private string ConnectionStringSQLite { get; set; }
 
-        public string Bdd { get; set; }
-        protected IDbConnection Connection { get; set; }
+        public static string Bdd { get; set; }
+        protected static IDbConnection Connection { get; set; }
 
 
         public DAL(string nomBdd)
         {
             ConnectionStringMySql = ConfigurationManager.ConnectionStrings["HouseMaderaDBMySql"].ConnectionString;
             ConnectionStringSQLite = ConfigurationManager.ConnectionStrings["HouseMaderaDBSQlite"].ConnectionString;
-
             Bdd = nomBdd;
             switch (Bdd)
             {
@@ -31,13 +30,13 @@ namespace HouseMadera.DAL
                     Connection = new SQLiteConnect(ConnectionStringSQLite);
                     Connection.Open();
                     break;
-                default:
-                    throw new Exception("La base de donnée spécifiée n'est pas reconnue");
+                default: break;
+
             }
+
         }
 
-
-        private DbCommand GetCommand(string requete, IDictionary<string, object> parameters = null)
+        private static DbCommand GetCommand(string requete, IDictionary<string, object> parameters = null)
         {
             var command = Connection.GetCommand();
             command.CommandText = requete;
@@ -85,20 +84,19 @@ namespace HouseMadera.DAL
         //        return ds;
         //    }
         //}
-        public DbDataReader GetDataReader(DbCommand command)
+        public static DbDataReader GetDataReader(DbCommand command)
         {
 
             return Connection.GetDataReader(command);
 
         }
 
-        public DbDataReader Get(string requete, IDictionary<string, object> parameters = null)
+        public static DbDataReader Get(string requete, IDictionary<string, object> parameters = null)
         {
             using (var command = GetCommand(requete, parameters))
             {
                 var dataReader = GetDataReader(command);
                 return dataReader;
-
             }
         }
 
