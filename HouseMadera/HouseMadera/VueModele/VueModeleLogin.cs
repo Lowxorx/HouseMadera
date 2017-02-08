@@ -85,8 +85,8 @@ namespace HouseMadera.VueModele
                     Console.WriteLine("Code retour login : " + loginstatus);
                     if (loginstatus == "0")
                     {
-                        //VueChoixProjet vcp = new VueChoixProjet();
-                        //vcp.Show();
+                        VueChoixAdmin vcp = new VueChoixAdmin();
+                        vcp.Show();
                         window.Close();
                     }
                     else if (loginstatus == "1")

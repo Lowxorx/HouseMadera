@@ -63,6 +63,26 @@ namespace HouseMadera.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap adminclient {
+            get {
+                object obj = ResourceManager.GetObject("adminclient", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap adminprojet {
+            get {
+                object obj = ResourceManager.GetObject("adminprojet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logomaderacolor {
             get {
                 object obj = ResourceManager.GetObject("logomaderacolor", resourceCulture);
