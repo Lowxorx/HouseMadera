@@ -10,16 +10,14 @@ namespace HouseMadera.Vues
     /// <summary>
     /// Logique d'interaction pour ClientEdit.xaml
     /// </summary>
-    public partial class ClientEdit : MetroWindow
+    public partial class VueClientEdit : MetroWindow
     {
 
         public VueModeleClient vm { get; set; }
 
-        public ClientEdit()
+        public VueClientEdit()
         {
             InitializeComponent();
-            vm = new VueModeleClient();
-            DataContext = vm;
         }
 
         //private void RechercherCommune(object sender, TextChangedEventArgs e)

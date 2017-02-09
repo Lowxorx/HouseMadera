@@ -1,16 +1,27 @@
 ﻿
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Utilites;
+using HouseMadera.Vues;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 
 namespace HouseMadera.VueModele
 {
-    public class VueModeleClient : IDataErrorInfo
+    public class VueModeleClient : ViewModelBase, IDataErrorInfo
     {
+        public ICommand EditClient { get; private set; }
+
+
+        #region
         private string _nom;
         public string Nom { get; set; }
         private string _prenom;
@@ -31,19 +42,61 @@ namespace HouseMadera.VueModele
         public string Telephone { get; set; }
         private string _email;
         public string Email { get; set; }
+        private string recherche;
+        public string Recherche
+        {
+            get
+            {
+                return recherche;
+            }
+            set
+            {
+                if (Filtre != null && Clients != null)
+                {
 
+                    List<Client> clientsTrouves = new List<Client>();
+                    //Si le textbox est vide on affiche tous les clients
+                    if (string.IsNullOrEmpty(value))
+                        clientsTrouves = AfficherClient();
+                    else
+                        clientsTrouves = AfficherClientFiltre(Filtre, value);
+                    Clients = new ObservableCollection<Client>(clientsTrouves);
+                    RaisePropertyChanged(() => Clients);
+                    recherche = value;
+                    RaisePropertyChanged(() => Recherche);
+                }
+
+            }
+        }
+        private string filtre;
+        public string Filtre
+        {
+            get { return filtre; }
+            set { filtre = value; }
+        }
         public string NomCommune { get; set; }
-       
-
-        public List<Client> Clients { get; set; }
-
+        public List<string> filtres { get; set; }
+        public ObservableCollection<Client> Clients { get; set; }
         public RegexUtilities reg { get; set; }
+        #endregion
 
         public VueModeleClient()
         {
+            EditClient = new RelayCommand(EClient);
             reg = new RegexUtilities();
-            Clients = new List<Client>();
+            Clients = new ObservableCollection<Client>(AfficherClient());
+            filtres = new List<string>() { "Nom", "Adresse" };
+
         }
+
+        private void EClient()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            VueClientEdit vce = new VueClientEdit();
+            vce.Show();
+            window.Close();
+        }
+
 
         public string Error
         {
@@ -108,22 +161,36 @@ namespace HouseMadera.VueModele
         }
         #endregion
 
-        public void GetAllClients()
+        /// <summary>
+        /// Recupère en base tous les clients
+        /// </summary>
+        /// <returns>La liste de tous les clients</returns>
+        public List<Client> AfficherClient()
         {
-           
+            List<Client> clients = new List<Client>();
             using (var dal = new ClientDAL("SQLITE"))
             {
-                Clients = dal.GetAllClients();
+                clients = dal.GetAllClients();
             }
-           
+            return clients;
         }
 
-        public void GetFilteredClients(string colonne,string valeur )
+        /// <summary>
+        /// Récupère la liste des clients filtrés 
+        /// </summary>
+        /// <param name="filtre">nom de la colonne de la grille à filtrer</param>
+        /// <param name="valeur">valeur saisie dans la textbox</param>
+        /// <returns>Une liste de clients</returns>
+        public List<Client> AfficherClientFiltre(string filtre, string valeur)
         {
+            List<Client> clients = new List<Client>();
+            //TODO SQLITE à remplacer par Bdd
             using (var dal = new ClientDAL("SQLITE"))
             {
-                Clients = dal.GetFilteredClient(colonne, valeur);
+                clients = dal.GetFilteredClient(filtre, valeur);
             }
+
+            return clients;
         }
 
         private string ExtractNomCommune(string communeSelected)

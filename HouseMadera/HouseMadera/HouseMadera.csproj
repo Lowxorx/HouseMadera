@@ -119,6 +119,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
+    <Compile Include="DAL\Commercial\CommercialDAL.cs" />
     <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
@@ -159,14 +160,17 @@
     <Compile Include="VueModele\VueModeleCommune.cs" />
     <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
     <Compile Include="VueModele\VueModeleLogin.cs" />
+    <Compile Include="Vues\VueClientList.xaml.cs">
+      <DependentUpon>VueClientList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\VueChoixAdmin.xaml.cs">
       <DependentUpon>VueChoixAdmin.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Vues\ClientEdit.xaml.cs">
-      <DependentUpon>ClientEdit.xaml</DependentUpon>
+    <Compile Include="Vues\VueClientEdit.xaml.cs">
+      <DependentUpon>VueClientEdit.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +206,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Page Include="Vues\VueClientList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Vues\VueChoixAdmin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -210,7 +218,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Vues\ClientEdit.xaml">
+    <Page Include="Vues\VueClientEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

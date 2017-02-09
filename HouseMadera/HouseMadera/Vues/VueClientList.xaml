@@ -1,5 +1,5 @@
 ﻿<Controls:MetroWindow
-    x:Class="HouseMadera.Vues.Client"
+    x:Class="HouseMadera.Vues.VueClientList"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
@@ -7,10 +7,12 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:utilites="clr-namespace:HouseMadera.Utilites"
-    
+    xmlns:vuemod="clr-namespace:HouseMadera.VueModele"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="1536"
     Height="1024"
+    MinWidth="1536"
+    MinHeight="1024"
     FontFamily="Verdana"
     ForceCursor="True"
     ShowCloseButton="False"
@@ -20,16 +22,12 @@
     ShowTitleBar="False"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
-    mc:Ignorable="d"
-    Loaded="AfficherClients">
+    mc:Ignorable="d">
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Icons.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+    <Window.DataContext>
+        <vuemod:VueModeleClient />
+    </Window.DataContext>
+
     <Grid>
         <Grid Margin="0,-3,0,931" Background="#FFA29A9A" Panel.ZIndex="20">
             <Label
@@ -78,23 +76,22 @@
                     VerticalAlignment="Top"
                     Width="237"
                     Content="{iconPacks:PackIconFontAwesome Kind=UserPlus, Width=64, Height=64 }"
-                    Click="AfficherSignUp" Foreground="#FF65C973"/>
+                    Foreground="#FF65C973"
+                    Command="{Binding EditClient}"/>
             <Canvas Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="90" Margin="192,284,0,0" VerticalAlignment="Top" Width="982" Background="LightGray" Grid.Column="1">
                 <Label x:Name="label_recherche" Content="{iconPacks:PackIconFontAwesome Kind=Search,  Width=16 ,Height=16 }" Height="41" Canvas.Left="920" Canvas.Top="25" Width="32" RenderTransformOrigin="0.498,0.431" />
             </Canvas>
-            <ComboBox x:Name="comboBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="208,308,0,0" VerticalAlignment="Top" Width="111" >
-                <ComboBoxItem IsSelected="True">Nom</ComboBoxItem>
-                <ComboBoxItem >Adresse</ComboBoxItem>
-            </ComboBox>
-            <TextBox x:Name="textBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="319,308,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="761" Grid.ColumnSpan="2" TextChanged="RechercherClient"/>
-            <DataGrid x:Name="dataGrid" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="400" Margin="83,429,0,0" VerticalAlignment="Top" Width="1356" AutoGenerateColumns="False" Style="{StaticResource ResourceKey=AzureDataGrid}" >
+            <ComboBox x:Name="comboBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="208,308,0,0" VerticalAlignment="Top" Width="111" ItemsSource="{Binding filtres, Mode=OneWay}"   SelectedItem="{Binding Filtre}" />
+
+            <TextBox x:Name="textBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="319,308,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="761" Grid.ColumnSpan="2" Text="{Binding Recherche,UpdateSourceTrigger=PropertyChanged}" />
+            <DataGrid x:Name="dataGrid" Grid.ColumnSpan="3" ItemsSource="{Binding Clients}"  HorizontalAlignment="Left" Height="400" Margin="83,429,0,0" VerticalAlignment="Top" Width="1356" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
+                    <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
                     <DataGridTextColumn Header="Prenom" Binding="{Binding Prenom}"/>
                     <DataGridTextColumn Header="Adresse" Binding="{Binding Adresse1}"/>
                     <DataGridTextColumn Header="Telephone" Binding="{Binding Telephone}"/>
-                    <DataGridTextColumn Header="Mobile" Binding="{Binding Mobile}"/>
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                    <DataGridTextColumn Header="Mobile"  Binding="{Binding Mobile}"/>
+                    <DataGridTextColumn Header="Email"  Binding="{Binding Email}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

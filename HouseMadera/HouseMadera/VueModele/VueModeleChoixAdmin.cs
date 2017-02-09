@@ -54,7 +54,9 @@ namespace HouseMadera.VueModele
         private void AClient()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            // TODO : lancer fenetre admin client, fermer cette vue 
+            VueClientList vcl = new VueClientList();
+            vcl.Show();
+            window.Close();
         }
 
         private void AProjet()
