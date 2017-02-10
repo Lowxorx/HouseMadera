@@ -121,39 +121,25 @@
                 FontSize="27"
                 FontWeight="Bold" />
             <Label
-                Width="198"
-                Margin="80,603,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Prix HT :"
-                FontSize="18" />
-            <Label
-                Width="198"
-                Margin="80,741,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Statut devis :"
-                FontSize="18" />
-            <Label
-                Width="482"
+                Width="692"
                 Height="32"
-                Margin="290,603,0,0"
+                Margin="80,803,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{Binding DetailsPrixTTCProduit}"
                 FontSize="18" />
             <Label
-                Width="482"
+                Width="692"
                 Height="32"
-                Margin="290,670,0,0"
+                Margin="80,670,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{Binding DetailsPrixProduit}"
                 FontSize="18" />
             <Label
-                Width="482"
+                Width="692"
                 Height="32"
-                Margin="290,741,0,0"
+                Margin="80,741,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{Binding DetailsStatutDevisProduit}"
@@ -175,7 +161,8 @@
                 VerticalAlignment="Top"
                 Command="{Binding GenererDevis}"
                 Content="GENERER LE DEVIS"
-                FontSize="27" />
+                FontSize="27"
+                IsEnabled="{Binding GenBtnActif}" />
             <Button
                 Width="525"
                 Height="185"
@@ -184,25 +171,12 @@
                 VerticalAlignment="Top"
                 Command="{Binding GenererPlan}"
                 Content="GENERER LE PLAN"
-                FontSize="27" />
+                FontSize="27"
+                IsEnabled="{Binding GenBtnActif}" />
             <Label
-                Width="198"
-                Margin="80,670,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Prix TTC :"
-                FontSize="18" />
-            <Label
-                Width="198"
-                Margin="80,802,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Statut produit :"
-                FontSize="18" />
-            <Label
-                Width="482"
+                Width="692"
                 Height="32"
-                Margin="290,802,0,0"
+                Margin="80,603,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{Binding DetailsStatutProduit}"

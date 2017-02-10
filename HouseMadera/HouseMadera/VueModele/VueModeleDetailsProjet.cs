@@ -140,7 +140,6 @@ namespace HouseMadera.VueModele
             }
         }
 
-
         private void WindowLoadedEvent()
         {
             Console.WriteLine("window loaded event");
@@ -158,12 +157,35 @@ namespace HouseMadera.VueModele
             RaisePropertyChanged(() => ListeProduit);
         }
 
+        private bool genBtnActif = false;
+        public bool GenBtnActif
+        {
+            get { return genBtnActif; }
+            set
+            {
+                genBtnActif = value;
+                RaisePropertyChanged("GenBtnActif");
+            }
+        }
+
         private void ChangeDetailsProduits()
         {
-            DetailsPrixProduit = Convert.ToString(selectedProduit.Devis.PrixHT) + @" €";
-            DetailsPrixTTCProduit = Convert.ToString(selectedProduit.Devis.PrixTTC) + @" €";
-            DetailsStatutDevisProduit = Convert.ToString(selectedProduit.Devis.StatutDevis.Nom);
-           // DetailsStatutProduit = Convert.ToString(selectedProduit.StatutProduit.Nom);
+            if (selectedProduit.StatutProduit.Nom == "Valide")
+            {
+                DetailsPrixProduit = string.Format("Prix HT : {0} €", Convert.ToString(selectedProduit.Devis.PrixHT));
+                DetailsPrixTTCProduit = string.Format("Prix TTC : {0} €", Convert.ToString(selectedProduit.Devis.PrixTTC));
+                DetailsStatutDevisProduit = string.Format("Statut du devis : {0}", Convert.ToString(selectedProduit.Devis.StatutDevis.Nom));
+                DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
+                GenBtnActif = true;
+            }
+            else
+            {
+                DetailsPrixProduit = "";
+                DetailsPrixTTCProduit = "";
+                DetailsStatutDevisProduit = "";
+                DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
+                GenBtnActif = false;
+            }
         }
 
         private async void Logout()
