@@ -7,9 +7,9 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:utilites="clr-namespace:HouseMadera.Utilites"
-    
+    xmlns:vuemod="clr-namespace:HouseMadera.VueModele"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-   Width="1536"
+    Width="1536"
     Height="1024"
     MinWidth="1536"
     MinHeight="1024"
@@ -23,6 +23,11 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
+    
+    <Window.DataContext>
+        <vuemod:VueModeleClientEdit />
+    </Window.DataContext>
+
     <Grid>
         <Grid Margin="0,-3,0,931" Background="#FFA29A9A" >
             <Label

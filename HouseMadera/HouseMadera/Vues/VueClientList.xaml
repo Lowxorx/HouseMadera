@@ -25,7 +25,7 @@
     mc:Ignorable="d">
 
     <Window.DataContext>
-        <vuemod:VueModeleClient />
+        <vuemod:VueModeleClientList />
     </Window.DataContext>
 
     <Grid>
