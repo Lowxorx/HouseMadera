@@ -121,10 +121,13 @@
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
+    <Compile Include="DAL\Devis\DevisDAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
+    <Compile Include="DAL\Produit\ProduitDAL.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
+    <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Composant.cs" />
@@ -154,10 +157,14 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilities\ConnectivityMonitor.cs" />
     <Compile Include="Utilities\RegexUtilities.cs" />
-    <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
+    <Compile Include="VueModele\VueModeleChoixProjet.cs" />
+    <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
     <Compile Include="VueModele\VueModeleLogin.cs" />
-    <Compile Include="Vues\VueChoixAdmin.xaml.cs">
-      <DependentUpon>VueChoixAdmin.xaml</DependentUpon>
+    <Compile Include="Vues\VueChoixProjet.xaml.cs">
+      <DependentUpon>VueChoixProjet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueDetailsProjet.xaml.cs">
+      <DependentUpon>VueDetailsProjet.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
@@ -194,9 +201,15 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Page Include="Vues\VueChoixAdmin.xaml">
+    <Folder Include="DAL\Plan\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Vues\VueChoixProjet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueDetailsProjet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,18 +219,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\adminprojet.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\adminclient.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Resources\logomaderacolor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\logomaderacolorgreyclean.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resources\logomaderacolorgreyclean.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />

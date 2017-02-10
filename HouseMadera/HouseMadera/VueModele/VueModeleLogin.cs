@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
-using HouseMadera.DAL.Commercial;
+using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
@@ -71,30 +71,31 @@ namespace HouseMadera.VueModele
                 }
             }
         }
+
         private async void ConnexionExec()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
 
             if (pwCommercial != null && loginCommercial != null)
             {
-
                 var newCommercial = new Commercial{ Login = LoginCommercial, Password = PwCommercial };
                 using (var dal = new CommercialDAL(DAL.DAL.Bdd))
                 {
-                    string loginstatus = dal.Connect(newCommercial);
-                    Console.WriteLine("Code retour login : " + loginstatus);
-                    if (loginstatus == "0")
+                    string loginStatut = dal.Connect(newCommercial);
+                    Console.WriteLine("Code retour login : " + loginStatut);
+                    if (loginStatut == "0")
                     {
-                        VueChoixAdmin vcp = new VueChoixAdmin();
+                        VueChoixProjet vcp = new VueChoixProjet();
+                        ((VueModeleChoixProjet)vcp.DataContext).CommercialConnecte = newCommercial;
                         vcp.Show();
                         window.Close();
                     }
-                    else if (loginstatus == "1")
+                    else if (loginStatut == "1")
                     {
                         if (window != null)
                             await window.ShowMessageAsync("Erreur", "Nom d'utilisateur ou mot de passe incorrect");
                     }
-                    else if (loginstatus == "2")
+                    else if (loginStatut == "2")
                     {
                         if (window != null)
                             await window.ShowMessageAsync("Erreur", "Impossible de se connecter à la base de données");

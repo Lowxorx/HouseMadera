@@ -5,9 +5,10 @@
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utilities="clr-namespace:HouseMadera.Utilities"
-    xmlns:vuemod="clr-namespace:HouseMadera.VueModele"
+    xmlns:mod="clr-namespace:HouseMadera.Modeles"
+    xmlns:vm="clr-namespace:HouseMadera.VueModele"
     Title="Connexion - Mader'House"
     Width="1536"
     Height="1024"
@@ -24,7 +25,7 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Window.DataContext>
-        <vuemod:VueModeleLogin />
+        <vm:VueModeleLogin />
     </Window.DataContext>
     <Grid>
         <Grid Margin="0,0,0,968" Background="#FF676767">
@@ -95,8 +96,8 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
-                utilities:PwBoxAssistant.BindPassword="True"
-                utilities:PwBoxAssistant.BoundPassword="{Binding Path=PwCommercial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                mod:PwBoxAssistant.BindPassword="True"
+                mod:PwBoxAssistant.BoundPassword="{Binding Path=PwCommercial, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <PasswordBox.InputBindings>
                     <KeyBinding
                         Key="Enter"

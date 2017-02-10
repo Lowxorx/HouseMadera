@@ -86,9 +86,7 @@ namespace HouseMadera.DAL
         //}
         public static DbDataReader GetDataReader(DbCommand command)
         {
-
             return Connection.GetDataReader(command);
-
         }
 
         public static DbDataReader Get(string requete, IDictionary<string, object> parameters = null)

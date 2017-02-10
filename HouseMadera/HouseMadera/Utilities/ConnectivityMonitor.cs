@@ -7,25 +7,34 @@ namespace HouseMadera.Utilites
     {
         public bool IsOnline()
         {
-            Ping myPing = new Ping();
-            var host = "8.8.4.4";
-            int timeout = 1000;
-            PingReply reply = myPing.Send(host, timeout);
-            if (reply.Status == IPStatus.Success)
+            try
             {
-                Console.WriteLine("online");
-                ConnectivityStatus = true;
-                return true;
+                Ping myPing = new Ping();
+                var host = "8.8.4.4";
+                int timeout = 1000;
+                PingReply reply = myPing.Send(host, timeout);
+                if (reply.Status == IPStatus.Success)
+                {
+                    Console.WriteLine("online");
+                    ConnectivityStatut = true;
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("offline");
+                    ConnectivityStatut = false;
+                    return false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("offline");
-                ConnectivityStatus = false;
+                Logger.WriteEx(ex);
                 return false;
             }
+
         }
 
-        public static bool ConnectivityStatus { get; set; }
+        public static bool ConnectivityStatut { get; set; }
 
     }
 }
