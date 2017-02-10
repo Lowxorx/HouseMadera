@@ -25,18 +25,32 @@ namespace HouseMadera.DAL
             ObservableCollection<Projet> listeProjetEnCours = new ObservableCollection<Projet>();
             try
             {
-                Console.WriteLine("Connexion BDD");
-                string sql = @"SELECT * FROM Projet";
+                string sql = @"SELECT p.*, c.Id AS com_id, c.Nom AS com_nom, c.Prenom AS com_prenom, cli.Id AS cli_id, cli.Nom AS cli_nom, cli.Prenom AS cli_prenom
+                               FROM Projet p
+                               LEFT JOIN Commercial c ON p.Commercial_Id=c.Id
+                               LEFT JOIN Client cli ON p.Client_Id=cli.Id";
                 var reader = Get(sql, null);
                 while (reader.Read())
                 {
                     Projet p = new Projet()
                     {
-                        Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                        Nom = reader.GetString(reader.GetOrdinal("Nom")),
-                        Reference = reader.GetString(reader.GetOrdinal("Reference")),
-                        CreateDate = reader.GetDateTime(reader.GetOrdinal("CreateDate")),
-                        UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate"))
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Nom = Convert.ToString(reader["Nom"]),
+                        Reference = Convert.ToString(reader["Reference"]),
+                        CreateDate = Convert.ToDateTime(reader["CreateDate"]),
+                        UpdateDate = Convert.ToDateTime(reader["UpdateDate"]),
+                        Commercial = new Commercial()
+                        {
+                            Id = Convert.ToInt32(reader["com_id"]),
+                            Nom = Convert.ToString(reader["com_nom"]),
+                            Prenom = Convert.ToString(reader["com_prenom"])
+                        },
+                        Client = new Client()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("cli_id")),
+                            Nom = Convert.ToString(reader["cli_nom"]),
+                            Prenom = Convert.ToString(reader["cli_prenom"])
+                        }
                     };
                     listeProjetEnCours.Add(p);
                 }

@@ -127,6 +127,7 @@
     <Compile Include="DAL\Produit\ProduitDAL.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
+    <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Composant.cs" />

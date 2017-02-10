@@ -7,7 +7,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:HouseMadera.VueModele"
     Title="Détails d'un projet - Mader'House"
@@ -87,15 +86,17 @@
                 Content="Liste des produits du projet :"
                 FontSize="27"
                 FontWeight="Bold" />
-            <ListView
+            <DataGrid
                 Name="ListeProduits"
                 Width="692"
                 Height="347"
                 Margin="80,147,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                AutoGenerateColumns="False"
                 DisplayMemberPath="Nom"
                 FontSize="20"
+                IsReadOnly="True"
                 ItemsSource="{Binding ListeProduit}"
                 SelectedItem="{Binding SelectedProduit, Mode=TwoWay}">
                 <intr:Interaction.Triggers>
@@ -103,7 +104,14 @@
                         <cmd:EventToCommand Command="{Binding SelectedProduitCmd}" />
                     </intr:EventTrigger>
                 </intr:Interaction.Triggers>
-            </ListView>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
+                    <DataGridTextColumn Binding="{Binding Nom}" Header="Nom" />
+                    <DataGridTextColumn Binding="{Binding Devis.Nom}" Header="Devis" />
+                    <DataGridTextColumn Binding="{Binding Plan.Nom}" Header="Plan" />
+                    <DataGridTextColumn Binding="{Binding Projet.Nom}" Header="Projet" />
+                </DataGrid.Columns>
+            </DataGrid>
             <Label
                 Width="692"
                 Margin="80,535,0,0"
@@ -114,45 +122,41 @@
                 FontWeight="Bold" />
             <Label
                 Width="198"
-                Margin="80,589,0,0"
+                Margin="80,603,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="Date :"
+                Content="Prix HT :"
                 FontSize="18" />
             <Label
                 Width="198"
-                Margin="80,636,0,0"
+                Margin="80,741,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="Référence :"
-                FontSize="18" />
-            <Label
-                Width="198"
-                Margin="80,683,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Devis généré :"
+                Content="Statut devis :"
                 FontSize="18" />
             <Label
                 Width="482"
-                Margin="290,589,0,0"
+                Height="32"
+                Margin="290,603,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="{Binding DetailsDateProduit}"
+                Content="{Binding DetailsPrixTTCProduit}"
                 FontSize="18" />
             <Label
                 Width="482"
-                Margin="290,636,0,0"
+                Height="32"
+                Margin="290,670,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="{Binding DetailsRefProduit}"
+                Content="{Binding DetailsPrixProduit}"
                 FontSize="18" />
             <Label
                 Width="482"
-                Margin="290,683,0,0"
+                Height="32"
+                Margin="290,741,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="{Binding DetailsStatusDevisProduit}"
+                Content="{Binding DetailsStatutDevisProduit}"
                 FontSize="18" />
             <Button
                 Width="525"
@@ -181,6 +185,28 @@
                 Command="{Binding GenererPlan}"
                 Content="GENERER LE PLAN"
                 FontSize="27" />
+            <Label
+                Width="198"
+                Margin="80,670,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Prix TTC :"
+                FontSize="18" />
+            <Label
+                Width="198"
+                Margin="80,802,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Statut produit :"
+                FontSize="18" />
+            <Label
+                Width="482"
+                Height="32"
+                Margin="290,802,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="{Binding DetailsStatutProduit}"
+                FontSize="18" />
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
     </Grid>

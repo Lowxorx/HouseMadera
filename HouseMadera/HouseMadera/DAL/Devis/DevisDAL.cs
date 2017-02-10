@@ -3,16 +3,12 @@ using HouseMadera.Utilites;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
     public class DevisDAL : DAL
     {
 
-        private string erreur;
         const string NON_RENSEIGNE = "NULL";
 
         public DevisDAL(string nomBdd) : base(nomBdd)
@@ -58,12 +54,14 @@ namespace HouseMadera.DAL
             var reader = Get(sql, null);
             while (reader.Read())
             {
-                var devis = new Devis();
-                devis.Id = Convert.ToInt32(reader["Id"]);
-                devis.Nom = Convert.ToString(reader["Nom"]);
-                devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
-                devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
-                devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
+                var devis = new Devis()
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Nom = Convert.ToString(reader["Nom"]),
+                    DateCreation = Convert.ToDateTime(reader["DateCreation"]),
+                    PrixHT = Convert.ToDecimal(reader["PrixHT"]),
+                    PrixTTC = Convert.ToDecimal(reader["PrixTTC"])
+                };
                 listeDevis.Add(devis);
             }
             return listeDevis;
@@ -74,7 +72,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un objet Devis</returns>
-        public static Devis GetDevis(int id)
+        public Devis GetDevis(int id)
         {
 
             string sql = @"SELECT * FROM Devis WHERE Id = @1";
@@ -91,6 +89,7 @@ namespace HouseMadera.DAL
                 devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
                 devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
                 devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
+                devis.StatutDevis = new StatutDevis() { Id = Convert.ToInt32(reader["StatutDevis_Id"]) };
             }
             return devis;
         }
@@ -137,8 +136,7 @@ namespace HouseMadera.DAL
             if (IsDevisExist(devis))
                 throw new Exception("Le devis est déjà enregistré.");
 
-            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id)
-                        VALUES(@1,@2,@3,@4,@5)";
+            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id) VALUES(@1,@2,@3,@4,@5)";
             var parameters = new Dictionary<string, object>() {
                 {"@1",devis.Nom },
                 {"@2",devis.DateCreation },

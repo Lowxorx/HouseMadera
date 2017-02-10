@@ -1,29 +1,22 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
+using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using HouseMadera.DAL;
 using System.Windows.Input;
-using System.ComponentModel;
-using System.Windows.Data;
 
 namespace HouseMadera.VueModele
 {
     public class VueModeleChoixProjet : ViewModelBase
     {
-
-        public ICommand NouveauProjet { get; private set; }
-        public ICommand ReprendreProjet { get; private set; }
-        public ICommand WindowLoaded { get; private set; }
-        public ICommand Deconnexion { get; private set; }
-
         [PreferredConstructor]
         public VueModeleChoixProjet()
         {
@@ -32,11 +25,15 @@ namespace HouseMadera.VueModele
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
             Deconnexion = new RelayCommand(Logout);
 
-            using (var dal = new ProjetDAL(DAL.DAL.Bdd))
-            {
-                ListeProjets = new ObservableCollection<Projet>(dal.ChargerProjets());
-            }
+            // Actions à effectuer au chargement de la vue :
+            ChargerProjet();
+            ChargerCommerciaux();
         }
+
+        public ICommand NouveauProjet { get; private set; }
+        public ICommand ReprendreProjet { get; private set; }
+        public ICommand WindowLoaded { get; private set; }
+        public ICommand Deconnexion { get; private set; }
 
         private Projet selectedProjet;
         public Projet SelectedProjet
@@ -48,6 +45,46 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private string commercialCoLabel;
+        public string CommercialCoLabel
+        {
+            get { return commercialCoLabel; }
+            set { commercialCoLabel = value; }
+        }
+
+        private string filtreProjet;
+
+        public string FiltreProjet
+        {
+            get { return filtreProjet; }
+            set
+            {
+                filtreProjet = value;
+                RaisePropertyChanged("FiltreProjet");
+                FiltrerProjetsParFiltrePerso();
+            }
+        }
+
+
+        private Commercial commercialSelectionne;
+        public Commercial CommercialSelectionne
+        {
+            get { return commercialSelectionne; }
+            set
+            {
+                commercialSelectionne = value;
+                FiltrerProjetsParCommerciaux();
+                RaisePropertyChanged("CommercialSelectionne");
+            }
+        }
+
+        private Commercial commercialConnecte;
+        public Commercial CommercialConnecte
+        {
+            get { return commercialConnecte; }
+            set { commercialConnecte = value; }
+        }
+
         private ObservableCollection<Projet> listeProjets;
         public ObservableCollection<Projet> ListeProjets
         {
@@ -57,8 +94,26 @@ namespace HouseMadera.VueModele
             }
             set
             {
+                if (listeProjets == value)
+                    return;
                 listeProjets = value;
                 RaisePropertyChanged("ListeProjets");
+            }
+        }
+
+        private ObservableCollection<Projet> listeProjetsFiltre = new ObservableCollection<Projet>();
+        public ObservableCollection<Projet> ListeProjetsFiltre
+        {
+            get
+            {
+                return listeProjetsFiltre;
+            }
+            set
+            {
+                if (listeProjetsFiltre == value)
+                    return;
+                listeProjetsFiltre = value;
+                RaisePropertyChanged("ListeProjetsFiltre");
             }
         }
 
@@ -68,6 +123,13 @@ namespace HouseMadera.VueModele
             get
             {
                 return listCommerciaux;
+            }
+            set
+            {
+                if (listCommerciaux == value)
+                    return;
+                listCommerciaux = value;
+                RaisePropertyChanged("ListCommerciaux");
             }
         }
 
@@ -97,19 +159,88 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private void ChargerProjet()
+        {
+            using (var dal = new ProjetDAL(DAL.DAL.Bdd))
+            {
+                ListeProjets = new ObservableCollection<Projet>(dal.ChargerProjets());
+                RaisePropertyChanged(() => ListeProjets);
+            }
+        }
+
+        private void ChargerCommerciaux()
+        {
+            using (var dal = new CommercialDAL(DAL.DAL.Bdd))
+            {
+                ListCommerciaux = new ObservableCollection<Commercial>(dal.ChargerCommerciaux());
+                RaisePropertyChanged(() => ListCommerciaux);
+            }
+        }
+
+        private void ChargerDetailsCommercialConnecte()
+        {
+            using (var dal = new CommercialDAL(DAL.DAL.Bdd))
+            {
+                CommercialConnecte = dal.GetCommercial(CommercialConnecte.Login);
+                CommercialCoLabel = String.Format("Connecté en tant que {0} {1}", CommercialConnecte.Prenom, CommercialConnecte.Nom);
+                RaisePropertyChanged(() => CommercialConnecte);
+                RaisePropertyChanged(() => CommercialCoLabel);
+            }
+        }
+
+        private void FiltrerProjetsParCommerciaux()
+        {
+            ListeProjetsFiltre.Clear();
+            int filtre = CommercialSelectionne.Id;
+            foreach (Projet p in ListeProjets)
+            {
+                if (p.Commercial.Id == filtre)
+                {
+                    ListeProjetsFiltre.Add(p);
+                }
+            }
+            RaisePropertyChanged(() => ListeProjetsFiltre);
+        }
+
+        private void FiltrerProjetsParFiltrePerso()
+        {
+            ObservableCollection<Projet> listeProjetTmp = new ObservableCollection<Projet>();
+            string filtre = FiltreProjet;
+            if (filtre.Length == 0)
+            {
+                FiltrerProjetsParCommerciaux();
+            }
+            else
+            {
+                FiltrerProjetsParCommerciaux();
+                foreach (Projet p in ListeProjetsFiltre)
+                {
+                    if (p.Nom.Contains(filtre) || p.Client.Nom.Contains(filtre) || p.Client.Prenom.Contains(filtre))
+                    {
+                        listeProjetTmp.Add(p);
+                    }
+                }
+                ListeProjetsFiltre = listeProjetTmp;
+                RaisePropertyChanged(() => ListeProjetsFiltre);
+            }
+        }
+
+        private void SelectionnerCommercialDefaut()
+        {
+            foreach(Commercial c in ListCommerciaux)
+            {
+                if (c.Login == CommercialConnecte.Login)
+                {
+                    CommercialSelectionne = c;
+                }
+            }
+        }
+
         private void WindowLoadedEvent()
         {
             Console.WriteLine("window loaded event");
-            //using (var dal = new ProjetDAL(DAL.DAL.Bdd))
-            //{
-            //    listeProjets = dal.ChargerProjets();
-            //    RaisePropertyChanged(() => ListeProjets);
-            //}
-            using (var dal = new CommercialDAL(DAL.DAL.Bdd))
-            {
-                listCommerciaux = dal.ChargerCommerciaux();
-                RaisePropertyChanged(() => ListCommerciaux);
-            }
+            ChargerDetailsCommercialConnecte();
+            SelectionnerCommercialDefaut();
         }
 
         private async void Logout()
@@ -134,5 +265,6 @@ namespace HouseMadera.VueModele
                 }
             }
         }
+
     }
 }

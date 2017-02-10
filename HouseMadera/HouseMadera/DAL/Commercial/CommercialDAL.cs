@@ -21,9 +21,9 @@ namespace HouseMadera.DAL
         /// Selectionne tous les Commerciaux enregistrés en base
         /// </summary>
         /// <returns>Une collection d'objets Commercial</returns>
-        public ObservableCollection<Commercial> ChargerCommerciaux()
+        public List<Commercial> ChargerCommerciaux()
         {
-            ObservableCollection<Modeles.Commercial> listeCommerciaux = new ObservableCollection<Modeles.Commercial>();
+            List<Commercial> listeCommerciaux = new List<Commercial>();
             try
             {
                 Console.WriteLine("Connexion BDD");
@@ -31,7 +31,13 @@ namespace HouseMadera.DAL
                 var reader = Get(sql, null);
                 while (reader.Read())
                 {
-                    Modeles.Commercial c = new Modeles.Commercial() { Nom = reader.GetString(reader.GetOrdinal("Nom")), Prenom = reader.GetString(reader.GetOrdinal("Prenom")) };
+                    Commercial c = new Commercial()
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Login = Convert.ToString(reader["Login"]),
+                        Nom = Convert.ToString(reader["Nom"]),
+                        Prenom = Convert.ToString(reader["Prenom"])
+                    };
                     listeCommerciaux.Add(c);
                 }
                 return listeCommerciaux;
@@ -66,16 +72,16 @@ namespace HouseMadera.DAL
                     {"@1",commercial.Login },
                     {"@2",commercial.Password }
                 };
-                string connexionStatus = "1";
+                string connexionStatut = "1";
 
                 var reader = Get(sql, parameters);
                 while (reader.Read())
                 {
                     Console.WriteLine("{0}\t{1}", reader.GetInt32(0),reader.GetString(1));
-                    connexionStatus = "0";
+                    connexionStatut = "0";
                 }
                 reader.Close();
-                return connexionStatus;
+                return connexionStatut;
             }
             catch (Exception ex)
             {
@@ -117,6 +123,34 @@ namespace HouseMadera.DAL
             }
             return commercial;
 
+        }
+
+        /// <summary>
+        /// Selectionne le premier comemrcial avec le Login en paramètre
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns>Un objet Commercial</returns>
+        public Commercial GetCommercial(string login)
+        {
+
+            string sql = @"
+                            SELECT * FROM Commercial
+                            WHERE Login = @1";
+            var parametres = new Dictionary<string, object>()
+            {
+                {"@1", login}
+            };
+            var reader = Get(sql, parametres);
+            var commercial = new Commercial();
+            while (reader.Read())
+            {
+                commercial.Id = Convert.ToInt32(reader["Id"]);
+                commercial.Nom = Convert.ToString(reader["Nom"]);
+                commercial.Prenom = Convert.ToString(reader["Prenom"]);
+                commercial.Login = Convert.ToString(reader["Login"]);
+                commercial.Password = Convert.ToString(reader["Password"]);
+            }
+            return commercial;
         }
 
         #endregion

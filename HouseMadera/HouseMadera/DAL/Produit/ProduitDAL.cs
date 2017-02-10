@@ -25,7 +25,14 @@ namespace HouseMadera.DAL
             ObservableCollection<Produit> listeProduit = new ObservableCollection<Produit>();
             try
             {
-                string sql = @"SELECT * FROM Produit WHERE Projet_Id=@1";
+                string sql = @"SELECT p.*, d.Id AS id_devis, d.Nom AS nom_devis, d.PrixTTC AS prixttc_devis, d.PrixHT AS prixht_devis, pl.Nom AS nom_plan, pl.CreateDate AS date_plan, pr.Nom AS nom_projet, sd.Nom AS statutdevis 
+                               FROM Produit p 
+                               LEFT JOIN Devis d ON p.Devis_Id=d.Id
+                               LEFT JOIN StatutDevis sd ON d.StatutDevis_Id=sd.Id
+                               LEFT JOIN Plan pl ON p.Plan_Id=pl.Id 
+                               LEFT JOIN Projet pr ON p.Projet_Id=pr.Id 
+                               WHERE Projet_Id=@1";
+
                 var parametres = new Dictionary<string, object>()
                 {
                     {"@1", p.Id}
@@ -36,9 +43,23 @@ namespace HouseMadera.DAL
                     var produit = new Produit();
                     produit.Id = Convert.ToInt32(reader["Id"]);
                     produit.Nom = Convert.ToString(reader["Nom"]);
-                    //produit.Devis = Convert.ToString(reader["prenom"]);
-                    //produit.Plan = Convert.ToString(reader["adresse1"]);
-                    //produit.Projet = ProjetDAL.SelectionnerProjet(p.Nom);
+                    produit.Devis = new Devis()
+                    {
+                        Nom = Convert.ToString(reader["nom_devis"]),
+                        Id = Convert.ToInt32(reader["id_devis"]),
+                        PrixTTC = Convert.ToDecimal(reader["prixttc_devis"]),
+                        PrixHT = Convert.ToDecimal(reader["prixht_devis"]),
+                        StatutDevis = new StatutDevis() { Nom = reader["statutdevis"].ToString() }
+                    };
+                    produit.Plan = new Plan()
+                    {
+                        Nom = Convert.ToString(reader["nom_plan"]),
+                        CreateDate = Convert.ToDateTime(reader["date_plan"])
+                    };
+                    produit.Projet = new Projet()
+                    {
+                        Nom = Convert.ToString(reader["nom_projet"])
+                    };
                     listeProduit.Add(produit);
                 }
                 return listeProduit;

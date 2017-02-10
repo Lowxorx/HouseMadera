@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-    xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:HouseMadera.VueModele"
     Title="Selection d'un projet - Mader'House"
@@ -37,7 +36,7 @@
             <Label
                 x:Name="label"
                 Height="65"
-                Margin="245,10,80,0"
+                Margin="411,10,732,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
@@ -68,11 +67,9 @@
                 Source="../Resources/logomaderacolorgreyclean.png" />
             <Button
                 x:Name="btReprendreProjet"
-                Width="490"
-                Height="132"
-                Margin="1028,656,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                Height="185"
+                Margin="851,0,150,48"
+                VerticalAlignment="Bottom"
                 Command="{Binding ReprendreProjet}"
                 Content="Reprendre un projet"
                 FontSize="23" />
@@ -80,9 +77,9 @@
                 x:Name="btNouveauProjet"
                 Width="527"
                 Height="185"
-                Margin="155,358,0,0"
+                Margin="150,0,0,48"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                VerticalAlignment="Bottom"
                 Command="{Binding NouveauProjet}"
                 Content="Nouveau Projet"
                 FontSize="23" />
@@ -90,11 +87,12 @@
                 x:Name="cbListeCommerciaux"
                 Width="490"
                 Height="58"
-                Margin="1028,166,0,0"
+                Margin="10,101,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                FontSize="18"
-                ItemsSource="{Binding ListCommerciaux}">
+                FontSize="25"
+                ItemsSource="{Binding ListCommerciaux}"
+                SelectedItem="{Binding CommercialSelectionne, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock>
@@ -108,32 +106,82 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <ListBox
+            <DataGrid
                 x:Name="lbListeProjets"
-                Width="490"
-                Height="337"
-                Margin="1028,308,0,0"
+                Width="1508"
+                Height="460"
+                Margin="10,191,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                AutoGenerateColumns="False"
                 BorderThickness="1"
                 DisplayMemberPath="Nom"
                 FontSize="20"
-                ItemsSource="{Binding ListeProjets}"
-                SelectedItem="{Binding SelectedProjet}" />
+                IsReadOnly="True"
+                ItemsSource="{Binding ListeProjetsFiltre}"
+                SelectedItem="{Binding SelectedProjet}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="200"
+                        Binding="{Binding Nom}"
+                        Header="Nom" />
+                    <DataGridTextColumn
+                        Width="280"
+                        Binding="{Binding Reference}"
+                        Header="Référence" />
+                    <DataGridTemplateColumn
+                        Width="300"
+                        CanUserSort="True"
+                        Header="Commercial"
+                        SortMemberPath="Nom">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Commercial.Nom}" />
+                                    <Label Content="{Binding Commercial.Prenom}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn
+                        Width="300"
+                        CanUserSort="True"
+                        Header="Client"
+                        SortMemberPath="Nom">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding Client.Nom}" />
+                                    <Label Content="{Binding Client.Prenom}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
             <TextBox
                 x:Name="tbFiltreProjets"
                 Width="490"
-                Height="64"
-                Margin="1028,234,0,0"
+                Height="58"
+                Margin="505,101,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
                 Controls:TextBoxHelper.Watermark="Rechercher un projet"
-                FontSize="22"
+                FontSize="25"
                 Text="{Binding FiltreProjet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextAlignment="Center"
                 TextWrapping="Wrap" />
         </Grid>
-        <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
+        <Grid Margin="0,940,0,0" Background="#FFA29A9A">
+            <Label
+                x:Name="labelCommercialCo"
+                Width="994"
+                Margin="4,7,0,4"
+                HorizontalAlignment="Left"
+                VerticalContentAlignment="Center"
+                Content="{Binding CommercialCoLabel}"
+                FontFamily="Verdana"
+                FontSize="25" />
+        </Grid>
     </Grid>
 </Controls:MetroWindow>

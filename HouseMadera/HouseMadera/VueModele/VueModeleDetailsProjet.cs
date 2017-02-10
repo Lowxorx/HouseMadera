@@ -17,6 +17,18 @@ namespace HouseMadera.VueModele
     public class VueModeleDetailsProjet : ViewModelBase
     {
 
+        [PreferredConstructor]
+        public VueModeleDetailsProjet()
+        {
+            WindowLoaded = new RelayCommand(WindowLoadedEvent);
+            Deconnexion = new RelayCommand(Logout);
+            Retour = new RelayCommand(RetourAdminProjet);
+            EditerProduit = new RelayCommand(EditionProduit);
+            GenererDevis = new RelayCommand(GenDevis);
+            GenererPlan = new RelayCommand(GenPlan);
+            SelectedProduitCmd = new RelayCommand(ChangeDetailsProduits);
+        }
+
         public ICommand WindowLoaded { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public ICommand Retour { get; private set; }
@@ -65,7 +77,12 @@ namespace HouseMadera.VueModele
             {
                 return listeProduit;
             }
-        }
+            set
+            {
+                listeProduit = value;
+                RaisePropertyChanged(() => ListeProduit);
+            }
+        }  
 
         private string titreProjet;
         public string TitreProjet
@@ -78,56 +95,62 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private string detailsDateProduit;
-        public string DetailsDateProduit
+        private string detailsPrixTTCProduit;
+        public string DetailsPrixTTCProduit
         {
-            get { return detailsDateProduit; }
+            get { return detailsPrixTTCProduit; }
             set
             {
-                detailsDateProduit = value;
-                RaisePropertyChanged(() => DetailsDateProduit);
+                detailsPrixTTCProduit = value;
+                RaisePropertyChanged(() => DetailsPrixTTCProduit);
             }
         }
 
-        private string detailsRefProduit;
-        public string DetailsRefProduit
+        private string detailsPrixProduit;
+        public string DetailsPrixProduit
         {
-            get { return detailsRefProduit; }
+            get { return detailsPrixProduit; }
             set
             {
-                detailsRefProduit = selectedProduit.Id.ToString();
-                RaisePropertyChanged(() => DetailsRefProduit);
+                detailsPrixProduit = value;
+                RaisePropertyChanged(() => DetailsPrixProduit);
             }
         }
 
-        private string detailsStatusDevisProduit;
-        public string DetailsStatusDevisProduit
+        private string detailsStatutDevisProduit;
+        public string DetailsStatutDevisProduit
         {
-            get { return detailsStatusDevisProduit; }
+            get { return detailsStatutDevisProduit; }
             set
             {
-                detailsStatusDevisProduit = value;
-                RaisePropertyChanged(() => DetailsStatusDevisProduit);
+                detailsStatutDevisProduit = value;
+                RaisePropertyChanged(() => DetailsStatutDevisProduit);
             }
         }
 
-        [PreferredConstructor]
-        public VueModeleDetailsProjet()
+        private string detailsStatutProduit;
+
+        public string DetailsStatutProduit
         {
-            WindowLoaded = new RelayCommand(WindowLoadedEvent);
-            Deconnexion = new RelayCommand(Logout);
-            Retour = new RelayCommand(RetourAdminProjet);
-            EditerProduit = new RelayCommand(EditionProduit);
-            GenererDevis = new RelayCommand(GenDevis);
-            GenererPlan = new RelayCommand(GenPlan);
-            SelectedProduitCmd = new RelayCommand(ChangeDetailsProduits);
+            get { return  detailsStatutProduit; }
+            set
+            {
+                detailsStatutProduit = value;
+                RaisePropertyChanged(() => DetailsStatutProduit);
+            }
         }
-        
+
+
         private void WindowLoadedEvent()
         {
             Console.WriteLine("window loaded event");
-            TitreProjet = @"Détails du projet " + selectedProjet.Nom;
-            RaisePropertyChanged(() => TitreProjet);
+            // Actions à effectuer au lancement du form :
+            RecupProduitsParProjet();
+            ActualiserTitreForm();
+        }
+
+        private void RecupProduitsParProjet()
+        {
             using (var dal = new ProduitDAL(DAL.DAL.Bdd))
             {
                 listeProduit = dal.GetAllProduitsByProjet(selectedProjet);
@@ -137,8 +160,10 @@ namespace HouseMadera.VueModele
 
         private void ChangeDetailsProduits()
         {
-            DetailsRefProduit = selectedProduit.Id.ToString();
-
+            DetailsPrixProduit = Convert.ToString(selectedProduit.Devis.PrixHT) + @" €";
+            DetailsPrixTTCProduit = Convert.ToString(selectedProduit.Devis.PrixTTC) + @" €";
+            DetailsStatutDevisProduit = Convert.ToString(selectedProduit.Devis.StatutDevis.Nom);
+           // DetailsStatutProduit = Convert.ToString(selectedProduit.StatutProduit.Nom);
         }
 
         private async void Logout()
@@ -254,6 +279,11 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private void ActualiserTitreForm()
+        {
+            TitreProjet = @"Détails du projet " + selectedProjet.Nom;
+            RaisePropertyChanged(() => TitreProjet);
+        }
 
     }
 }
