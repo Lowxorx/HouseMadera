@@ -7,5 +7,6 @@
         public Projet Projet { get; set; }
         public Devis Devis { get; set; }
         public Plan Plan { get; set; }
+        public StatutProduit StatutProduit { get; set; }
     }
 }

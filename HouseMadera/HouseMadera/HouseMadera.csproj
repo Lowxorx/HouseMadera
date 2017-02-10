@@ -130,6 +130,7 @@
     <Compile Include="Modeles\Composant.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
+    <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
     <Compile Include="Modeles\Finition.cs" />
     <Compile Include="Modeles\Gamme.cs" />
