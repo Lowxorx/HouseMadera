@@ -204,6 +204,8 @@ namespace HouseMadera.VueModele
                 if (result == MessageDialogResult.Affirmative)
                 {
                     VueLogin vl = new VueLogin();
+                    vuePrecedente.Show();
+                    vuePrecedente.Close();
                     window.Close();
                     vl.Show();
 
@@ -213,7 +215,7 @@ namespace HouseMadera.VueModele
 
         private async void RetourAdminProjet()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
             {
                 var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings

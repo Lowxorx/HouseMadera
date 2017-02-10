@@ -157,9 +157,13 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilities\ConnectivityMonitor.cs" />
     <Compile Include="Utilities\RegexUtilities.cs" />
+    <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
     <Compile Include="VueModele\VueModeleChoixProjet.cs" />
     <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
     <Compile Include="VueModele\VueModeleLogin.cs" />
+    <Compile Include="Vues\VueChoixAdmin.xaml.cs">
+      <DependentUpon>VueChoixAdmin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\VueChoixProjet.xaml.cs">
       <DependentUpon>VueChoixProjet.xaml</DependentUpon>
     </Compile>
@@ -205,6 +209,10 @@
     <Folder Include="DAL\Plan\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Vues\VueChoixAdmin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Vues\VueChoixProjet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -219,6 +227,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\adminclient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\adminprojet.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\logomaderacolor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

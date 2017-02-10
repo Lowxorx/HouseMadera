@@ -23,6 +23,7 @@ namespace HouseMadera.VueModele
             NouveauProjet = new RelayCommand(CreationProjet);
             ReprendreProjet = new RelayCommand(RepriseProjet);
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
+            Retour = new RelayCommand(RetourAdminProjet);
             Deconnexion = new RelayCommand(Logout);
 
             // Actions à effectuer au chargement de la vue :
@@ -33,6 +34,7 @@ namespace HouseMadera.VueModele
         public ICommand NouveauProjet { get; private set; }
         public ICommand ReprendreProjet { get; private set; }
         public ICommand WindowLoaded { get; private set; }
+        public ICommand Retour { get; private set; }
         public ICommand Deconnexion { get; private set; }
 
         private Projet selectedProjet;
@@ -140,7 +142,7 @@ namespace HouseMadera.VueModele
 
         private async void RepriseProjet()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().First();
 
             if (selectedProjet != null)
             {
@@ -185,6 +187,26 @@ namespace HouseMadera.VueModele
                 CommercialCoLabel = String.Format("Connecté en tant que {0} {1}", CommercialConnecte.Prenom, CommercialConnecte.Nom);
                 RaisePropertyChanged(() => CommercialConnecte);
                 RaisePropertyChanged(() => CommercialCoLabel);
+            }
+        }
+
+        private async void RetourAdminProjet()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    window.Close();
+                }
             }
         }
 
@@ -245,7 +267,7 @@ namespace HouseMadera.VueModele
 
         private async void Logout()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().First();
             if (window != null)
             {
                 var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings

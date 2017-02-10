@@ -12,10 +12,11 @@ namespace HouseMadera.Vues
         public VueLogin()
         {
             InitializeComponent();
-            var testConnection = new ConnectivityMonitor();
-            var isOnline = testConnection.IsOnline();
-            var bdd = isOnline ? "MYSQL" : "SQLITE";
-            Console.WriteLine("Etat de la connexion\n En ligne ? : {0}\n Bdd choisie :{1}", isOnline, bdd);
+
+            // Check de la connexion
+            ConnectivityMonitor testConnection = new ConnectivityMonitor();
+            bool isOnline = testConnection.IsOnline();
+            string bdd = isOnline ? "MYSQL" : "SQLITE";
             DAL.DAL.Bdd = bdd;
 
         }

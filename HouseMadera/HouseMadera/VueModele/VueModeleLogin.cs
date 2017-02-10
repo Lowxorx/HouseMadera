@@ -54,7 +54,8 @@ namespace HouseMadera.VueModele
 
         private async void Exit()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().First();
+
             if (window != null)
             {
                 var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment quitter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
@@ -74,7 +75,7 @@ namespace HouseMadera.VueModele
 
         private async void ConnexionExec()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().First();
 
             if (pwCommercial != null && loginCommercial != null)
             {
@@ -85,9 +86,9 @@ namespace HouseMadera.VueModele
                     Console.WriteLine("Code retour login : " + loginStatut);
                     if (loginStatut == "0")
                     {
-                        VueChoixProjet vcp = new VueChoixProjet();
-                        ((VueModeleChoixProjet)vcp.DataContext).CommercialConnecte = newCommercial;
-                        vcp.Show();
+                        VueChoixAdmin vca = new VueChoixAdmin();
+                        ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = newCommercial;
+                        vca.Show();
                         window.Close();
                     }
                     else if (loginStatut == "1")

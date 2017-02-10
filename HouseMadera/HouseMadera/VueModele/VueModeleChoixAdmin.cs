@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
+using HouseMadera.Modeles;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -27,6 +28,13 @@ namespace HouseMadera.VueModele
             Logout = new RelayCommand(Deco);
             AdminProjet = new RelayCommand(AProjet);
             AdminClient = new RelayCommand(AClient);
+        }
+
+        private Commercial commercialConnecte;
+        public Commercial CommercialConnecte
+        {
+            get { return commercialConnecte; }
+            set { commercialConnecte = value; }
         }
 
         private async void Deco()
@@ -60,7 +68,10 @@ namespace HouseMadera.VueModele
         private void AProjet()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            // TODO : lancer fenetre admin projet, fermer cette vue
+            VueChoixProjet vcp = new VueChoixProjet();
+            ((VueModeleChoixProjet)vcp.DataContext).CommercialConnecte = CommercialConnecte;
+            vcp.Show();
+            window.Close();
         }
     }
 }
