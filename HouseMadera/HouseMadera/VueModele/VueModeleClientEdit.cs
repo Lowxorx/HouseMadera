@@ -1,48 +1,122 @@
 ﻿using GalaSoft.MvvmLight;
+using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Utilites;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
 
 namespace HouseMadera.VueModele
 {
-    public class VueModeleClientEdit : ViewModelBase
+    public class VueModeleClientEdit : ViewModelBase, IDataErrorInfo
     {
         #region
-        private string _nom;
         public string Nom { get; set; }
-        private string _prenom;
         public string Prenom { get; set; }
-        private string _numero;
         public string Numero { get; set; }
-        private string _voie;
         public string Voie { get; set; }
-        private string _complement;
+        public string NomVoie { get; set; }
         public string Complement { get; set; }
-        private int _codepostal;
-        public int CodePostal { get; set; }
-        private string _localite;
-        public string Localite { get; set; }
-        private string _mobile;
+        private string codePostal;
+        public string CodePostal
+        {
+            get { return codePostal; }
+            set
+            {
+
+                
+                Communes.Clear();
+                //si la nouvelle valeur est différente de la précédente && si ce n'est pas un code postal
+                if ( CodePostal != value)
+                {
+                    //Dérouler la liste des suggestions si la liste n'est pas vide
+                    //Communes.Clear();
+                    Localite = string.IsNullOrEmpty(value) ? string.Empty : localite;
+                    codePostal = value;
+                    Communes = RechercherCommunes(value);
+                    SuggestionCommunes = Communes.Count > 0 && CodePostal.Length <5  ? Visibility.Visible : Visibility.Collapsed;
+                    
+                }
+                else
+                {
+                    SuggestionCommunes = Visibility.Collapsed;
+                }
+                RaisePropertyChanged(() => CodePostal);
+
+            }
+        }
+        private string localite;
+        public string Localite
+        {
+            get { return localite; }
+            set
+            {
+                localite = value;
+              
+                SuggestionCommunes = Visibility.Collapsed; //Réduit la liste de suggestion
+                RaisePropertyChanged(() => Localite);
+            }
+        }
+        private string mobile;
         public string Mobile { get; set; }
-        private string _telephone;
+        private string telephone;
         public string Telephone { get; set; }
-        private string _email;
+        private string email;
         public string Email { get; set; }
-        private string recherche;
         public string NomCommune { get; set; }
+        private List<Commune> communes;
+        public List<Commune> Communes
+        {
+            get { return communes; }
+            set
+            {
+                communes = value;
+                RaisePropertyChanged(() => Communes);
+            }
+        }
         public ObservableCollection<Client> Clients { get; set; }
         public RegexUtilities reg { get; set; }
+        private object suggestionCommunes;
+        public object SuggestionCommunes
+        {
+            get { return suggestionCommunes; }
+            set
+            {
+                suggestionCommunes = value;
+                RaisePropertyChanged(() => SuggestionCommunes);
+            }
+        }
+     
+
+        private Commune communeSelectionnee;
+        public Commune CommuneSelectionnee
+        {
+            get { return communeSelectionnee; }
+            set
+            {
+                if (value != null)
+                {
+                    communeSelectionnee = value;
+                    RaisePropertyChanged(() => CommuneSelectionnee);
+                    Localite = value.Nom_commune;
+                    CodePostal = Convert.ToString(value.Code_postal);
+                }
+            }
+        }
+
         #endregion
 
         public VueModeleClientEdit()
         {
-           
+            Communes = new List<Commune>();
             reg = new RegexUtilities();
+       
 
         }
 
-       
+
         public string Error
         {
             get
@@ -106,16 +180,26 @@ namespace HouseMadera.VueModele
         }
         #endregion
 
-        private string ExtractNomCommune(string communeSelected)
-        {
-            var offset = 7;
-            return communeSelected.Substring(offset, communeSelected.Length - offset);
-        }
 
-        private string ExtractCodePostal(string communeSelected)
+
+        #region METHODES
+        private List<Commune> RechercherCommunes(string codePostal)
         {
-            var offset = 0;
-            return communeSelected.Substring(offset, 5);
+            int i;
+            var isCodePostal = int.TryParse(codePostal, out i);
+
+            List<Commune> communes = new List<Commune>();
+            //TODO modifier "SQLITE" par Bdd
+            if (codePostal != string.Empty && isCodePostal)
+            {
+                using (var dal = new CommuneDAL("SQLITE"))
+                {
+                    communes = dal.GetFilteredCommunes(Convert.ToInt32(codePostal));
+                }
+            }
+
+            return communes;
         }
+        #endregion
     }
 }

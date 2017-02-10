@@ -23,7 +23,7 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
-    
+
     <Window.DataContext>
         <vuemod:VueModeleClientEdit />
     </Window.DataContext>
@@ -70,64 +70,203 @@
                 Source="../Resources/logomaderacolorgreyclean.png" />
 
             <Canvas HorizontalAlignment="Center" Height="750" Margin="78,80,0,80" Width="700" Grid.ColumnSpan="3">
-                <Label x:Name="label_ClientSignUp" Content="{iconPacks:PackIconFontAwesome Kind=User,
-                                                        Width=32,
-                                                        Height=32}" Height="50" Width="50"/>
-                <Label x:Name="label_Nom" Content="Nom" Canvas.Left="20" Canvas.Top="58"/>
-                <TextBox x:Name="textBox_Nom" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="58" Width="560"
-         Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Nom,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}" >
+                <Label
+                    x:Name="label_ClientSignUp"
+                    Content="{iconPacks:PackIconFontAwesome Kind=User, Width=32,Height=32}"
+                    Height="50"
+                    Width="50"/>
+                <Label
+                    x:Name="label_Nom"
+                    Content="Nom"
+                    Canvas.Left="20"
+                    Canvas.Top="58"/>
+                <TextBox 
+                    x:Name="textBox_Nom" 
+                    Height="25"
+                    Canvas.Left="120"
+                    TextWrapping="Wrap"
+                    Canvas.Top="58"
+                    Width="560"
+                    Text="{Binding Nom, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
 
-                </TextBox>
-                <Label x:Name="label_Prenom" Content="Prénom"  Canvas.Top="108" Canvas.Left="20"/>
-                <TextBox x:Name="textBox_Prenom" Height="25"  TextWrapping="Wrap"  Canvas.Top="108" Width="560"  Canvas.Right="20" Canvas.Left="120" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Prenom,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
 
-                <Label x:Name="label_AdresseSignUp" Content="{iconPacks:PackIconFontAwesome Kind=Home,
-                                                        Width=32,
-                                                        Height=32}" Height="50" Width="50" Canvas.Top="156"/>
+                <Label
+                    x:Name="label_Prenom"
+                    Content="Prénom"
+                    Canvas.Top="108"
+                    Canvas.Left="20"/>
+                <TextBox
+                    x:Name="textBox_Prenom"
+                    Height="25"
+                    TextWrapping="Wrap"
+                    Canvas.Top="108"
+                    Width="560"
+                    Canvas.Right="20"
+                    Canvas.Left="120"
+                    Text="{Binding Prenom ,UpdateSourceTrigger=PropertyChanged,  ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
 
-                <Label x:Name="label_AdresseNumero" Content="N°" Canvas.Left="20" Canvas.Top="211"/>
-                <TextBox x:Name="textBox_Numero" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="211" Width="60" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Numero,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
-                <Label x:Name="label_AdresseVoie" Content="Voie" Canvas.Left="360" Canvas.Top="212"/>
-                <ComboBox Canvas.Left="445" Canvas.Top="211" Height="25">
+                <Label
+                    x:Name="label_AdresseSignUp"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Home,Width=32, Height=32}"
+                    Height="50"
+                    Width="50"
+                    Canvas.Top="156"/>
+
+                <Label
+                    x:Name="label_AdresseNumero"
+                    Content="N°"
+                    Canvas.Left="20"
+                    Canvas.Top="211"/>
+                <TextBox
+                    x:Name="textBox_Numero"
+                    Height="25"
+                    Canvas.Left="120"
+                    TextWrapping="Wrap"
+                    Canvas.Top="211"
+                    Width="60" 
+                    Text="{Binding Numero, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                <Label
+                    x:Name="label_AdresseVoie"
+                    Content="Voie"
+                    Canvas.Left="360"
+                    Canvas.Top="212"/>
+                <ComboBox
+                    Canvas.Left="445"
+                    Canvas.Top="211"
+                    Height="25"
+                    >
                     <ComboBoxItem IsSelected="True">Rue</ComboBoxItem>
                     <ComboBoxItem >Chemin</ComboBoxItem>
                     <ComboBoxItem>Avenue</ComboBoxItem>
                     <ComboBoxItem>Boulevard</ComboBoxItem>
                     <ComboBoxItem>LieuDit</ComboBoxItem>
                 </ComboBox>
-                <Label x:Name="label_NomVoie" Content="Nom" Canvas.Left="20" Canvas.Top="261"/>
-                <TextBox x:Name="textBox_NomVoie" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="261" Width="560"  Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Voie,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
-                <Label x:Name="label_AdresseComplement" Content="Complement" Canvas.Left="20" Canvas.Top="311"/>
-                <TextBox x:Name="textBox_ComplementVoie" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="311" Width="560" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Complement,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
-                <Label x:Name="label_CodePostal" Content="Code Postal" Canvas.Left="20" Canvas.Top="371"/>
-                <TextBox x:Name="textBox_CodePostal" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="361" Width="183"  />
-                <ListBox x:Name="ListBox_Suggestion" Canvas.Left="120" Canvas.Top="385" Width="183" Height="100" ItemsSource="{Binding Communes}" Visibility="Collapsed"/>
-                <Label x:Name="label_Localite" Content="Localite" Canvas.Left="360" Canvas.Top="361"/>
-                <TextBox x:Name="textBox_Localite" Height="25" Canvas.Left="445" TextWrapping="Wrap"  Canvas.Top="360" Width="235" IsReadOnly="True"/>
-                <Label x:Name="label_TelephoneSignUp" Content="{iconPacks:PackIconFontAwesome Kind=Mobile,
+                <Label
+                    x:Name="label_NomVoie"
+                    Content="Voie"
+                    Canvas.Left="20"
+                    Canvas.Top="261"/>
+                <TextBox
+                    x:Name="textBox_NomVoie"
+                    Height="25"
+                    Canvas.Left="120"
+                    TextWrapping="Wrap"
+                    Canvas.Top="261"
+                    Width="560"
+                    Text="{Binding NomVoie,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
+                <Label
+                    x:Name="label_AdresseComplement"
+                    Content="Complément"
+                    Canvas.Left="20"
+                    Canvas.Top="311"/>
+                <TextBox
+                    x:Name="textBox_ComplementVoie"
+                    Height="25"
+                    Canvas.Left="120"
+                    TextWrapping="Wrap"
+                    Canvas.Top="311"
+                    Width="560"
+                    Text="{Binding Complement, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
+                <Label
+                    x:Name="label_CodePostal"
+                    Content="Code Postal"
+                    Canvas.Left="20"
+                    Canvas.Top="361"/>
+                <TextBox
+                    x:Name="textBox_CodePostal"
+                    Height="25"
+                    Canvas.Left="120"
+                    TextWrapping="Wrap"
+                    Canvas.Top="361"
+                    Width="183"
+                    Text="{Binding CodePostal,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
+                <ListBox
+                    x:Name="ListBox_Suggestion"
+                    Canvas.Left="120"
+                    Canvas.Top="388"
+                    Width="183"
+                    Height="100"
+                    ItemsSource="{Binding Communes}"
+                    Visibility="{Binding SuggestionCommunes}"
+                    SelectedItem="{Binding CommuneSelectionnee }"/>
+                <Label
+                    x:Name="label_Localite"
+                    Content="Localite"
+                    Canvas.Left="360"
+                    Canvas.Top="361"/>
+                <TextBox
+                    x:Name="textBox_Localite"
+                    Height="25" Canvas.Left="445"
+                    TextWrapping="Wrap"
+                    Canvas.Top="360"
+                    Width="235"
+                    IsReadOnly="True"
+                    Text="{Binding Localite}"/>
+                <Label
+                    x:Name="label_TelephoneSignUp"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Mobile,Width=32,Height=32}"
+                    Height="50"
+                    Width="50"
+                    Canvas.Top="420"/>
+                <Label
+                    x:Name="label_Mobile"
+                    Content="Mobile"
+                    Canvas.Left="20"
+                    Canvas.Top="483"/>
+                <TextBox
+                    x:Name="textBox_Mobile"
+                    Height="25"
+                    Canvas.Left="120"
+                    TextWrapping="Wrap"
+                    Canvas.Top="483"
+                    Width="180" 
+                    Text="{Binding Mobile, UpdateSourceTrigger=PropertyChanged, 
+                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                <Label
+                    x:Name="label_Telephone"
+                    Content="Telephone"
+                    Canvas.Left="360"
+                    Canvas.Top="482"/>
+                <TextBox
+                    x:Name="textBox_Telephone"
+                    Height="25"
+                    Canvas.Left="500"
+                    TextWrapping="Wrap"
+                    Canvas.Top="481"
+                    Width="180"
+                    Text="{Binding Telephone, UpdateSourceTrigger=PropertyChanged, 
+                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                <Label
+                    x:Name="label_EmailSignUp"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Envelope,
                                                         Width=32,
-                                                        Height=32}" Height="50" Width="50" Canvas.Top="420"/>
-                <Label x:Name="label_Mobile" Content="Mobile" Canvas.Left="20" Canvas.Top="483"/>
-                <TextBox x:Name="textBox_Mobile" Height="25" Canvas.Left="120" TextWrapping="Wrap"  Canvas.Top="483" Width="180"  Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Mobile,
+                                                        Height=32}"
+                    Height="50"
+                    Width="50"
+                    Canvas.Top="535"/>
+                <Label
+                    x:Name="label_Email"
+                    Content="Email"
+                    Canvas.Left="20"
+                    Canvas.Top="595"/>
+                <TextBox
+                    x:Name="textBox_Email"
+                    Height="25"
+                    Canvas.Left="123"
+                    TextWrapping="Wrap" 
+                    Canvas.Top="594"
+                    Width="180"
+                    Text="{Binding Email,UpdateSourceTrigger=LostFocus,
                 ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
-                <Label x:Name="label_Telephone" Content="Telephone" Canvas.Left="360" Canvas.Top="482"/>
-                <TextBox x:Name="textBox_Telephone" Height="25" Canvas.Left="500" TextWrapping="Wrap"  Canvas.Top="481" Width="180" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Telephone,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
-                <Label x:Name="label_EmailSignUp" Content="{iconPacks:PackIconFontAwesome Kind=Envelope,
-                                                        Width=32,
-                                                        Height=32}" Height="50" Width="50" Canvas.Top="535"/>
-                <Label x:Name="label_Email" Content="Email" Canvas.Left="20" Canvas.Top="595"/>
-                <TextBox x:Name="textBox_Email" Height="25" Canvas.Left="123" TextWrapping="Wrap"  Canvas.Top="594" Width="180" Text="{Binding UpdateSourceTrigger=PropertyChanged, Path=Email,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
-                <Button Name="Enregistrer" Canvas.Left="500" Canvas.Top="675" Width="180" Height="46" Content="{iconPacks:PackIconFontAwesome Kind=FloppyOutline,
+                <Button 
+                    Name="Enregistrer"
+                    Canvas.Left="500"
+                    Canvas.Top="675"
+                    Width="180"
+                    Height="46"
+                    Content="{iconPacks:PackIconFontAwesome Kind=FloppyOutline,
                                                         Width=32,
                                                         Height=32}" Background="LightGray">
-
                 </Button>
             </Canvas>
         </Grid>

@@ -155,7 +155,7 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilities\ConnectivityMonitor.cs" />
     <Compile Include="Utilities\RegexUtilities.cs" />
-    <Compile Include="Utilites\StringToIntValidationRule.cs" />
+    <Compile Include="Utilities\Voie.cs" />
     <Compile Include="VueModele\VueModeleClientList.cs" />
     <Compile Include="VueModele\VueModeleClientEdit.cs" />
     <Compile Include="VueModele\VueModeleCommune.cs" />
