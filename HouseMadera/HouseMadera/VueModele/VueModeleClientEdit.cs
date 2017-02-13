@@ -3,10 +3,13 @@ using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Utilites;
+using HouseMadera.Vues;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -150,8 +153,9 @@ namespace HouseMadera.VueModele
             set { email = value; }
         }
 
-
-        public string NomCommune { get; set; }
+       /// <summary>
+       /// Communes
+       /// </summary>
         private List<Commune> communes;
         public List<Commune> Communes
         {
@@ -162,7 +166,8 @@ namespace HouseMadera.VueModele
                 RaisePropertyChanged(() => Communes);
             }
         }
-        public RegexUtilities reg { get; set; }
+
+       
         private object suggestionCommunes;
         public object SuggestionCommunes
         {
@@ -220,18 +225,22 @@ namespace HouseMadera.VueModele
                 }
             }
         }
+
+        public RegexUtilities reg { get; set; }
         public ICommand Enregistrer { get; private set; }
+        public ICommand Retour { get; private set; }
         #endregion
 
         public VueModeleClientEdit()
         {
             Enregistrer = new RelayCommand(EnregistrerClient);
+            Retour = new RelayCommand(AfficherPagePrecedente);
             Communes = new List<Commune>();
             reg = new RegexUtilities();
             IsClientEnregistre = false;
         }
 
-
+    
 
         public string Error
         {
@@ -263,7 +272,7 @@ namespace HouseMadera.VueModele
                         break;
                     case "Complement":
                         result = reg.HasSpecialCharacters(Complement) ? "Caractères spéciaux non admis " : string.Empty;
-                        isChampsComplementOk = Complement == null || result != string.Empty ? false : true;
+                        isChampsComplementOk = Complement == null || result != string.Empty ? true : false;
                         break;
                     case "Mobile":
                         result = reg.IsValidTelephoneNumber(Mobile) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
@@ -279,7 +288,7 @@ namespace HouseMadera.VueModele
                         break;
                     case "Localite":
                         result = reg.HasSpecialCharacters(Localite) ? "Caractères spéciaux non admis " : string.Empty;
-                        isChampsLocaliteOk = Localite == null || result != string.Empty ? false : true;
+                       isChampsLocaliteOk = Localite == null || result != string.Empty ? false : true;
                         break;
                     case "CodePostal":
                         result = reg.HasSpecialCharacters(CodePostal) ? "Caractères spéciaux non admis " : string.Empty;
@@ -294,6 +303,14 @@ namespace HouseMadera.VueModele
         #endregion
 
         #region METHODES
+
+        private void AfficherPagePrecedente()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            VueClientList vcl = new VueClientList();
+            vcl.Show();
+            window.Close();
+        }
 
         private bool VerifierTouslesChamps()
         {

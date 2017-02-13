@@ -29,7 +29,7 @@
     </Window.DataContext>
 
     <Grid>
-        <Grid Margin="0,-3,0,931" Background="#FFA29A9A" Panel.ZIndex="20">
+        <Grid Margin="0,-3,0,931" Background="#FFA29A9A">
             <Label
                 x:Name="label"
                 Margin="618,10,616,0"
@@ -51,7 +51,7 @@
                                                         Width=16,
                                                         Height=16}" />
         </Grid>
-        <Grid Margin="0,53"  Panel.ZIndex="3">
+        <Grid Margin="0,53">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="121" />
                 <ColumnDefinition Width="503*" />
@@ -84,7 +84,7 @@
             <ComboBox x:Name="comboBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="208,308,0,0" VerticalAlignment="Top" Width="111" ItemsSource="{Binding filtres, Mode=OneWay}"   SelectedItem="{Binding Filtre}" />
 
             <TextBox x:Name="textBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="319,308,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="761" Grid.ColumnSpan="2" Text="{Binding Recherche,UpdateSourceTrigger=PropertyChanged}" />
-            <DataGrid x:Name="dataGrid" Grid.ColumnSpan="3" ItemsSource="{Binding Clients}"  HorizontalAlignment="Left" Height="400" Margin="83,429,0,0" VerticalAlignment="Top" Width="1356" AutoGenerateColumns="False">
+            <DataGrid x:Name="dataGrid" AlternatingRowBackground="Gainsboro" AlternationCount="2" Grid.ColumnSpan="3" ItemsSource="{Binding Clients}"  HorizontalAlignment="Left" Height="400" Margin="83,429,0,0" VerticalAlignment="Top" Width="1356" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
                     <DataGridTextColumn Header="Prenom" Binding="{Binding Prenom}"/>
