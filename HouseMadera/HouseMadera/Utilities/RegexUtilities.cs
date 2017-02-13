@@ -11,7 +11,7 @@ namespace HouseMadera.Utilites
         public bool IsValidEmail(string email)
         {
             invalid = false;
-            if (String.IsNullOrEmpty(email))
+            if (string.IsNullOrEmpty(email))
                 return true;
 
             try
@@ -75,24 +75,29 @@ namespace HouseMadera.Utilites
             }
         }
 
-        public bool IsValidName(string value)
+        public bool IsNomInvalide(string value)
         {
-            
-            var match = Regex.Match(value, @"\d+");
+
+            if (string.IsNullOrEmpty(value))
+                return false;
+            var match = Regex.Match(value, @"\d+"); //Le nom ne doit pas contenir de numero
             return match.Success;
                
         }
 
-        public bool IsValidNumeroVoie(string value)
-        {
-            var match = Regex.Match(value, @"^\d*\s?(bis|ter)?$");
-            return match.Success;
-        }
+        //public bool IsValidNumeroVoie(string value)
+        //{
+        //    if (string.IsNullOrEmpty(value))
+        //        return true;
+        //    var match = Regex.Match(value, @"^\d*\s?(bis|ter)?$");
+        //    return match.Success;
+        //}
 
         public bool HasSpecialCharacters(string value)
         {
-            var match = Regex.Match(value, @"[a-z\s]");
-            return match.Success;
+            if(string.IsNullOrEmpty(value))
+                return false;
+            return Regex.IsMatch(value, @"[!@#;.+/`\(\^\{\)\]@\[\]§%€\$\*]"); //Ne doi^t pas contenir de caractères spéciaux
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Utilites;
@@ -7,18 +8,69 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace HouseMadera.VueModele
 {
     public class VueModeleClientEdit : ViewModelBase, IDataErrorInfo
     {
-        #region
-        public string Nom { get; set; }
-        public string Prenom { get; set; }
-        public string Numero { get; set; }
-        public string Voie { get; set; }
-        public string NomVoie { get; set; }
-        public string Complement { get; set; }
+        #region PROPRIETES
+        private const string OBLIGATOIRE = "*";
+        private const int ACTIF = 1;
+        private const int INACTIF = 2;
+
+
+        /// <summary>
+        /// Nom
+        /// </summary>
+        private bool isChampsNomOk = false;
+        private string nom;
+        public string Nom
+        {
+            get { return nom; }
+            set
+            {
+                nom = value;
+            }
+        }
+
+        /// <summary>
+        /// Prenom
+        /// </summary>
+        private bool isChampsPrenomOk = false;
+        private string prenom;
+        public string Prenom
+        {
+            get { return prenom; }
+            set { prenom = value; }
+        }
+
+        /// <summary>
+        /// Voie
+        /// </summary>
+        private bool isChampsVoieOk = false;
+        private string voie;
+        public string Voie
+        {
+            get { return voie; }
+            set { voie = value; }
+        }
+
+        /// <summary>
+        /// Complement
+        /// </summary>
+        private bool isChampsComplementOk = false;
+        private string complement;
+        public string Complement
+        {
+            get { return complement; }
+            set { complement = value; }
+        }
+
+        /// <summary>
+        /// Code Postal
+        /// </summary>
+        private bool isChampsCodePostalOk = false;
         private string codePostal;
         public string CodePostal
         {
@@ -26,18 +78,18 @@ namespace HouseMadera.VueModele
             set
             {
 
-                
+
                 Communes.Clear();
                 //si la nouvelle valeur est différente de la précédente && si ce n'est pas un code postal
-                if ( CodePostal != value)
+                if (CodePostal != value)
                 {
                     //Dérouler la liste des suggestions si la liste n'est pas vide
                     //Communes.Clear();
                     Localite = string.IsNullOrEmpty(value) ? string.Empty : localite;
                     codePostal = value;
                     Communes = RechercherCommunes(value);
-                    SuggestionCommunes = Communes.Count > 0 && CodePostal.Length <5  ? Visibility.Visible : Visibility.Collapsed;
-                    
+                    SuggestionCommunes = Communes.Count > 0 && CodePostal.Length < 5 ? Visibility.Visible : Visibility.Collapsed;
+
                 }
                 else
                 {
@@ -47,6 +99,11 @@ namespace HouseMadera.VueModele
 
             }
         }
+
+        /// <summary>
+        /// Localite
+        /// </summary>
+        private bool isChampsLocaliteOk = false;
         private string localite;
         public string Localite
         {
@@ -54,17 +111,46 @@ namespace HouseMadera.VueModele
             set
             {
                 localite = value;
-              
+
                 SuggestionCommunes = Visibility.Collapsed; //Réduit la liste de suggestion
                 RaisePropertyChanged(() => Localite);
             }
         }
+
+        /// <summary>
+        /// Mobible
+        /// </summary>
+        private bool isChampsMobileOk = false;
         private string mobile;
-        public string Mobile { get; set; }
+        public string Mobile
+        {
+            get { return mobile; }
+            set { mobile = value; }
+        }
+
+        /// <summary>
+        /// Telephone
+        /// </summary>
+        private bool isChampsTelephoneOk = false;
         private string telephone;
-        public string Telephone { get; set; }
+        public string Telephone
+        {
+            get { return telephone; }
+            set { telephone = value; }
+        }
+
+        /// <summary>
+        /// Email
+        /// </summary>
+        private bool isChampsEmailOk = false;
         private string email;
-        public string Email { get; set; }
+        public string Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
+
+
         public string NomCommune { get; set; }
         private List<Commune> communes;
         public List<Commune> Communes
@@ -76,7 +162,6 @@ namespace HouseMadera.VueModele
                 RaisePropertyChanged(() => Communes);
             }
         }
-        public ObservableCollection<Client> Clients { get; set; }
         public RegexUtilities reg { get; set; }
         private object suggestionCommunes;
         public object SuggestionCommunes
@@ -88,7 +173,37 @@ namespace HouseMadera.VueModele
                 RaisePropertyChanged(() => SuggestionCommunes);
             }
         }
-     
+
+        /// <summary>
+        /// IsFormulaireOK
+        /// </summary>
+        private bool isFormulaireOk;
+        public bool IsFormulaireOk
+        {
+            get { return isFormulaireOk; }
+            set
+            {
+                // isFormulaireOK = VerifierInfosClient();
+                isFormulaireOk = value;
+                RaisePropertyChanged(() => IsFormulaireOk);
+            }
+        }
+
+
+
+        /// <summary>
+        /// IsClientEnregistre
+        /// </summary>
+        private bool isClientEnregistre;
+        public bool IsClientEnregistre
+        {
+            get { return isClientEnregistre; }
+            set
+            {
+                isClientEnregistre = value;
+                RaisePropertyChanged(() => IsClientEnregistre);
+            }
+        }
 
         private Commune communeSelectionnee;
         public Commune CommuneSelectionnee
@@ -105,23 +220,24 @@ namespace HouseMadera.VueModele
                 }
             }
         }
-
+        public ICommand Enregistrer { get; private set; }
         #endregion
 
         public VueModeleClientEdit()
         {
+            Enregistrer = new RelayCommand(EnregistrerClient);
             Communes = new List<Commune>();
             reg = new RegexUtilities();
-       
-
+            IsClientEnregistre = false;
         }
+
 
 
         public string Error
         {
             get
             {
-                throw new NotImplementedException();
+                return Error;
             }
         }
 
@@ -134,55 +250,95 @@ namespace HouseMadera.VueModele
                 switch (columnName)
                 {
                     case "Nom":
-                        if (Nom == null)
-                            break;
-                        result = reg.IsValidName(Nom) ? "Le nom ne doit pas contenir de chiffre" : string.Empty;
+                        result = reg.IsNomInvalide(Nom) ? "Le nom ne doit pas contenir de chiffre" : string.Empty;
+                        isChampsNomOk = Nom == null || result != string.Empty ? false : true;
                         break;
                     case "Prenom":
-                        if (Prenom == null)
-                            break;
-                        result = reg.IsValidName(Prenom) ? "Le prenom ne doit pas contenir de chiffre" : string.Empty;
-                        break;
-                    case "Numero":
-                        if (Numero == null)
-                            break;
-                        result = reg.IsValidNumeroVoie(Numero) ? string.Empty : "Le format du numéro de voie incorrect ex 6,6 Bis, 6 ter ";
+                        result = reg.IsNomInvalide(Prenom) ? "Le prenom ne doit pas contenir de chiffre" : string.Empty;
+                        isChampsPrenomOk = Prenom == null || result != string.Empty ? false : true;
                         break;
                     case "Voie":
-                        if (Voie == null)
-                            break;
-                        result = reg.HasSpecialCharacters(Voie) ? string.Empty : "Caractères spéciaux non admis ";
+                        result = reg.HasSpecialCharacters(Voie) ? "Caractères spéciaux non admis " : string.Empty;
+                        isChampsVoieOk = Voie == null || result != string.Empty ? false : true;
                         break;
                     case "Complement":
-                        if (Complement == null)
-                            break;
-                        result = reg.HasSpecialCharacters(Complement) ? string.Empty : "Caractères spéciaux non admis ";
+                        result = reg.HasSpecialCharacters(Complement) ? "Caractères spéciaux non admis " : string.Empty;
+                        isChampsComplementOk = Complement == null || result != string.Empty ? false : true;
                         break;
                     case "Mobile":
-                        if (Mobile == null)
-                            break;
                         result = reg.IsValidTelephoneNumber(Mobile) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
+                        isChampsMobileOk = Mobile == null || result != string.Empty ? false : true;
                         break;
                     case "Telephone":
-                        if (Telephone == null)
-                            break;
                         result = reg.IsValidTelephoneNumber(Telephone) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
+                        isChampsTelephoneOk = Telephone == null || result != string.Empty ? false : true;
                         break;
                     case "Email":
-                        if (Email == null)
-                            break;
                         result = reg.IsValidEmail(Email) ? string.Empty : "Format de l'e-mail non valide ex: jean.dupont@exemple.fr ";
+                        isChampsEmailOk = Email == null || result != string.Empty ? false : true;
+                        break;
+                    case "Localite":
+                        result = reg.HasSpecialCharacters(Localite) ? "Caractères spéciaux non admis " : string.Empty;
+                        isChampsLocaliteOk = Localite == null || result != string.Empty ? false : true;
+                        break;
+                    case "CodePostal":
+                        result = reg.HasSpecialCharacters(CodePostal) ? "Caractères spéciaux non admis " : string.Empty;
+                        isChampsCodePostalOk = CodePostal == null || result != string.Empty ? false : true;
                         break;
                 }
-
+                 
+                IsFormulaireOk = VerifierTouslesChamps();
                 return result;
             }
         }
         #endregion
 
-
-
         #region METHODES
+
+        private bool VerifierTouslesChamps()
+        {
+            if (isChampsNomOk && isChampsPrenomOk && isChampsVoieOk && isChampsComplementOk && isChampsCodePostalOk && isChampsLocaliteOk && isChampsMobileOk && isChampsTelephoneOk && isChampsEmailOk)
+                return true;
+            else
+                return false;
+        }
+
+        private void EnregistrerClient()
+        {
+            if (IsFormulaireOk)
+            {
+                Client nouveauClient = new Client()
+                {
+                    Nom = Nom,
+                    Prenom = Prenom,
+                    Adresse1 = Voie,
+                    Adresse2 = Complement,
+                    CodePostal = CodePostal,
+                    Ville = Localite,
+                    Telephone = Telephone,
+                    Mobile = Mobile,
+                    Email = Email,
+                    StatutClient = INACTIF
+                };
+                try
+                {
+                    using (ClientDAL dal = new ClientDAL("SQLITE"))
+                    {
+                        int success = dal.InsertClient(nouveauClient);
+                        //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
+                        IsClientEnregistre = success > 0 ? true : false;
+                    }
+                }
+                catch
+                {
+                    IsClientEnregistre = false;
+                    Console.WriteLine("Le client n'a pas pu être enregistré en base");
+                }
+            }
+
+
+        }
+
         private List<Commune> RechercherCommunes(string codePostal)
         {
             int i;
