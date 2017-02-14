@@ -161,6 +161,7 @@
     <Compile Include="VueModele\VueModeleChoixProjet.cs" />
     <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
     <Compile Include="VueModele\VueModeleLogin.cs" />
+    <Compile Include="VueModele\VueModeleNouveauProjet.cs" />
     <Compile Include="Vues\VueChoixAdmin.xaml.cs">
       <DependentUpon>VueChoixAdmin.xaml</DependentUpon>
     </Compile>
@@ -172,6 +173,9 @@
     </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueNouveauProjet.xaml.cs">
+      <DependentUpon>VueNouveauProjet.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Vues\VueLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueNouveauProjet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,7 +9,6 @@
     xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:HouseMadera.VueModele"
-    Title="Détails d'un projet - Mader'House"
     Width="1536"
     Height="1024"
     MinWidth="1536"

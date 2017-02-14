@@ -137,7 +137,11 @@ namespace HouseMadera.VueModele
 
         private void CreationProjet()
         {
-
+            var window = Application.Current.Windows.OfType<MetroWindow>().First();
+            VueNouveauProjet vnp = new VueNouveauProjet();
+            ((VueModeleNouveauProjet)vnp.DataContext).CommercialConnecte = CommercialConnecte;
+            vnp.Show();
+            window.Close();
         }
 
         private async void RepriseProjet()
