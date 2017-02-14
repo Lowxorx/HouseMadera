@@ -5,6 +5,7 @@ using HouseMadera.Modeles;
 using HouseMadera.Utilites;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -210,6 +211,14 @@ namespace HouseMadera.VueModele
             }
         }
 
+        public string Error
+        {
+            get
+            {
+                return Error;
+            }
+        }
+
         private Commune communeSelectionnee;
         public Commune CommuneSelectionnee
         {
@@ -229,26 +238,34 @@ namespace HouseMadera.VueModele
         public RegexUtilities reg { get; set; }
         public ICommand Enregistrer { get; private set; }
         public ICommand Retour { get; private set; }
+        public ICommand Deconnexion { get; set; }
         #endregion
 
-        public VueModeleClientEdit()
+        public VueModeleClientEdit(Client client)
         {
             Enregistrer = new RelayCommand(EnregistrerClient);
             Retour = new RelayCommand(AfficherPagePrecedente);
+            Deconnexion = new RelayCommand(Deconnecter);
             Communes = new List<Commune>();
             reg = new RegexUtilities();
             IsClientEnregistre = false;
+            if(client != null)
+            {
+                Nom = client.Nom;
+                Prenom = client.Prenom;
+                Voie = client.Adresse1;
+                CodePostal = client.CodePostal;
+                Localite = client.Ville;
+                Mobile = client.Mobile;
+                Telephone = client.Telephone;
+                Email = client.Email;
+            }
+
         }
 
     
 
-        public string Error
-        {
-            get
-            {
-                return Error;
-            }
-        }
+        
 
         #region REGLES DE VALIDATION
         public string this[string columnName]
@@ -372,6 +389,28 @@ namespace HouseMadera.VueModele
             }
 
             return communes;
+        }
+
+        private async void Deconnecter()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    VueLogin vl = new VueLogin();
+                    vl.Show();
+                    window.Close();
+                }
+            }
         }
         #endregion
     }

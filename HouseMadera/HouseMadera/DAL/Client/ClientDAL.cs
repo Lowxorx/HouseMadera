@@ -39,6 +39,7 @@ namespace HouseMadera.DAL
                 client.Adresse3 = Convert.ToString(reader["adresse3"]);
                 client.Mobile = Convert.ToString(reader["mobile"]);
                 client.Telephone = Convert.ToString(reader["telephone"]);
+                client.Email = Convert.ToString(reader["email"]);
                 clients.Add(client);
             }
             return clients;

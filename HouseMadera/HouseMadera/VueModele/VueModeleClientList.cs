@@ -11,12 +11,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace HouseMadera.VueModele
 {
     public class VueModeleClientList : ViewModelBase
     {
-       
+
 
         #region PROPRIETES
         private string recherche;
@@ -52,18 +54,58 @@ namespace HouseMadera.VueModele
             set { filtre = value; }
         }
         public ICommand EditClient { get; private set; }
+        public ICommand Deconnexion { get; private set; }
         public List<string> filtres { get; set; }
         public ObservableCollection<Client> Clients { get; set; }
+        
+        /// <summary>
+        /// Client Selectionne lié à une ligne de la datagrid
+        /// </summary>
+        private Client clientSelectionne;
+        public Client ClientSelectionne
+        {
+            get { return clientSelectionne; }
+            set
+            {
+               clientSelectionne = value;
+            }
+        }
+
         public RegexUtilities reg { get; set; }
         #endregion
 
         public VueModeleClientList()
         {
             EditClient = new RelayCommand(EClient);
+            Deconnexion = new RelayCommand(Deconnecter);
             reg = new RegexUtilities();
             Clients = new ObservableCollection<Client>(AfficherClient());
+            ClientSelectionne = new Client();
             filtres = new List<string>() { "Nom", "Adresse" };
 
+        }
+
+
+        private async void Deconnecter()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    VueLogin vl = new VueLogin();
+                    vl.Show();
+                    window.Close();
+                }
+            }
         }
 
         #region METHODES
@@ -73,7 +115,7 @@ namespace HouseMadera.VueModele
         private void EClient()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            VueClientEdit vce = new VueClientEdit();
+            VueClientEdit vce = new VueClientEdit(clientSelectionne);
             vce.Show();
             window.Close();
         }

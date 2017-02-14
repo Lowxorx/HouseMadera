@@ -55,6 +55,7 @@
                 FontFamily="Verdana"
                 FontSize="36"
                 HorizontalAlignment="Center"
+                Foreground="#464646"
                 />
             <Button
                  x:Name="btRetour"
@@ -63,10 +64,11 @@
                  Margin="1378,10,0,0"
                  HorizontalAlignment="Left"
                  VerticalAlignment="Top"
-                Background="#FFF7F7F7"
+                Background="#FFA29A9A"
+                Foreground="#464646"
                  BorderThickness="0"
                  Command="{Binding Retour}"
-                 Content="{iconPacks:PackIconEntypo back,
+                 Content="{iconPacks:PackIconFontAwesome Kind=ArrowCircleOutlineLeft,
                                                     Width=32,
                                                     Height=32}" />
             <Button
@@ -78,9 +80,11 @@
                 VerticalAlignment="Top"
                 BorderThickness="0"
                 Background="#FFA29A9A"
+                Foreground="#464646"
+                Command="{Binding Deconnexion}"
                 Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
-                                                        Width=16,
-                                                        Height=16}" />
+                                                        Width=32,
+                                                        Height=32}" />
         </Grid>
         <Grid Margin="0,53"  Panel.ZIndex="3">
             <Grid.ColumnDefinitions>
@@ -104,7 +108,9 @@
                     x:Name="label_ClientSignUp"
                     Content="{iconPacks:PackIconFontAwesome Kind=User, Width=32,Height=32}"
                     Height="50"
-                    Width="50"/>
+                    Width="50"
+                    Foreground="#464646"
+                    />
                 <Label
                     x:Name="label_Nom"
                     Content="Nom "
@@ -142,7 +148,9 @@
                     Content="{iconPacks:PackIconFontAwesome Kind=Home,Width=32, Height=32}"
                     Height="50"
                     Width="50"
-                    Canvas.Top="156"/>
+                    Canvas.Top="156"
+                     Foreground="#464646"
+                    />
 
                 <Label
                     x:Name="label_Voie"
@@ -213,6 +221,7 @@
                     Content="{iconPacks:PackIconFontAwesome Kind=Mobile,Width=32,Height=32}"
                     Height="50"
                     Width="50"
+                     Foreground="#464646"
                     Canvas.Top="370"/>
                 <Label
                     x:Name="label_Mobile"
@@ -250,6 +259,7 @@
                                                         Height=32}"
                     Height="50"
                     Width="50"
+                     Foreground="#464646"
                     Canvas.Top="485"/>
                 <Label
                     x:Name="label_Email"

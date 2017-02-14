@@ -36,7 +36,7 @@
                 VerticalAlignment="Top"
                 BorderThickness="0"
                 Command="{Binding Logout}"
-                Content="{iconPacks:PackIconMaterial Kind=LogOut,
+                Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
                                                      Width=32,
                                                      Height=32}">
                 <Button.BorderBrush>
@@ -62,11 +62,15 @@
                 VerticalAlignment="Top"
                 Command="{Binding AdminProjet}">
                 <StackPanel>
-                    <Image
-                        Width="145"
-                        Height="145"
-                        Source="pack://application:,,,/Resources/adminprojet.png"
-                        Stretch="Uniform" />
+                    <Label
+                        Content="{iconPacks:PackIconFontAwesome Kind=Home,
+                                                    Width=64,
+                                                    Height=64}"
+                       
+                        Width="100"
+                        Height="100"
+                        Foreground="Black"
+                        />
                     <TextBlock
                         Height="31"
                         HorizontalAlignment="Center"
@@ -83,11 +87,15 @@
                 HorizontalAlignment="Left"
                 Command="{Binding AdminClient}">
                 <StackPanel>
-                    <Image
-                        Width="145"
-                        Height="145"
-                        Source="pack://application:,,,/Resources/adminclient.png"
-                        Stretch="Uniform" />
+                    <Label
+                        Content="{iconPacks:PackIconFontAwesome Kind=Users,
+                                                    Width=64,
+                                                    Height=64}"
+                       
+                        Width="100"
+                        Height="100"
+                        Foreground="Black"
+                        />
                     <TextBlock
                         Height="31"
                         HorizontalAlignment="Center"

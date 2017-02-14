@@ -24,9 +24,9 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vuemod:VueModeleClientList />
-    </Window.DataContext>
+    </Window.DataContext>-->
 
     <Grid>
         <Grid Margin="0,-3,0,931" Background="#FFA29A9A">
@@ -37,6 +37,8 @@
                 Content="Client"
                 FontFamily="Verdana"
                 FontSize="36"
+                Foreground="#464646"
+                HorizontalAlignment="Center"
                 />
             <Button
                 x:Name="button"
@@ -47,9 +49,11 @@
                 VerticalAlignment="Top"
                 BorderThickness="0"
                 Background="#FFA29A9A"
+                Foreground="#464646"
                 Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
-                                                        Width=16,
-                                                        Height=16}" />
+                                                        Width=32,
+                                                        Height=32}"
+                Command="{Binding Deconnexion}"/>
         </Grid>
         <Grid Margin="0,53">
             <Grid.ColumnDefinitions>
@@ -84,7 +88,20 @@
             <ComboBox x:Name="comboBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="208,308,0,0" VerticalAlignment="Top" Width="111" ItemsSource="{Binding filtres, Mode=OneWay}"   SelectedItem="{Binding Filtre}" />
 
             <TextBox x:Name="textBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="319,308,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="761" Grid.ColumnSpan="2" Text="{Binding Recherche,UpdateSourceTrigger=PropertyChanged}" />
-            <DataGrid x:Name="dataGrid" AlternatingRowBackground="Gainsboro" AlternationCount="2" Grid.ColumnSpan="3" ItemsSource="{Binding Clients}"  HorizontalAlignment="Left" Height="400" Margin="83,429,0,0" VerticalAlignment="Top" Width="1356" AutoGenerateColumns="False">
+            <DataGrid
+                x:Name="dataGrid"
+                AlternatingRowBackground="Gainsboro"
+                AlternationCount="2"
+                Grid.ColumnSpan="3"
+                ItemsSource="{Binding Clients}"
+                HorizontalAlignment="Left"
+                Height="400"
+                Margin="83,429,0,0"
+                VerticalAlignment="Top"
+                Width="1356"
+                AutoGenerateColumns="False"
+                SelectedItem="{Binding ClientSelectionne}"
+                Style="{StaticResource AzureDataGrid}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
                     <DataGridTextColumn Header="Prenom" Binding="{Binding Prenom}"/>

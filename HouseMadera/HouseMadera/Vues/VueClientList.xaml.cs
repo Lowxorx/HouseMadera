@@ -13,40 +13,11 @@ namespace HouseMadera.Vues
     /// </summary>
     public partial class VueClientList : MetroWindow
     {
-
-        //  public Dictionary<int,string> Localite { get; set; }
-      
-
-        public RegexUtilities regle { get; set; }
         public VueClientList()
         {
+            VueModeleClientList vm = new VueModeleClientList();
+            DataContext = vm; 
             InitializeComponent();
         }
-
-
-
-        //private void AfficherClients(object sender, RoutedEventArgs e)
-        //{
-
-        //    vm.GetAllClients();
-        //    dataGrid.ItemsSource = vm.Clients;
-
-        //}
-
-        //private void RechercherClient(object sender, TextChangedEventArgs e)
-        //{
-        //    vm.GetFilteredClients(comboBox_recherche.SelectionBoxItem.ToString(), textBox_recherche.Text);
-        //    dataGrid.ItemsSource = vm.Clients;
-        //}
-
-        //private void AfficherSignUp(object sender, RoutedEventArgs e)
-        //{
-        //    //flyout_SignUp.IsOpen = true;
-
-        //}
-    
-      
-
-       
     }
 }
