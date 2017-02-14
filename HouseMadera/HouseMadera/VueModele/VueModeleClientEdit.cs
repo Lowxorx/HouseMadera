@@ -218,7 +218,9 @@ namespace HouseMadera.VueModele
                 return Error;
             }
         }
-
+        /// <summary>
+        /// CommuneSelectionnée lié a un item de la combobox code postal
+        /// </summary>
         private Commune communeSelectionnee;
         public Commune CommuneSelectionnee
         {
@@ -235,13 +237,24 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private Client clientSelectionne;
+        public Client ClientSelectionne
+        {
+            get { return clientSelectionne; }
+            set
+            {
+               
+                    clientSelectionne = value;
+            }
+        }
+
         public RegexUtilities reg { get; set; }
         public ICommand Enregistrer { get; private set; }
         public ICommand Retour { get; private set; }
         public ICommand Deconnexion { get; set; }
         #endregion
 
-        public VueModeleClientEdit(Client client)
+        public VueModeleClientEdit()
         {
             Enregistrer = new RelayCommand(EnregistrerClient);
             Retour = new RelayCommand(AfficherPagePrecedente);
@@ -249,18 +262,20 @@ namespace HouseMadera.VueModele
             Communes = new List<Commune>();
             reg = new RegexUtilities();
             IsClientEnregistre = false;
-            if(client != null)
+            #region INITIALISATION DES PROPRIETES
+            if (ClientSelectionne != null)
             {
-                Nom = client.Nom;
-                Prenom = client.Prenom;
-                Voie = client.Adresse1;
-                CodePostal = client.CodePostal;
-                Localite = client.Ville;
-                Mobile = client.Mobile;
-                Telephone = client.Telephone;
-                Email = client.Email;
+                Nom = ClientSelectionne.Nom;
+                Prenom = ClientSelectionne.Prenom;
+                Voie = ClientSelectionne.Adresse1;
+                Complement = ClientSelectionne.Adresse2 + " " + ClientSelectionne.Adresse3;
+                CodePostal = ClientSelectionne.CodePostal;
+                Localite = ClientSelectionne.Ville;
+                Mobile = ClientSelectionne.Mobile;
+                Telephone = ClientSelectionne.Telephone;
+                Email = ClientSelectionne.Email;
             }
-
+            #endregion
         }
 
     

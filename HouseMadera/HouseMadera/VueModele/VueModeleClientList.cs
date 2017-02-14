@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using System;
 using MahApps.Metro.Controls.Dialogs;
+using HouseMadera.VueModele;
 
 namespace HouseMadera.VueModele
 {
@@ -54,10 +55,11 @@ namespace HouseMadera.VueModele
             set { filtre = value; }
         }
         public ICommand EditClient { get; private set; }
+        public ICommand ModifClient { get; set; }
         public ICommand Deconnexion { get; private set; }
         public List<string> filtres { get; set; }
         public ObservableCollection<Client> Clients { get; set; }
-        
+
         /// <summary>
         /// Client Selectionne lié à une ligne de la datagrid
         /// </summary>
@@ -67,7 +69,12 @@ namespace HouseMadera.VueModele
             get { return clientSelectionne; }
             set
             {
-               clientSelectionne = value;
+                if (value != null)
+                {
+                    clientSelectionne = value;
+                    RaisePropertyChanged(() => ClientSelectionne);
+                }
+                    
             }
         }
 
@@ -78,13 +85,21 @@ namespace HouseMadera.VueModele
         {
             EditClient = new RelayCommand(EClient);
             Deconnexion = new RelayCommand(Deconnecter);
+            ModifClient = new RelayCommand(ModifierClient);
             reg = new RegexUtilities();
             Clients = new ObservableCollection<Client>(AfficherClient());
-            ClientSelectionne = new Client();
             filtres = new List<string>() { "Nom", "Adresse" };
 
         }
 
+        private void ModifierClient()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            VueClientEdit vce = new VueClientEdit();
+            ((VueModeleClientEdit)vce.DataContext).ClientSelectionne = ClientSelectionne;
+            vce.Show();
+            window.Close();
+        }
 
         private async void Deconnecter()
         {
@@ -115,7 +130,7 @@ namespace HouseMadera.VueModele
         private void EClient()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            VueClientEdit vce = new VueClientEdit(clientSelectionne);
+            VueClientEdit vce = new VueClientEdit();
             vce.Show();
             window.Close();
         }

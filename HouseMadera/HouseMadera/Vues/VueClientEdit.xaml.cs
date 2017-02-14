@@ -14,9 +14,8 @@ namespace HouseMadera.Vues
     public partial class VueClientEdit : MetroWindow
     {
 
-        public VueClientEdit(Client client)
+        public VueClientEdit()
         {
-            VueModeleClientEdit vm = new VueModeleClientEdit(client);
             InitializeComponent();
         }
     }

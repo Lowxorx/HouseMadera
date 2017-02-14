@@ -15,8 +15,7 @@ namespace HouseMadera.Vues
     {
         public VueClientList()
         {
-            VueModeleClientList vm = new VueModeleClientList();
-            DataContext = vm; 
+            
             InitializeComponent();
         }
     }

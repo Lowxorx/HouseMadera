@@ -24,9 +24,9 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
-    <!--<Window.DataContext>
+    <Window.DataContext>
         <vuemod:VueModeleClientList />
-    </Window.DataContext>-->
+    </Window.DataContext>
 
     <Grid>
         <Grid Margin="0,-3,0,931" Background="#FFA29A9A">
@@ -111,6 +111,15 @@
                     <DataGridTextColumn Header="Email"  Binding="{Binding Email}"/>
                 </DataGrid.Columns>
             </DataGrid>
+            <Button x:Name="btn_Modifier_Client"
+                HorizontalAlignment="Center"
+                Height="78"
+                Margin="250,111,0,0"
+                VerticalAlignment="Top"
+                Width="237"
+                Content="{iconPacks:PackIconFontAwesome Height=64, Kind=Pencil, Width=64}"
+                Foreground="#FF65C973"
+                Command="{Binding ModifClient}" Grid.Column="1"/>
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A"  Panel.ZIndex="30"/>
     </Grid>
