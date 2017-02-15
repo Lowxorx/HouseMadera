@@ -22,6 +22,9 @@ namespace HouseMadera.VueModele
 
 
         #region PROPRIETES
+        /// <summary>
+        /// Recherche
+        /// </summary>
         private string recherche;
         public string Recherche
         {
@@ -48,18 +51,35 @@ namespace HouseMadera.VueModele
 
             }
         }
+        /// <summary>
+        /// Filtre selectionné dans la combobox
+        /// </summary>
         private string filtre;
         public string Filtre
         {
             get { return filtre; }
-            set { filtre = value; }
+            set
+            {
+                correspondanceFiltresColonnes.TryGetValue(value, out filtre);
+            }
         }
+
+
         public ICommand EditClient { get; private set; }
         public ICommand ModifClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
-        public List<string> filtres { get; set; }
+       
         public ObservableCollection<Client> Clients { get; set; }
-
+        private Dictionary<string, string> correspondanceFiltresColonnes;
+        /// <summary>
+        /// filtres affichés dans la combobox
+        /// </summary>
+        private List<string> filtres;
+        public List<string> Filtres
+        {
+            get { return filtres; }
+            set { filtres = value; }
+        }
         /// <summary>
         /// Client Selectionne lié à une ligne de la datagrid
         /// </summary>
@@ -73,12 +93,24 @@ namespace HouseMadera.VueModele
                 {
                     clientSelectionne = value;
                     RaisePropertyChanged(() => ClientSelectionne);
+                    IsClientSelected = true;
                 }
                   
 
             }
         }
-
+        /// <summary>
+        /// IsClientSelected
+        /// </summary>
+        private bool isClientSelected;
+        public bool IsClientSelected
+        {
+            get { return isClientSelected; }
+            set {
+                isClientSelected = value;
+                RaisePropertyChanged(() => IsClientSelected);
+            }
+        }
         public RegexUtilities reg { get; set; }
         #endregion
 
@@ -89,15 +121,38 @@ namespace HouseMadera.VueModele
             ModifClient = new RelayCommand(ModifierClient);
             reg = new RegexUtilities();
             Clients = new ObservableCollection<Client>(AfficherClient());
-            filtres = new List<string>() { "Nom", "Adresse" };
-
+            IsClientSelected = false;
+            correspondanceFiltresColonnes = new Dictionary<string, string>()
+            {
+                { "Nom", "Nom"},
+                { "Adresse","Adresse1"},
+                { "Code Postal","CodePostal"},
+                { "Localite","Ville"},
+                { "Mobile","Mobile"},
+                { "Telephone","Telephone"},
+                { "Email","Email"}
+                };
+            Filtres = getFiltresFromDictionnary(correspondanceFiltresColonnes);
         }
 
 
 
-
-
         #region METHODES
+        /// <summary>
+        ///  Récupère les filtres à afficher dans la combobox
+        /// </summary>
+        /// <param name="correspondanceFiltresColonnes"></param>
+        /// <returns></returns>
+        private List<string> getFiltresFromDictionnary(Dictionary<string, string> correspondanceFiltresColonnes)
+        {
+            List<string> filtres = new List<string>();
+            foreach (var paires in correspondanceFiltresColonnes)
+            {
+                filtres.Add(paires.Key);
+            }
+            return filtres;
+        }
+
         /// <summary>
         /// Ferme la fenetre courante et affiche la fenetre d'édition du client avec les champs pré-remplis
         /// </summary>

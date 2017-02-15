@@ -101,7 +101,7 @@
                 Margin="208,308,0,0"
                 VerticalAlignment="Top"
                 Width="111"
-                ItemsSource="{Binding filtres, Mode=OneWay}"
+                ItemsSource="{Binding Filtres, Mode=OneWay}"
                 SelectedItem="{Binding Filtre}" />
 
             <TextBox
@@ -133,6 +133,9 @@
                     <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" />
                     <DataGridTextColumn Header="Prenom" Binding="{Binding Prenom}"/>
                     <DataGridTextColumn Header="Adresse" Binding="{Binding Adresse1}"/>
+                    <DataGridTextColumn Header="Complement" Binding="{Binding Adresse2}"/>
+                    <DataGridTextColumn Header="CodePostal" Binding="{Binding CodePostal}"/>
+                    <DataGridTextColumn Header="Localite" Binding="{Binding Ville}"/>
                     <DataGridTextColumn Header="Telephone" Binding="{Binding Telephone}"/>
                     <DataGridTextColumn Header="Mobile"  Binding="{Binding Mobile}"/>
                     <DataGridTextColumn Header="Email"  Binding="{Binding Email}"/>
@@ -146,6 +149,7 @@
                 Width="237"
                 Content="{iconPacks:PackIconFontAwesome Height=64, Kind=Pencil, Width=64}"
                 Foreground="#FF65C973"
+                IsEnabled="{Binding IsClientSelected}"
                 Command="{Binding ModifClient}"
                 Grid.Column="1"/>
         </Grid>

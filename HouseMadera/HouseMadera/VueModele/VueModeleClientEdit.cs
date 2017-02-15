@@ -154,9 +154,20 @@ namespace HouseMadera.VueModele
             set { email = value; }
         }
 
-       /// <summary>
-       /// Communes
-       /// </summary>
+        private bool statutClient;
+        public bool StatutClient
+        {
+            get { return statutClient; }
+            set
+            {
+                statutClient = value;
+                RaisePropertyChanged(() => StatutClient);
+            }
+        }
+
+        /// <summary>
+        /// Communes
+        /// </summary>
         private List<Commune> communes;
         public List<Commune> Communes
         {
@@ -250,6 +261,9 @@ namespace HouseMadera.VueModele
             }
         }
 
+       private bool isMiseAJourClient;
+        private int idClientAMettreAJour;
+
         public RegexUtilities reg { get; set; }
         public ICommand Enregistrer { get; private set; }
         public ICommand Retour { get; private set; }
@@ -292,7 +306,7 @@ namespace HouseMadera.VueModele
                         break;
                     case "Complement":
                         result = reg.HasSpecialCharacters(Complement) ? "Caractères spéciaux non admis " : string.Empty;
-                        isChampsComplementOk = Complement == null || result != string.Empty ? true : false;
+                        isChampsComplementOk = string.IsNullOrWhiteSpace(result) ? true : false;
                         break;
                     case "Mobile":
                         result = reg.IsValidTelephoneNumber(Mobile) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
@@ -300,7 +314,8 @@ namespace HouseMadera.VueModele
                         break;
                     case "Telephone":
                         result = reg.IsValidTelephoneNumber(Telephone) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
-                        isChampsTelephoneOk = Telephone == null || result != string.Empty ? false : true;
+                        // isChampsTelephoneOk = Telephone == null || result != string.Empty ? false : true;
+                        isChampsTelephoneOk = true;
                         break;
                     case "Email":
                         result = reg.IsValidEmail(Email) ? string.Empty : "Format de l'e-mail non valide ex: jean.dupont@exemple.fr ";
@@ -328,6 +343,7 @@ namespace HouseMadera.VueModele
         {
             if (clientSelectionne != null)
             {
+                idClientAMettreAJour = clientSelectionne.Id;
                 Nom = clientSelectionne.Nom;
                 Prenom = clientSelectionne.Prenom;
                 Voie = clientSelectionne.Adresse1;
@@ -337,8 +353,9 @@ namespace HouseMadera.VueModele
                 Mobile = clientSelectionne.Mobile;
                 Telephone = clientSelectionne.Telephone;
                 Email = clientSelectionne.Email;
-
-
+                StatutClient = clientSelectionne.StatutClient == 1 ? true : false;
+                IsFormulaireOk = true;
+                isMiseAJourClient = true;
             }
         }
 
@@ -362,8 +379,9 @@ namespace HouseMadera.VueModele
         {
             if (IsFormulaireOk)
             {
-                Client nouveauClient = new Client()
+                Client client = new Client()
                 {
+                    Id = idClientAMettreAJour,
                     Nom = Nom,
                     Prenom = Prenom,
                     Adresse1 = Voie,
@@ -373,13 +391,13 @@ namespace HouseMadera.VueModele
                     Telephone = Telephone,
                     Mobile = Mobile,
                     Email = Email,
-                    StatutClient = INACTIF
+                    StatutClient = StatutClient ? ACTIF : INACTIF
                 };
                 try
                 {
                     using (ClientDAL dal = new ClientDAL("SQLITE"))
                     {
-                        int success = dal.InsertClient(nouveauClient);
+                        int success = isMiseAJourClient ? dal.UpdateClient(client): dal.InsertClient(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
                     }

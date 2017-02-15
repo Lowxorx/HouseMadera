@@ -40,7 +40,7 @@ namespace HouseMadera.DAL
                 string adresse3 = Convert.ToString(reader["adresse3"]);
                 client.Adresse3 = string.IsNullOrEmpty(adresse3) || adresse3 == "NULL" ? string.Empty : adresse3;
                 string codePostal = Convert.ToString(reader["codePostal"]);
-                client.CodePostal= string.IsNullOrEmpty(codePostal) || codePostal == "NULL" ? string.Empty : codePostal;
+                client.CodePostal = string.IsNullOrEmpty(codePostal) || codePostal == "NULL" ? string.Empty : codePostal;
                 string ville = Convert.ToString(reader["ville"]);
                 client.Ville = string.IsNullOrEmpty(ville) || codePostal == "NULL" ? string.Empty : ville;
                 string mobile = Convert.ToString(reader["mobile"]);
@@ -116,41 +116,44 @@ namespace HouseMadera.DAL
         }
 
         public List<Client> GetFilteredClient(string filter, string value)
-         {
- 
-             if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
-                 return new List<Client>();
- 
-             filter = filter.Replace(" ", string.Empty);
-             var colonne = (filter == "Adresse") ? "Adresse" + "1" : filter;
- 
-             var parameters = new Dictionary<string, object>()
+        {
+
+            if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                return new List<Client>();
+
+            filter = filter.Replace(" ", string.Empty);
+            var colonne = (filter == "Adresse") ? "Adresse" + "1" : filter;
+
+            var parameters = new Dictionary<string, object>()
              {
                  {"@1", "%"+value+"%" }
              };
- 
-             string sql = @"
+
+            string sql = @"
                              SELECT * FROM Client
-                             WHERE "+  colonne  +@" LIKE @1
-                             ORDER BY "+  colonne + @" DESC";
-             var clients = new List<Client>();
-             var reader = Get(sql, parameters);
-             while (reader.Read())
-             {
-                 var client = new Client();
-                 client.Id = Convert.ToInt32(reader["id"]);
-                 client.Nom = Convert.ToString(reader["nom"]);
-                 client.Prenom = Convert.ToString(reader["prenom"]);
-                 client.Adresse1 = Convert.ToString(reader["adresse1"]);
-                 client.Adresse2 = Convert.ToString(reader["adresse2"]);
-                 client.Adresse3 = Convert.ToString(reader["adresse3"]);
-                 client.Mobile = Convert.ToString(reader["mobile"]);
-                 client.Telephone = Convert.ToString(reader["telephone"]);
-                 clients.Add(client);
-             }
-             return clients;
- 
-         }
+                             WHERE " + colonne + @" LIKE @1
+                             ORDER BY " + colonne + @" DESC";
+            var clients = new List<Client>();
+            var reader = Get(sql, parameters);
+            while (reader.Read())
+            {
+                var client = new Client();
+                client.Id = Convert.ToInt32(reader["id"]);
+                client.Nom = Convert.ToString(reader["nom"]);
+                client.Prenom = Convert.ToString(reader["prenom"]);
+                client.Adresse1 = Convert.ToString(reader["adresse1"]);
+                client.Adresse2 = Convert.ToString(reader["adresse2"]);
+                client.Adresse3 = Convert.ToString(reader["adresse3"]);
+                client.CodePostal = Convert.ToString(reader["CodePostal"]);
+                client.Ville = Convert.ToString(reader["Ville"]);
+                client.Mobile = Convert.ToString(reader["mobile"]);
+                client.Telephone = Convert.ToString(reader["telephone"]);
+                client.Email = Convert.ToString(reader["email"]);
+                clients.Add(client);
+            }
+            return clients;
+
+        }
 
         #endregion
 
@@ -276,7 +279,7 @@ namespace HouseMadera.DAL
 
         private bool IsDataCorrect(Client client)
         {
-           
+
             //statutClient ne doit pas être null
             if (client.StatutClient > 2 || client.StatutClient == 0)
             {
@@ -296,7 +299,7 @@ namespace HouseMadera.DAL
                 erreur += "le numero de mobile devrait être 0xxxxxxxxx \n";
             if (string.IsNullOrEmpty(client.Telephone) && string.IsNullOrEmpty(client.Mobile))
                 erreur += "Au moins un numero de telephone doit être renseigné";
- 
+
 
             //Test des autres données
             if (string.IsNullOrEmpty(client.Nom))

@@ -277,6 +277,7 @@
                     Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
                     Text="{Binding Email,UpdateSourceTrigger=LostFocus,
                 ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+               
                 <Button 
                     Name="Enregistrer"
                     Canvas.Left="500"
@@ -301,7 +302,12 @@
                     Width="50"
                     Canvas.Left="298"
                     Canvas.Top="675"/>
-
+                <CheckBox
+                    x:Name="checkBox"
+                    Content="Actif" 
+                    Canvas.Left="131"
+                    Canvas.Top="622"
+                    IsChecked="{Binding StatutClient}"/>
             </Canvas>
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A"  Panel.ZIndex="30"/>
