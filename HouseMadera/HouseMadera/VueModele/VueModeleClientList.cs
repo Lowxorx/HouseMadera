@@ -55,7 +55,7 @@ namespace HouseMadera.VueModele
             set { filtre = value; }
         }
         public ICommand EditClient { get; private set; }
-        public ICommand ModifClient { get; set; }
+        public ICommand ModifClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public List<string> filtres { get; set; }
         public ObservableCollection<Client> Clients { get; set; }
@@ -74,7 +74,8 @@ namespace HouseMadera.VueModele
                     clientSelectionne = value;
                     RaisePropertyChanged(() => ClientSelectionne);
                 }
-                    
+                  
+
             }
         }
 
@@ -92,38 +93,25 @@ namespace HouseMadera.VueModele
 
         }
 
+
+
+
+
+        #region METHODES
+        /// <summary>
+        /// Ferme la fenetre courante et affiche la fenetre d'édition du client avec les champs pré-remplis
+        /// </summary>
         private void ModifierClient()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             VueClientEdit vce = new VueClientEdit();
-            ((VueModeleClientEdit)vce.DataContext).ClientSelectionne = ClientSelectionne;
+            VueModeleClientEdit vm = new VueModeleClientEdit();
+            vm.InitClient(ClientSelectionne);
+            vce.DataContext = vm;
             vce.Show();
             window.Close();
         }
 
-        private async void Deconnecter()
-        {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            if (window != null)
-            {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
-
-                if (result == MessageDialogResult.Affirmative)
-                {
-                    VueLogin vl = new VueLogin();
-                    vl.Show();
-                    window.Close();
-                }
-            }
-        }
-
-        #region METHODES
         /// <summary>
         /// Ferme la fenetre courante et affiche la nouvelle fenêtre
         /// </summary>
@@ -166,6 +154,31 @@ namespace HouseMadera.VueModele
 
             return clients;
         }
+        /// <summary>
+        /// Affiche un dialogue de confirmation puis redirige vers la page de connexion
+        /// </summary>
+        private async void Deconnecter()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    VueLogin vl = new VueLogin();
+                    vl.Show();
+                    window.Close();
+                }
+            }
+        }
+
         #endregion
 
     }

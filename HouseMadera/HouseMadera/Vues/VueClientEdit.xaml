@@ -24,9 +24,10 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vuemod:VueModeleClientEdit />
-    </Window.DataContext>
+    </Window.DataContext>-->
+    
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
 

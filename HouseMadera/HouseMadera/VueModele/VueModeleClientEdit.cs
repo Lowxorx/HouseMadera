@@ -168,7 +168,9 @@ namespace HouseMadera.VueModele
             }
         }
 
-       
+       /// <summary>
+       /// SuggestionCommunes lié à la listBox Suggestion
+       /// </summary>
         private object suggestionCommunes;
         public object SuggestionCommunes
         {
@@ -262,20 +264,6 @@ namespace HouseMadera.VueModele
             Communes = new List<Commune>();
             reg = new RegexUtilities();
             IsClientEnregistre = false;
-            #region INITIALISATION DES PROPRIETES
-            if (ClientSelectionne != null)
-            {
-                Nom = ClientSelectionne.Nom;
-                Prenom = ClientSelectionne.Prenom;
-                Voie = ClientSelectionne.Adresse1;
-                Complement = ClientSelectionne.Adresse2 + " " + ClientSelectionne.Adresse3;
-                CodePostal = ClientSelectionne.CodePostal;
-                Localite = ClientSelectionne.Ville;
-                Mobile = ClientSelectionne.Mobile;
-                Telephone = ClientSelectionne.Telephone;
-                Email = ClientSelectionne.Email;
-            }
-            #endregion
         }
 
     
@@ -335,6 +323,24 @@ namespace HouseMadera.VueModele
         #endregion
 
         #region METHODES
+
+        public void InitClient(Client clientSelectionne)
+        {
+            if (clientSelectionne != null)
+            {
+                Nom = clientSelectionne.Nom;
+                Prenom = clientSelectionne.Prenom;
+                Voie = clientSelectionne.Adresse1;
+                Complement = clientSelectionne.Adresse2 + " " + clientSelectionne.Adresse3;
+                CodePostal = clientSelectionne.CodePostal;
+                Localite = clientSelectionne.Ville;
+                Mobile = clientSelectionne.Mobile;
+                Telephone = clientSelectionne.Telephone;
+                Email = clientSelectionne.Email;
+
+
+            }
+        }
 
         private void AfficherPagePrecedente()
         {

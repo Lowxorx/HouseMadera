@@ -72,7 +72,8 @@
                 VerticalAlignment="Top"
                 Source="../Resources/logomaderacolorgreyclean.png" />
 
-            <Button x:Name="btn_Nouveau_Client"
+            <Button
+                x:Name="btn_Nouveau_Client"
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Left"
                     Height="78"
@@ -83,11 +84,37 @@
                     Foreground="#FF65C973"
                     Command="{Binding EditClient}"/>
             <Canvas Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="90" Margin="192,284,0,0" VerticalAlignment="Top" Width="982" Background="LightGray" Grid.Column="1">
-                <Label x:Name="label_recherche" Content="{iconPacks:PackIconFontAwesome Kind=Search,  Width=16 ,Height=16 }" Height="41" Canvas.Left="920" Canvas.Top="25" Width="32" RenderTransformOrigin="0.498,0.431" />
+                <Label
+                    x:Name="label_recherche"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Search,  Width=16 ,Height=16 }"
+                    Height="41"
+                    Canvas.Left="920"
+                    Canvas.Top="25"
+                    Width="32"
+                    RenderTransformOrigin="0.498,0.431" />
             </Canvas>
-            <ComboBox x:Name="comboBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="208,308,0,0" VerticalAlignment="Top" Width="111" ItemsSource="{Binding filtres, Mode=OneWay}"   SelectedItem="{Binding Filtre}" />
+            <ComboBox
+                x:Name="comboBox_recherche"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Height="42"
+                Margin="208,308,0,0"
+                VerticalAlignment="Top"
+                Width="111"
+                ItemsSource="{Binding filtres, Mode=OneWay}"
+                SelectedItem="{Binding Filtre}" />
 
-            <TextBox x:Name="textBox_recherche" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="319,308,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="761" Grid.ColumnSpan="2" Text="{Binding Recherche,UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox
+                x:Name="textBox_recherche"
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                Height="42"
+                Margin="319,308,0,0"
+                TextWrapping="Wrap"
+                VerticalAlignment="Top"
+                Width="761"
+                Grid.ColumnSpan="2"
+                Text="{Binding Recherche,UpdateSourceTrigger=PropertyChanged}" />
             <DataGrid
                 x:Name="dataGrid"
                 AlternatingRowBackground="Gainsboro"
@@ -119,7 +146,8 @@
                 Width="237"
                 Content="{iconPacks:PackIconFontAwesome Height=64, Kind=Pencil, Width=64}"
                 Foreground="#FF65C973"
-                Command="{Binding ModifClient}" Grid.Column="1"/>
+                Command="{Binding ModifClient}"
+                Grid.Column="1"/>
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A"  Panel.ZIndex="30"/>
     </Grid>

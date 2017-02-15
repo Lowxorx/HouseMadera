@@ -35,11 +35,20 @@ namespace HouseMadera.DAL
                 client.Nom = Convert.ToString(reader["nom"]);
                 client.Prenom = Convert.ToString(reader["prenom"]);
                 client.Adresse1 = Convert.ToString(reader["adresse1"]);
-                client.Adresse2 = Convert.ToString(reader["adresse2"]);
-                client.Adresse3 = Convert.ToString(reader["adresse3"]);
-                client.Mobile = Convert.ToString(reader["mobile"]);
-                client.Telephone = Convert.ToString(reader["telephone"]);
-                client.Email = Convert.ToString(reader["email"]);
+                string adresse2 = Convert.ToString(reader["adresse2"]);
+                client.Adresse2 = string.IsNullOrEmpty(adresse2) || adresse2 == "NULL" ? string.Empty : adresse2;
+                string adresse3 = Convert.ToString(reader["adresse3"]);
+                client.Adresse3 = string.IsNullOrEmpty(adresse3) || adresse3 == "NULL" ? string.Empty : adresse3;
+                string codePostal = Convert.ToString(reader["codePostal"]);
+                client.CodePostal= string.IsNullOrEmpty(codePostal) || codePostal == "NULL" ? string.Empty : codePostal;
+                string ville = Convert.ToString(reader["ville"]);
+                client.Ville = string.IsNullOrEmpty(ville) || codePostal == "NULL" ? string.Empty : ville;
+                string mobile = Convert.ToString(reader["mobile"]);
+                client.Mobile = string.IsNullOrEmpty(mobile) || mobile == "NULL" ? string.Empty : mobile;
+                var telephone = Convert.ToString(reader["telephone"]);
+                client.Telephone = string.IsNullOrEmpty(telephone) || telephone == "NULL" ? string.Empty : telephone;
+                string email = Convert.ToString(reader["email"]);
+                client.Email = string.IsNullOrEmpty(email) || email == "NULL" ? string.Empty : email;
                 clients.Add(client);
             }
             return clients;
