@@ -20,10 +20,9 @@ namespace HouseMadera.VueModele
     public class VueModeleClientList : ViewModelBase
     {
 
-
         #region PROPRIETES
         /// <summary>
-        /// Recherche
+        /// Recherche lié à la textbox recherche
         /// </summary>
         private string recherche;
         public string Recherche
@@ -51,6 +50,7 @@ namespace HouseMadera.VueModele
 
             }
         }
+
         /// <summary>
         /// Filtre selectionné dans la combobox
         /// </summary>
@@ -64,13 +64,19 @@ namespace HouseMadera.VueModele
             }
         }
 
-
+        /// <summary>
+        /// Commandes lié aux boutons de la vue
+        /// </summary>
         public ICommand EditClient { get; private set; }
         public ICommand ModifClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
-       
+
+        /// <summary>
+        /// Clients lié à la datagrid
+        /// </summary>
         public ObservableCollection<Client> Clients { get; set; }
         private Dictionary<string, string> correspondanceFiltresColonnes;
+
         /// <summary>
         /// filtres affichés dans la combobox
         /// </summary>
@@ -80,6 +86,7 @@ namespace HouseMadera.VueModele
             get { return filtres; }
             set { filtres = value; }
         }
+
         /// <summary>
         /// Client Selectionne lié à une ligne de la datagrid
         /// </summary>
@@ -95,23 +102,24 @@ namespace HouseMadera.VueModele
                     RaisePropertyChanged(() => ClientSelectionne);
                     IsClientSelected = true;
                 }
-                  
+
 
             }
         }
+
         /// <summary>
-        /// IsClientSelected
+        /// IsClientSelected lié au bouton de modification
         /// </summary>
         private bool isClientSelected;
         public bool IsClientSelected
         {
             get { return isClientSelected; }
-            set {
+            set
+            {
                 isClientSelected = value;
                 RaisePropertyChanged(() => IsClientSelected);
             }
         }
-        public RegexUtilities reg { get; set; }
         #endregion
 
         public VueModeleClientList()
@@ -119,7 +127,6 @@ namespace HouseMadera.VueModele
             EditClient = new RelayCommand(EClient);
             Deconnexion = new RelayCommand(Deconnecter);
             ModifClient = new RelayCommand(ModifierClient);
-            reg = new RegexUtilities();
             Clients = new ObservableCollection<Client>(AfficherClient());
             IsClientSelected = false;
             correspondanceFiltresColonnes = new Dictionary<string, string>()
@@ -134,8 +141,6 @@ namespace HouseMadera.VueModele
                 };
             Filtres = getFiltresFromDictionnary(correspondanceFiltresColonnes);
         }
-
-
 
         #region METHODES
         /// <summary>
@@ -161,7 +166,7 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             VueClientEdit vce = new VueClientEdit();
             VueModeleClientEdit vm = new VueModeleClientEdit();
-            vm.InitClient(ClientSelectionne);
+            vm.InitVueModele(ClientSelectionne);
             vce.DataContext = vm;
             vce.Show();
             window.Close();

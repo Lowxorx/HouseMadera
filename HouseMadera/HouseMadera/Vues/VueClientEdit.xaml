@@ -24,9 +24,9 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
-    <!--<Window.DataContext>
+    <Window.DataContext>
         <vuemod:VueModeleClientEdit />
-    </Window.DataContext>-->
+    </Window.DataContext>
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
@@ -280,10 +280,10 @@
 
                 <Button 
                     Name="Enregistrer"
-                    Canvas.Left="500"
-                    Canvas.Top="675"
+                    Canvas.Left="426"
+                    Canvas.Top="661"
                     Width="180"
-                    Height="46"
+                    Height="50"
                     IsEnabled="{Binding IsFormulaireOk}"
                     Command="{Binding Enregistrer}"
                     Content="{iconPacks:PackIconFontAwesome Kind=FloppyOutline,
@@ -295,30 +295,24 @@
                                                         Width=32,
                                                         Height=32}"
                     Visibility="{Binding IsClientEnregistre , Converter={StaticResource BoolToVisConverter}}"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="center"
                     Foreground="ForestGreen"
                     Height="50"
                     VerticalAlignment="Center"
                     Width="50"
-                    Canvas.Left="298"
-                    Canvas.Top="675"/>
+                    Canvas.Left="630"
+                    Canvas.Top="661"/>
                 <Controls:ToggleSwitch
                     Width="283"
                     IsChecked="{Binding StatutClient}"
-                    OnLabel="Actif"
-                    OffLabel="Inactif"
+                    OnLabel="Statut Actif"
+                    OffLabel="Statut Inactif"
                     Height="50"
                     Canvas.Left="20"
                     Canvas.Top="659" />
-                <!--<CheckBox
-                    x:Name="checkBox"
-                    Content="Actif" 
-                    Canvas.Left="131"
-                    Canvas.Top="622"
-                    IsChecked="{Binding StatutClient}"/>-->
             </Canvas>
         </Grid>
-        <Grid Margin="0,940,0,0" Background="#FFA29A9A"  Panel.ZIndex="30"/>
+        <Grid Margin="0,940,0,0" Background="#FFA29A9A"  />
     </Grid>
 </Controls:MetroWindow>
 

@@ -19,6 +19,10 @@ namespace HouseMadera.VueModele
     public class VueModeleClientEdit : ViewModelBase, IDataErrorInfo
     {
         #region PROPRIETES
+
+        /// <summary>
+        /// Constantes
+        /// </summary>
         private const string OBLIGATOIRE = "*";
         private const int ACTIF = 1;
         private const int INACTIF = 2;
@@ -154,6 +158,9 @@ namespace HouseMadera.VueModele
             set { email = value; }
         }
 
+        /// <summary>
+        /// StatutClient lié au toggleswitch
+        /// </summary>
         private bool statutClient;
         public bool StatutClient
         {
@@ -179,9 +186,9 @@ namespace HouseMadera.VueModele
             }
         }
 
-       /// <summary>
-       /// SuggestionCommunes lié à la listBox Suggestion
-       /// </summary>
+        /// <summary>
+        /// SuggestionCommunes lié à la listBox Suggestion
+        /// </summary>
         private object suggestionCommunes;
         public object SuggestionCommunes
         {
@@ -250,21 +257,30 @@ namespace HouseMadera.VueModele
             }
         }
 
+        /// <summary>
+        /// ClientSelectionne en lien avec l'item de la datagrid (VueClientList)
+        /// </summary>
         private Client clientSelectionne;
         public Client ClientSelectionne
         {
             get { return clientSelectionne; }
             set
             {
-               
-                    clientSelectionne = value;
+
+                clientSelectionne = value;
             }
         }
 
-       private bool isMiseAJourClient;
+        /// <summary>
+        /// Variables
+        /// </summary>
+        private bool isMiseAJourClient;
         private int idClientAMettreAJour;
-
         public RegexUtilities reg { get; set; }
+
+        /// <summary>
+        /// Commandes liées aux boutons de la vue
+        /// </summary>
         public ICommand Enregistrer { get; private set; }
         public ICommand Retour { get; private set; }
         public ICommand Deconnexion { get; set; }
@@ -280,10 +296,6 @@ namespace HouseMadera.VueModele
             IsClientEnregistre = false;
             isMiseAJourClient = false;
         }
-
-    
-
-        
 
         #region REGLES DE VALIDATION
         public string this[string columnName]
@@ -324,14 +336,14 @@ namespace HouseMadera.VueModele
                         break;
                     case "Localite":
                         result = reg.HasSpecialCharacters(Localite) ? "Caractères spéciaux non admis " : string.Empty;
-                       isChampsLocaliteOk = Localite == null || result != string.Empty ? false : true;
+                        isChampsLocaliteOk = Localite == null || result != string.Empty ? false : true;
                         break;
                     case "CodePostal":
                         result = reg.HasSpecialCharacters(CodePostal) ? "Caractères spéciaux non admis " : string.Empty;
                         isChampsCodePostalOk = CodePostal == null || result != string.Empty ? false : true;
                         break;
                 }
-                 
+
                 IsFormulaireOk = VerifierTouslesChamps();
                 return result;
             }
@@ -340,7 +352,11 @@ namespace HouseMadera.VueModele
 
         #region METHODES
 
-        public void InitClient(Client clientSelectionne)
+        /// <summary>
+        /// Initialise les propriétés du Vue Modele
+        /// </summary>
+        /// <param name="clientSelectionne"></param>
+        public void InitVueModele(Client clientSelectionne)
         {
             if (clientSelectionne != null)
             {
@@ -360,6 +376,9 @@ namespace HouseMadera.VueModele
             }
         }
 
+        /// <summary>
+        /// Instancie la vue précédente et ferme la vue courante
+        /// </summary>
         private void AfficherPagePrecedente()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
@@ -368,6 +387,10 @@ namespace HouseMadera.VueModele
             window.Close();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns> 'true' si tous les champs respectent les conditions sinon 'false' </returns>
         private bool VerifierTouslesChamps()
         {
             if (isChampsNomOk && isChampsPrenomOk && isChampsVoieOk && isChampsComplementOk && isChampsCodePostalOk && isChampsLocaliteOk && isChampsMobileOk && isChampsTelephoneOk && isChampsEmailOk)
@@ -376,6 +399,9 @@ namespace HouseMadera.VueModele
                 return false;
         }
 
+        /// <summary>
+        /// Enregistre un nouveau client dans la base de donnée ou le met à jour 
+        /// </summary>
         private void EnregistrerClient()
         {
             if (IsFormulaireOk)
@@ -398,7 +424,7 @@ namespace HouseMadera.VueModele
                 {
                     using (ClientDAL dal = new ClientDAL("SQLITE"))
                     {
-                        int success = isMiseAJourClient ? dal.UpdateClient(client): dal.InsertClient(client);
+                        int success = isMiseAJourClient ? dal.UpdateClient(client) : dal.InsertClient(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
                     }
@@ -413,6 +439,11 @@ namespace HouseMadera.VueModele
 
         }
 
+        /// <summary>
+        /// Recherche la ou les communes en fonction du code postal
+        /// </summary>
+        /// <param name="codePostal"></param>
+        /// <returns></returns>
         private List<Commune> RechercherCommunes(string codePostal)
         {
             int i;
@@ -431,6 +462,9 @@ namespace HouseMadera.VueModele
             return communes;
         }
 
+        /// <summary>
+        /// Affiche une invite de confirmation et redirige vers la vue login 
+        /// </summary>
         private async void Deconnecter()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();

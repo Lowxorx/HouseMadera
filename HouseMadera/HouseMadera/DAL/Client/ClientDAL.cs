@@ -312,6 +312,7 @@ namespace HouseMadera.DAL
             client.Telephone = string.IsNullOrEmpty(telephone) || telephone == "NULL" ? string.Empty : telephone;
             string email = Convert.ToString(reader["email"]);
             client.Email = string.IsNullOrEmpty(email) || email == "NULL" ? string.Empty : email;
+            client.StatutClient = Convert.ToInt32(reader["statutClient_id"]);
             return client;
         }
         #endregion
