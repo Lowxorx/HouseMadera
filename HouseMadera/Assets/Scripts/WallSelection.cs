@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class WallSelection : MonoBehaviour {
 
@@ -9,9 +9,11 @@ public class WallSelection : MonoBehaviour {
     public List<GameObject> listModule;
     public bool wallPlaced = false;
     private bool wallSelected = false;
+    public bool canBeActivate = true;
+    public GameObject _switch;
 	void Start ()
     {
-	
+        _switch = GameObject.Find("Switch");
 	}
 	
 	// Update is called once per frame
@@ -27,25 +29,33 @@ public class WallSelection : MonoBehaviour {
 
     void OnMouseEnter()
     {
-        childrenOutside = this.gameObject.transform.GetChild(0).gameObject;
-        childrenInside = this.gameObject.transform.GetChild(1).gameObject;
-        childrenOutside.SetActive(true);
-        childrenInside.SetActive(true);
-        wallSelected = true;
-        if (!wallPlaced)
+        if (canBeActivate)
         {
-            childrenOutside.GetComponent<Renderer>().material.color = Color.red;
-            childrenInside.GetComponent<Renderer>().material.color = Color.red;
+            childrenOutside = this.gameObject.transform.GetChild(0).gameObject;
+            childrenInside = this.gameObject.transform.GetChild(1).gameObject;
+            childrenOutside.SetActive(true);
+            childrenInside.SetActive(true);
+            wallSelected = true;
+            if (!wallPlaced)
+            {
+                childrenOutside.GetComponent<Renderer>().material.color = Color.red;
+                childrenInside.GetComponent<Renderer>().material.color = Color.red;
+            }
         }
+            
     }
 
     void OnMouseExit()
     {
-        if(childrenOutside != null && !wallPlaced)
+        if (canBeActivate)
         {
-            wallSelected = false;
-            childrenOutside.SetActive(false);
-            childrenInside.SetActive(false);
+            if (childrenOutside != null && !wallPlaced)
+            {
+                wallSelected = false;
+                childrenOutside.SetActive(false);
+                childrenInside.SetActive(false);
+            }
         }
+        
     }
 }
