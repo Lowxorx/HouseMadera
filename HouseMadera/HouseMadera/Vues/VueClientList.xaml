@@ -127,6 +127,7 @@
                 VerticalAlignment="Top"
                 Width="1356"
                 AutoGenerateColumns="False"
+                IsReadOnly="True"
                 SelectedItem="{Binding ClientSelectionne}"
                 Style="{StaticResource AzureDataGrid}">
                 <DataGrid.Columns>

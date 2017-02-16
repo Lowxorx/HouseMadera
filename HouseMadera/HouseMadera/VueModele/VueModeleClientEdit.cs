@@ -278,6 +278,7 @@ namespace HouseMadera.VueModele
             Communes = new List<Commune>();
             reg = new RegexUtilities();
             IsClientEnregistre = false;
+            isMiseAJourClient = false;
         }
 
     

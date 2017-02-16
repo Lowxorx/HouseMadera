@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HouseMadera.Utilites;
 using HouseMadera.Modeles;
+using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
@@ -30,26 +31,9 @@ namespace HouseMadera.DAL
             var reader = Get(sql, null);
             while (reader.Read())
             {
-                var client = new Client();
-                client.Id = Convert.ToInt32(reader["id"]);
-                client.Nom = Convert.ToString(reader["nom"]);
-                client.Prenom = Convert.ToString(reader["prenom"]);
-                client.Adresse1 = Convert.ToString(reader["adresse1"]);
-                string adresse2 = Convert.ToString(reader["adresse2"]);
-                client.Adresse2 = string.IsNullOrEmpty(adresse2) || adresse2 == "NULL" ? string.Empty : adresse2;
-                string adresse3 = Convert.ToString(reader["adresse3"]);
-                client.Adresse3 = string.IsNullOrEmpty(adresse3) || adresse3 == "NULL" ? string.Empty : adresse3;
-                string codePostal = Convert.ToString(reader["codePostal"]);
-                client.CodePostal = string.IsNullOrEmpty(codePostal) || codePostal == "NULL" ? string.Empty : codePostal;
-                string ville = Convert.ToString(reader["ville"]);
-                client.Ville = string.IsNullOrEmpty(ville) || codePostal == "NULL" ? string.Empty : ville;
-                string mobile = Convert.ToString(reader["mobile"]);
-                client.Mobile = string.IsNullOrEmpty(mobile) || mobile == "NULL" ? string.Empty : mobile;
-                var telephone = Convert.ToString(reader["telephone"]);
-                client.Telephone = string.IsNullOrEmpty(telephone) || telephone == "NULL" ? string.Empty : telephone;
-                string email = Convert.ToString(reader["email"]);
-                client.Email = string.IsNullOrEmpty(email) || email == "NULL" ? string.Empty : email;
-                clients.Add(client);
+                Client client = initialiserClient(reader);
+                if (client != null)
+                    clients.Add(client);
             }
             return clients;
         }
@@ -73,14 +57,15 @@ namespace HouseMadera.DAL
             var client = new Client();
             while (reader.Read())
             {
-                client.Id = Convert.ToInt32(reader["id"]);
-                client.Nom = Convert.ToString(reader["nom"]);
-                client.Prenom = Convert.ToString(reader["prenom"]);
-                client.Adresse1 = Convert.ToString(reader["adresse1"]);
-                client.Adresse2 = Convert.ToString(reader["adresse2"]);
-                client.Adresse3 = Convert.ToString(reader["adresse3"]);
-                client.Mobile = Convert.ToString(reader["mobile"]);
-                client.Telephone = Convert.ToString(reader["telephone"]);
+                //client.Id = Convert.ToInt32(reader["id"]);
+                //client.Nom = Convert.ToString(reader["nom"]);
+                //client.Prenom = Convert.ToString(reader["prenom"]);
+                //client.Adresse1 = Convert.ToString(reader["adresse1"]);
+                //client.Adresse2 = Convert.ToString(reader["adresse2"]);
+                //client.Adresse3 = Convert.ToString(reader["adresse3"]);
+                //client.Mobile = Convert.ToString(reader["mobile"]);
+                //client.Telephone = Convert.ToString(reader["telephone"]);
+                client = initialiserClient(reader);
             }
             return client;
 
@@ -137,24 +122,13 @@ namespace HouseMadera.DAL
             var reader = Get(sql, parameters);
             while (reader.Read())
             {
-                var client = new Client();
-                client.Id = Convert.ToInt32(reader["id"]);
-                client.Nom = Convert.ToString(reader["nom"]);
-                client.Prenom = Convert.ToString(reader["prenom"]);
-                client.Adresse1 = Convert.ToString(reader["adresse1"]);
-                client.Adresse2 = Convert.ToString(reader["adresse2"]);
-                client.Adresse3 = Convert.ToString(reader["adresse3"]);
-                client.CodePostal = Convert.ToString(reader["CodePostal"]);
-                client.Ville = Convert.ToString(reader["Ville"]);
-                client.Mobile = Convert.ToString(reader["mobile"]);
-                client.Telephone = Convert.ToString(reader["telephone"]);
-                client.Email = Convert.ToString(reader["email"]);
-                clients.Add(client);
+                Client client = initialiserClient(reader);
+                if (client != null)
+                    clients.Add(client);
             }
             return clients;
 
         }
-
         #endregion
 
         #region CREATE
@@ -167,7 +141,7 @@ namespace HouseMadera.DAL
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne insérée</returns>
         public int InsertClient(Client client)
         {
-            if (!IsDataCorrect(client))
+            if (!isDataCorrect(client))
                 throw new Exception(erreur);
             if (IsClientExist(client))
                 throw new Exception("le client est déjà enregistré");
@@ -210,7 +184,7 @@ namespace HouseMadera.DAL
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne affectée</returns>
         public int UpdateClient(Client client)
         {
-            if (!IsDataCorrect(client))
+            if (!isDataCorrect(client))
                 throw new Exception(erreur);
 
             var sql = @"
@@ -277,7 +251,8 @@ namespace HouseMadera.DAL
         }
         #endregion
 
-        private bool IsDataCorrect(Client client)
+        #region METHODES
+        private bool isDataCorrect(Client client)
         {
 
             //statutClient ne doit pas être null
@@ -315,6 +290,31 @@ namespace HouseMadera.DAL
 
             return string.IsNullOrEmpty(erreur);
         }
+
+        private Client initialiserClient(DbDataReader reader)
+        {
+            var client = new Client();
+            client.Id = Convert.ToInt32(reader["id"]);
+            client.Nom = Convert.ToString(reader["nom"]);
+            client.Prenom = Convert.ToString(reader["prenom"]);
+            client.Adresse1 = Convert.ToString(reader["adresse1"]);
+            string adresse2 = Convert.ToString(reader["adresse2"]);
+            client.Adresse2 = string.IsNullOrEmpty(adresse2) || adresse2 == "NULL" ? string.Empty : adresse2;
+            string adresse3 = Convert.ToString(reader["adresse3"]);
+            client.Adresse3 = string.IsNullOrEmpty(adresse3) || adresse3 == "NULL" ? string.Empty : adresse3;
+            string codePostal = Convert.ToString(reader["codePostal"]);
+            client.CodePostal = string.IsNullOrEmpty(codePostal) || codePostal == "NULL" ? string.Empty : codePostal;
+            string ville = Convert.ToString(reader["ville"]);
+            client.Ville = string.IsNullOrEmpty(ville) || codePostal == "NULL" ? string.Empty : ville;
+            string mobile = Convert.ToString(reader["mobile"]);
+            client.Mobile = string.IsNullOrEmpty(mobile) || mobile == "NULL" ? string.Empty : mobile;
+            var telephone = Convert.ToString(reader["telephone"]);
+            client.Telephone = string.IsNullOrEmpty(telephone) || telephone == "NULL" ? string.Empty : telephone;
+            string email = Convert.ToString(reader["email"]);
+            client.Email = string.IsNullOrEmpty(email) || email == "NULL" ? string.Empty : email;
+            return client;
+        }
+        #endregion
 
     }
 }
