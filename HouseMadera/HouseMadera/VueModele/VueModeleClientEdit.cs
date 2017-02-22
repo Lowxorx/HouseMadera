@@ -422,7 +422,7 @@ namespace HouseMadera.VueModele
                 };
                 try
                 {
-                    using (ClientDAL dal = new ClientDAL("SQLITE"))
+                    using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
                     {
                         int success = isMiseAJourClient ? dal.UpdateClient(client) : dal.InsertClient(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
@@ -453,7 +453,7 @@ namespace HouseMadera.VueModele
             //TODO modifier "SQLITE" par Bdd
             if (codePostal != string.Empty && isCodePostal)
             {
-                using (var dal = new CommuneDAL("SQLITE"))
+                using (var dal = new CommuneDAL(DAL.DAL.Bdd))
                 {
                     communes = dal.GetFilteredCommunes(Convert.ToInt32(codePostal));
                 }
