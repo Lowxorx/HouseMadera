@@ -123,9 +123,13 @@
     <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
+    <Compile Include="DAL\Interfaces\IClientDAL.cs" />
+    <Compile Include="DAL\Interfaces\IDAL.cs" />
+    <Compile Include="DAL\Interfaces\ISynchronizable.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
+    <Compile Include="DAL\Synchronisation.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Commune.cs" />
@@ -133,6 +137,7 @@
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
     <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
+    <Compile Include="Utilities\DateTimeSQLite.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
     <Compile Include="Modeles\Finition.cs" />
     <Compile Include="Modeles\Gamme.cs" />

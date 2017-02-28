@@ -1,9 +1,10 @@
-﻿using HouseMadera.Modeles;
+﻿using HouseMadera.DAL;
+using HouseMadera.Modeles;
 using System.Collections.Generic;
 
 namespace HouseMadera.Modeles
 {
-    public class Client
+    public class Client:ISynchronizable
     {
         public int Id { get; set; }
 
@@ -21,5 +22,19 @@ namespace HouseMadera.Modeles
         public int StatutClient { get; set; }
 
         public List<Projet> Projets { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Client cl = (Client)obj;
+            return (Nom == cl.Nom) && (Prenom == cl.Prenom) && (Adresse1 == cl.Adresse1) && (Adresse2 == cl.Adresse2) && (Adresse3 == cl.Adresse3) && (CodePostal == cl.CodePostal) && (Ville == cl.Ville) && (Email == cl.Email)&& (Telephone == cl.Telephone) && (Mobile == Mobile) && (StatutClient == cl.StatutClient);
+        }
+
+        public override string ToString()
+        {
+            return Prenom + " " + Nom + " de " + Ville;
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    public class ClientDAL : DAL
+    public class ClientDAL : DAL,IClientDAL
     {
         private string erreur;
         const string NON_RENSEIGNE = "NULL";
@@ -315,7 +315,60 @@ namespace HouseMadera.DAL
             client.StatutClient = Convert.ToInt32(reader["statutClient_id"]);
             return client;
         }
+
         #endregion
+
+        public List<Client> GetAll()
+        {
+            string sql = @"
+                            SELECT * FROM Client
+                            ORDER BY Nom DESC";
+            var clients = new List<Client>();
+            var reader = Get(sql, null);
+            while (reader.Read())
+            {
+                Client client = initialiserClient(reader);
+                if (client != null)
+                    clients.Add(client);
+            }
+            return clients;
+        }
+
+        public int InsertNew(Client client)
+        {
+            if (!isDataCorrect(client))
+                throw new Exception(erreur);
+            if (IsClientExist(client))
+                throw new Exception("le client est déjà enregistré");
+
+            var sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id)
+                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11)";
+            var parameters = new Dictionary<string, object>() {
+                {"@1",client.Nom },
+                {"@2",client.Prenom },
+                {"@3",client.Adresse1 },
+                {"@4",client.Adresse2 },
+                {"@5",client.Adresse3 },
+                {"@6",client.CodePostal },
+                {"@7",client.Ville },
+                {"@8",client.Email },
+                {"@9",client.Telephone },
+                {"@10",client.Mobile },
+                {"@11",client.StatutClient },
+            };
+            var result = 0;
+            try
+            {
+                result = Insert(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
 
     }
 }
