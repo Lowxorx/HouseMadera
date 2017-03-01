@@ -1,6 +1,7 @@
 ﻿using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using System.Collections.Generic;
+using System;
 
 namespace HouseMadera.Modeles
 {
@@ -18,7 +19,7 @@ namespace HouseMadera.Modeles
         public string Email { get; set; }
         public string Telephone { get; set; }
         public string Mobile { get; set; }
-
+        public DateTime MiseAJour { get; set; }
         public int StatutClient { get; set; }
 
         public List<Projet> Projets { get; set; }
@@ -35,6 +36,16 @@ namespace HouseMadera.Modeles
         public override string ToString()
         {
             return Prenom + " " + Nom + " de " + Ville;
+        }
+
+        public bool IsUpToDate<TMODELE>( TMODELE modele) where TMODELE : ISynchronizable
+        {
+            return MiseAJour == modele.MiseAJour;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

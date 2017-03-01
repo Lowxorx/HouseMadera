@@ -5,6 +5,6 @@ namespace HouseMadera.DAL
 {
     public interface IClientDAL : IDAL<Client>
     {
-        List<Client> GetAll();
+        new List<Client> GetAll();
     }
 }

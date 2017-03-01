@@ -66,11 +66,18 @@ namespace HouseMadera.DAL
             foreach (var modeleLocal in listeModeleLocale)
             {
                 bool isInDistant = false;
+                bool isUpToDate = false;
                 foreach (var modeleDistant in listeModeleDistante)
                 {
                     isInDistant = modeleLocal.Equals(modeleDistant);
                     if (isInDistant)
                     {
+                        isUpToDate = modeleLocal.IsUpToDate(modeleDistant);
+                        //mettre à jour l'enregistrement local
+                        if (!isUpToDate)
+                        {
+                            //TODO
+                        }
                         //enregistrer les id dans une table de correspondance
                         correspondanceModeleId.Add(modeleLocal.Id, modeleDistant.Id);
                         break;
@@ -105,11 +112,21 @@ namespace HouseMadera.DAL
             foreach (var modeleDistant in listeModeleDistante)
             {
                 bool isInLocal = false;
+                bool isUpToDate = false;
                 foreach (var modeleLocal in listeModeleLocale)
                 {
                     isInLocal = modeleDistant.Equals(modeleLocal);
+
                     if (isInLocal)
+                    {
+                        isUpToDate = modeleLocal.IsUpToDate(modeleLocal);
+                        if (!isUpToDate)
+                        {
+                            //TODO
+                        }
                         break;
+                    }
+                       
                 }
                 if (!isInLocal)
                 {
