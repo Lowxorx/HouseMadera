@@ -20,6 +20,7 @@ namespace HouseMadera.Modeles
         public string Telephone { get; set; }
         public string Mobile { get; set; }
         public DateTime MiseAJour { get; set; }
+        public DateTime Suppression { get; set; }
         public int StatutClient { get; set; }
 
         public List<Projet> Projets { get; set; }

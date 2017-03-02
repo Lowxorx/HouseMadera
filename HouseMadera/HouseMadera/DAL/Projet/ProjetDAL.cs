@@ -88,7 +88,12 @@ namespace HouseMadera.DAL
                     p.Reference = reader.GetString(reader.GetOrdinal("Reference"));
                     p.UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate"));
                     p.CreateDate = reader.GetDateTime(reader.GetOrdinal("CreateDate"));
-                    p.Client = ClientDAL.GetClient(reader.GetOrdinal("Client_Id"));
+                    //Eviter l'usage de méthodes statiques, la directive using est utilisée car ClientDAL est "Disposable"
+                    using(ClientDAL dal = new ClientDAL(Bdd))
+                    {
+                        p.Client = dal.GetClient(reader.GetOrdinal("Client_Id"));
+                    }
+                   
                     p.Commercial = CommercialDAL.GetCommercial(Convert.ToInt32(reader.GetOrdinal("Commercial_Id")));
                 }
                 reader.Close();

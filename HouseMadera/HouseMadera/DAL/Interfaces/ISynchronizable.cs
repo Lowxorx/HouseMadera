@@ -6,6 +6,8 @@ namespace HouseMadera.DAL
     {
         int Id { get; set; }
         DateTime MiseAJour { get; set; }
-        bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable  ;
+        DateTime Suppression { get; set; }
+        bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable;
+        bool IsDeleted<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable;
     }
 }

@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    public class ClientDAL : DAL,IClientDAL
+    public class ClientDAL : DAL, IClientDAL
     {
         private string erreur;
         const string NON_RENSEIGNE = "NULL";
@@ -43,7 +43,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un objet Client</returns>
-        public static Client GetClient(int id)
+        public  Client GetClient(int id)
         {
 
             string sql = @"SELECT * FROM Client WHERE Id = @1";
@@ -52,17 +52,9 @@ namespace HouseMadera.DAL
                 {"@1", id}
             };
             var reader = Get(sql, parametres);
-            var client = new Client();
+            Client client = new Client();
             while (reader.Read())
             {
-                //client.Id = Convert.ToInt32(reader["id"]);
-                //client.Nom = Convert.ToString(reader["nom"]);
-                //client.Prenom = Convert.ToString(reader["prenom"]);
-                //client.Adresse1 = Convert.ToString(reader["adresse1"]);
-                //client.Adresse2 = Convert.ToString(reader["adresse2"]);
-                //client.Adresse3 = Convert.ToString(reader["adresse3"]);
-                //client.Mobile = Convert.ToString(reader["mobile"]);
-                //client.Telephone = Convert.ToString(reader["telephone"]);
                 client = initialiserClient(reader);
             }
             return client;

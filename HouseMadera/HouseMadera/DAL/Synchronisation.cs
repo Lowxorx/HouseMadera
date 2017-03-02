@@ -67,11 +67,14 @@ namespace HouseMadera.DAL
             {
                 bool isInDistant = false;
                 bool isUpToDate = false;
+                bool isDeleted = false;
                 foreach (var modeleDistant in listeModeleDistante)
                 {
                     isInDistant = modeleLocal.Equals(modeleDistant);
                     if (isInDistant)
                     {
+                        isDeleted = modeleLocal.IsDeleted(modeleDistant);
+
                         isUpToDate = modeleLocal.IsUpToDate(modeleDistant);
                         //mettre à jour l'enregistrement local
                         if (!isUpToDate)
