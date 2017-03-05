@@ -24,7 +24,6 @@ public class CloisonManager : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("ADADADADDADADAD");
         if (verticalActive)
         {
             cloisonVertical.SetActive(false);
