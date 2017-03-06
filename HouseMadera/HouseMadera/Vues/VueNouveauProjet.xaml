@@ -86,229 +86,51 @@
                 FontSize="27"
                 FontWeight="Bold" />
             <Label
-                Width="667"
-                Margin="42,330,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Identification du Client :"
-                FontSize="27"
-                FontWeight="Bold" />
-            <Label
-                Width="667"
+                Width="295"
                 Height="42"
-                Margin="808,162,0,0"
+                Margin="42,360,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Référence du projet :"
                 FontSize="25" />
             <Label
-                Width="221"
+                Width="295"
                 Height="42"
-                Margin="42,162,0,0"
+                Margin="42,186,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Date du projet :"
                 FontSize="25" />
             <Label
-                Width="221"
+                Width="295"
                 Height="42"
-                Margin="42,244,0,0"
+                Margin="42,274,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Nom du projet :"
                 FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="42,415,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Nom :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="42,486,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Prénom :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="42,557,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Téléphone Fixe :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="42,628,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Téléphone Mobile :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="42,699,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Email :"
-                FontSize="25" />
             <TextBox
-                Width="411"
+                Width="981"
                 Height="42"
-                Margin="298,244,0,0"
+                Margin="410,274,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="25"
-                Text="{Binding ProjetNom}"
+                Text="{Binding ProjetNom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                 TextWrapping="Wrap" />
             <TextBox
-                Width="411"
+                Width="981"
                 Height="42"
-                Margin="298,415,0,0"
+                Margin="410,360,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="25"
-                Text="{Binding ClientNom}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="298,486,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientPrenom}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="299,557,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientFixe}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="299,628,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientMobile}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="299,699,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientEmail}"
-                TextWrapping="Wrap" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="808,415,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Adresse 1 :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="808,486,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Adresse 2 :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="808,557,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Adresse 3 :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="808,628,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Code Postal :"
-                FontSize="25" />
-            <Label
-                Width="252"
-                Height="42"
-                Margin="42,770,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Content="Ville :"
-                FontSize="25" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="1064,415,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientAdr1}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="1064,486,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientAdr2}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="1065,557,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientAdr3}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="1065,628,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientCP}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="411"
-                Height="42"
-                Margin="299,770,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ClientVille}"
-                TextWrapping="Wrap" />
-            <TextBox
-                Width="667"
-                Height="42"
-                Margin="808,244,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="25"
-                Text="{Binding ProjetRef}"
+                Text="{Binding ProjetRef, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                 TextWrapping="Wrap" />
             <Label
                 Width="410"
                 Height="42"
-                Margin="299,162,0,0"
+                Margin="410,186,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{Binding ProjetDate}"
@@ -316,11 +138,39 @@
             <Button
                 Width="482"
                 Height="129"
-                Margin="890,714,0,0"
+                Margin="886,626,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Command="{Binding ValiderProjet}"
                 Content="VALIDER"
+                FontSize="27"
+                IsEnabled="{Binding IsFormulaireOk}" />
+            <Label
+                Width="221"
+                Height="42"
+                Margin="42,446,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="Client :"
+                FontSize="25" />
+            <TextBox
+                Width="981"
+                Height="42"
+                Margin="410,446,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Controls:TextBoxHelper.Watermark="Aucun client sélectionné."
+                FontSize="25"
+                Text="{Binding ClientSelect}"
+                TextWrapping="Wrap" />
+            <Button
+                Width="482"
+                Height="129"
+                Margin="312,626,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Command="{Binding SelectionnerClient}"
+                Content="Ajouter un client"
                 FontSize="27" />
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A" />

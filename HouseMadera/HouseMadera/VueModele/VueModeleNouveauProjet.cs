@@ -6,13 +6,14 @@ using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
 namespace HouseMadera.VueModele
 {
-    public class VueModeleNouveauProjet : ViewModelBase
+    public class VueModeleNouveauProjet : ViewModelBase, IDataErrorInfo
     {
         [PreferredConstructor]
         public VueModeleNouveauProjet()
@@ -20,13 +21,17 @@ namespace HouseMadera.VueModele
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
             Retour = new RelayCommand(RetourArriere);
             ValiderProjet = new RelayCommand(VerifierEtValiderProjet);
+            SelectionnerClient = new RelayCommand(ChoisirOuCreerClient);
             Deconnexion = new RelayCommand(Logout);
 
             // Actions à effectuer au chargement de la vue :
+            ProjetDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            IsFormulaireOk = false;
 
         }
 
         public ICommand ValiderProjet { get; private set; }
+        public ICommand SelectionnerClient { get; private set; }
         public ICommand WindowLoaded { get; private set; }
         public ICommand Retour { get; private set; }
         public ICommand Deconnexion { get; private set; }
@@ -94,109 +99,97 @@ namespace HouseMadera.VueModele
 
         }
 
-        private string projetDate;
+        private void ChoisirOuCreerClient()
+        {
 
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns> 'true' si tous les champs respectent les conditions sinon 'false' </returns>
+        private bool VerifierTouslesChamps()
+        {
+            if (isProjetRefValid && isProjetNomValid)
+                return true;
+            else
+                return false;
+        }
+
+        private bool isFormulaireOk;
+        public bool IsFormulaireOk
+        {
+            get { return isFormulaireOk; }
+            set
+            {
+                isFormulaireOk = value;
+                RaisePropertyChanged(() => IsFormulaireOk);
+            }
+        }
+
+        private string projetDate;
         public string ProjetDate
         {
             get { return projetDate; }
-            set { projetDate = value; }
+            set
+            {
+                projetDate = value;
+                RaisePropertyChanged(() => ProjetDate);
+            }
         }
 
+        private bool isProjetRefValid;
         private string projetRef;
-
         public string ProjetRef
         {
             get { return projetRef; }
             set { projetRef = value; }
         }
 
+        private bool isProjetNomValid;
         private string projetNom;
-
         public string ProjetNom
         {
             get { return projetNom; }
             set { projetNom = value; }
         }
 
-        private string clientNom;
+        public string Error => throw new NotImplementedException();
 
-        public string ClientNom
+        public string this[string columnName]
         {
-            get { return clientNom; }
-            set { clientNom = value; }
+            get
+            {
+                string result = string.Empty;
+                switch (columnName)
+                {
+                    case "ProjetNom":
+                        if (ProjetNom.Trim() == null || ProjetNom.Trim() == string.Empty || ProjetNom.Trim().Length == 0)
+                        {
+                            result = "Merci de renseigner le nom du projet.";
+                            isProjetNomValid = false;
+                        }
+                        else
+                        {
+                            isProjetNomValid = true;
+                        }
+                        break;
+                    case "ProjetRef":
+                        if (ProjetRef.Trim() == null || ProjetRef.Trim() == string.Empty || ProjetRef.Trim().Length == 0)
+                        {
+                            result = "Merci de renseigner une référence de projet.";
+                            isProjetRefValid = false;
+                        }
+                        else
+                        {
+                            isProjetRefValid = true;
+                        }
+                        break;
+                }
+                IsFormulaireOk = VerifierTouslesChamps();
+                return result;
+            }
         }
-
-        private string clientPrenom;
-
-        public string ClientPrenom
-        {
-            get { return clientPrenom; }
-            set { clientPrenom = value; }
-        }
-
-        private string clientFixe;
-
-        public string ClientFixe
-        {
-            get { return clientFixe; }
-            set { clientFixe = value; }
-        }
-
-        private string clientMobile;
-
-        public string ClientMobile
-        {
-            get { return clientMobile; }
-            set { clientMobile = value; }
-        }
-
-        private string clientEmail;
-
-        public string ClientEmail
-        {
-            get { return clientEmail; }
-            set { clientEmail = value; }
-        }
-
-        private string clientAdr1;
-
-        public string ClientAdr1
-        {
-            get { return clientAdr1; }
-            set { clientAdr1 = value; }
-        }
-
-        private string clientAdr2;
-
-        public string ClientAdr2
-        {
-            get { return clientAdr2; }
-            set { clientAdr2 = value; }
-        }
-
-        private string clientAdr3;
-
-        public string ClientAdr3
-        {
-            get { return clientAdr3; }
-            set { clientAdr3 = value; }
-        }
-
-        private string clientCP;
-
-        public string ClientCP
-        {
-            get { return clientCP; }
-            set { clientCP = value; }
-        }
-
-        private string clientVille;
-
-        public string ClientVille
-        {
-            get { return clientVille; }
-            set { clientVille = value; }
-        }
-
     }
 }
