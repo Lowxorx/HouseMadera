@@ -6,6 +6,8 @@ using Mono.Data.Sqlite;
 using System;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 
 public class UIManager : MonoBehaviour {
 
@@ -196,29 +198,52 @@ public class UIManager : MonoBehaviour {
 
     public void AddCloisonDoor()
     {
-        GameObject arch = Instantiate(Resources.Load("Arch", typeof(GameObject))) as GameObject;
-        arch.transform.parent = cloisonSelected.transform.parent;
-        arch.transform.position = cloisonSelected.transform.position;
-        if (cloisonSelected.name.Contains("Vertical"))
+        if (cloisonSelected)
         {
-            arch.transform.rotation = Quaternion.Euler(0, 90, 0);
-            arch.transform.GetComponent<Transform>().localScale = new Vector3(cloisonSelected.transform.GetComponent<Transform>().localScale.z, cloisonSelected.transform.GetComponent<Transform>().localScale.y, cloisonSelected.transform.GetComponent<Transform>().localScale.x);
-            cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
-            cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
-        }
-        else
-        {
-            arch.transform.rotation = Quaternion.Euler(0, 0, 0);
-            arch.transform.GetComponent<Transform>().localScale = cloisonSelected.transform.GetComponent<Transform>().localScale;
-            cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
-            cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
-        }
+            GameObject arch = Instantiate(Resources.Load("Arch", typeof(GameObject))) as GameObject;
+            arch.transform.parent = cloisonSelected.transform.parent;
+            arch.transform.position = cloisonSelected.transform.position;
+            if (cloisonSelected.name.Contains("Vertical"))
+            {
+                arch.transform.rotation = Quaternion.Euler(0, 90, 0);
+                arch.transform.GetComponent<Transform>().localScale = new Vector3(cloisonSelected.transform.GetComponent<Transform>().localScale.z, cloisonSelected.transform.GetComponent<Transform>().localScale.y, cloisonSelected.transform.GetComponent<Transform>().localScale.x);
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
+            }
+            else
+            {
+                arch.transform.rotation = Quaternion.Euler(0, 0, 0);
+                arch.transform.GetComponent<Transform>().localScale = cloisonSelected.transform.GetComponent<Transform>().localScale;
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
+            }
 
 
-        cloisonSelected.transform.parent.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
-        cloisonSelected.transform.parent.GetChild(3).GetComponent<Renderer>().material.color = Color.white;
-        cloisonSelected.transform.parent.GetChild(2).gameObject.SetActive(false);
-        cloisonSelected.transform.parent.GetChild(3).gameObject.SetActive(false);
+            cloisonSelected.transform.parent.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+            cloisonSelected.transform.parent.GetChild(3).GetComponent<Renderer>().material.color = Color.white;
+            cloisonSelected.transform.parent.GetChild(2).gameObject.SetActive(false);
+            cloisonSelected.transform.parent.GetChild(3).gameObject.SetActive(false);
+            cloisonSelected = null;
+        }       
+    }
+
+    public void SaveHouse()
+    {
+        GameObject house = GameObject.Find("House");
+        foreach (Transform target in house.transform)
+        {
+            if (target.name.Contains("Cloison"))
+            {
+                if (target.GetChild(0).GetComponent<CloisonManager>().verticalActive)
+                {
+                    Debug.Log(Regex.Match(target.name, @"\d+").Value + " Vertical"); 
+                }
+                if (target.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                {
+                    Debug.Log(Regex.Match(target.name, @"\d+").Value + " Horizontal");
+                }
+            }
+        }
     }
 
     public void ShowPanels()

@@ -37,7 +37,7 @@ public class CloisonManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0))
         {
             if (this.target != null)
             {
@@ -51,21 +51,19 @@ public class CloisonManager : MonoBehaviour
                     GameObject.Find("UIManager").GetComponent<UIManager>().cloisonSelected = target;
                     GameObject.Find("UIManager").GetComponent<UIManager>().parametreCloison = true;
             }
+
             if (cloisonVertical.activeInHierarchy)
             {
                 verticalActive = true;
-                target = this.transform.parent.GetChild(2).gameObject;
-                
             }
 
             if (cloisonHorizontal.activeInHierarchy)
             {
                 horizontalActive = true;
-                target = this.transform.parent.GetChild(3).gameObject;
-                
             }
 
-            
+
+
         }
     }
 
@@ -84,7 +82,6 @@ public class CloisonManager : MonoBehaviour
                     Debug.Log("ENTER");
                     target = this.transform.parent.GetChild(2).gameObject;
                 }
-                //this.transform.parent.GetChild(2).gameObject.SetActive(true);
             }
             else if (this.name.Contains("Horizontal"))
             {
