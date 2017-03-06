@@ -194,7 +194,7 @@ public class UIManager : MonoBehaviour {
         cloisonSelected.transform.parent.GetChild(3).gameObject.SetActive(false);
     }
 
-    public void AddCloisonDoor() 
+    public void AddCloisonDoor()
     {
         GameObject arch = Instantiate(Resources.Load("Arch", typeof(GameObject))) as GameObject;
         arch.transform.parent = cloisonSelected.transform.parent;
