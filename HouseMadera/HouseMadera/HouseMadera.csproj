@@ -134,10 +134,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201611040935473_InitialCreate.cs" />
-    <Compile Include="Migrations\201611040935473_InitialCreate.Designer.cs">
-      <DependentUpon>201611040935473_InitialCreate.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -151,9 +147,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201611040935473_InitialCreate.resx">
-      <DependentUpon>201611040935473_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
