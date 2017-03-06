@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using HouseMadera.Modeles;
+using HouseMadera.Utilites;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -41,6 +42,25 @@ namespace HouseMadera.VueModele
         {
             get { return commercialConnecte; }
             set { commercialConnecte = value; }
+        }
+
+        private string clientSelect;
+
+        public string ClientSelect
+        {
+            get { return clientSelect; }
+            set
+            {
+                clientSelect = value;
+                RaisePropertyChanged(() => ClientSelect);
+            }
+        }
+
+        private Client clientActuel;
+        public Client ClientActuel
+        {
+            get { return clientActuel; }
+            set { clientActuel = value; }
         }
 
         private async void RetourArriere()
@@ -96,11 +116,17 @@ namespace HouseMadera.VueModele
 
         private void VerifierEtValiderProjet()
         {
+            IsFormulaireOk = VerifierTouslesChamps();
+            if (IsFormulaireOk)
+            {
+
+            }
 
         }
 
         private void ChoisirOuCreerClient()
         {
+            VueClientList vcl = new VueClientList();
 
         }
 
@@ -161,34 +187,43 @@ namespace HouseMadera.VueModele
         {
             get
             {
-                string result = string.Empty;
-                switch (columnName)
+                try
                 {
-                    case "ProjetNom":
-                        if (ProjetNom.Trim() == null || ProjetNom.Trim() == string.Empty || ProjetNom.Trim().Length == 0)
-                        {
-                            result = "Merci de renseigner le nom du projet.";
-                            isProjetNomValid = false;
-                        }
-                        else
-                        {
-                            isProjetNomValid = true;
-                        }
-                        break;
-                    case "ProjetRef":
-                        if (ProjetRef.Trim() == null || ProjetRef.Trim() == string.Empty || ProjetRef.Trim().Length == 0)
-                        {
-                            result = "Merci de renseigner une référence de projet.";
-                            isProjetRefValid = false;
-                        }
-                        else
-                        {
-                            isProjetRefValid = true;
-                        }
-                        break;
+                    string result = string.Empty;
+                    switch (columnName)
+                    {
+                        case "ProjetNom":
+                            if (ProjetNom == null || ProjetNom == string.Empty || ProjetNom.Length == 0)
+                            {
+                                result = "Merci de renseigner le nom du projet.";
+                                isProjetNomValid = false;
+                            }
+                            else
+                            {
+                                isProjetNomValid = true;
+                            }
+                            break;
+                        case "ProjetRef":
+                            if (ProjetRef == null || ProjetRef == string.Empty || ProjetRef.Length == 0)
+                            {
+                                result = "Merci de renseigner une référence de projet.";
+                                isProjetRefValid = false;
+                            }
+                            else
+                            {
+                                isProjetRefValid = true;
+                            }
+                            break;
+                    }
+                    IsFormulaireOk = VerifierTouslesChamps();
+                    return result;
                 }
-                IsFormulaireOk = VerifierTouslesChamps();
-                return result;
+                catch (Exception ex)
+                {
+                    // Ex ignorée au lancement de la vue
+                    Logger.WriteEx(ex);
+                    return string.Empty;
+                }
             }
         }
     }

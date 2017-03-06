@@ -21,5 +21,11 @@ namespace HouseMadera.Modeles
         public int StatutClient { get; set; }
 
         public List<Projet> Projets { get; set; }
+        public override string ToString()
+        {
+            return Prenom + " " + Nom + " de " + Ville;
+        }
+
     }
+
 }

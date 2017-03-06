@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
+    <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\Devis\DevisDAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
@@ -130,10 +131,12 @@
     <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
+    <Compile Include="Modeles\Commune.cs" />
     <Compile Include="Modeles\Composant.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
+    <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
     <Compile Include="Modeles\Finition.cs" />
     <Compile Include="Modeles\Gamme.cs" />
@@ -159,6 +162,9 @@
     <Compile Include="Utilities\RegexUtilities.cs" />
     <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
     <Compile Include="VueModele\VueModeleChoixProjet.cs" />
+    <Compile Include="VueModele\VueModeleClientEdit.cs" />
+    <Compile Include="VueModele\VueModeleClientList.cs" />
+    <Compile Include="VueModele\VueModeleCommune.cs" />
     <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
     <Compile Include="VueModele\VueModeleLogin.cs" />
     <Compile Include="VueModele\VueModeleNouveauProjet.cs" />
@@ -167,6 +173,12 @@
     </Compile>
     <Compile Include="Vues\VueChoixProjet.xaml.cs">
       <DependentUpon>VueChoixProjet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueClientEdit.xaml.cs">
+      <DependentUpon>VueClientEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueClientList.xaml.cs">
+      <DependentUpon>VueClientList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\VueDetailsProjet.xaml.cs">
       <DependentUpon>VueDetailsProjet.xaml</DependentUpon>
@@ -220,6 +232,14 @@
     <Page Include="Vues\VueChoixProjet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueClientEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Vues\VueClientList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Vues\VueDetailsProjet.xaml">
       <SubType>Designer</SubType>

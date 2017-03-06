@@ -70,7 +70,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un objet Projet</returns>
-        public static Projet SelectionnerProjet(string nomProjet)
+        public Projet SelectionnerProjet(string nomProjet)
         {
             try
             {
@@ -88,7 +88,10 @@ namespace HouseMadera.DAL
                     p.Reference = reader.GetString(reader.GetOrdinal("Reference"));
                     p.UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate"));
                     p.CreateDate = reader.GetDateTime(reader.GetOrdinal("CreateDate"));
-                    p.Client = ClientDAL.GetClient(reader.GetOrdinal("Client_Id"));
+                    using (ClientDAL cDal = new ClientDAL(Bdd))
+                    {
+                        p.Client = cDal.GetClient(reader.GetOrdinal("Client_Id"));
+                    }
                     p.Commercial = CommercialDAL.GetCommercial(Convert.ToInt32(reader.GetOrdinal("Commercial_Id")));
                 }
                 reader.Close();

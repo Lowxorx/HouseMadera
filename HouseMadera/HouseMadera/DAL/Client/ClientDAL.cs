@@ -43,7 +43,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un objet Client</returns>
-        public static Client GetClient(int id)
+        public Client GetClient(int id)
         {
 
             string sql = @"SELECT * FROM Client WHERE Id = @1";

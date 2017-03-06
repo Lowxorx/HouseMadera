@@ -6,9 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:HouseMadera.Vues"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utilites="clr-namespace:HouseMadera.Utilites"
     xmlns:vuemod="clr-namespace:HouseMadera.VueModele"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Width="1536"
     Height="1024"
     MinWidth="1536"
@@ -29,49 +29,48 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
 
 
         <ControlTemplate x:Key="validationErrorTemplate">
             <DockPanel>
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <TextBlock 
-                        Foreground="OrangeRed"
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <TextBlock
                         FontWeight="Light"
-                        Text="{Binding ElementName=ErrorAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}"/>
+                        Foreground="OrangeRed"
+                        Text="{Binding ElementName=ErrorAdorner, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />
                 </StackPanel>
-                <AdornedElementPlaceholder  x:Name="ErrorAdorner" />
+                <AdornedElementPlaceholder x:Name="ErrorAdorner" />
             </DockPanel>
         </ControlTemplate>
     </Window.Resources>
 
 
     <Grid>
-        <Grid Margin="0,-3,0,931" Background="#FFA29A9A" >
+        <Grid Margin="0,-3,0,931" Background="#FFA29A9A">
             <Label
                 x:Name="label"
                 Margin="618,10,616,0"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Content="Client"
                 FontFamily="Verdana"
                 FontSize="36"
-                HorizontalAlignment="Center"
-                Foreground="#464646"
-                />
+                Foreground="#464646" />
             <Button
-                 x:Name="btRetour"
-                 Width="65"
-                 Height="65"
-                 Margin="1378,10,0,0"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Top"
+                x:Name="btRetour"
+                Width="65"
+                Height="65"
+                Margin="1378,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
                 Background="#FFA29A9A"
-                Foreground="#464646"
-                 BorderThickness="0"
-                 Command="{Binding Retour}"
-                 Content="{iconPacks:PackIconFontAwesome Kind=ArrowCircleOutlineLeft,
-                                                    Width=32,
-                                                    Height=32}" />
+                BorderThickness="0"
+                Command="{Binding Retour}"
+                Content="{iconPacks:PackIconFontAwesome Kind=ArrowCircleOutlineLeft,
+                                                        Width=32,
+                                                        Height=32}"
+                Foreground="#464646" />
             <Button
                 x:Name="button"
                 Width="65"
@@ -79,122 +78,129 @@
                 Margin="1453,10,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                BorderThickness="0"
                 Background="#FFA29A9A"
-                Foreground="#464646"
+                BorderThickness="0"
                 Command="{Binding Deconnexion}"
                 Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
                                                         Width=32,
-                                                        Height=32}" />
+                                                        Height=32}"
+                Foreground="#464646" />
         </Grid>
-        <Grid Margin="0,53"  Panel.ZIndex="3">
+        <Grid Margin="0,53" Panel.ZIndex="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="121" />
                 <ColumnDefinition Width="503*" />
                 <ColumnDefinition Width="866*" />
-                <ColumnDefinition Width="38*"/>
+                <ColumnDefinition Width="38*" />
             </Grid.ColumnDefinitions>
 
             <Image
                 x:Name="image"
-               
                 Grid.ColumnSpan="2"
                 Height="82"
                 Margin="10,-50,410,0"
                 VerticalAlignment="Top"
                 Source="../Resources/logomaderacolorgreyclean.png" />
 
-            <Canvas HorizontalAlignment="Center" Height="750" Margin="313,79,356,81" Width="700" Grid.ColumnSpan="2" Grid.Column="1">
+            <Canvas
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Width="700"
+                Height="750"
+                Margin="313,79,356,81"
+                HorizontalAlignment="Center">
                 <Label
                     x:Name="label_ClientSignUp"
-                    Content="{iconPacks:PackIconFontAwesome Kind=User, Width=32,Height=32}"
-                    Height="50"
                     Width="50"
-                    Foreground="#464646"
-                    />
+                    Height="50"
+                    Content="{iconPacks:PackIconFontAwesome Kind=User,
+                                                            Width=32,
+                                                            Height=32}"
+                    Foreground="#464646" />
                 <Label
                     x:Name="label_Nom"
-                    Content="Nom "
                     Canvas.Left="20"
-                    Canvas.Top="58"/>
-                <TextBox 
-                    x:Name="textBox_Nom" 
-                    Height="25"
+                    Canvas.Top="58"
+                    Content="Nom " />
+                <TextBox
+                    x:Name="textBox_Nom"
                     Canvas.Left="120"
-                    TextWrapping="Wrap"
                     Canvas.Top="58"
                     Width="560"
-                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
-                    Text="{Binding Nom, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                    Height="25"
+                    Text="{Binding Nom, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" />
 
 
                 <Label
                     x:Name="label_Prenom"
-                    Content="Prénom "
+                    Canvas.Left="20"
                     Canvas.Top="108"
-                    Canvas.Left="20"/>
+                    Content="Prénom " />
                 <TextBox
                     x:Name="textBox_Prenom"
-                    Height="25"
-                    TextWrapping="Wrap"
-                    Canvas.Top="108"
-                    Width="560"
-                    Canvas.Right="20"
                     Canvas.Left="120"
-                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
-                    Text="{Binding Prenom ,UpdateSourceTrigger=LostFocus,  ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
+                    Canvas.Top="108"
+                    Canvas.Right="20"
+                    Width="560"
+                    Height="25"
+                    Text="{Binding Prenom, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" />
 
                 <Label
                     x:Name="label_AdresseSignUp"
-                    Content="{iconPacks:PackIconFontAwesome Kind=Home,Width=32, Height=32}"
-                    Height="50"
-                    Width="50"
                     Canvas.Top="156"
-                     Foreground="#464646"
-                    />
+                    Width="50"
+                    Height="50"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Home,
+                                                            Width=32,
+                                                            Height=32}"
+                    Foreground="#464646" />
 
                 <Label
                     x:Name="label_Voie"
-                    Content="N° et voie "
                     Canvas.Left="20"
-                    Canvas.Top="211"/>
+                    Canvas.Top="211"
+                    Content="N° et voie " />
                 <TextBox
                     x:Name="textBox_Voie"
-                    Height="25"
                     Canvas.Left="123"
-                    TextWrapping="Wrap"
                     Canvas.Top="211"
-                    Width="557" 
-                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" 
-                    Text="{Binding Voie, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                    Width="557"
+                    Height="25"
+                    Text="{Binding Voie, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" />
 
                 <Label
                     x:Name="label_AdresseComplement"
-                    Content="Complément"
                     Canvas.Left="20"
-                    Canvas.Top="261"/>
+                    Canvas.Top="261"
+                    Content="Complément" />
                 <TextBox
                     x:Name="textBox_ComplementVoie"
-                    Height="25"
                     Canvas.Left="120"
-                    TextWrapping="Wrap"
                     Canvas.Top="261"
-                    Width="560" 
-                     Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
-                    Text="{Binding Complement, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
+                    Width="560"
+                    Height="25"
+                    Text="{Binding Complement, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" />
                 <Label
                     x:Name="label_CodePostal"
-                    Content="Code Postal "
                     Canvas.Left="20"
-                    Canvas.Top="311"/>
+                    Canvas.Top="311"
+                    Content="Code Postal " />
                 <TextBox
                     x:Name="textBox_CodePostal"
-                    Height="25"
                     Canvas.Left="120"
-                    TextWrapping="Wrap"
                     Canvas.Top="311"
                     Width="183"
-                    Text="{Binding CodePostal,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}" />
+                    Height="25"
+                    Text="{Binding CodePostal, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap" />
                 <ListBox
                     x:Name="ListBox_Suggestion"
                     Canvas.Left="120"
@@ -202,117 +208,118 @@
                     Width="183"
                     Height="68"
                     ItemsSource="{Binding Communes}"
-                    Visibility="{Binding SuggestionCommunes}"
-                    SelectedItem="{Binding CommuneSelectionnee }"/>
+                    SelectedItem="{Binding CommuneSelectionnee}"
+                    Visibility="{Binding SuggestionCommunes}" />
                 <Label
                     x:Name="label_Localite"
-                    Content="Localite "
                     Canvas.Left="360"
-                    Canvas.Top="311"/>
+                    Canvas.Top="311"
+                    Content="Localite " />
                 <TextBox
                     x:Name="textBox_Localite"
-                    Height="25" Canvas.Left="445"
-                    TextWrapping="Wrap"
+                    Canvas.Left="445"
                     Canvas.Top="310"
                     Width="235"
+                    Height="25"
                     IsReadOnly="False"
-                    Text="{Binding Localite,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                    Text="{Binding Localite, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap" />
                 <Label
                     x:Name="label_TelephoneSignUp"
-                    Content="{iconPacks:PackIconFontAwesome Kind=Mobile,Width=32,Height=32}"
-                    Height="50"
+                    Canvas.Top="370"
                     Width="50"
-                     Foreground="#464646"
-                    Canvas.Top="370"/>
+                    Height="50"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Mobile,
+                                                            Width=32,
+                                                            Height=32}"
+                    Foreground="#464646" />
                 <Label
                     x:Name="label_Mobile"
-                    Content="Mobile "
                     Canvas.Left="20"
-                    Canvas.Top="433"/>
+                    Canvas.Top="433"
+                    Content="Mobile " />
                 <TextBox
                     x:Name="textBox_Mobile"
-                    Height="25"
                     Canvas.Left="120"
-                    TextWrapping="Wrap"
                     Canvas.Top="433"
-                    Width="180" 
-                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
-                    Text="{Binding Mobile, UpdateSourceTrigger=LostFocus, 
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                    Width="180"
+                    Height="25"
+                    Text="{Binding Mobile, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" />
                 <Label
                     x:Name="label_Telephone"
-                    Content="Telephone"
                     Canvas.Left="360"
-                    Canvas.Top="432"/>
+                    Canvas.Top="432"
+                    Content="Telephone" />
                 <TextBox
                     x:Name="textBox_Telephone"
-                    Height="25"
                     Canvas.Left="500"
-                    TextWrapping="Wrap"
                     Canvas.Top="431"
                     Width="180"
-                    Text="{Binding Telephone, UpdateSourceTrigger=LostFocus, 
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                    Height="25"
+                    Text="{Binding Telephone, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap" />
                 <Label
                     x:Name="label_EmailSignUp"
-                    Content="{iconPacks:PackIconFontAwesome Kind=Envelope,
-                                                        Width=32,
-                                                        Height=32}"
-                    Height="50"
+                    Canvas.Top="485"
                     Width="50"
-                     Foreground="#464646"
-                    Canvas.Top="485"/>
+                    Height="50"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Envelope,
+                                                            Width=32,
+                                                            Height=32}"
+                    Foreground="#464646" />
                 <Label
                     x:Name="label_Email"
-                    Content="Email"
                     Canvas.Left="20"
-                    Canvas.Top="545"/>
+                    Canvas.Top="545"
+                    Content="Email" />
                 <TextBox
                     x:Name="textBox_Email"
-                    Height="25"
                     Canvas.Left="123"
-                    TextWrapping="Wrap" 
                     Canvas.Top="544"
-                    Width="180" 
-                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
-                    Text="{Binding Email,UpdateSourceTrigger=LostFocus,
-                ValidatesOnDataErrors=true, NotifyOnValidationError=true}"/>
+                    Width="180"
+                    Height="25"
+                    Text="{Binding Email, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" />
 
-                <Button 
+                <Button
                     Name="Enregistrer"
                     Canvas.Left="426"
                     Canvas.Top="661"
                     Width="180"
                     Height="50"
-                    IsEnabled="{Binding IsFormulaireOk}"
+                    Background="LightGray"
                     Command="{Binding Enregistrer}"
                     Content="{iconPacks:PackIconFontAwesome Kind=FloppyOutline,
-                                                        Width=32,
-                                                        Height=32}" Background="LightGray"/>
-                <Label 
+                                                            Width=32,
+                                                            Height=32}"
+                    IsEnabled="{Binding IsFormulaireOk}" />
+                <Label
                     x:Name="label1"
-                    Content="{iconPacks:PackIconFontAwesome Kind=Check,
-                                                        Width=32,
-                                                        Height=32}"
-                    Visibility="{Binding IsClientEnregistre , Converter={StaticResource BoolToVisConverter}}"
-                    HorizontalAlignment="center"
-                    Foreground="ForestGreen"
-                    Height="50"
-                    VerticalAlignment="Center"
-                    Width="50"
                     Canvas.Left="630"
-                    Canvas.Top="661"/>
-                <Controls:ToggleSwitch
-                    Width="283"
-                    IsChecked="{Binding StatutClient}"
-                    OnLabel="Statut Actif"
-                    OffLabel="Statut Inactif"
+                    Canvas.Top="661"
+                    Width="50"
                     Height="50"
+                    HorizontalAlignment="center"
+                    VerticalAlignment="Center"
+                    Content="{iconPacks:PackIconFontAwesome Kind=Check,
+                                                            Width=32,
+                                                            Height=32}"
+                    Foreground="ForestGreen"
+                    Visibility="{Binding IsClientEnregistre, Converter={StaticResource BoolToVisConverter}}" />
+                <Controls:ToggleSwitch
                     Canvas.Left="20"
-                    Canvas.Top="659" />
+                    Canvas.Top="659"
+                    Width="283"
+                    Height="50"
+                    IsChecked="{Binding StatutClient}"
+                    OffLabel="Statut Inactif"
+                    OnLabel="Statut Actif" />
             </Canvas>
         </Grid>
-        <Grid Margin="0,940,0,0" Background="#FFA29A9A"  />
+        <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
     </Grid>
 </Controls:MetroWindow>
 
