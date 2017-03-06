@@ -7,7 +7,10 @@ namespace HouseMadera.DAL
 {
     public class StatutDevisDAL : DAL
     {
-
+        /// <summary>
+        /// Constructeur initial
+        /// </summary>
+        /// <param name="nomBdd"></param>
         public StatutDevisDAL(string nomBdd) : base(nomBdd)
         {
             // Constructeur par défaut de la classe DevisDAL
