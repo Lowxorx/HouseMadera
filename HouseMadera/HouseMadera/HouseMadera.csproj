@@ -135,6 +135,8 @@
     <Compile Include="Modeles\Composant.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
+    <Compile Include="Modeles\DataGenerationDevis.cs" />
+    <Compile Include="Modeles\DevisGenere.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="VueModele\VueModeleClientList.cs" />
     <Compile Include="VueModele\VueModeleCommune.cs" />
     <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
+    <Compile Include="VueModele\VueModeleGenererDevis.cs" />
     <Compile Include="VueModele\VueModeleLogin.cs" />
     <Compile Include="VueModele\VueModeleNouveauProjet.cs" />
     <Compile Include="Vues\VueChoixAdmin.xaml.cs">
@@ -182,6 +185,9 @@
     </Compile>
     <Compile Include="Vues\VueDetailsProjet.xaml.cs">
       <DependentUpon>VueDetailsProjet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueGenererDevis.xaml.cs">
+      <DependentUpon>VueGenererDevis.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
@@ -242,6 +248,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Vues\VueDetailsProjet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueGenererDevis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

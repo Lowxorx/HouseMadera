@@ -176,7 +176,7 @@ namespace HouseMadera.VueModele
 
         private void ChargerCommerciaux()
         {
-            using (var dal = new CommercialDAL(DAL.DAL.Bdd))
+            using (CommercialDAL dal = new CommercialDAL(DAL.DAL.Bdd))
             {
                 ListCommerciaux = new ObservableCollection<Commercial>(dal.ChargerCommerciaux());
                 RaisePropertyChanged(() => ListCommerciaux);
@@ -185,7 +185,7 @@ namespace HouseMadera.VueModele
 
         private void ChargerDetailsCommercialConnecte()
         {
-            using (var dal = new CommercialDAL(DAL.DAL.Bdd))
+            using (CommercialDAL dal = new CommercialDAL(DAL.DAL.Bdd))
             {
                 CommercialConnecte = dal.GetCommercial(CommercialConnecte.Login);
                 CommercialCoLabel = String.Format("Connecté en tant que {0} {1}", CommercialConnecte.Prenom, CommercialConnecte.Nom);
@@ -199,7 +199,7 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
             {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                MessageDialogResult result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                 {
                     AffirmativeButtonText = "Oui",
                     NegativeButtonText = "Non",

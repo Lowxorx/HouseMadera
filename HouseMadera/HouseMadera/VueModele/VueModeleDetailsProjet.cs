@@ -7,7 +7,9 @@ using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -257,50 +259,61 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private async void GenDevis()
+        private void GenDevis()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            if (window != null)
+            // Génération du devis 
+            List<DataGenerationDevis> listDg = new List<DataGenerationDevis>();
+            using (DevisDAL dDal = new DevisDAL(DAL.DAL.Bdd))
             {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                listDg = dDal.GenererDevis(new Produit() { Id = 1 });
+            }
+            // Traitement des données
+            List<string> modulesDistincts = new List<string>();
+            foreach (DataGenerationDevis dg in listDg)
+            {
+                if (!modulesDistincts.Contains(dg.NomModule))
                 {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
-
-                if (result == MessageDialogResult.Affirmative)
-                {
-                    VueLogin vl = new VueLogin();
-                    window.Close();
-                    vl.Show();
-
+                    modulesDistincts.Add(dg.NomModule);
                 }
             }
+
+            string outputToDevis = string.Empty;
+            decimal prixTotal = 0;
+            double tva  = 1.2;
+            List<string> modulesToGrid = new List<string>();
+            foreach (string s in modulesDistincts)
+            {
+                decimal prixModule = 0;
+                foreach (DataGenerationDevis dg in listDg)
+                {
+                    if (s == dg.NomModule)
+                    {
+                        prixModule += Convert.ToDecimal(dg.PrixComposant) * dg.NombreComposant;
+                    }
+                }
+                prixTotal += prixModule;
+                modulesToGrid.Add(String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule)));
+                outputToDevis += String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule));
+            }
+            string prixFinal = String.Format("Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
+            outputToDevis += prixFinal;
+
+            DevisGenere devis = new DevisGenere()
+            {
+                PrixHT = Convert.ToString(prixTotal),
+                PrixTTC = Convert.ToString(Convert.ToDouble(prixTotal) * tva),
+                Modules = modulesToGrid
+            };
+
+            VueGenererDevis vgd = new VueGenererDevis();
+            ((VueModeleGenererDevis)vgd.DataContext).TitreProjet = TitreProjet;
+            ((VueModeleGenererDevis)vgd.DataContext).DGen = devis;
+            vgd.Show();
         }
 
-        private async void GenPlan()
+        private void GenPlan()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            if (window != null)
-            {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
 
-                if (result == MessageDialogResult.Affirmative)
-                {
-                    VueLogin vl = new VueLogin();
-                    window.Close();
-                    vl.Show();
-
-                }
-            }
         }
 
         private void ActualiserTitreForm()

@@ -37,8 +37,8 @@
                 BorderThickness="0"
                 Command="{Binding Logout}"
                 Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
-                                                     Width=32,
-                                                     Height=32}">
+                                                        Width=32,
+                                                        Height=32}">
                 <Button.BorderBrush>
                     <SolidColorBrush Opacity="0" Color="{DynamicResource Gray6}" />
                 </Button.BorderBrush>
@@ -63,14 +63,12 @@
                 Command="{Binding AdminProjet}">
                 <StackPanel>
                     <Label
-                        Content="{iconPacks:PackIconFontAwesome Kind=Home,
-                                                    Width=64,
-                                                    Height=64}"
-                       
                         Width="100"
                         Height="100"
-                        Foreground="Black"
-                        />
+                        Content="{iconPacks:PackIconFontAwesome Kind=Home,
+                                                                Width=64,
+                                                                Height=64}"
+                        Foreground="Black" />
                     <TextBlock
                         Height="31"
                         HorizontalAlignment="Center"
@@ -88,14 +86,12 @@
                 Command="{Binding AdminClient}">
                 <StackPanel>
                     <Label
-                        Content="{iconPacks:PackIconFontAwesome Kind=Users,
-                                                    Width=64,
-                                                    Height=64}"
-                       
                         Width="100"
                         Height="100"
-                        Foreground="Black"
-                        />
+                        Content="{iconPacks:PackIconFontAwesome Kind=Users,
+                                                                Width=64,
+                                                                Height=64}"
+                        Foreground="Black" />
                     <TextBlock
                         Height="31"
                         HorizontalAlignment="Center"

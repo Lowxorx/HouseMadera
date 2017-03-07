@@ -3,6 +3,8 @@ using HouseMadera.Utilites;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace HouseMadera.DAL
 {
@@ -124,6 +126,39 @@ namespace HouseMadera.DAL
         #endregion
 
         #region CREATE
+
+
+        public List<DataGenerationDevis> GenererDevis(Produit p)
+        {
+            var sql = @"SELECT mp.*, m.Nom AS module_nom, c.Prix AS compo_prix, cm.Nombre AS compomod_nbre, c.Nom AS compo_nom
+                        FROM ModulePlace mp
+                        LEFT JOIN Module m ON mp.Module_Id = m.Id
+                        LEFT JOIN ComposantModule cm ON cm.Module_Id = m.Id
+                        LEFT JOIN Composant c ON c.Id = cm.Composant_Id
+                        WHERE mp.Produit_Id = @1";
+            var parameters = new Dictionary<string, object>()
+            {
+                {"@1", p.Id }
+            };
+            var reader = Get(sql, parameters);
+
+            var listeDevis = new List<DataGenerationDevis>();
+
+            while (reader.Read())
+            {
+                DataGenerationDevis dg = new DataGenerationDevis()
+                {
+                    NumModule = Convert.ToInt32(reader["Module_Id"]),
+                    NomModule = Convert.ToString(reader["module_nom"]),
+                    NomComposant = Convert.ToString(reader["compo_nom"]),
+                    NombreComposant = Convert.ToInt32(reader["compomod_nbre"]),
+                    PrixComposant = Convert.ToString(reader["compo_prix"])
+                };
+                listeDevis.Add(dg);
+            }
+            reader.Close();
+            return listeDevis;
+        }
 
         /// <summary>
         /// Réalise des test sur les propriétés de l'objet Devis
