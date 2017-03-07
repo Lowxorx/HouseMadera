@@ -282,7 +282,7 @@ namespace HouseMadera.DAL
 
         private Client initialiserClient(DbDataReader reader)
         {
-            var client = new Client();
+            Client client = new Client();
             client.Id = Convert.ToInt32(reader["id"]);
             client.Nom = Convert.ToString(reader["nom"]);
             client.Prenom = Convert.ToString(reader["prenom"]);
@@ -297,12 +297,30 @@ namespace HouseMadera.DAL
             client.Ville = string.IsNullOrEmpty(ville) || codePostal == "NULL" ? string.Empty : ville;
             string mobile = Convert.ToString(reader["mobile"]);
             client.Mobile = string.IsNullOrEmpty(mobile) || mobile == "NULL" ? string.Empty : mobile;
-            var telephone = Convert.ToString(reader["telephone"]);
+            string telephone = Convert.ToString(reader["telephone"]);
             client.Telephone = string.IsNullOrEmpty(telephone) || telephone == "NULL" ? string.Empty : telephone;
             string email = Convert.ToString(reader["email"]);
             client.Email = string.IsNullOrEmpty(email) || email == "NULL" ? string.Empty : email;
             client.StatutClient = Convert.ToInt32(reader["statutClient_id"]);
+            client.MiseAJour = initialiserDate(Convert.ToString(reader["miseajour"]));
+            client.Suppression = initialiserDate(Convert.ToString(reader["suppression"]));
+            client.Creation = initialiserDate(Convert.ToString(reader["creation"]));
+
             return client;
+        }
+
+        /// <summary>
+        /// converti une chaine de caractère en objet DateTime
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>retourne un objet DateTime ou null</returns>
+        private  DateTime ? initialiserDate(string value)
+        {
+            DateTime  maj = new DateTime();
+            if (DateTime.TryParse(value, out maj))
+                return maj;
+            else
+               return null;
         }
 
         #endregion
@@ -323,7 +341,7 @@ namespace HouseMadera.DAL
             return clients;
         }
 
-        public int InsertNew(Client client)
+        public int InsertModele(Client client)
         {
             if (!isDataCorrect(client))
                 throw new Exception(erreur);
@@ -359,5 +377,76 @@ namespace HouseMadera.DAL
             return result;
         }
 
+        public int UpdateModele(Client clientLocal, Client clientDistant)
+        {
+            //recopie des données du client distant dans le client local
+            clientLocal.Copie(clientDistant);
+            
+            string sql = @"
+                        UPDATE Client
+                        SET Nom=@1,Prenom=@2,Adresse1=@3,Adresse2=@4,Adresse3=@5,CodePostal=@6,Ville=@7,Email=@8,Telephone=@9,Mobile=@10,StatutClient_Id=@11
+                        WHERE Id=@12
+                      ";
+            Dictionary<string,object> parameters = new Dictionary<string, object>() {
+                {"@1",clientLocal.Nom},
+                {"@2",clientLocal.Prenom},
+                {"@3",clientLocal.Adresse1},
+                {"@4",string.IsNullOrEmpty(clientLocal.Adresse2) ? NON_RENSEIGNE : clientLocal.Adresse2},
+                {"@5",string.IsNullOrEmpty(clientLocal.Adresse3) ? NON_RENSEIGNE : clientLocal.Adresse3},
+                {"@6",clientLocal.CodePostal },
+                {"@7",clientLocal.Ville },
+                {"@8",clientLocal.Email },
+                {"@9",string.IsNullOrEmpty(clientLocal.Telephone) ? NON_RENSEIGNE : clientLocal.Telephone},
+                {"@10",string.IsNullOrEmpty(clientLocal.Mobile) ? NON_RENSEIGNE : clientLocal.Mobile },
+                {"@11",clientLocal.StatutClient },
+                {"@12",clientLocal.Id }
+            };
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Met à jour en base la date de suppression du client (suppression logique)
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public int DeleteModele(Client client)
+        {
+            if (!isDataCorrect(client))
+                throw new Exception(erreur);
+
+            var sql = @"
+                        UPDATE Client
+                        SET Suppression=@1
+                        WHERE Id=@2
+                      ";
+            var parameters = new Dictionary<string, object>() {
+                {"@1",client.Id},
+                {"@2",client.Suppression}
+               
+            };
+            var result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
     }
 }
