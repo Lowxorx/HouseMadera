@@ -47,7 +47,7 @@
                 x:Name="btRetour"
                 Width="65"
                 Height="65"
-                Margin="1378,10,0,0"
+                Margin="1454,10,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="#FFF7F7F7"
@@ -56,19 +56,6 @@
                 Content="{iconPacks:PackIconEntypo back,
                                                    Width=32,
                                                    Height=32}" />
-            <Button
-                x:Name="btLogout"
-                Width="65"
-                Height="65"
-                Margin="1453,10,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="#FFF7F7F7"
-                BorderThickness="0"
-                Command="{Binding Deconnexion}"
-                Content="{iconPacks:PackIconFontAwesome signout,
-                                                        Width=32,
-                                                        Height=32}" />
         </Grid>
         <Grid Margin="0,53">
             <Image
@@ -80,7 +67,7 @@
             <ListBox
                 Width="759"
                 Height="394"
-                Margin="48,147,0,0"
+                Margin="48,169,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="20"
@@ -88,7 +75,7 @@
             <Label
                 x:Name="label1"
                 Width="133"
-                Margin="48,562,0,0"
+                Margin="48,584,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Prix HT :"
@@ -99,8 +86,8 @@
                 Margin="921,268,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Command="{Binding EnregistrerDevis}"
-                Content="Télécharger le devis"
+                Command="{Binding OuvrirDevis}"
+                Content="Ouvrir le devis"
                 FontSize="27" />
             <Button
                 Width="525"
@@ -113,7 +100,7 @@
                 FontSize="27" />
             <Label
                 x:Name="label1_Copy"
-                Margin="48,618,0,0"
+                Margin="48,640,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Prix TTC :"
@@ -122,7 +109,7 @@
                 x:Name="label1_Copy1"
                 Width="581"
                 Height="40"
-                Margin="226,562,0,0"
+                Margin="226,584,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{Binding PrixHT}"
@@ -131,7 +118,7 @@
                 x:Name="label1_Copy2"
                 Width="581"
                 Height="40"
-                Margin="226,618,0,0"
+                Margin="226,640,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="{Binding PrixTTC}"
@@ -139,7 +126,7 @@
             <Label
                 x:Name="label1_Copy3"
                 Width="759"
-                Margin="48,96,0,0"
+                Margin="48,118,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Content="Détails des modules sélectionnés :"

@@ -8,8 +8,10 @@ namespace HouseMadera.Modeles
 {
     public class DevisGenere
     {
+        public string Output { get; set; }
         public string PrixHT { get; set; }
         public string PrixTTC { get; set; }
         public List<string> Modules { get; set; }
+        public Client client { get; set; }
     }
 }

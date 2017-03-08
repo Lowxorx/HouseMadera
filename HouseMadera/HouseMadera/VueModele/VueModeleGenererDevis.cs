@@ -17,6 +17,8 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Diagnostics;
+using HouseMadera.Utilities;
+using HouseMadera.Utilites;
 
 namespace HouseMadera.VueModele
 {
@@ -27,17 +29,15 @@ namespace HouseMadera.VueModele
         public VueModeleGenererDevis()
         {
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
-            Deconnexion = new RelayCommand(Logout);
             Retour = new RelayCommand(RetourDetailsProjets);
-            EnregistrerDevis = new RelayCommand(SaveDevis);
+            OuvrirDevis = new RelayCommand(OuvertureDevis);
             EnvoiDevis = new RelayCommand(EnvoyerDevis);
         }
 
         public ICommand WindowLoaded { get; private set; }
-        public ICommand Deconnexion { get; private set; }
         public ICommand Retour { get; private set; }
         public ICommand EnvoiDevis { get; private set; }
-        public ICommand EnregistrerDevis { get; private set; }
+        public ICommand OuvrirDevis { get; private set; }
 
 
         private MetroWindow vuePrecedente;
@@ -102,9 +102,29 @@ namespace HouseMadera.VueModele
             set { dGen = value; }
         }
 
-        private void SaveDevis()
-        {
+        private string devisActuel;
 
+        public string DevisActuel
+        {
+            get { return devisActuel; }
+            set { devisActuel = value; }
+        }
+
+        private async void OuvertureDevis()
+        {
+            try
+            {
+                Process.Start(AppInfo.AppPath + @"\Devis\" + DevisActuel);
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteEx(ex);
+                var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
+                if (window != null)
+                {
+                    await window.ShowMessageAsync("Erreur", "Le devis n'a pas pu être ouvert.");
+                }
+            }
         }
 
         private void EnvoyerDevis()
@@ -125,7 +145,7 @@ namespace HouseMadera.VueModele
                 Credentials = new System.Net.NetworkCredential("serviceclient.madera@gmail.com", "Rila2016")
             };
 
-            MailMessage mm = new MailMessage("serviceclient.madera@gmail.com", "paul.marquie@viacesi.fr");
+            MailMessage mm = new MailMessage("serviceclient.madera@gmail.com", DGen.client.Email);
             mm.Subject = @"Votre Devis pour votre maison modulaire - Madera";
             mm.Body = @"Cher client, " + Environment.NewLine +
                     "vous trouverez ci-joint le devis pour votre maison modulaire réalisée le " + DateTime.Now.ToLongDateString() + Environment.NewLine + @"." +
@@ -133,37 +153,12 @@ namespace HouseMadera.VueModele
                     "Cordialement," + Environment.NewLine +
                     "La société Madera.";
 
-            Attachment attachment = new Attachment("Devis.pdf");
+            Attachment attachment = new Attachment(@"Devis\" + DevisActuel, new System.Net.Mime.ContentType("application/pdf"));
             mm.Attachments.Add(attachment);
             mm.BodyEncoding = Encoding.UTF8;
             mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
             client.Send(mm);
             mm.Dispose();
-        }
-
-        private async void Logout()
-        {
-            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
-            if (window != null)
-            {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
-
-                if (result == MessageDialogResult.Affirmative)
-                {
-                    VueLogin vl = new VueLogin();
-                    vuePrecedente.Show();
-                    vuePrecedente.Close();
-                    window.Close();
-                    vl.Show();
-
-                }
-            }
         }
 
         private void WindowLoadedEvent()
@@ -182,7 +177,7 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
             {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce devis ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                 {
                     AffirmativeButtonText = "Oui",
                     NegativeButtonText = "Non",
@@ -192,7 +187,6 @@ namespace HouseMadera.VueModele
 
                 if (result == MessageDialogResult.Affirmative)
                 {
-                    vuePrecedente.Show();
                     window.Close();
                 }
             }
@@ -200,7 +194,13 @@ namespace HouseMadera.VueModele
 
         private void GenererPdfDevis()
         {
-            FileStream fs = new FileStream("First PDF document.pdf", FileMode.Create);
+            DevisActuel = @"devis" + DateTime.Now.ToString("ddMMyyyyHHmmss") + ".pdf";
+            Console.WriteLine(AppInfo.AppPath + @"\Devis\" + DevisActuel);
+            if (!Directory.Exists(AppInfo.AppPath + @"\Devis"))
+            {
+                Directory.CreateDirectory(AppInfo.AppPath + @"\Devis");
+            }
+            FileStream fs = new FileStream(AppInfo.AppPath + @"\Devis\" + DevisActuel, FileMode.Create);
             Document document = new Document(PageSize.A4, 25, 25, 30, 30);
 
             PdfWriter writer = PdfWriter.GetInstance(document, fs);
@@ -209,7 +209,7 @@ namespace HouseMadera.VueModele
             document.AddKeywords("Devis généré par l'application Mader'house");
             document.AddTitle("Devis généré le " + DateTime.Now.ToLongDateString());
             document.Open();
-            document.Add(new Paragraph("Hello World!"));
+            document.Add(new Paragraph(DGen.Output));
             document.Close();
             writer.Close();
             fs.Close();

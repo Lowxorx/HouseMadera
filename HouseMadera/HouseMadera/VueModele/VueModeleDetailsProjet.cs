@@ -264,7 +264,7 @@ namespace HouseMadera.VueModele
             List<DataGenerationDevis> listDg = new List<DataGenerationDevis>();
             using (DevisDAL dDal = new DevisDAL(DAL.DAL.Bdd))
             {
-                listDg = dDal.GenererDevis(new Produit() { Id = 1 });
+                listDg = dDal.GenererDevis(SelectedProduit);
             }
             // Traitement des données
             List<string> modulesDistincts = new List<string>();
@@ -276,7 +276,9 @@ namespace HouseMadera.VueModele
                 }
             }
 
-            string outputToDevis = string.Empty;
+            string outputToDevis = @"Devis généré le " + DateTime.Now.ToLongDateString() + Environment.NewLine;
+            outputToDevis += string.Format(@"Client : {0} {1} \n", listDg.First().client.Nom, listDg.First().client.Prenom);
+            outputToDevis += @"Détails des modules sélectionnés : \n";
             decimal prixTotal = 0;
             double tva  = 1.2;
             List<string> modulesToGrid = new List<string>();
@@ -291,17 +293,20 @@ namespace HouseMadera.VueModele
                     }
                 }
                 prixTotal += prixModule;
-                modulesToGrid.Add(String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule)));
-                outputToDevis += String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule));
+                string outputModule = String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule));
+                modulesToGrid.Add(outputModule);
+                outputToDevis += outputModule;
             }
             string prixFinal = String.Format("Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
             outputToDevis += prixFinal;
 
             DevisGenere devis = new DevisGenere()
             {
+                Output = outputToDevis,
                 PrixHT = Convert.ToString(prixTotal),
                 PrixTTC = Convert.ToString(Convert.ToDouble(prixTotal) * tva),
-                Modules = modulesToGrid
+                Modules = modulesToGrid,
+                client = listDg.First().client
             };
 
             VueGenererDevis vgd = new VueGenererDevis();

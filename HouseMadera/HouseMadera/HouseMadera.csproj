@@ -141,6 +141,7 @@
     <Compile Include="Modeles\DataGenerationDevis.cs" />
     <Compile Include="Modeles\DevisGenere.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
+    <Compile Include="Utilities\AppInfo.cs" />
     <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
     <Compile Include="Modeles\Finition.cs" />

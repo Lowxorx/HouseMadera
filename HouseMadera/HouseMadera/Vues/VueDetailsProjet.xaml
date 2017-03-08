@@ -108,7 +108,10 @@
                     <DataGridTextColumn Binding="{Binding Nom}" Header="Nom" />
                     <DataGridTextColumn Binding="{Binding Devis.Nom}" Header="Devis" />
                     <DataGridTextColumn Binding="{Binding Plan.Nom}" Header="Plan" />
-                    <DataGridTextColumn Binding="{Binding Projet.Nom}" Header="Projet" />
+                    <DataGridTextColumn
+                        Width="400"
+                        Binding="{Binding Projet.Nom}"
+                        Header="Projet" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label

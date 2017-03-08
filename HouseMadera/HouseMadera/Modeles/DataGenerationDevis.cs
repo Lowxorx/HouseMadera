@@ -13,6 +13,7 @@ namespace HouseMadera.Modeles
         public string NomComposant { get; set; }
         public string PrixComposant { get; set; }
         public int NombreComposant { get; set; }
+        public Client client { get; set; }
 
     }
 }
