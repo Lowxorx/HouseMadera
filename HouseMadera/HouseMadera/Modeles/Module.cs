@@ -37,6 +37,6 @@ namespace HouseMadera.Modeles
         /// </summary>
         public TypeModule TypeModule { get; set; }
 
-
+        ///TODO texture BLOB
     }
 }

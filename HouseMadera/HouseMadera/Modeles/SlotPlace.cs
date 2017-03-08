@@ -32,6 +32,9 @@ namespace HouseMadera.Modeles
         /// </summary>
         public Slot Slot { get; set; }
 
-
+        /// <summary>
+        /// Id tu Type Module Placable
+        /// </summary>
+        public int TypeModulePlacable_Id { get; set; }
     }
 }

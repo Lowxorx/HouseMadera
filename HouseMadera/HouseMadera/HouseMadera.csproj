@@ -131,9 +131,11 @@
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Composant.cs" />
+    <Compile Include="Modeles\ComposantModule.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
+    <Compile Include="Modeles\TypeModulePlacable.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
     <Compile Include="Modeles\Finition.cs" />
     <Compile Include="Modeles\Gamme.cs" />
