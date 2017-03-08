@@ -7,9 +7,60 @@ using UnityEngine;
 
 public class DBManager : MonoBehaviour
 {
+    public List<GameObject> listCloison = new List<GameObject>();
+    public List<GameObject> listModule = new List<GameObject>();
+
     void Start()
     {
 
+    }
+
+    public void FillInformations()
+    {
+        FillListCloison();
+        FillListModule();
+    }
+
+    public void CheckInformations()
+    {
+        CheckIfCloisonIsAlreadySaved();
+        CheckIfModuleIsAlreadySaved();
+    }
+
+    void FillListCloison()
+    {
+        GameObject house = GameObject.Find("House");
+        foreach (Transform target in house.transform)
+        {
+            if (target.name.Contains("Cloison"))
+            {
+                if (target.GetChild(0).GetComponent<CloisonManager>().verticalActive || target.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                {
+                    listCloison.Add(target.gameObject);
+                }
+            }
+        }
+    }
+
+    void FillListModule()
+    {
+        GameObject house = GameObject.Find("House");
+        foreach (Transform target in house.transform)
+        {
+            if (target.name.Contains("Wall"))
+            {
+                foreach (Transform targetSlot in target)
+                {
+                    if (targetSlot.name.Contains("Slot"))
+                    {
+                        if(targetSlot.transform.childCount > 0)
+                        {
+                            listModule.Add(targetSlot.GetChild(0).gameObject);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     void SaveCloisonToDatabase()
