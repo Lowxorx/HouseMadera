@@ -40,7 +40,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
-                Content="{Binding TitreProjet}"
+                Content="{Binding TitreVue}"
                 FontFamily="Verdana"
                 FontSize="36" />
             <Button

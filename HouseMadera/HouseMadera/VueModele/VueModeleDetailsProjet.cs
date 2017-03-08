@@ -277,8 +277,8 @@ namespace HouseMadera.VueModele
             }
 
             string outputToDevis = @"Devis généré le " + DateTime.Now.ToLongDateString() + Environment.NewLine;
-            outputToDevis += string.Format(@"Client : {0} {1} \n", listDg.First().client.Nom, listDg.First().client.Prenom);
-            outputToDevis += @"Détails des modules sélectionnés : \n";
+            outputToDevis += string.Format(@"Client : {0} {1}" + Environment.NewLine + Environment.NewLine, listDg.First().client.Nom, listDg.First().client.Prenom);
+            outputToDevis += @"Détails des modules sélectionnés :" + Environment.NewLine;
             decimal prixTotal = 0;
             double tva  = 1.2;
             List<string> modulesToGrid = new List<string>();
@@ -297,7 +297,7 @@ namespace HouseMadera.VueModele
                 modulesToGrid.Add(outputModule);
                 outputToDevis += outputModule;
             }
-            string prixFinal = String.Format("Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
+            string prixFinal = String.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
             outputToDevis += prixFinal;
 
             DevisGenere devis = new DevisGenere()
@@ -310,7 +310,7 @@ namespace HouseMadera.VueModele
             };
 
             VueGenererDevis vgd = new VueGenererDevis();
-            ((VueModeleGenererDevis)vgd.DataContext).TitreProjet = TitreProjet;
+            ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
             ((VueModeleGenererDevis)vgd.DataContext).DGen = devis;
             vgd.Show();
         }

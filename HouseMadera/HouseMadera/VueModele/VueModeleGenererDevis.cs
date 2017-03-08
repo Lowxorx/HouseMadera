@@ -39,7 +39,6 @@ namespace HouseMadera.VueModele
         public ICommand EnvoiDevis { get; private set; }
         public ICommand OuvrirDevis { get; private set; }
 
-
         private MetroWindow vuePrecedente;
         public MetroWindow VuePrecedente
         {
@@ -51,14 +50,14 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private string titreProjet;
-        public string TitreProjet
+        private string titreVue;
+        public string TitreVue
         {
-            get { return titreProjet; }
+            get { return titreVue; }
             set
             {
-                titreProjet = value;
-                RaisePropertyChanged(() => TitreProjet);
+                titreVue = value;
+                RaisePropertyChanged(() => TitreVue);
             }
         }
 
@@ -127,44 +126,57 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private void EnvoyerDevis()
+        private async void EnvoyerDevis()
         {
-
-            // envoi devis au client.
-            // spécifier le chemin du pdf et le client
-
-            // TODO : externaliser le template (dans un fichier ou dans un formulaire à remplir / modifier par le commercial)
-            SmtpClient client = new SmtpClient()
+            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
+            try
             {
-                Port = 587,
-                Host = "smtp.gmail.com",
-                EnableSsl = true,
-                Timeout = 10000,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new System.Net.NetworkCredential("serviceclient.madera@gmail.com", "Rila2016")
-            };
+                // envoi devis au client.
+                SmtpClient client = new SmtpClient()
+                {
+                    Port = 587,
+                    Host = "smtp.gmail.com",
+                    EnableSsl = true,
+                    Timeout = 10000,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new System.Net.NetworkCredential("serviceclient.madera@gmail.com", "Rila2016")
+                };
 
-            MailMessage mm = new MailMessage("serviceclient.madera@gmail.com", DGen.client.Email);
-            mm.Subject = @"Votre Devis pour votre maison modulaire - Madera";
-            mm.Body = @"Cher client, " + Environment.NewLine +
-                    "vous trouverez ci-joint le devis pour votre maison modulaire réalisée le " + DateTime.Now.ToLongDateString() + Environment.NewLine + @"." +
-                    "N'hésitez pas à nous contacter pour toute information complémentaire dont vous auriez besoin." + Environment.NewLine +
-                    "Cordialement," + Environment.NewLine +
-                    "La société Madera.";
+                MailMessage mm = new MailMessage("serviceclient.madera@gmail.com", DGen.client.Email);
+                mm.Subject = @"Votre Devis pour votre maison modulaire - Madera";
+                mm.Body = @"Cher client, " + Environment.NewLine +
+                        "vous trouverez ci-joint le devis pour votre maison modulaire réalisée le " + DateTime.Now.ToLongDateString() + Environment.NewLine + @"." +
+                        "N'hésitez pas à nous contacter pour toute information complémentaire dont vous auriez besoin." + Environment.NewLine +
+                        "Cordialement," + Environment.NewLine +
+                        "La société Madera.";
 
-            Attachment attachment = new Attachment(@"Devis\" + DevisActuel, new System.Net.Mime.ContentType("application/pdf"));
-            mm.Attachments.Add(attachment);
-            mm.BodyEncoding = Encoding.UTF8;
-            mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
-            client.Send(mm);
-            mm.Dispose();
+                Attachment attachment = new Attachment(@"Devis\" + DevisActuel, new System.Net.Mime.ContentType("application/pdf"));
+                mm.Attachments.Add(attachment);
+                mm.BodyEncoding = Encoding.UTF8;
+                mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+                client.Send(mm);
+                mm.Dispose();
+                if (window != null)
+                {
+                    await window.ShowMessageAsync("Information", String.Format("Le devis a bien été envoyé au client ({0})", DGen.client.Email));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteEx(ex);
+                if (window != null)
+                {
+                    await window.ShowMessageAsync("Erreur", "Le devis n'a pas pu être envoyé");
+                }
+            }
         }
 
         private void WindowLoadedEvent()
         {
             Console.WriteLine("window loaded event");
             // Actions à effectuer au lancement du form :
+            ActualiserTitreForm();
             ListeModules = new List<String>();
             ListeModules = DGen.Modules;
             PrixHT = DGen.PrixHT + @" €";
@@ -213,6 +225,12 @@ namespace HouseMadera.VueModele
             document.Close();
             writer.Close();
             fs.Close();
+        }
+
+        private void ActualiserTitreForm()
+        {
+            TitreVue = string.Format(@"Devis client - {0} {1}", DGen.client.Prenom, DGen.client.Nom);
+            RaisePropertyChanged(() => TitreVue);
         }
 
     }
