@@ -42,6 +42,50 @@ namespace HouseMadera.DAL
             return listeDevis;
         }
 
+        public List<DataGenerationDevis> GenererDevis(Produit p)
+        {
+            var sql = @"SELECT mp.*, m.Nom AS module_nom, c.Prix AS compo_prix, cm.Nombre AS compomod_nbre, c.Nom AS compo_nom, cli.Id AS cli_id, cli.Nom AS cli_nom, cli.Prenom AS cli_prenom, cli.Email AS cli_mail
+                        FROM ModulePlace mp
+                        LEFT JOIN Module m ON mp.Module_Id = m.Id
+                        LEFT JOIN Produit p ON p.Id = mp.Produit_Id
+                        LEFT JOIN Projet proj ON p.Projet_Id = proj.Id
+                        LEFT JOIN Client cli ON proj.Client_Id = cli.Id
+                        LEFT JOIN ComposantModule cm ON cm.Module_Id = m.Id
+                        LEFT JOIN Composant c ON c.Id = cm.Composant_Id
+                        WHERE mp.Produit_Id = @1";
+            var parameters = new Dictionary<string, object>()
+            {
+                {"@1", p.Id }
+            };
+            var reader = Get(sql, parameters);
+
+            var listeDevis = new List<DataGenerationDevis>();
+
+            while (reader.Read())
+            {
+                DataGenerationDevis dg = new DataGenerationDevis()
+                {
+                    NumModule = Convert.ToInt32(reader["Module_Id"]),
+                    NomModule = Convert.ToString(reader["module_nom"]),
+                    NomComposant = Convert.ToString(reader["compo_nom"]),
+                    NombreComposant = Convert.ToInt32(reader["compomod_nbre"]),
+                    PrixComposant = Convert.ToString(reader["compo_prix"]),
+                    client = new Client
+                    {
+                        Id = Convert.ToInt32(reader["cli_id"]),
+                        Nom = Convert.ToString(reader["cli_nom"]),
+                        Prenom = Convert.ToString(reader["cli_prenom"]),
+                        Email = Convert.ToString(reader["cli_mail"])
+                    }
+
+                };
+                listeDevis.Add(dg);
+            }
+            reader.Close();
+            return listeDevis;
+        }
+
+
         /// <summary>
         /// Selectionne tous les devis associés au projet en paramètre
         /// </summary>
@@ -124,50 +168,6 @@ namespace HouseMadera.DAL
         #endregion
 
         #region CREATE
-
-
-        public List<DataGenerationDevis> GenererDevis(Produit p)
-        {
-            var sql = @"SELECT mp.*, m.Nom AS module_nom, c.Prix AS compo_prix, cm.Nombre AS compomod_nbre, c.Nom AS compo_nom, cli.Id AS cli_id, cli.Nom AS cli_nom, cli.Prenom AS cli_prenom, cli.Email AS cli_mail
-                        FROM ModulePlace mp
-                        LEFT JOIN Module m ON mp.Module_Id = m.Id
-                        LEFT JOIN Produit p ON p.Id = mp.Produit_Id
-                        LEFT JOIN Projet proj ON p.Projet_Id = proj.Id
-                        LEFT JOIN Client cli ON proj.Client_Id = cli.Id
-                        LEFT JOIN ComposantModule cm ON cm.Module_Id = m.Id
-                        LEFT JOIN Composant c ON c.Id = cm.Composant_Id
-                        WHERE mp.Produit_Id = @1";
-            var parameters = new Dictionary<string, object>()
-            {
-                {"@1", p.Id }
-            };
-            var reader = Get(sql, parameters);
-
-            var listeDevis = new List<DataGenerationDevis>();
-
-            while (reader.Read())
-            {
-                DataGenerationDevis dg = new DataGenerationDevis()
-                {
-                    NumModule = Convert.ToInt32(reader["Module_Id"]),
-                    NomModule = Convert.ToString(reader["module_nom"]),
-                    NomComposant = Convert.ToString(reader["compo_nom"]),
-                    NombreComposant = Convert.ToInt32(reader["compomod_nbre"]),
-                    PrixComposant = Convert.ToString(reader["compo_prix"]),
-                    client = new Client
-                    {
-                        Id = Convert.ToInt32(reader["cli_id"]),
-                        Nom = Convert.ToString(reader["cli_nom"]),
-                        Prenom = Convert.ToString(reader["cli_prenom"]),
-                        Email= Convert.ToString(reader["cli_mail"])
-                    }
-                    
-                };
-                listeDevis.Add(dg);
-            }
-            reader.Close();
-            return listeDevis;
-        }
 
         /// <summary>
         /// Réalise des test sur les propriétés de l'objet Devis
