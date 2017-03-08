@@ -7,11 +7,16 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using iTextSharp;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Diagnostics;
 
 namespace HouseMadera.VueModele
 {
@@ -169,6 +174,7 @@ namespace HouseMadera.VueModele
             ListeModules = DGen.Modules;
             PrixHT = DGen.PrixHT + @" €";
             PrixTTC = DGen.PrixTTC + @" €";
+            GenererPdfDevis();
         }
 
         private async void RetourDetailsProjets()
@@ -190,6 +196,23 @@ namespace HouseMadera.VueModele
                     window.Close();
                 }
             }
+        }
+
+        private void GenererPdfDevis()
+        {
+            FileStream fs = new FileStream("First PDF document.pdf", FileMode.Create);
+            Document document = new Document(PageSize.A4, 25, 25, 30, 30);
+
+            PdfWriter writer = PdfWriter.GetInstance(document, fs);
+            document.AddAuthor("Madera");
+            document.AddCreator("Société Madera");
+            document.AddKeywords("Devis généré par l'application Mader'house");
+            document.AddTitle("Devis généré le " + DateTime.Now.ToLongDateString());
+            document.Open();
+            document.Add(new Paragraph("Hello World!"));
+            document.Close();
+            writer.Close();
+            fs.Close();
         }
 
     }
