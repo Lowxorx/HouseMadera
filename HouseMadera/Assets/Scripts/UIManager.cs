@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour {
     public GameObject modulePosition;
     public GameObject cloisonPosition;
     public GameObject optionCloison;
+    public Text commercialName;
+    public Text projectName;
     public List<GameObject> listCloison;
     public List<GameObject> listWall;
     public Text text;
