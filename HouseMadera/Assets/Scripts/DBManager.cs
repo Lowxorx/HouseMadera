@@ -9,6 +9,9 @@ public class DBManager : MonoBehaviour
 {
     public List<GameObject> listCloison = new List<GameObject>();
     public List<GameObject> listModule = new List<GameObject>();
+    int idDoor;
+    int idWindow;
+    int idCloison;
 
     void Start()
     {
@@ -17,8 +20,37 @@ public class DBManager : MonoBehaviour
 
     public void FillInformations()
     {
+        GetTypeModuleId();
         FillListCloison();
         FillListModule();
+    }
+
+    public void GetTypeModuleId()
+    {
+        string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open();
+        string sqlQuery = "SELECT Id, Nom FROM typemodule";
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        while (reader.Read())
+        {
+            switch (reader.GetString(1))
+            {
+                case "Cloison":
+                    idCloison = reader.GetInt32(0);
+                    break;
+                case "Fenetre":
+                    idWindow = reader.GetInt32(0);
+                    break;
+                case "Porte":
+                    idDoor = reader.GetInt32(0);
+                    break;
+            }
+        }
+        dbconn.Close();
     }
 
     public void CheckInformations()
@@ -27,6 +59,30 @@ public class DBManager : MonoBehaviour
         CheckIfModuleIsAlreadySaved();
     }
 
+    void CheckIfCloisonIsAlreadySaved()
+    {
+        string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open();
+        string sqlQuery = "SELECT Libelle FROM moduleplace WHERE Module_Id = " + idCloison;
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        while (reader.Read())
+        {
+            foreach(GameObject targetCloison in listCloison)
+            {
+                string indexCloison = Regex.Match(targetCloison.name, @"\d+").Value;
+            }
+        }
+        dbconn.Close();
+    }
+
+    void CheckIfModuleIsAlreadySaved()
+    {
+
+    }
     void FillListCloison()
     {
         GameObject house = GameObject.Find("House");
@@ -68,24 +124,18 @@ public class DBManager : MonoBehaviour
 
     }
 
-    void CheckIfCloisonIsAlreadySaved()
-    {
-
-    }
+    
 
     void SaveModuleToDatabase()
     {
 
     }
 
-    void CheckIfModuleIsAlreadySaved()
-    {
-
-    }
+   
 
     public void SendToDatabase()
     {
-        string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\Test.db";
+        string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
         IDbConnection dbconn;
         dbconn = (IDbConnection)new SqliteConnection(conn);
         dbconn.Open();
