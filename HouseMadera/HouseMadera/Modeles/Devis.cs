@@ -41,5 +41,10 @@ namespace HouseMadera.Modeles
         /// Statut du Devis
         /// </summary>
         public StatutDevis StatutDevis { get; set; }
+
+        /// <summary>
+        /// Facture au format PDF (Blob)
+        /// </summary>
+        public byte[] Pdf { get; set; }
     }
 }
