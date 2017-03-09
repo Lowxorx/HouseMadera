@@ -262,7 +262,11 @@ namespace HouseMadera.DAL
             return result;
         }
         #endregion
-
+        /// <summary>
+        /// Permet de vérifier si la validité des données du formulaire 
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns>Une erreur si il y en a une</returns>
         private bool IsDataCorrect(Client client)
         {
            

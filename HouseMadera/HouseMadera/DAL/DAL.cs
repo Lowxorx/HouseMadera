@@ -14,7 +14,10 @@ namespace HouseMadera.DAL
         public static string Bdd { get; set; }
         protected static IDbConnection Connection { get; set; }
 
-
+        /// <summary>
+        /// Permet de gérer la connexion aux bases de données MySQL / SQLite
+        /// </summary>
+        /// <param name="nomBdd"></param>
         public DAL(string nomBdd)
         {
             ConnectionStringMySql = ConfigurationManager.ConnectionStrings["HouseMaderaDBMySql"].ConnectionString;

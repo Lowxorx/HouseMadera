@@ -9,6 +9,10 @@ namespace HouseMadera.DAL
 {
     public class ProjetDAL : DAL
     {
+        /// <summary>
+        /// Constructeur initial
+        /// </summary>
+        /// <param name="nomBdd"></param>
         public ProjetDAL(string nomBdd) : base(nomBdd)
         {
 

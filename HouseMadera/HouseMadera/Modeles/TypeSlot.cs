@@ -2,12 +2,19 @@
 
 namespace HouseMadera.Modeles
 {
+    /// <summary>
+    /// Classe représentant les Types de Slots
+    /// </summary>
     public class TypeSlot
     {
+        /// <summary>
+        /// Id du Type de Slot
+        /// </summary>
         public int Id { get; set; }
-        public string Nom { get; set; }
-        public virtual ICollection<Slot> Slots { get; set; }
-        public virtual ICollection<TypeModule> TypesModules { get; set; }
 
+        /// <summary>
+        /// Nom du Type de Slot
+        /// </summary>
+        public string Nom { get; set; }
     }
 }

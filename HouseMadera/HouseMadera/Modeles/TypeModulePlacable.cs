@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HouseMadera.Modeles
 {
-    /// <summary>
-    /// Classe représentant les Coupes de Principe
-    /// </summary>
-    public class CoupePrincipe
+    class TypeModulePlacable
     {
         /// <summary>
-        /// Id de la Coupe de Principe
+        /// Id du Type Module Placable
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Nom de la Coupe de Principe
+        /// Nom du Type Module Placable
         /// </summary>
         public string Nom { get; set; }
-        //TODO champs de type blob
+
+        /// TODO BLOB ICONE
     }
 }
