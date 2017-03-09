@@ -13,8 +13,7 @@ namespace HouseMadera.Modeles
         public DateTime DateCreation { get; set; }
         public Decimal PrixHT { get; set; }
         public Decimal PrixTTC { get; set; }
-
         public StatutDevis StatutDevis { get; set; }
-        public virtual ICollection<Produit> Produits { get; set; }
+        public byte[] Pdf { get; set; }
     }
 }
