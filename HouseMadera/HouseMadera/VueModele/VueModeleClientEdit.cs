@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -418,7 +419,11 @@ namespace HouseMadera.VueModele
                     Telephone = Telephone,
                     Mobile = Mobile,
                     Email = Email,
-                    StatutClient = StatutClient ? ACTIF : INACTIF
+                    StatutClient = StatutClient ? ACTIF : INACTIF,
+                    MiseAJour = isMiseAJourClient ? DateTime.Now : (DateTime?)null,
+                    Suppression = null,
+                    Creation = !isMiseAJourClient ? (DateTime?)null:DateTime.Now
+
                 };
                 try
                 {

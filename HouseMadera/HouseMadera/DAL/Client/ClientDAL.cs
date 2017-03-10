@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HouseMadera.Utilites;
 using HouseMadera.Modeles;
 using System.Data.Common;
+using HouseMadera.Utilities;
 
 namespace HouseMadera.DAL
 {
@@ -27,8 +28,8 @@ namespace HouseMadera.DAL
             string sql = @"
                             SELECT * FROM Client
                             ORDER BY Nom DESC";
-            var clients = new List<Client>();
-            var reader = Get(sql, null);
+            List<Client> clients = new List<Client>();
+            DbDataReader reader = Get(sql, null);
             while (reader.Read())
             {
                 Client client = initialiserClient(reader);
@@ -43,15 +44,15 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un objet Client</returns>
-        public  Client GetClient(int id)
+        public Client GetClient(int id)
         {
 
             string sql = @"SELECT * FROM Client WHERE Id = @1";
-            var parametres = new Dictionary<string, object>()
+            Dictionary<string, object> parametres = new Dictionary<string, object>()
             {
                 {"@1", id}
             };
-            var reader = Get(sql, parametres);
+            DbDataReader reader = Get(sql, parametres);
             Client client = new Client();
             while (reader.Read())
             {
@@ -67,9 +68,9 @@ namespace HouseMadera.DAL
         /// <returns>"true" si le client existe déjà en base</returns>
         private bool IsClientExist(Client client)
         {
-            var result = false;
+            bool result = false;
             string sql = @"SELECT * FROM Client WHERE Nom=@1 AND Prenom=@2 AND Mobile=@3 OR Telephone=@4 AND Email=@5";
-            var parameters = new Dictionary<string, object> {
+            Dictionary<string, object> parameters = new Dictionary<string, object> {
                 {"@1",client.Nom },
                 {"@2",client.Prenom },
                 {"@3",client.Mobile },
@@ -77,8 +78,8 @@ namespace HouseMadera.DAL
                 {"@5",client.Email }
 
             };
-            var clients = new List<Client>();
-            using (var reader = Get(sql, parameters))
+            List<Client> clients = new List<Client>();
+            using (DbDataReader reader = Get(sql, parameters))
             {
                 while (reader.Read())
                 {
@@ -89,6 +90,12 @@ namespace HouseMadera.DAL
             return result;
         }
 
+        /// <summary>
+        /// Obtient une liste d'objet Client en fonction des critères de recherche colonne et valeur 
+        /// </summary>
+        /// <param name="filter">contient le nom de la colonne</param>
+        /// <param name="value">contient la valeur à utiliser pour la recherche</param>
+        /// <returns>Une liste d'objet Client résultante de la recherche</returns>
         public List<Client> GetFilteredClient(string filter, string value)
         {
 
@@ -96,9 +103,9 @@ namespace HouseMadera.DAL
                 return new List<Client>();
 
             filter = filter.Replace(" ", string.Empty);
-            var colonne = (filter == "Adresse") ? "Adresse" + "1" : filter;
+            string colonne = (filter == "Adresse") ? "Adresse" + "1" : filter;
 
-            var parameters = new Dictionary<string, object>()
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
              {
                  {"@1", "%"+value+"%" }
              };
@@ -107,8 +114,8 @@ namespace HouseMadera.DAL
                              SELECT * FROM Client
                              WHERE " + colonne + @" LIKE @1
                              ORDER BY " + colonne + @" DESC";
-            var clients = new List<Client>();
-            var reader = Get(sql, parameters);
+            List<Client> clients = new List<Client>();
+            DbDataReader reader = Get(sql, parameters);
             while (reader.Read())
             {
                 Client client = initialiserClient(reader);
@@ -135,9 +142,9 @@ namespace HouseMadera.DAL
             if (IsClientExist(client))
                 throw new Exception("le client est déjà enregistré");
 
-            var sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id)
+            string sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id)
                         VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11)";
-            var parameters = new Dictionary<string, object>() {
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",client.Nom },
                 {"@2",client.Prenom },
                 {"@3",client.Adresse1 },
@@ -150,7 +157,7 @@ namespace HouseMadera.DAL
                 {"@10",client.Mobile },
                 {"@11",client.StatutClient },
             };
-            var result = 0;
+            int result = 0;
             try
             {
                 result = Insert(sql, parameters);
@@ -176,12 +183,12 @@ namespace HouseMadera.DAL
             if (!isDataCorrect(client))
                 throw new Exception(erreur);
 
-            var sql = @"
+            string sql = @"
                         UPDATE Client
                         SET Nom=@1,Prenom=@2,Adresse1=@3,Adresse2=@4,Adresse3=@5,CodePostal=@6,Ville=@7,Email=@8,Telephone=@9,Mobile=@10,StatutClient_Id=@11
                         WHERE Id=@12
                       ";
-            var parameters = new Dictionary<string, object>() {
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",client.Nom},
                 {"@2",client.Prenom},
                 {"@3",client.Adresse1},
@@ -195,7 +202,7 @@ namespace HouseMadera.DAL
                 {"@11",client.StatutClient },
                 {"@12",client.Id }
             };
-            var result = 0;
+            int result = 0;
             try
             {
                 result = Update(sql, parameters);
@@ -214,18 +221,18 @@ namespace HouseMadera.DAL
         /// <summary>
         /// Efface en base le client avec l'Id en paramètre
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Représente l'Id du client à effacer</param>
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne affectée</returns>
         public int DeleteClient(int id)
         {
-            var sql = @"
+            string sql = @"
                         DELETE FROM Client
                         WHERE Id=@1
                       ";
-            var parameters = new Dictionary<string, object>() {
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",id },
             };
-            var result = 0;
+            int result = 0;
             try
             {
                 result = Delete(sql, parameters);
@@ -241,6 +248,12 @@ namespace HouseMadera.DAL
         #endregion
 
         #region METHODES
+
+        /// <summary>
+        /// Vérifie la cohérence des informations pour chaque propriété de l'objet passé en paramètre
+        /// </summary>
+        /// <param name="client"></param>
+        /// <returns></returns>
         private bool isDataCorrect(Client client)
         {
 
@@ -250,7 +263,7 @@ namespace HouseMadera.DAL
                 erreur = "Le client n'a pas de statut \n";
             }
 
-            var utils = new RegexUtilities();
+            RegexUtilities utils = new RegexUtilities();
             //Test de validite de l'email si vide
             if (!utils.IsValidEmail(client.Email))
                 erreur += "L'email n'est pas au bon format \n";
@@ -280,6 +293,11 @@ namespace HouseMadera.DAL
             return string.IsNullOrEmpty(erreur);
         }
 
+        /// <summary>
+        /// Instancie un objet Client avec les données contenue dans l'objet passé en paramètre
+        /// </summary>
+        /// <param name="reader">Objet contenant les informations de la base</param>
+        /// <returns>Instance d'un objet Client</returns>
         private Client initialiserClient(DbDataReader reader)
         {
             Client client = new Client();
@@ -302,9 +320,9 @@ namespace HouseMadera.DAL
             string email = Convert.ToString(reader["email"]);
             client.Email = string.IsNullOrEmpty(email) || email == "NULL" ? string.Empty : email;
             client.StatutClient = Convert.ToInt32(reader["statutClient_id"]);
-            client.MiseAJour = initialiserDate(Convert.ToString(reader["miseajour"]));
-            client.Suppression = initialiserDate(Convert.ToString(reader["suppression"]));
-            client.Creation = initialiserDate(Convert.ToString(reader["creation"]));
+            client.MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["miseajour"]));
+            client.Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["suppression"]));
+            client.Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["creation"]));
 
             return client;
         }
@@ -314,33 +332,46 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="value"></param>
         /// <returns>retourne un objet DateTime ou null</returns>
-        private  DateTime ? initialiserDate(string value)
+        private DateTime? initialiserDate(string value)
         {
-            DateTime  maj = new DateTime();
+            DateTime maj = new DateTime();
             if (DateTime.TryParse(value, out maj))
                 return maj;
             else
-               return null;
+                return null;
         }
 
         #endregion
 
-        public List<Client> GetAll()
+
+        /// <summary>
+        /// Methode implémentée de l'interface IClientDAL permettant de récupérer tous les clients de la base
+        /// </summary>
+        /// <returns>Une liste d'objet Client</returns>
+        public List<Client> GetAllModeles()
         {
             string sql = @"
                             SELECT * FROM Client
                             ORDER BY Nom DESC";
-            var clients = new List<Client>();
-            var reader = Get(sql, null);
-            while (reader.Read())
+            List<Client> clients = new List<Client>();
+            using (DbDataReader reader = Get(sql, null))
             {
-                Client client = initialiserClient(reader);
-                if (client != null)
-                    clients.Add(client);
+                while (reader.Read())
+                {
+                    Client client = initialiserClient(reader);
+                    if (client != null)
+                        clients.Add(client);
+                }
             }
+          
             return clients;
         }
 
+        /// <summary>
+        /// Methode implémentée de l'interface IClientDAL permettant l'insertion d'un Client en base
+        /// </summary>
+        /// <param name="client">Le modèle à insérer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
         public int InsertModele(Client client)
         {
             if (!isDataCorrect(client))
@@ -348,9 +379,9 @@ namespace HouseMadera.DAL
             if (IsClientExist(client))
                 throw new Exception("le client est déjà enregistré");
 
-            var sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id)
-                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11)";
-            var parameters = new Dictionary<string, object>() {
+            string sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id,MiseAJour,Suppression,Creation)
+                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14)";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",client.Nom },
                 {"@2",client.Prenom },
                 {"@3",client.Adresse1 },
@@ -362,8 +393,12 @@ namespace HouseMadera.DAL
                 {"@9",client.Telephone },
                 {"@10",client.Mobile },
                 {"@11",client.StatutClient },
+                //{"@12",client.MiseAJour},
+                {"@12", DateTimeDbAdaptor.FormatDateTime( client.MiseAJour,Bdd) },
+                {"@13", DateTimeDbAdaptor.FormatDateTime( client.Suppression,Bdd) },
+                {"@14", DateTimeDbAdaptor.FormatDateTime( client.Creation,Bdd) }
             };
-            var result = 0;
+            int result = 0;
             try
             {
                 result = Insert(sql, parameters);
@@ -377,17 +412,24 @@ namespace HouseMadera.DAL
             return result;
         }
 
+        /// <summary>
+        /// Methode implémentée de l'interface IClientDAL. Elle effectue une copie des valeurs du deuxième paramètre dans le premier
+        /// et met à jour le client en base.
+        /// </summary>
+        /// <param name="clientLocal">Représente l'objet issue de la base locale </param>
+        /// <param name="clientDistant">Représente l'objet issue de la base distante</param>
+        /// <returns>Le nombre de lignes affectées</returns>
         public int UpdateModele(Client clientLocal, Client clientDistant)
         {
             //recopie des données du client distant dans le client local
             clientLocal.Copie(clientDistant);
-            
+
             string sql = @"
                         UPDATE Client
-                        SET Nom=@1,Prenom=@2,Adresse1=@3,Adresse2=@4,Adresse3=@5,CodePostal=@6,Ville=@7,Email=@8,Telephone=@9,Mobile=@10,StatutClient_Id=@11
-                        WHERE Id=@12
+                        SET Nom=@1,Prenom=@2,Adresse1=@3,Adresse2=@4,Adresse3=@5,CodePostal=@6,Ville=@7,Email=@8,Telephone=@9,Mobile=@10,StatutClient_Id=@11,MiseAJour=@12
+                        WHERE Id=@13
                       ";
-            Dictionary<string,object> parameters = new Dictionary<string, object>() {
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",clientLocal.Nom},
                 {"@2",clientLocal.Prenom},
                 {"@3",clientLocal.Adresse1},
@@ -399,7 +441,8 @@ namespace HouseMadera.DAL
                 {"@9",string.IsNullOrEmpty(clientLocal.Telephone) ? NON_RENSEIGNE : clientLocal.Telephone},
                 {"@10",string.IsNullOrEmpty(clientLocal.Mobile) ? NON_RENSEIGNE : clientLocal.Mobile },
                 {"@11",clientLocal.StatutClient },
-                {"@12",clientLocal.Id }
+                {"@12", DateTimeDbAdaptor.FormatDateTime( clientLocal.MiseAJour,Bdd)},
+                {"@13",clientLocal.Id }
             };
             int result = 0;
             try
@@ -418,24 +461,24 @@ namespace HouseMadera.DAL
         /// <summary>
         /// Met à jour en base la date de suppression du client (suppression logique)
         /// </summary>
-        /// <param name="client"></param>
-        /// <returns></returns>
+        /// <param name="client">Représente le client à effacer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
         public int DeleteModele(Client client)
         {
             if (!isDataCorrect(client))
                 throw new Exception(erreur);
 
-            var sql = @"
+            string sql = @"
                         UPDATE Client
-                        SET Suppression=@1
-                        WHERE Id=@2
+                        SET Suppression= @2
+                        WHERE Id=@1
                       ";
-            var parameters = new Dictionary<string, object>() {
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",client.Id},
-                {"@2",client.Suppression}
-               
+                {"@2",DateTimeDbAdaptor.FormatDateTime(client.Suppression,Bdd)}
+
             };
-            var result = 0;
+            int result = 0;
             try
             {
                 result = Update(sql, parameters);

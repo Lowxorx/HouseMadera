@@ -33,7 +33,8 @@ namespace HouseMadera.Modeles
                 return false;
 
             Client cl = (Client)obj;
-            return (Nom == cl.Nom) && (Prenom == cl.Prenom) && (Adresse1 == cl.Adresse1) && (Adresse2 == cl.Adresse2) && (Adresse3 == cl.Adresse3) && (CodePostal == cl.CodePostal) && (Ville == cl.Ville) && (Email == cl.Email) && (Telephone == cl.Telephone) && (Mobile == Mobile) && (StatutClient == cl.StatutClient);
+       
+            return ((Nom == cl.Nom) || (Prenom == cl.Prenom) || (Email == cl.Email)) && (Creation == cl.Creation) ;
         }
 
         public override string ToString()
@@ -65,7 +66,8 @@ namespace HouseMadera.Modeles
         /// <returns>true si le modele a été supprimé sinon false</returns>
         public bool IsDeleted<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
-            if(modele.Suppression != null)
+          
+            if(modele.Suppression != null && !Suppression.HasValue)
             {
                 Suppression = modele.Suppression;
                 return true;
@@ -95,7 +97,6 @@ namespace HouseMadera.Modeles
             Suppression = clientDistant.Suppression;
             StatutClient = clientDistant.StatutClient;
         }
-
         #endregion
     }
 }

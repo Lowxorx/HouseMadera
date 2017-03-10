@@ -192,7 +192,7 @@ namespace HouseMadera.VueModele
             List<Client> clients = new List<Client>();
             using (var dal = new ClientDAL("SQLITE"))
             {
-                clients = dal.GetAllClients();
+                clients = dal.GetAllModeles();
             }
             return clients;
         }
