@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace HouseMadera.Utilites
+namespace HouseMadera.Utilities
 {
     public class RegexUtilities
     {

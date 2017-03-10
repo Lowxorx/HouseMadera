@@ -8,12 +8,13 @@ namespace HouseMadera.Modeles
 {
     public class DataGenerationDevis
     {
+        public string NomProduit { get; set; }
         public int NumModule { get; set; }
         public string NomModule { get; set; }
         public string NomComposant { get; set; }
         public string PrixComposant { get; set; }
         public int NombreComposant { get; set; }
-        public Client client { get; set; }
+        public Client Client { get; set; }
 
     }
 }

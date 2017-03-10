@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using HouseMadera.Modeles;
 using System.Data.Common;
 
@@ -290,11 +290,13 @@ namespace HouseMadera.DAL
 
         private Client initialiserClient(DbDataReader reader)
         {
-            var client = new Client();
-            client.Id = Convert.ToInt32(reader["id"]);
-            client.Nom = Convert.ToString(reader["nom"]);
-            client.Prenom = Convert.ToString(reader["prenom"]);
-            client.Adresse1 = Convert.ToString(reader["adresse1"]);
+            var client = new Client()
+            {
+                Id = Convert.ToInt32(reader["id"]),
+                Nom = Convert.ToString(reader["nom"]),
+                Prenom = Convert.ToString(reader["prenom"]),
+                Adresse1 = Convert.ToString(reader["adresse1"])
+            };
             string adresse2 = Convert.ToString(reader["adresse2"]);
             client.Adresse2 = string.IsNullOrEmpty(adresse2) || adresse2 == "NULL" ? string.Empty : adresse2;
             string adresse3 = Convert.ToString(reader["adresse3"]);

@@ -2,7 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -446,8 +446,7 @@ namespace HouseMadera.VueModele
         /// <returns></returns>
         private List<Commune> RechercherCommunes(string codePostal)
         {
-            int i;
-            var isCodePostal = int.TryParse(codePostal, out i);
+            var isCodePostal = int.TryParse(codePostal, out int i);
 
             List<Commune> communes = new List<Commune>();
             //TODO modifier "SQLITE" par Bdd

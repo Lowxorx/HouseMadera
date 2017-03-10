@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using HouseMadera.Modeles;
 using System.Collections.ObjectModel;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 
 namespace HouseMadera.DAL
 {
@@ -41,27 +41,29 @@ namespace HouseMadera.DAL
                 var reader = Get(sql, parametres);
                 while (reader.Read())
                 {
-                    var produit = new Produit();
-                    produit.Id = Convert.ToInt32(reader["Id"]);
-                    produit.Nom = Convert.ToString(reader["Nom"]);
-                    produit.Devis = new Devis()
+                    var produit = new Produit()
                     {
-                        Nom = Convert.ToString(reader["nom_devis"]),
-                        Id = Convert.ToInt32(reader["id_devis"]),
-                        PrixTTC = Convert.ToDecimal(reader["prixttc_devis"]),
-                        PrixHT = Convert.ToDecimal(reader["prixht_devis"]),
-                        StatutDevis = new StatutDevis() { Nom = reader["statut_devis"].ToString() }
+                        Id = Convert.ToInt32(reader["Id"]),
+                        Nom = Convert.ToString(reader["Nom"]),
+                        Devis = new Devis()
+                        {
+                            Nom = Convert.ToString(reader["nom_devis"]),
+                            Id = Convert.ToInt32(reader["id_devis"]),
+                            PrixTTC = Convert.ToDecimal(reader["prixttc_devis"]),
+                            PrixHT = Convert.ToDecimal(reader["prixht_devis"]),
+                            StatutDevis = new StatutDevis() { Nom = reader["statut_devis"].ToString() }
+                        },
+                        Plan = new Plan()
+                        {
+                            Nom = Convert.ToString(reader["nom_plan"]),
+                            CreateDate = Convert.ToDateTime(reader["date_plan"])
+                        },
+                        Projet = new Projet()
+                        {
+                            Nom = Convert.ToString(reader["nom_projet"])
+                        },
+                        StatutProduit = new StatutProduit() { Nom = reader["statut_produit"].ToString() }
                     };
-                    produit.Plan = new Plan()
-                    {
-                        Nom = Convert.ToString(reader["nom_plan"]),
-                        CreateDate = Convert.ToDateTime(reader["date_plan"])
-                    };
-                    produit.Projet = new Projet()
-                    {
-                        Nom = Convert.ToString(reader["nom_projet"])
-                    };
-                    produit.StatutProduit = new StatutProduit() { Nom = reader["statut_produit"].ToString() };
                     listeProduit.Add(produit);
                 }
                 return listeProduit;

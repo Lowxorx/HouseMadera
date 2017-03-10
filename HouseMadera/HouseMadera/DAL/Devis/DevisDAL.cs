@@ -1,5 +1,5 @@
 ﻿using HouseMadera.Modeles;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,12 +31,14 @@ namespace HouseMadera.DAL
             var reader = Get(sql, null);
             while (reader.Read())
             {
-                var devis = new Devis();
-                devis.Id = Convert.ToInt32(reader["Id"]);
-                devis.Nom = Convert.ToString(reader["Nom"]);
-                devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
-                devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
-                devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
+                var devis = new Devis()
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Nom = Convert.ToString(reader["Nom"]),
+                    DateCreation = Convert.ToDateTime(reader["DateCreation"]),
+                    PrixHT = Convert.ToDecimal(reader["PrixHT"]),
+                    PrixTTC = Convert.ToDecimal(reader["PrixTTC"])
+                };
                 listeDevis.Add(devis);
             }
             return listeDevis;
@@ -44,7 +46,7 @@ namespace HouseMadera.DAL
 
         public List<DataGenerationDevis> GenererDevis(Produit p)
         {
-            var sql = @"SELECT mp.*, m.Nom AS module_nom, c.Prix AS compo_prix, cm.Nombre AS compomod_nbre, c.Nom AS compo_nom, cli.Id AS cli_id, cli.Nom AS cli_nom, cli.Prenom AS cli_prenom, cli.Email AS cli_mail
+            var sql = @"SELECT mp.*, m.Nom AS module_nom, p.Nom AS nom_produit, c.Prix AS compo_prix, cm.Nombre AS compomod_nbre, c.Nom AS compo_nom, cli.Id AS cli_id, cli.Nom AS cli_nom, cli.Prenom AS cli_prenom, cli.Email AS cli_mail
                         FROM ModulePlace mp
                         LEFT JOIN Module m ON mp.Module_Id = m.Id
                         LEFT JOIN Produit p ON p.Id = mp.Produit_Id
@@ -65,12 +67,13 @@ namespace HouseMadera.DAL
             {
                 DataGenerationDevis dg = new DataGenerationDevis()
                 {
+                    NomProduit = Convert.ToString(reader["nom_produit"]),
                     NumModule = Convert.ToInt32(reader["Module_Id"]),
                     NomModule = Convert.ToString(reader["module_nom"]),
                     NomComposant = Convert.ToString(reader["compo_nom"]),
                     NombreComposant = Convert.ToInt32(reader["compomod_nbre"]),
                     PrixComposant = Convert.ToString(reader["compo_prix"]),
-                    client = new Client
+                    Client = new Client
                     {
                         Id = Convert.ToInt32(reader["cli_id"]),
                         Nom = Convert.ToString(reader["cli_nom"]),
@@ -124,16 +127,20 @@ namespace HouseMadera.DAL
             {
                 {"@1", id}
             };
+            Devis devis = new Devis();
             var reader = Get(sql, parametres);
-            var devis = new Devis();
             while (reader.Read())
             {
-                devis.Id = Convert.ToInt32(reader["Id"]);
-                devis.Nom = Convert.ToString(reader["Nom"]);
-                devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
-                devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
-                devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
-                devis.StatutDevis = new StatutDevis() { Id = Convert.ToInt32(reader["StatutDevis_Id"]) };
+                 devis = new Devis()
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Nom = Convert.ToString(reader["Nom"]),
+                    DateCreation = Convert.ToDateTime(reader["DateCreation"]),
+                    PrixHT = Convert.ToDecimal(reader["PrixHT"]),
+                    PrixTTC = Convert.ToDecimal(reader["PrixTTC"]),
+                    StatutDevis = new StatutDevis() { Id = Convert.ToInt32(reader["StatutDevis_Id"]) },
+                    Pdf = (byte[])reader["pdf"]
+                };
             }
             return devis;
         }
@@ -161,7 +168,6 @@ namespace HouseMadera.DAL
                     result = true;
                 }
             }
-
             return result;
         }
 
@@ -180,13 +186,14 @@ namespace HouseMadera.DAL
             if (IsDevisExist(devis))
                 throw new Exception("Le devis est déjà enregistré.");
 
-            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id) VALUES(@1,@2,@3,@4,@5)";
+            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id,Pdf) VALUES(@1,@2,@3,@4,@5,@6)";
             var parameters = new Dictionary<string, object>() {
                 {"@1",devis.Nom },
                 {"@2",devis.DateCreation },
                 {"@3",devis.PrixHT },
                 {"@4",devis.PrixTTC },
-                {"@5",devis.StatutDevis }
+                {"@5",devis.StatutDevis },
+                {"@6",devis.Pdf }
             };
             var result = 0;
             try

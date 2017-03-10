@@ -1,4 +1,4 @@
-﻿using HouseMadera.Utilites;
+﻿using HouseMadera.Utilities;
 using MySql.Data.MySqlClient;
 using System;
 using System.Data.Common;
@@ -40,8 +40,10 @@ namespace HouseMadera.DAL
 
         public DbCommand GetCommand()
         {
-            var command = new MySqlCommand();
-            command.Connection = Connection;
+            var command = new MySqlCommand()
+            {
+                Connection = Connection
+            };
             return command;
         }
 

@@ -1,5 +1,5 @@
 ﻿using HouseMadera.Modeles;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -64,7 +64,6 @@ namespace HouseMadera.DAL
             }
         }
 
-
         /// <summary>
         /// Selectionne le premier projet avec l'ID du projet en paramètre
         /// </summary>
@@ -114,7 +113,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="client"></param>
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne insérée</returns>
-        public bool CreerProjet(Modeles.Projet projet)
+        public bool CreerProjet(Projet projet)
         {
             try
             {

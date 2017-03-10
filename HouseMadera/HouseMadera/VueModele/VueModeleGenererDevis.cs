@@ -2,23 +2,20 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using HouseMadera.Modeles;
-using HouseMadera.Vues;
+using HouseMadera.Utilities;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
-using iTextSharp;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using System.Diagnostics;
-using HouseMadera.Utilities;
-using HouseMadera.Utilites;
 
 namespace HouseMadera.VueModele
 {
@@ -143,14 +140,15 @@ namespace HouseMadera.VueModele
                     Credentials = new System.Net.NetworkCredential("serviceclient.madera@gmail.com", "Rila2016")
                 };
 
-                MailMessage mm = new MailMessage("serviceclient.madera@gmail.com", DGen.client.Email);
-                mm.Subject = @"Votre Devis pour votre maison modulaire - Madera";
-                mm.Body = @"Cher client, " + Environment.NewLine +
+                MailMessage mm = new MailMessage("serviceclient.madera@gmail.com", DGen.client.Email)
+                {
+                    Subject = @"Votre Devis pour votre maison modulaire - Madera",
+                    Body = @"Cher client, " + Environment.NewLine +
                         "vous trouverez ci-joint le devis pour votre maison modulaire réalisée le " + DateTime.Now.ToLongDateString() + Environment.NewLine + @"." +
                         "N'hésitez pas à nous contacter pour toute information complémentaire dont vous auriez besoin." + Environment.NewLine +
                         "Cordialement," + Environment.NewLine +
-                        "La société Madera.";
-
+                        "La société Madera."
+                };
                 Attachment attachment = new Attachment(@"Devis\" + DevisActuel, new System.Net.Mime.ContentType("application/pdf"));
                 mm.Attachments.Add(attachment);
                 mm.BodyEncoding = Encoding.UTF8;
