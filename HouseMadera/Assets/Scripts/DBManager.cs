@@ -25,6 +25,22 @@ public class DBManager : MonoBehaviour
         FillListModule();
     }
 
+    public void FillCloisonDatabase()
+    {
+        for (int i = 0; i < 99; i++)
+        {
+            string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(conn);
+            dbconn.Open();
+            string sqlQuery = "INSERT INTO slotplace (Order, Module_Id, Slot_Id) VALUES ( " + i + ", 13, 10)";
+            Debug.Log(sqlQuery);
+            IDbCommand dbcmd = dbconn.CreateCommand();
+            dbcmd.CommandText = sqlQuery;
+            dbcmd.ExecuteNonQuery();
+        }
+    }
+
     public void GetTypeModuleId()
     {
         string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
