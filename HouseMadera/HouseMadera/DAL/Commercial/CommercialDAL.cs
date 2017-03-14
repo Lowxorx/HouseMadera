@@ -5,10 +5,12 @@ using System.Data.SQLite;
 using System.Collections.Generic;
 using HouseMadera.Utilites;
 using HouseMadera.Modeles;
+using System.Data.Common;
+using HouseMadera.Utilities;
 
 namespace HouseMadera.DAL
 {
-    public class CommercialDAL : DAL
+    public class CommercialDAL : DAL, ICommercialDAL
     {
         public CommercialDAL(string nomBdd) : base(nomBdd)
         {
@@ -77,7 +79,7 @@ namespace HouseMadera.DAL
                 var reader = Get(sql, parameters);
                 while (reader.Read())
                 {
-                    Console.WriteLine("{0}\t{1}", reader.GetInt32(0),reader.GetString(1));
+                    Console.WriteLine("{0}\t{1}", reader.GetInt32(0), reader.GetString(1));
                     connexionStatut = "0";
                 }
                 reader.Close();
@@ -185,6 +187,150 @@ namespace HouseMadera.DAL
             return result;
         }
 
+
+
         #endregion
+
+        #region SYNCHRONISATION
+        /// <summary>
+        /// Methode implémentée de l'interface ICommercialDAL permettant de récupérer tous les commerciaux de la base
+        /// </summary>
+        /// <returns>Une liste d'objet Commercial</returns>
+        public List<Commercial> GetAllModeles()
+        {
+            List<Commercial> listeCommerciaux = new List<Commercial>();
+            try
+            {
+
+                string sql = @"SELECT * FROM Commercial";
+
+
+                using (DbDataReader reader = Get(sql, null))
+                {
+                    while (reader.Read())
+                    {
+                        Commercial c = new Commercial()
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Login = Convert.ToString(reader["Login"]),
+                            Nom = Convert.ToString(reader["Nom"]),
+                            Prenom = Convert.ToString(reader["Prenom"])
+                        };
+                        listeCommerciaux.Add(c);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                //Logger.WriteEx(ex);
+            }
+
+            return listeCommerciaux;
+        }
+        /// <summary>
+        /// Methode implémentée de l'interface ICommercialDAL permettant l'insertion d'un Commercial en base
+        /// </summary>
+        /// <param name="comercial">Le modèle à insérer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int InsertModele(Commercial commercial)
+        {
+            string sql = @"INSERT INTO Commercial (Nom,Prenom,Login,Password,MiseAJour,Suppression,Creation)
+                        VALUES(@1,@2,@3,@4,@5,@6,@7)";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1",commercial.Nom },
+                {"@2",commercial.Prenom },
+                {"@3",commercial.Login },
+                {"@4",commercial.Password },
+                {"@5", DateTimeDbAdaptor.FormatDateTime( commercial.MiseAJour,Bdd) },
+                {"@6", DateTimeDbAdaptor.FormatDateTime( commercial.Suppression,Bdd) },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( commercial.Creation,Bdd) }
+            };
+            int result = 0;
+            try
+            {
+                result = Insert(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+                //Logger.WriteEx(e);
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// Methode implémentée de l'interface ICommercialDAL. Elle effectue une copie des valeurs du deuxième paramètre dans le premier
+        /// et met à jour le commercial en base.
+        /// </summary>
+        /// <param name="commercialLocal">Représente l'objet issue de la base locale </param>
+        /// <param name="commercialDistant">Représente l'objet issue de la base distante</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int UpdateModele(Commercial commercialLocal, Commercial commercialDistant)
+        {
+            //recopie des données du commercial distant dans le commercial local
+            commercialLocal.Copy<Commercial>(commercialDistant);
+
+            string sql = @"
+                        UPDATE Commercial
+                        SET Nom=@1,Prenom=@2,Login=@3,Password=@4,MiseAJour=@5
+                        WHERE Id=@6
+                      ";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1",commercialLocal.Nom},
+                {"@2",commercialLocal.Prenom},
+                {"@3",commercialLocal.Login},
+                {"@4",commercialLocal.Password},
+                {"@5", DateTimeDbAdaptor.FormatDateTime( commercialLocal.MiseAJour,Bdd)},
+                {"@6",commercialLocal.Id }
+            };
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+                //Logger.WriteEx(e);
+            }
+
+            return result;
+        }
+        /// <summary>
+        /// Met à jour en base la date de suppression du commercial (suppression logique)
+        /// </summary>
+        /// <param name="commercial">Représente le commercial à effacer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int DeleteModele(Commercial commercial)
+        {
+            string sql = @"
+                        UPDATE Commercial
+                        SET Suppression= @2
+                        WHERE Id=@1
+                      ";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1",commercial.Id},
+                {"@2",DateTimeDbAdaptor.FormatDateTime(commercial.Suppression,Bdd)}
+
+            };
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+                //Logger.WriteEx(e);
+            }
+
+            return result;
+        }
+        #endregion
+
     }
 }

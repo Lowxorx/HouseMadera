@@ -37,8 +37,9 @@ namespace HouseMadera.Modeles
             return false;
         }
 
-        public void Copie(Projet projet)
+        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
+            Projet projet = modele as Projet;
             Nom = projet.Nom;
             Reference = projet.Reference;
             Commercial = projet.Commercial;

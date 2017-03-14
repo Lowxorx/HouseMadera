@@ -10,5 +10,6 @@ namespace HouseMadera.DAL
         DateTime ? Creation { get; set; }
         bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable;
         bool IsDeleted<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable;
+        void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable;
     }
 }

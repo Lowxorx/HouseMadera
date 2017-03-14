@@ -19,9 +19,9 @@ namespace HouseMadera.Modeles
         public string Email { get; set; }
         public string Telephone { get; set; }
         public string Mobile { get; set; }
-        public DateTime ? MiseAJour { get; set; }
-        public DateTime ? Suppression { get; set; }
-        public DateTime ? Creation { get; set; }
+        public DateTime? MiseAJour { get; set; }
+        public DateTime? Suppression { get; set; }
+        public DateTime? Creation { get; set; }
         public int StatutClient { get; set; }
 
         public List<Projet> Projets { get; set; }
@@ -33,8 +33,13 @@ namespace HouseMadera.Modeles
                 return false;
 
             Client cl = (Client)obj;
-       
-            return ((Nom == cl.Nom) || (Prenom == cl.Prenom) || (Email == cl.Email)) && (Creation == cl.Creation) ;
+
+            return ((Nom == cl.Nom) || (Prenom == cl.Prenom) || (Email == cl.Email)) && (Creation == cl.Creation);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public override string ToString()
@@ -45,6 +50,12 @@ namespace HouseMadera.Modeles
 
         #region SYNCHRONISATION
 
+        /// <summary>
+        /// Teste si le modele a été mis à jour
+        /// </summary>
+        /// <typeparam name="TMODELE"></typeparam>
+        /// <param name="modele"></param>
+        /// <returns>true si le modele a été modifié sinon false</returns>
         public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
             if (modele.MiseAJour == null)
@@ -53,10 +64,7 @@ namespace HouseMadera.Modeles
                 return MiseAJour == modele.MiseAJour;
         }
 
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+       
 
         /// <summary>
         /// Teste si le modele existe en base
@@ -66,13 +74,13 @@ namespace HouseMadera.Modeles
         /// <returns>true si le modele a été supprimé sinon false</returns>
         public bool IsDeleted<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
-          
-            if(modele.Suppression != null && !Suppression.HasValue)
+
+            if (modele.Suppression != null && !Suppression.HasValue)
             {
                 Suppression = modele.Suppression;
                 return true;
             }
-           
+
             return false;
         }
 
@@ -80,22 +88,23 @@ namespace HouseMadera.Modeles
         /// recopie les valeurs des propriétés de l'objet passé en paramètre dans les propriétés de l'instance courante
         /// </summary>
         /// <param name="clientDistant"></param>
-        public void Copie(Client clientDistant)
+        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
-            Nom = clientDistant.Nom;
-            Prenom = clientDistant.Prenom;
-            Adresse1 = clientDistant.Adresse1;
-            Adresse2 = clientDistant.Adresse2;
-            Adresse3 = clientDistant.Adresse3;
-            CodePostal = clientDistant.CodePostal;
-            Ville = clientDistant.Ville;
-            Email = clientDistant.Email;
-            Mobile = clientDistant.Mobile;
-            Telephone = clientDistant.Telephone;
-            MiseAJour = clientDistant.MiseAJour;
-            Creation = clientDistant.Creation;
-            Suppression = clientDistant.Suppression;
-            StatutClient = clientDistant.StatutClient;
+            Client client = modele as Client;
+            Nom = client.Nom;
+            Prenom = client.Prenom;
+            Adresse1 = client.Adresse1;
+            Adresse2 = client.Adresse2;
+            Adresse3 = client.Adresse3;
+            CodePostal = client.CodePostal;
+            Ville = client.Ville;
+            Email = client.Email;
+            Mobile = client.Mobile;
+            Telephone = client.Telephone;
+            MiseAJour = client.MiseAJour;
+            Creation = client.Creation;
+            Suppression = client.Suppression;
+            StatutClient = client.StatutClient;
         }
         #endregion
     }
