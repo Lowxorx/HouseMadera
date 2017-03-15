@@ -422,7 +422,7 @@ namespace HouseMadera.DAL
         public int UpdateModele(Client clientLocal, Client clientDistant)
         {
             //recopie des données du client distant dans le client local
-            clientLocal.Copie(clientDistant);
+            clientLocal.Copy<Client>(clientDistant);
 
             string sql = @"
                         UPDATE Client

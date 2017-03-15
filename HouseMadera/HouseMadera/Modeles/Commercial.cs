@@ -15,16 +15,58 @@ namespace HouseMadera.Modeles
         public DateTime? MiseAJour { get; set; }
         public DateTime? Suppression { get; set; }
         public DateTime? Creation { get; set; }
-       
 
-        public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        public override string ToString()
         {
-            throw new NotImplementedException();
+            return string.Format("Commercial :  {0} {1}",Prenom,Nom);
         }
 
+        /// <summary>
+        /// Teste si le modele a été mis à jour
+        /// </summary>
+        /// <typeparam name="TMODELE"></typeparam>
+        /// <param name="modele"></param>
+        /// <returns>true si le modele a été modifié sinon false</returns>
+        public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+
+            if (modele.MiseAJour == null)
+                return true;
+            else
+                return MiseAJour == modele.MiseAJour;
+        }
+
+        /// <summary>
+        /// Teste si le modele existe en base
+        /// </summary>
+        /// <typeparam name="TMODELE"></typeparam>
+        /// <param name="modele"></param>
+        /// <returns>true si le modele a été supprimé sinon false</returns>
         public bool IsDeleted<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
-            throw new NotImplementedException();
+            if (modele.Suppression != null && !Suppression.HasValue)
+            {
+                Suppression = modele.Suppression;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// recopie les valeurs des propriétés de l'objet passé en paramètre dans les propriétés de l'instance courante
+        /// </summary>
+        /// <param name="clientDistant"></param>
+        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+            Commercial commercial = modele as Commercial;
+            Nom = commercial.Nom;
+            Prenom = commercial.Prenom;
+            Login = commercial.Login;
+            Password = commercial.Password;
+            MiseAJour = commercial.MiseAJour;
+            Creation = commercial.Creation;
+            Suppression = commercial.Suppression;
         }
     }
 

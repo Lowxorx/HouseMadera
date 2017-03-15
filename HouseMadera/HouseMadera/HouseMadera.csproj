@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
+    <Compile Include="DAL\Interfaces\ICommercialDAL.cs" />
     <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\Devis\DevisDAL.cs" />
