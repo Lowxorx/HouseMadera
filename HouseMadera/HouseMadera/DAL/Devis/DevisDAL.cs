@@ -1,4 +1,5 @@
-﻿using HouseMadera.Modeles;
+﻿using HouseMadera.DAL.Interfaces;
+using HouseMadera.Modeles;
 using HouseMadera.Utilites;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace HouseMadera.DAL
 {
-    public class DevisDAL : DAL
+    public class DevisDAL : DAL , IDevisDAL
     {
 
         const string NON_RENSEIGNE = "NULL";
@@ -121,6 +122,8 @@ namespace HouseMadera.DAL
             return result;
         }
 
+
+
         #endregion
 
         #region CREATE
@@ -193,6 +196,31 @@ namespace HouseMadera.DAL
             }
             return result;
         }
+
+        #endregion
+
+        #region SYNCHRONISATION
+
+        public List<Devis> GetAllModeles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertModele(Devis modele)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int UpdateModele(Devis modele1, Devis modele2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteModele(Devis modele)
+        {
+            throw new NotImplementedException();
+        }
+
 
         #endregion
 

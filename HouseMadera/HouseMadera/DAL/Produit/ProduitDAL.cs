@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using HouseMadera.Modeles;
 using System.Collections.ObjectModel;
 using HouseMadera.Utilites;
+using HouseMadera.DAL.Interfaces;
 
 namespace HouseMadera.DAL
 {
-    public class ProduitDAL : DAL
+    public class ProduitDAL : DAL,IProduitDAL
     {
 
         public ProduitDAL(string nomBdd) : base(nomBdd)
@@ -134,6 +135,8 @@ namespace HouseMadera.DAL
             return result;
         }
 
+
+
         #endregion
 
         #region CREATE
@@ -146,6 +149,28 @@ namespace HouseMadera.DAL
 
         #region DELETE
 
+        #endregion
+
+        #region SYNCHRONISATION
+        public List<Produit> GetAllModeles()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int InsertModele(Produit modele)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int UpdateModele(Produit modele1, Produit modele2)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteModele(Produit modele)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
 
     }
