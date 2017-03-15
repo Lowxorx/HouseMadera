@@ -31,5 +31,10 @@ namespace HouseMadera.Modeles
         {
             throw new NotImplementedException();
         }
+
+        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+            throw new NotImplementedException();
+        }
     }
 }

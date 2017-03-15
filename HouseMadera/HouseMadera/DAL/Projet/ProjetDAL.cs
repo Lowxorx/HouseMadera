@@ -158,6 +158,7 @@ namespace HouseMadera.DAL
         #region SYNCHRONISATION
         public int InsertModele(Projet projet)
         {
+
             int result = 0;
             try
             {
@@ -166,6 +167,11 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la base Projet avec la clé étrangère Client nulle");
                 if (projet.Commercial == null)
                     throw new Exception("Tentative d'insertion  dans la base Projet avec la clé étrangère Commercial nulle");
+                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                //int clientId;
+                //Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id,out clientId);
+                //int commercialId;
+                //Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out commercialId);
 
                 string sql = @"INSERT INTO Projet (Nom,Reference,Client_Id,Commercial_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7)";
@@ -197,7 +203,7 @@ namespace HouseMadera.DAL
         {
 
             //recopie des données du client distant dans le client local
-            projetLocal.Copie(projetDistant);
+            projetLocal.Copy(projetDistant);
 
             string sql = @"
                         UPDATE Projet

@@ -19,40 +19,19 @@ namespace HouseMadera.DAL
 
         private List<TMODELE> listeModeleDistante = new List<TMODELE>();
         private List<TMODELE> listeModeleLocale = new List<TMODELE>();
-        public Dictionary<int, int> correspondanceModeleId = new Dictionary<int, int>();
+        public static Dictionary<int, int> CorrespondanceModeleId = new Dictionary<int, int>();
         private bool changements = false;
 
         public Synchronisation(TMODELE modele)
         {
             NomModele = typeof(TMODELE).Name;
             recupererDonnees();
-            ////Récupérer les enregistrements de la base distante
-            //using (dalBddDistante = (TDAL)Activator.CreateInstance(typeof(TDAL), DISTANTE))
-            //{
-            //    try
-            //    {
-            //        listeModeleDistante = dalBddDistante.GetAllModeles();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e.Message);
-            //    }
-            //}
-            ////Récupérer les enregistrements de la base locale
-            //using (dalBddLocale = (TDAL)Activator.CreateInstance(typeof(TDAL), LOCALE))
-            //{
-            //    try
-            //    {
-
-            //        listeModeleLocale = dalBddLocale.GetAllModeles();
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e.Message);
-            //    }
-            //}
         }
 
+        /// <summary>
+        /// Compare les données de la base locale et distante dans les deux sens.
+        /// Créé la table de correspondance des Id et affiche le résultat dans la console
+        /// </summary>
         public void synchroniserDonnees()
         {
             comparerDonnees(listeModeleLocale, listeModeleDistante, "SORTANT");
@@ -60,154 +39,22 @@ namespace HouseMadera.DAL
             //enregistrer les id dans une table de correspondance
             creerTableCorrespondance();
             afficherResultat();
-            //Comparer les deux listes
-            //Est-ce que l'entité locale existe dans la base distante
-            //foreach (var modeleLocal in listeModeleLocale)
-            //{
-            //    bool isInDistant = false;
-            //    bool isUpToDate = false;
-            //    bool isDeleted = false;
-            //    foreach (var modeleDistant in listeModeleDistante)
-            //    {
-            //        isInDistant = modeleLocal.Equals(modeleDistant);
-            //        if (isInDistant)
-            //        {
-            //            //Est-ce que l'entité a été supprimée dans la base distante
-            //            isDeleted = modeleLocal.IsDeleted(modeleDistant);
-            //            if (isDeleted)
-            //            {
-            //                using (dalBddLocale = (TDAL)Activator.CreateInstance(typeof(TDAL), LOCALE))
-            //                {
-            //                    Console.WriteLine("\nL'entité {0} avec l'ID {1} a été effacé dans la base distante\n", NomModele, modeleLocal.Id);
-            //                    string deleteResult = dalBddLocale.DeleteModele(modeleLocal) > 0 ? "OK" : "NOK";
-            //                    Console.WriteLine("\nSuppression dans la base locale -----> {0}", deleteResult);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                //Est-ce que l'entité a été modifiée dans la base distante
-            //                isUpToDate = modeleLocal.IsUpToDate(modeleDistant);
-
-            //                if (!isUpToDate)
-            //                {
-            //                    using (dalBddLocale = (TDAL)Activator.CreateInstance(typeof(TDAL), LOCALE))
-            //                    {
-            //                        Console.WriteLine("\nl'entité {0} avec l'ID {1} a été modifié dans la base distante\n", NomModele, modeleLocal.Id);
-            //                        string updateResult = dalBddLocale.UpdateModele(modeleLocal, modeleDistant) > 0 ? "OK" : "NOK";
-            //                        Console.WriteLine("\n Modification dans la base locale -----> {0}", updateResult);
-            //                    }
-            //                }
-            //            }
-            //            //enregistrer les id dans une table de correspondance
-            //            correspondanceModeleId.Add(modeleLocal.Id, modeleDistant.Id);
-            //            break;
-            //        }
-
-            //    }
-            //    if (!isInDistant)
-            //    {
-            //        Console.WriteLine("l'entité {0} avec l'ID {1} n'existe pas dans la base distante\n", NomModele, modeleLocal.Id);
-            //        //Enregistrer l'entité dans la base distante
-            //        using (dalBddDistante = (TDAL)Activator.CreateInstance(typeof(TDAL), DISTANTE))
-            //        {
-            //            try
-            //            {
-            //                int nbLigneInseree = dalBddDistante.InsertModele(modeleLocal);
-            //                if (nbLigneInseree > 0)
-            //                {
-            //                    Console.WriteLine("Enregistrement --------> OK\n");
-            //                    changements = true;
-            //                }
-
-            //            }
-            //            catch (Exception e)
-            //            {
-            //                Console.WriteLine(e.Message);
-            //            }
-            //        }
-            //    }
-            //}
-
-            ////Est-ce que l'entité distante éxiste dans la base locale
-            //foreach (var modeleDistant in listeModeleDistante)
-            //{
-            //    bool isInLocal = false;
-            //    bool isUpToDate = false;
-            //    bool isDeleted = false;
-
-            //    foreach (var modeleLocal in listeModeleLocale)
-            //    {
-            //        isInLocal = modeleDistant.Equals(modeleLocal);
-
-            //        if (isInLocal)
-            //        {
-            //            //Est-ce que l'entité a été supprimée dans la base locale
-            //            isDeleted = modeleLocal.IsDeleted(modeleLocal);
-            //            if (isDeleted)
-            //            {
-            //                using (dalBddDistante = (TDAL)Activator.CreateInstance(typeof(TDAL), DISTANTE))
-            //                {
-            //                    Console.WriteLine("\nL'entité {0} avec l'ID {1} a été effacé sur le serveur local\n", NomModele, modeleDistant.Id);
-            //                    dalBddDistante.DeleteModele(modeleDistant);
-            //                    Console.WriteLine("\nSuppression ----- OK");
-            //                }
-            //            }
-            //            else
-            //            {
-            //                //Est-ce que l'entité a été modifiée dans la base locale
-            //                isUpToDate = modeleDistant.IsUpToDate(modeleLocal);
-
-            //                if (!isUpToDate)
-            //                {
-            //                    using (dalBddDistante = (TDAL)Activator.CreateInstance(typeof(TDAL), DISTANTE))
-            //                    {
-            //                        Console.WriteLine("\nL'entité {0} avec l'ID {1} a été modifié sur le serveur local\n", NomModele,modeleDistant.Id);
-            //                        dalBddDistante.UpdateModele(modeleDistant, modeleLocal);
-            //                        Console.WriteLine("\nModification ----- OK");
-            //                    }
-            //                }
-            //            }
-
-            //            break;
-            //        }
-
-            //    }
-            //    if (!isInLocal)
-            //    {
-            //        Console.WriteLine("l'entité {0} avec l'ID {1} n'existe pas dans la base locale\n", NomModele, modeleDistant.Id);
-            //        using (dalBddLocale = (TDAL)Activator.CreateInstance(typeof(TDAL), LOCALE))
-            //        {
-            //            try
-            //            {
-            //                int nbLigneInseree = dalBddLocale.InsertModele(modeleDistant);
-            //                if (nbLigneInseree > 0)
-            //                {
-            //                    Console.Write("-------- OK\n");
-            //                    changements = true;
-            //                }
-            //            }
-            //            catch (Exception e)
-            //            {
-            //                Console.WriteLine(e.Message);
-            //            }
-            //        }
-            //    }
-            //}
-
-
-            
         }
 
+        /// <summary>
+        /// Compare chaque élément de la liste locale et de la liste distante. Si les deux objets sont égaux alors la fonction créé une entrée dans le dictionnaire
+        /// La clé représente l'ID de la table locale et la valeur représente l'ID de la table distante
+        /// </summary>
         private void creerTableCorrespondance()
         {
             recupererDonnees();
-            foreach(TMODELE modeleLocal in listeModeleLocale)
+            foreach (TMODELE modeleLocal in listeModeleLocale)
             {
-                foreach(TMODELE modeleDistant in listeModeleDistante)
+                foreach (TMODELE modeleDistant in listeModeleDistante)
                 {
                     if (modeleLocal.Equals(modeleDistant))
                     {
-                        correspondanceModeleId.Add(modeleLocal.Id, modeleDistant.Id);
+                        CorrespondanceModeleId.Add(modeleLocal.Id, modeleDistant.Id);
                         break;
                     }
                 }
@@ -310,6 +157,9 @@ namespace HouseMadera.DAL
             }
         }
 
+        /// <summary>
+        /// Récupère tous les enregistrement de la table locale et distante.
+        /// </summary>
         private void recupererDonnees()
         {
             //Récupérer les enregistrements de la base distante
@@ -339,13 +189,16 @@ namespace HouseMadera.DAL
             }
         }
 
+        /// <summary>
+        /// Affiche dans la console toutes les entrées du dictionnaire
+        /// </summary>
         public void afficherResultat()
         {
             string resultat = changements ? "Synchronisation réussie" : "Tout est à jour";
             Console.WriteLine(resultat);
             Console.WriteLine("correspondance des ID de la table {0}:\n", NomModele);
             Console.WriteLine("SQLITE".PadRight(10) + "MYSQL\n");
-            foreach (var cor in correspondanceModeleId)
+            foreach (var cor in CorrespondanceModeleId)
             {
                 Console.WriteLine(cor.Key.ToString().PadRight(10) + cor.Value);
             }
