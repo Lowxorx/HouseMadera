@@ -16,7 +16,22 @@ namespace HouseMadera.Modeles
         public DateTime? MiseAJour { get; set; }
         public DateTime? Suppression { get; set; }
         public DateTime? Creation { get; set; }
-      
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Projet p = (Projet)obj;
+
+            return ((Nom == p.Nom) && (Reference == p.Reference)) && (Creation == p.Creation);
+          
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Projet : {0} (ref :{1})", Nom, Reference);
+        }
 
         public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {

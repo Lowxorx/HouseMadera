@@ -213,8 +213,12 @@ namespace HouseMadera.DAL
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Login = Convert.ToString(reader["Login"]),
+                            Password = Convert.ToString(reader["Password"]),
                             Nom = Convert.ToString(reader["Nom"]),
-                            Prenom = Convert.ToString(reader["Prenom"])
+                            Prenom = Convert.ToString(reader["Prenom"]),
+                            MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
+                            Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
+                            Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
                         };
                         listeCommerciaux.Add(c);
                     }

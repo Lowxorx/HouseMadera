@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace HouseMadera.DAL
 {
@@ -167,19 +168,29 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la base Projet avec la clé étrangère Client nulle");
                 if (projet.Commercial == null)
                     throw new Exception("Tentative d'insertion  dans la base Projet avec la clé étrangère Commercial nulle");
+
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                //int clientId;
-                //Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id,out clientId);
-                //int commercialId;
-                //Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out commercialId);
+                int clientId;
+                if(!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id, out clientId)){
+                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    clientId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
+                   
+                }
+
+                int commercialId;
+                if(!Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out commercialId))
+                {
+                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    commercialId = Synchronisation<CommercialDAL, Commercial >.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
+                }
 
                 string sql = @"INSERT INTO Projet (Nom,Reference,Client_Id,Commercial_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",projet.Nom },
                 {"@2",projet.Reference },
-                {"@3",projet.Client.Id },
-                {"@4",projet.Commercial.Id },
+                {"@3",clientId},
+                {"@4",commercialId },
                 {"@5", DateTimeDbAdaptor.FormatDateTime( projet.MiseAJour,Bdd) },
                 {"@6", DateTimeDbAdaptor.FormatDateTime( projet.Suppression,Bdd) },
                 {"@7", DateTimeDbAdaptor.FormatDateTime( projet.Creation,Bdd) }
@@ -283,8 +294,8 @@ namespace HouseMadera.DAL
                         Id = Convert.ToInt32(reader["Id"]),
                         Nom = Convert.ToString(reader["Nom"]),
                         Reference = Convert.ToString(reader["Reference"]),
-                        CreateDate = Convert.ToDateTime(reader["CreateDate"]),
-                        UpdateDate = Convert.ToDateTime(reader["UpdateDate"]),
+                        //CreateDate = Convert.ToDateTime(reader["CreateDate"]),
+                        //UpdateDate = Convert.ToDateTime(reader["UpdateDate"]),
                         MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                         Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                         Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),

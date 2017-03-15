@@ -34,7 +34,7 @@ namespace HouseMadera.Modeles
 
             Client cl = (Client)obj;
 
-            return ((Nom == cl.Nom) || (Prenom == cl.Prenom) || (Email == cl.Email)) && (Creation == cl.Creation);
+            return ((Nom == cl.Nom) && (Prenom == cl.Prenom) && (Email == cl.Email)) && (Creation == cl.Creation);
         }
 
         public override int GetHashCode()

@@ -25,6 +25,7 @@ namespace HouseMadera.DAL
         public Synchronisation(TMODELE modele)
         {
             NomModele = typeof(TMODELE).Name;
+            Console.WriteLine(string.Format("************ Synchronisation du modele {0} ************", NomModele));
             recupererDonnees();
         }
 
@@ -93,6 +94,10 @@ namespace HouseMadera.DAL
             }
 
             Console.WriteLine("############################################ {0}", sens);
+
+            if (liste1.Count ==0)
+                Console.WriteLine("La table ne comporte aucun enregistrement");
+
             foreach (var modeleListe1 in liste1)
             {
                 bool isInDistant = false;
@@ -134,8 +139,7 @@ namespace HouseMadera.DAL
                 }
                 if (!isInDistant)
                 {
-                    Console.WriteLine("L'entité {0} avec l'ID {1} n'existe pas sur bdd {2}\n", NomModele, modeleListe1.Id, bdd);
-                    //Enregistrer le client sur le serveur distant
+                    Console.WriteLine("L'entité {0} avec l'ID {1} n'existe pas sur dans la bdd {2}\n", NomModele, modeleListe1.Id, distante);
                     using (dalBddDistante = (TDAL)Activator.CreateInstance(typeof(TDAL), distante))
                     {
                         try
@@ -143,7 +147,7 @@ namespace HouseMadera.DAL
                             int nbLigneInseree = dalBddDistante.InsertModele(modeleListe1);
                             if (nbLigneInseree > 0)
                             {
-                                Console.WriteLine("Enregistrement --------> OK\n");
+                                Console.WriteLine("Enregistrement dans {0} --------> OK\n", distante);
                                 changements = true;
                             }
 

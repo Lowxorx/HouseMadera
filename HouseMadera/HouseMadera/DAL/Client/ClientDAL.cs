@@ -17,27 +17,7 @@ namespace HouseMadera.DAL
 
         }
 
-        #region READ
-
-        /// <summary>
-        /// Selectionne tous les clients enregistrés en base
-        /// </summary>
-        /// <returns>Une liste d'objets Client</returns>
-        public List<Client> GetAllClients()
-        {
-            string sql = @"
-                            SELECT * FROM Client
-                            ORDER BY Nom DESC";
-            List<Client> clients = new List<Client>();
-            DbDataReader reader = Get(sql, null);
-            while (reader.Read())
-            {
-                Client client = initialiserClient(reader);
-                if (client != null)
-                    clients.Add(client);
-            }
-            return clients;
-        }
+        #region CRUD
 
         /// <summary>
         /// Selectionne le premier client avec l'ID en paramètre
@@ -125,25 +105,45 @@ namespace HouseMadera.DAL
             return clients;
 
         }
-        #endregion
-
-        #region CREATE
+       
 
         /// <summary>
-        /// Réalise des test sur les propriétés de l'objet Client
-        /// avant insertion en base.
+        /// Methode implémentée de l'interface IClientDAL permettant de récupérer tous les clients de la base
         /// </summary>
-        /// <param name="client"></param>
-        /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne insérée</returns>
-        public int InsertClient(Client client)
+        /// <returns>Une liste d'objet Client</returns>
+        public List<Client> GetAllModeles()
+        {
+            string sql = @"
+                            SELECT * FROM Client
+                            ORDER BY Nom DESC";
+            List<Client> clients = new List<Client>();
+            using (DbDataReader reader = Get(sql, null))
+            {
+                while (reader.Read())
+                {
+                    Client client = initialiserClient(reader);
+                    if (client != null)
+                        clients.Add(client);
+                }
+            }
+
+            return clients;
+        }
+
+        /// <summary>
+        /// Methode implémentée de l'interface IClientDAL permettant l'insertion d'un Client en base
+        /// </summary>
+        /// <param name="client">Le modèle à insérer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int InsertModele(Client client)
         {
             if (!isDataCorrect(client))
                 throw new Exception(erreur);
             if (IsClientExist(client))
                 throw new Exception("le client est déjà enregistré");
 
-            string sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id)
-                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11)";
+            string sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id,MiseAJour,Suppression,Creation)
+                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14)";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",client.Nom },
                 {"@2",client.Prenom },
@@ -156,6 +156,10 @@ namespace HouseMadera.DAL
                 {"@9",client.Telephone },
                 {"@10",client.Mobile },
                 {"@11",client.StatutClient },
+                //{"@12",client.MiseAJour},
+                {"@12", DateTimeDbAdaptor.FormatDateTime( client.MiseAJour,Bdd) },
+                {"@13", DateTimeDbAdaptor.FormatDateTime( client.Suppression,Bdd) },
+                {"@14", DateTimeDbAdaptor.FormatDateTime( client.Creation,Bdd) }
             };
             int result = 0;
             try
@@ -170,37 +174,45 @@ namespace HouseMadera.DAL
 
             return result;
         }
-        #endregion
 
-        #region UPDATE
         /// <summary>
-        /// Teste les nouvelles données à insérer et met à jour les données du client présent en base
+        /// Methode implémentée de l'interface IClientDAL. Elle effectue une copie des valeurs du deuxième paramètre dans le premier
+        /// et met à jour le client en base.
         /// </summary>
-        /// <param name="client"></param>
-        /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne affectée</returns>
-        public int UpdateClient(Client client)
+        /// <param name="clientLocal">Représente l'objet issue de la base locale </param>
+        /// <param name="clientDistant">Représente l'objet issue de la base distante</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int UpdateModele(Client clientLocal, Client clientDistant)
         {
-            if (!isDataCorrect(client))
+
+
+            //recopie des données du client distant dans le client local
+            if (clientDistant != null)
+                clientLocal.Copy<Client>(clientDistant);
+            
+            //Vérifie la cohérence des données à mettre à jour
+            if (!isDataCorrect(clientLocal))
                 throw new Exception(erreur);
 
             string sql = @"
                         UPDATE Client
-                        SET Nom=@1,Prenom=@2,Adresse1=@3,Adresse2=@4,Adresse3=@5,CodePostal=@6,Ville=@7,Email=@8,Telephone=@9,Mobile=@10,StatutClient_Id=@11
-                        WHERE Id=@12
+                        SET Nom=@1,Prenom=@2,Adresse1=@3,Adresse2=@4,Adresse3=@5,CodePostal=@6,Ville=@7,Email=@8,Telephone=@9,Mobile=@10,StatutClient_Id=@11,MiseAJour=@12
+                        WHERE Id=@13
                       ";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",client.Nom},
-                {"@2",client.Prenom},
-                {"@3",client.Adresse1},
-                {"@4",string.IsNullOrEmpty(client.Adresse2) ? NON_RENSEIGNE : client.Adresse2},
-                {"@5",string.IsNullOrEmpty(client.Adresse3) ? NON_RENSEIGNE : client.Adresse3},
-                {"@6",client.CodePostal },
-                {"@7",client.Ville },
-                {"@8",client.Email },
-                {"@9",string.IsNullOrEmpty(client.Telephone) ? NON_RENSEIGNE : client.Telephone},
-                {"@10",string.IsNullOrEmpty(client.Mobile) ? NON_RENSEIGNE : client.Mobile },
-                {"@11",client.StatutClient },
-                {"@12",client.Id }
+                {"@1",clientLocal.Nom},
+                {"@2",clientLocal.Prenom},
+                {"@3",clientLocal.Adresse1},
+                {"@4",string.IsNullOrEmpty(clientLocal.Adresse2) ? NON_RENSEIGNE : clientLocal.Adresse2},
+                {"@5",string.IsNullOrEmpty(clientLocal.Adresse3) ? NON_RENSEIGNE : clientLocal.Adresse3},
+                {"@6",clientLocal.CodePostal },
+                {"@7",clientLocal.Ville },
+                {"@8",clientLocal.Email },
+                {"@9",string.IsNullOrEmpty(clientLocal.Telephone) ? NON_RENSEIGNE : clientLocal.Telephone},
+                {"@10",string.IsNullOrEmpty(clientLocal.Mobile) ? NON_RENSEIGNE : clientLocal.Mobile },
+                {"@11",clientLocal.StatutClient },
+                {"@12", DateTimeDbAdaptor.FormatDateTime( clientLocal.MiseAJour,Bdd)},
+                {"@13",clientLocal.Id }
             };
             int result = 0;
             try
@@ -215,27 +227,31 @@ namespace HouseMadera.DAL
 
             return result;
         }
-        #endregion
 
-        #region DELETE
         /// <summary>
-        /// Efface en base le client avec l'Id en paramètre
+        /// Met à jour en base la date de suppression du client (suppression logique)
         /// </summary>
-        /// <param name="id">Représente l'Id du client à effacer</param>
-        /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne affectée</returns>
-        public int DeleteClient(int id)
+        /// <param name="client">Représente le client à effacer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int DeleteModele(Client client)
         {
+            if (!isDataCorrect(client))
+                throw new Exception(erreur);
+
             string sql = @"
-                        DELETE FROM Client
+                        UPDATE Client
+                        SET Suppression= @2
                         WHERE Id=@1
                       ";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",id },
+                {"@1",client.Id},
+                {"@2",DateTimeDbAdaptor.FormatDateTime(client.Suppression,Bdd)}
+
             };
             int result = 0;
             try
             {
-                result = Delete(sql, parameters);
+                result = Update(sql, parameters);
             }
             catch (Exception e)
             {
@@ -245,6 +261,7 @@ namespace HouseMadera.DAL
 
             return result;
         }
+
         #endregion
 
         #region METHODES
@@ -342,154 +359,5 @@ namespace HouseMadera.DAL
         }
 
         #endregion
-
-
-        /// <summary>
-        /// Methode implémentée de l'interface IClientDAL permettant de récupérer tous les clients de la base
-        /// </summary>
-        /// <returns>Une liste d'objet Client</returns>
-        public List<Client> GetAllModeles()
-        {
-            string sql = @"
-                            SELECT * FROM Client
-                            ORDER BY Nom DESC";
-            List<Client> clients = new List<Client>();
-            using (DbDataReader reader = Get(sql, null))
-            {
-                while (reader.Read())
-                {
-                    Client client = initialiserClient(reader);
-                    if (client != null)
-                        clients.Add(client);
-                }
-            }
-          
-            return clients;
-        }
-
-        /// <summary>
-        /// Methode implémentée de l'interface IClientDAL permettant l'insertion d'un Client en base
-        /// </summary>
-        /// <param name="client">Le modèle à insérer</param>
-        /// <returns>Le nombre de lignes affectées</returns>
-        public int InsertModele(Client client)
-        {
-            if (!isDataCorrect(client))
-                throw new Exception(erreur);
-            if (IsClientExist(client))
-                throw new Exception("le client est déjà enregistré");
-
-            string sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id,MiseAJour,Suppression,Creation)
-                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14)";
-            Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",client.Nom },
-                {"@2",client.Prenom },
-                {"@3",client.Adresse1 },
-                {"@4",client.Adresse2 },
-                {"@5",client.Adresse3 },
-                {"@6",client.CodePostal },
-                {"@7",client.Ville },
-                {"@8",client.Email },
-                {"@9",client.Telephone },
-                {"@10",client.Mobile },
-                {"@11",client.StatutClient },
-                //{"@12",client.MiseAJour},
-                {"@12", DateTimeDbAdaptor.FormatDateTime( client.MiseAJour,Bdd) },
-                {"@13", DateTimeDbAdaptor.FormatDateTime( client.Suppression,Bdd) },
-                {"@14", DateTimeDbAdaptor.FormatDateTime( client.Creation,Bdd) }
-            };
-            int result = 0;
-            try
-            {
-                result = Insert(sql, parameters);
-            }
-            catch (Exception e)
-            {
-                result = -1;
-                Console.WriteLine(e.Message);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Methode implémentée de l'interface IClientDAL. Elle effectue une copie des valeurs du deuxième paramètre dans le premier
-        /// et met à jour le client en base.
-        /// </summary>
-        /// <param name="clientLocal">Représente l'objet issue de la base locale </param>
-        /// <param name="clientDistant">Représente l'objet issue de la base distante</param>
-        /// <returns>Le nombre de lignes affectées</returns>
-        public int UpdateModele(Client clientLocal, Client clientDistant)
-        {
-            //recopie des données du client distant dans le client local
-            clientLocal.Copy<Client>(clientDistant);
-
-            string sql = @"
-                        UPDATE Client
-                        SET Nom=@1,Prenom=@2,Adresse1=@3,Adresse2=@4,Adresse3=@5,CodePostal=@6,Ville=@7,Email=@8,Telephone=@9,Mobile=@10,StatutClient_Id=@11,MiseAJour=@12
-                        WHERE Id=@13
-                      ";
-            Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",clientLocal.Nom},
-                {"@2",clientLocal.Prenom},
-                {"@3",clientLocal.Adresse1},
-                {"@4",string.IsNullOrEmpty(clientLocal.Adresse2) ? NON_RENSEIGNE : clientLocal.Adresse2},
-                {"@5",string.IsNullOrEmpty(clientLocal.Adresse3) ? NON_RENSEIGNE : clientLocal.Adresse3},
-                {"@6",clientLocal.CodePostal },
-                {"@7",clientLocal.Ville },
-                {"@8",clientLocal.Email },
-                {"@9",string.IsNullOrEmpty(clientLocal.Telephone) ? NON_RENSEIGNE : clientLocal.Telephone},
-                {"@10",string.IsNullOrEmpty(clientLocal.Mobile) ? NON_RENSEIGNE : clientLocal.Mobile },
-                {"@11",clientLocal.StatutClient },
-                {"@12", DateTimeDbAdaptor.FormatDateTime( clientLocal.MiseAJour,Bdd)},
-                {"@13",clientLocal.Id }
-            };
-            int result = 0;
-            try
-            {
-                result = Update(sql, parameters);
-            }
-            catch (Exception e)
-            {
-                result = -1;
-                Console.WriteLine(e.Message);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Met à jour en base la date de suppression du client (suppression logique)
-        /// </summary>
-        /// <param name="client">Représente le client à effacer</param>
-        /// <returns>Le nombre de lignes affectées</returns>
-        public int DeleteModele(Client client)
-        {
-            if (!isDataCorrect(client))
-                throw new Exception(erreur);
-
-            string sql = @"
-                        UPDATE Client
-                        SET Suppression= @2
-                        WHERE Id=@1
-                      ";
-            Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",client.Id},
-                {"@2",DateTimeDbAdaptor.FormatDateTime(client.Suppression,Bdd)}
-
-            };
-            int result = 0;
-            try
-            {
-                result = Update(sql, parameters);
-            }
-            catch (Exception e)
-            {
-                result = -1;
-                Console.WriteLine(e.Message);
-            }
-
-            return result;
-        }
     }
 }

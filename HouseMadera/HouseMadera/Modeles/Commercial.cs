@@ -20,6 +20,16 @@ namespace HouseMadera.Modeles
         {
             return string.Format("Commercial :  {0} {1}",Prenom,Nom);
         }
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Commercial cl = (Commercial)obj;
+
+            return ((Nom == cl.Nom) && (Prenom == cl.Prenom) && (Login == cl.Login)) && (Creation == cl.Creation);
+        }
+
 
         /// <summary>
         /// Teste si le modele a été mis à jour
