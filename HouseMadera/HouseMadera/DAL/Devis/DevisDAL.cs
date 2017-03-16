@@ -1,13 +1,15 @@
 ﻿using HouseMadera.DAL.Interfaces;
 using HouseMadera.Modeles;
 using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    public class DevisDAL : DAL , IDevisDAL
+    public class DevisDAL : DAL, IDevisDAL
     {
 
         const string NON_RENSEIGNE = "NULL";
@@ -203,22 +205,123 @@ namespace HouseMadera.DAL
 
         public List<Devis> GetAllModeles()
         {
-            throw new NotImplementedException();
+            string sql = @"
+                            SELECT * FROM Devis
+                            ORDER BY Nom DESC";
+            List<Devis> listeDevis = new List<Devis>();
+            try
+            {
+                using (DbDataReader reader = Get(sql, null))
+                {
+                    while (reader.Read())
+                    {
+                        var devis = new Devis();
+                        devis.Id = Convert.ToInt32(reader["Id"]);
+                        devis.Nom = Convert.ToString(reader["Nom"]);
+                        devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
+                        devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
+                        devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
+                        devis.MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["miseajour"]));
+                        devis.Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["suppression"]));
+                        devis.Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["creation"]));
+                        listeDevis.Add(devis);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                //Logger.WriteEx(ex);
+            }
+
+            return listeDevis;
         }
 
-        public int InsertModele(Devis modele)
+        public int InsertModele(Devis devis)
         {
-            throw new NotImplementedException();
+            string sql = @"INSERT INTO Devis (Nom,PrixHT,PrixTTC,StatutDevis,MiseAJour,Suppression,Creation)
+                        VALUES(@1,@2,@3,@4,@5,@6,@7)";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1",devis.Nom },
+                {"@2",devis.PrixHT },
+                {"@3",devis.PrixTTC },
+                {"@4",devis.StatutDevis },
+                {"@5", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
+                {"@6", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( devis.Creation,Bdd) }
+            };
+            int result = 0;
+            try
+            {
+                result = Insert(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
         }
 
-        public int UpdateModele(Devis modele1, Devis modele2)
+        public int UpdateModele(Devis devisLocal, Devis devisDistant)
         {
-            throw new NotImplementedException();
+            //recopie des données du client distant dans le client local
+            if (devisDistant != null)
+                devisLocal.Copy<Devis>(devisDistant);
+
+            string sql = @"
+                        UPDATE Devis
+                        SET Nom=@1,PrixHT=@2,PrixTTC=@3,StatutDevis_Id=@4,MiseAJour=@5
+                        WHERE Id=@6
+                      ";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1",devisLocal.Nom},
+                {"@2",devisLocal.PrixHT},
+                {"@3",devisLocal.PrixTTC},
+                {"@4",devisLocal.StatutDevis.Id},
+                {"@5", DateTimeDbAdaptor.FormatDateTime( devisLocal.MiseAJour,Bdd)},
+                {"@6",devisLocal.Id }
+            };
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
         }
 
-        public int DeleteModele(Devis modele)
+        public int DeleteModele(Devis devis)
         {
-            throw new NotImplementedException();
+            string sql = @"
+                        UPDATE Devis
+                        SET Suppression= @2
+                        WHERE Id=@1
+                      ";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1",devis.Id},
+                {"@2",DateTimeDbAdaptor.FormatDateTime(devis.Suppression,Bdd)}
+            };
+
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
         }
 
 
