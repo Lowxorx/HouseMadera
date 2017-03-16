@@ -15,6 +15,7 @@ namespace HouseMadera.Modeles
         public decimal PrixHT { get; set; }
         public decimal PrixTTC { get; set; }
         public StatutDevis StatutDevis { get; set; }
+        public byte[] Pdf { get; set; }
         public DateTime? MiseAJour { get; set; }
         public DateTime? Suppression { get; set; }
         public DateTime? Creation { get; set; }
@@ -32,7 +33,7 @@ namespace HouseMadera.Modeles
 
             Devis d = (Devis)obj;
 
-            return (Nom == d.Nom ) && (PrixHT == d.PrixHT) && (PrixTTC == d.PrixTTC) && (Creation == d.Creation);
+            return (Nom == d.Nom ) && (PrixHT == d.PrixHT) && (PrixTTC == d.PrixTTC) &&(StatutDevis.Id == d.StatutDevis.Id)&& (Creation == d.Creation);
         }
         #endregion
 
@@ -61,6 +62,7 @@ namespace HouseMadera.Modeles
             Nom = devis.Nom;
             PrixHT = devis.PrixHT;
             PrixTTC = devis.PrixTTC;
+            Pdf = devis.Pdf;
             StatutDevis = devis.StatutDevis;
             MiseAJour = devis.MiseAJour;
             Creation = devis.Creation;

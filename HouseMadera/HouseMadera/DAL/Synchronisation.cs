@@ -35,8 +35,8 @@ namespace HouseMadera.DAL
         /// </summary>
         public void synchroniserDonnees()
         {
-            comparerDonnees(listeModeleLocale, listeModeleDistante, "SORTANT");
-            comparerDonnees(listeModeleDistante, listeModeleLocale, "ENTRANT");
+            comparerDonnees(listeModeleLocale, listeModeleDistante, "SORTANTE");
+            comparerDonnees(listeModeleDistante, listeModeleLocale, "ENTRANTE");
             //enregistrer les id dans une table de correspondance
             creerTableCorrespondance();
             afficherResultat();
@@ -79,13 +79,13 @@ namespace HouseMadera.DAL
             switch (sens)
             {
                 //du local au distant
-                case "SORTANT":
+                case "SORTANTE":
                     bdd = "locale";
                     locale = LOCALE;
                     distante = DISTANTE;
                     break;
                 //du distant au local
-                case "ENTRANT":
+                case "ENTRANTE":
                     bdd = "distante";
                     locale = DISTANTE;
                     distante = LOCALE;
@@ -93,7 +93,7 @@ namespace HouseMadera.DAL
 
             }
 
-            Console.WriteLine("############################################ {0}", sens);
+            Console.WriteLine("validation  {0} : ", sens);
 
             if (liste1.Count ==0)
                 Console.WriteLine("La table ne comporte aucun enregistrement");

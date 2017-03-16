@@ -206,8 +206,9 @@ namespace HouseMadera.DAL
         public List<Devis> GetAllModeles()
         {
             string sql = @"
-                            SELECT * FROM Devis
-                            ORDER BY Nom DESC";
+                            SELECT d.*, sd.Id as Statut_Id , sd.Nom as Statut_libelle
+                            FROM Devis d
+                            LEFT JOIN statutdevis sd ON d.StatutDevis_Id=sd.Id";
             List<Devis> listeDevis = new List<Devis>();
             try
             {
@@ -221,9 +222,15 @@ namespace HouseMadera.DAL
                         devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
                         devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
                         devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
-                        devis.MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["miseajour"]));
-                        devis.Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["suppression"]));
-                        devis.Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["creation"]));
+                       //TODO Pdf -> blob
+                        devis.StatutDevis = new StatutDevis()
+                        {
+                            Id = Convert.ToInt32(reader["Statut_Id"]),
+                            Nom = Convert.ToString(reader["Statut_Libelle"])
+                        };
+                        devis.MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"]));
+                        devis.Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"]));
+                        devis.Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"]));
                         listeDevis.Add(devis);
                     }
 
@@ -240,16 +247,19 @@ namespace HouseMadera.DAL
 
         public int InsertModele(Devis devis)
         {
-            string sql = @"INSERT INTO Devis (Nom,PrixHT,PrixTTC,StatutDevis,MiseAJour,Suppression,Creation)
-                        VALUES(@1,@2,@3,@4,@5,@6,@7)";
+            string sql = @"INSERT INTO Devis (Nom,PrixHT,PrixTTC,StatutDevis_Id,pdf,MiseAJour,Suppression,Creation,DateCreation)
+                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",devis.Nom },
                 {"@2",devis.PrixHT },
                 {"@3",devis.PrixTTC },
-                {"@4",devis.StatutDevis },
-                {"@5", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
-                {"@6", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
-                {"@7", DateTimeDbAdaptor.FormatDateTime( devis.Creation,Bdd) }
+                {"@4",devis.StatutDevis.Id },
+                {"@5",devis.Pdf },
+                {"@6", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
+                {"@8", DateTimeDbAdaptor.FormatDateTime( devis.Creation,Bdd) },
+                {"@9", DateTimeDbAdaptor.FormatDateTime( devis.DateCreation,Bdd) },
+
             };
             int result = 0;
             try
@@ -273,16 +283,19 @@ namespace HouseMadera.DAL
 
             string sql = @"
                         UPDATE Devis
-                        SET Nom=@1,PrixHT=@2,PrixTTC=@3,StatutDevis_Id=@4,MiseAJour=@5
-                        WHERE Id=@6
+                        SET Nom=@1,PrixHT=@2,PrixTTC=@3,StatutDevis_Id=@4,pdf=@5,MiseAJour=@6,DateCreation=@8
+                        WHERE Id=@7
                       ";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",devisLocal.Nom},
                 {"@2",devisLocal.PrixHT},
                 {"@3",devisLocal.PrixTTC},
                 {"@4",devisLocal.StatutDevis.Id},
-                {"@5", DateTimeDbAdaptor.FormatDateTime( devisLocal.MiseAJour,Bdd)},
-                {"@6",devisLocal.Id }
+                {"@5",devisLocal.Pdf},
+                {"@6",devisLocal.DateCreation },
+                //{"@6", DateTimeDbAdaptor.FormatDateTime( devisLocal.MiseAJour,Bdd)},
+                {"@7",devisLocal.Id },
+                {"@8", DateTimeDbAdaptor.FormatDateTime( devisLocal.DateCreation ,Bdd)}
             };
             int result = 0;
             try
@@ -323,7 +336,6 @@ namespace HouseMadera.DAL
 
             return result;
         }
-
 
         #endregion
 

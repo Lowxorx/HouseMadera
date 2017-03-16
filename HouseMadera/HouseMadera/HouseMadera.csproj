@@ -120,18 +120,22 @@
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
+    <Compile Include="DAL\CoupePrincipe\CoupePrincipeDAL.cs" />
     <Compile Include="DAL\Interfaces\ICommercialDAL.cs" />
     <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\Devis\DevisDAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
     <Compile Include="DAL\Interfaces\IClientDAL.cs" />
+    <Compile Include="DAL\Interfaces\ICoupePrincipeDAL.cs" />
     <Compile Include="DAL\Interfaces\IDAL.cs" />
     <Compile Include="DAL\Interfaces\IDevisDAL.cs" />
+    <Compile Include="DAL\Interfaces\IPlanDAL.cs" />
     <Compile Include="DAL\Interfaces\IProduitDAL.cs" />
     <Compile Include="DAL\Interfaces\IProjetDAL.cs" />
     <Compile Include="DAL\Interfaces\ISynchronizable.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
+    <Compile Include="DAL\Plan\PlanDAL.cs" />
     <Compile Include="DAL\Produit\ProduitDAL.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
@@ -226,9 +230,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DAL\Plan\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Vues\VueClientList.xaml">
       <Generator>MSBuild:Compile</Generator>
