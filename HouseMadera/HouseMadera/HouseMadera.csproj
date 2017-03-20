@@ -130,12 +130,14 @@
     <Compile Include="DAL\Interfaces\ICoupePrincipeDAL.cs" />
     <Compile Include="DAL\Interfaces\IDAL.cs" />
     <Compile Include="DAL\Interfaces\IDevisDAL.cs" />
+    <Compile Include="DAL\Interfaces\IIsolantDAL.cs" />
     <Compile Include="DAL\Interfaces\IPlanDAL.cs" />
     <Compile Include="DAL\Interfaces\IProduitDAL.cs" />
     <Compile Include="DAL\Interfaces\IProjetDAL.cs" />
     <Compile Include="DAL\Interfaces\IQualiteDAL.cs" />
     <Compile Include="DAL\Interfaces\ISynchronizable.cs" />
     <Compile Include="DAL\Interfaces\ITypeIsolantDAL.cs" />
+    <Compile Include="DAL\Isolant\IsolantDAL.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
     <Compile Include="DAL\Plan\PlanDAL.cs" />
     <Compile Include="DAL\Produit\ProduitDAL.cs" />

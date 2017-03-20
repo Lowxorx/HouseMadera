@@ -106,7 +106,7 @@ namespace HouseMadera.DAL
             typeIsolantLocal.Copy<TypeIsolant>(typeIsolantDistant);
 
             string sql = @"
-                        UPDATE Qualite
+                        UPDATE TypeIsolant
                         SET Nom=@1,MiseAJour=@2
                         WHERE Id=@3
                       ";
