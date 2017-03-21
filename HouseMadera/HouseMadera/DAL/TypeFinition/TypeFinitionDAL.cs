@@ -139,7 +139,7 @@ namespace HouseMadera.DAL
                 qualiteId = Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == typeFinitionDistant.Qualite.Id).Key;
             }
 
-            //recopie des données du client distant dans le client local
+            //recopie des données du TypeFinition distant dans le TypeFinition local
             typeFinitionLocal.Copy(typeFinitionDistant);
             string sql = @"
                         UPDATE TypeFinition

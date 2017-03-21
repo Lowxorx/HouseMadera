@@ -15,7 +15,7 @@ namespace HouseMadera.DAL
         {
         }
 
-        #region
+        #region SYNCHRONISATION
         public int DeleteModele(CoupePrincipe modele)
         {
             string sql = @"
@@ -92,7 +92,7 @@ namespace HouseMadera.DAL
 
         public int UpdateModele(CoupePrincipe coupeLocale, CoupePrincipe coupeDistante)
         {
-            //recopie des données du client distant dans le client local
+            //recopie des données de CoupePrincipe distante dans CoupePrincipe locale
             if (coupeDistante != null)
                 coupeLocale.Copy(coupeDistante);
 

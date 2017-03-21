@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Common;
+using System.Linq;
 
 namespace HouseMadera.DAL
 {
@@ -16,7 +17,6 @@ namespace HouseMadera.DAL
 
         public DevisDAL(string nomBdd) : base(nomBdd)
         {
-            // Constructeur par défaut de la classe DevisDAL
         }
 
         #region READ
@@ -247,13 +247,26 @@ namespace HouseMadera.DAL
 
         public int InsertModele(Devis devis)
         {
+            //Vérification des clés étrangères
+            if (devis.StatutDevis == null)
+                throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
+
+            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
+            int StatutDevisId;
+            if (!Synchronisation<StatutDevisDAL, StatutDevis >.CorrespondanceModeleId.TryGetValue(devis.StatutDevis.Id, out StatutDevisId))
+            {
+                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                StatutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devis.StatutDevis.Id).Key;
+            }
+
+
             string sql = @"INSERT INTO Devis (Nom,PrixHT,PrixTTC,StatutDevis_Id,pdf,MiseAJour,Suppression,Creation,DateCreation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",devis.Nom },
                 {"@2",devis.PrixHT },
                 {"@3",devis.PrixTTC },
-                {"@4",devis.StatutDevis.Id },
+                {"@4",StatutDevisId},
                 {"@5",devis.Pdf },
                 {"@6", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
                 {"@7", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
@@ -277,9 +290,22 @@ namespace HouseMadera.DAL
 
         public int UpdateModele(Devis devisLocal, Devis devisDistant)
         {
-            //recopie des données du client distant dans le client local
+
+            //Vérification des clés étrangères
+            if (devisDistant.StatutDevis == null)
+                throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
+
+            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
+            int statutDevisId;
+            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devisDistant.StatutDevis.Id, out statutDevisId))
+            {
+                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                statutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devisDistant.StatutDevis.Id).Key;
+            }
+
+            //recopie des données du Devis distant dans le Devis local
             if (devisDistant != null)
-                devisLocal.Copy<Devis>(devisDistant);
+                devisLocal.Copy(devisDistant);
 
             string sql = @"
                         UPDATE Devis
@@ -290,7 +316,7 @@ namespace HouseMadera.DAL
                 {"@1",devisLocal.Nom},
                 {"@2",devisLocal.PrixHT},
                 {"@3",devisLocal.PrixTTC},
-                {"@4",devisLocal.StatutDevis.Id},
+                {"@4",statutDevisId},
                 {"@5",devisLocal.Pdf},
                 {"@6",devisLocal.DateCreation },
                 //{"@6", DateTimeDbAdaptor.FormatDateTime( devisLocal.MiseAJour,Bdd)},

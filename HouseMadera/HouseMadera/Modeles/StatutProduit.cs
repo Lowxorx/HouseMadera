@@ -24,9 +24,9 @@ namespace HouseMadera.Modeles
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
-            StatutProduit f = (StatutProduit)obj;
+            StatutProduit s = (StatutProduit)obj;
 
-            return (Nom == f.Nom) && (Creation == f.Creation);
+            return (Nom == s.Nom) && (Creation == s.Creation);
         }
 
         #endregion

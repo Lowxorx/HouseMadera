@@ -11,8 +11,5 @@ namespace HouseMadera.Modeles
 
         public  Module Module { get; set; }
         public Slot Slot { get; set; }
-
-        public virtual ICollection<ModulePlace> ModulesPlaces { get; set; }
-
     }
 }

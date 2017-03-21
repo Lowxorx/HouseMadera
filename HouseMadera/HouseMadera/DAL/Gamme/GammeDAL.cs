@@ -161,7 +161,7 @@ namespace HouseMadera.DAL
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 isolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Isolant.Id).Key;
             }
-            //recopie des données du client distant dans le client local
+            //recopie des données de la Gamme distante dans la Gamme locale
             gammeLocal.Copy(gammeDistant);
             string sql = @"
                         UPDATE Gamme

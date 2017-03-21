@@ -164,7 +164,7 @@ namespace HouseMadera.DAL
                 coupePrincipeId = Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.CoupePrincipe.Id).Key;
             }
 
-            //recopie des données du client distant dans le client local
+            //recopie des données du Plan distant dans le Plan local
             planLocal.Copy(planDistant);
             string sql = @"
                         UPDATE plan

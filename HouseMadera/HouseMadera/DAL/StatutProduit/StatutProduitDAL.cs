@@ -103,7 +103,7 @@ namespace HouseMadera.DAL
 
         public int UpdateModele(StatutProduit statutProduitLocal, StatutProduit statutProduitDistant)
         {
-            //recopie des données du commercial distant dans le commercial local
+            //recopie des données du StatutProduit distant dans le StatutProduit local
             statutProduitLocal.Copy(statutProduitDistant);
 
             string sql = @"

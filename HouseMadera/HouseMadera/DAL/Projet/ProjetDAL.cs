@@ -213,7 +213,7 @@ namespace HouseMadera.DAL
         public int UpdateModele(Projet projetLocal, Projet projetDistant)
         {
 
-            //recopie des données du client distant dans le client local
+            //recopie des données du Projet distant dans le Projet local
             projetLocal.Copy(projetDistant);
 
             string sql = @"

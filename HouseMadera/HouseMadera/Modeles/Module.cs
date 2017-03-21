@@ -10,8 +10,5 @@ namespace HouseMadera.Modeles
         public decimal Largeur { get; set; }
         public Gamme Gamme { get; set; }
         public TypeModule TypeModule { get; set; }
-        public virtual ICollection<SlotPlace> SlotsPlaces { get; set; }
-        public virtual ICollection<Composant> Composants { get; set; }
-
     }
 }

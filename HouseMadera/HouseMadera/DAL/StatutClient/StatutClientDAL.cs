@@ -1,24 +1,25 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
-    public class TypeIsolantDAL : DAL, ITypeIsolantDAL
+    public class StatutClientDAL : DAL, IDAL<StatutClient>
     {
-        public TypeIsolantDAL(string nomBdd) : base(nomBdd)
+        public StatutClientDAL(string nomBdd) : base(nomBdd)
         {
         }
 
-
         #region SYNCHRONISATION
-        public int DeleteModele(TypeIsolant modele)
+        public int DeleteModele(StatutClient modele)
         {
             string sql = @"
-                        UPDATE TypeIsolant
+                        UPDATE StatutClient
                         SET Suppression= @2
                         WHERE Id=@1
                       ";
@@ -42,19 +43,18 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public List<TypeIsolant> GetAllModeles()
+        public List<StatutClient> GetAllModeles()
         {
-            List<TypeIsolant> listeTypeIsolant = new List<TypeIsolant>();
+            List<StatutClient> statutsClient = new List<StatutClient>();
             try
             {
-
-                string sql = @"SELECT * FROM TypeIsolant";
+                string sql = @"SELECT * FROM StatutClient";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
                     while (reader.Read())
                     {
-                        TypeIsolant t = new TypeIsolant()
+                        StatutClient s = new StatutClient()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
@@ -62,7 +62,7 @@ namespace HouseMadera.DAL
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
                         };
-                        listeTypeIsolant.Add(t);
+                        statutsClient.Add(s);
                     }
                 }
             }
@@ -72,12 +72,12 @@ namespace HouseMadera.DAL
                 //Logger.WriteEx(ex);
             }
 
-            return listeTypeIsolant;
+            return statutsClient;
         }
 
-        public int InsertModele(TypeIsolant modele)
+        public int InsertModele(StatutClient modele)
         {
-            string sql = @"INSERT INTO TypeIsolant (Nom,MiseAJour,Suppression,Creation)
+            string sql = @"INSERT INTO StatutClient (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
@@ -100,20 +100,20 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeIsolant typeIsolantLocal, TypeIsolant typeIsolantDistant)
+        public int UpdateModele(StatutClient statutClientLocal, StatutClient statutClientDistant)
         {
-            // recopie des données du TypeIsolant distant dans le TypeIsolant local
-            typeIsolantLocal.Copy<TypeIsolant>(typeIsolantDistant);
+            //recopie des données du StatutClient distant dans le StatutClient local
+            statutClientLocal.Copy(statutClientDistant);
 
             string sql = @"
-                        UPDATE TypeIsolant
+                        UPDATE StatutClient
                         SET Nom=@1,MiseAJour=@2
                         WHERE Id=@3
                       ";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",typeIsolantLocal.Nom},
-                {"@2", DateTimeDbAdaptor.FormatDateTime( typeIsolantLocal.MiseAJour,Bdd)},
-                {"@3",typeIsolantLocal.Id }
+                {"@1",statutClientLocal.Nom},
+                {"@2", DateTimeDbAdaptor.FormatDateTime( statutClientLocal.MiseAJour,Bdd)},
+                {"@3",statutClientLocal.Id }
             };
             int result = 0;
             try

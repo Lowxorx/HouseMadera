@@ -101,7 +101,7 @@ namespace HouseMadera.DAL
 
         public int UpdateModele(Qualite qualiteLocal, Qualite qualiteDistant)
         {
-            //recopie des données du commercial distant dans le commercial local
+            //recopie des données du Qualite distant dans le Qualite local
             qualiteLocal.Copy<Qualite>(qualiteDistant);
 
             string sql = @"

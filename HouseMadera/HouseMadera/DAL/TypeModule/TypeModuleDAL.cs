@@ -1,5 +1,4 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,18 +6,17 @@ using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    public class TypeIsolantDAL : DAL, ITypeIsolantDAL
+    class TypeModuleDAL : DAL, IDAL<TypeModule>
     {
-        public TypeIsolantDAL(string nomBdd) : base(nomBdd)
+        public TypeModuleDAL(string nomBdd) : base(nomBdd)
         {
         }
 
-
-        #region SYNCHRONISATION
-        public int DeleteModele(TypeIsolant modele)
+        #region SYNCHRONIZATION
+        public int DeleteModele(TypeModule modele)
         {
             string sql = @"
-                        UPDATE TypeIsolant
+                        UPDATE TypeModule
                         SET Suppression= @2
                         WHERE Id=@1
                       ";
@@ -42,19 +40,19 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public List<TypeIsolant> GetAllModeles()
+        public List<TypeModule> GetAllModeles()
         {
-            List<TypeIsolant> listeTypeIsolant = new List<TypeIsolant>();
+            List<TypeModule> listeTypeModule = new List<TypeModule>();
             try
             {
 
-                string sql = @"SELECT * FROM TypeIsolant";
+                string sql = @"SELECT * FROM TypeModule";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
                     while (reader.Read())
                     {
-                        TypeIsolant t = new TypeIsolant()
+                        TypeModule t = new TypeModule()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
@@ -62,7 +60,7 @@ namespace HouseMadera.DAL
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
                         };
-                        listeTypeIsolant.Add(t);
+                        listeTypeModule.Add(t);
                     }
                 }
             }
@@ -72,12 +70,12 @@ namespace HouseMadera.DAL
                 //Logger.WriteEx(ex);
             }
 
-            return listeTypeIsolant;
+            return listeTypeModule;
         }
 
-        public int InsertModele(TypeIsolant modele)
+        public int InsertModele(TypeModule modele)
         {
-            string sql = @"INSERT INTO TypeIsolant (Nom,MiseAJour,Suppression,Creation)
+            string sql = @"INSERT INTO TypeModule (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
@@ -100,20 +98,20 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeIsolant typeIsolantLocal, TypeIsolant typeIsolantDistant)
+        public int UpdateModele(TypeModule typeModuleLocal, TypeModule typeModuleDistant)
         {
-            // recopie des données du TypeIsolant distant dans le TypeIsolant local
-            typeIsolantLocal.Copy<TypeIsolant>(typeIsolantDistant);
+            // recopie des données du TypeModule distant dans le TypeModule local
+            typeModuleLocal.Copy(typeModuleDistant);
 
             string sql = @"
-                        UPDATE TypeIsolant
+                        UPDATE TypeModule
                         SET Nom=@1,MiseAJour=@2
                         WHERE Id=@3
                       ";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",typeIsolantLocal.Nom},
-                {"@2", DateTimeDbAdaptor.FormatDateTime( typeIsolantLocal.MiseAJour,Bdd)},
-                {"@3",typeIsolantLocal.Id }
+                {"@1",typeModuleLocal.Nom},
+                {"@2", DateTimeDbAdaptor.FormatDateTime( typeModuleLocal.MiseAJour,Bdd)},
+                {"@3",typeModuleLocal.Id }
             };
             int result = 0;
             try

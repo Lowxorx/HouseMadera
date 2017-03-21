@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
+    <Compile Include="DAL\Composant\ComposantDAL.cs" />
     <Compile Include="DAL\CoupePrincipe\CoupePrincipeDAL.cs" />
     <Compile Include="DAL\Finition\FinitionDAL.cs" />
     <Compile Include="DAL\Gamme\GammeDAL.cs" />
@@ -145,16 +146,21 @@
     <Compile Include="DAL\Produit\ProduitDAL.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\Qualite\QualiteDAL.cs" />
+    <Compile Include="DAL\Slot\SlotDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
     <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
     <Compile Include="DAL\Synchronisation.cs" />
+    <Compile Include="DAL\TypeComposant\TypeComposantDAL.cs" />
     <Compile Include="DAL\TypeIsolant\TypeIsolantDAL.cs" />
+    <Compile Include="DAL\TypeModule\TypeModuleDAL.cs" />
+    <Compile Include="DAL\TypeSlot\TypeSlotDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Commune.cs" />
     <Compile Include="Modeles\Composant.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
+    <Compile Include="DAL\StatutClient\StatutClientDAL.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="DAL\TypeFinition\TypeFinitionDAL.cs" />
     <Compile Include="DAL\StatutProduit\StatutProduitDAL.cs" />

@@ -273,7 +273,7 @@ namespace HouseMadera.DAL
         /// <returns>Le nombre de lignes affectées</returns>
         public int UpdateModele(Commercial commercialLocal, Commercial commercialDistant)
         {
-            //recopie des données du commercial distant dans le commercial local
+            //recopie des données du Commercial distant dans le Commercial local
             commercialLocal.Copy<Commercial>(commercialDistant);
 
             string sql = @"

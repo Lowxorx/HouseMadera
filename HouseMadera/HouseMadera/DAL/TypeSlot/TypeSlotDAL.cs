@@ -1,24 +1,23 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 
+
 namespace HouseMadera.DAL
 {
-    public class TypeIsolantDAL : DAL, ITypeIsolantDAL
+    public class TypeSlotDAL : DAL, IDAL<TypeSlot>
     {
-        public TypeIsolantDAL(string nomBdd) : base(nomBdd)
+        public TypeSlotDAL(string nomBdd) : base(nomBdd)
         {
         }
 
-
         #region SYNCHRONISATION
-        public int DeleteModele(TypeIsolant modele)
+        public int DeleteModele(TypeSlot modele)
         {
             string sql = @"
-                        UPDATE TypeIsolant
+                        UPDATE TypeSlot
                         SET Suppression= @2
                         WHERE Id=@1
                       ";
@@ -42,19 +41,19 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public List<TypeIsolant> GetAllModeles()
+        public List<TypeSlot> GetAllModeles()
         {
-            List<TypeIsolant> listeTypeIsolant = new List<TypeIsolant>();
+            List<TypeSlot> listeTypeSlot = new List<TypeSlot>();
             try
             {
 
-                string sql = @"SELECT * FROM TypeIsolant";
+                string sql = @"SELECT * FROM TypeSlot";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
                     while (reader.Read())
                     {
-                        TypeIsolant t = new TypeIsolant()
+                        TypeSlot t = new TypeSlot()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
@@ -62,7 +61,7 @@ namespace HouseMadera.DAL
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
                         };
-                        listeTypeIsolant.Add(t);
+                        listeTypeSlot.Add(t);
                     }
                 }
             }
@@ -72,12 +71,12 @@ namespace HouseMadera.DAL
                 //Logger.WriteEx(ex);
             }
 
-            return listeTypeIsolant;
+            return listeTypeSlot;
         }
 
-        public int InsertModele(TypeIsolant modele)
+        public int InsertModele(TypeSlot modele)
         {
-            string sql = @"INSERT INTO TypeIsolant (Nom,MiseAJour,Suppression,Creation)
+            string sql = @"INSERT INTO TypeSlot (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
@@ -100,20 +99,20 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeIsolant typeIsolantLocal, TypeIsolant typeIsolantDistant)
+        public int UpdateModele(TypeSlot typeSlotLocal, TypeSlot typeSlotDistant)
         {
-            // recopie des données du TypeIsolant distant dans le TypeIsolant local
-            typeIsolantLocal.Copy<TypeIsolant>(typeIsolantDistant);
+            // recopie des données du TypeSlot distant dans le TypeSlot local
+            typeSlotLocal.Copy(typeSlotDistant);
 
             string sql = @"
-                        UPDATE TypeIsolant
+                        UPDATE TypeSlot
                         SET Nom=@1,MiseAJour=@2
                         WHERE Id=@3
                       ";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",typeIsolantLocal.Nom},
-                {"@2", DateTimeDbAdaptor.FormatDateTime( typeIsolantLocal.MiseAJour,Bdd)},
-                {"@3",typeIsolantLocal.Id }
+                {"@1",typeSlotLocal.Nom},
+                {"@2", DateTimeDbAdaptor.FormatDateTime( typeSlotLocal.MiseAJour,Bdd)},
+                {"@3",typeSlotLocal.Id }
             };
             int result = 0;
             try
