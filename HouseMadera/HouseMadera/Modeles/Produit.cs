@@ -15,19 +15,64 @@ namespace HouseMadera.Modeles
         public DateTime? Suppression { get; set; }
         public DateTime? Creation { get; set; }
 
-        public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        #region OVERRIDE
+        public override string ToString()
         {
-            throw new NotImplementedException();
+            return string.Format("Produit : {0} , projet :{1}, Devis :{2}, Plan:{3},Statut:{4} ",
+                Nom,
+                Projet.Nom,
+                Devis.PrixTTC,
+                Plan.Nom,
+                StatutProduit.Nom
+                );
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Produit p = (Produit)obj;
+
+            return (Nom == p.Nom) &&
+                (Creation == p.Creation) &&
+                (Projet.Id == p.Projet.Id) &&
+                (Devis.Id == p.Devis.Id) &&
+                (Plan.Id == p.Plan.Id) &&
+                (StatutProduit.Id == p.StatutProduit.Id);
+        }
+        #endregion
+
+        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+            Produit produit = modele as Produit;
+            Nom = produit.Nom;
+            MiseAJour = produit.MiseAJour;
+            Creation = produit.Creation;
+            Suppression = produit.Suppression;
+            Projet = produit.Projet;
+            Devis = produit.Devis;
+            Plan = produit.Plan;
+            StatutProduit = produit.StatutProduit;
         }
 
         public bool IsDeleted<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
-            throw new NotImplementedException();
+            if (modele.Suppression != null && !Suppression.HasValue)
+            {
+                Suppression = modele.Suppression;
+                return true;
+            }
+
+            return false;
         }
 
-        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
-            throw new NotImplementedException();
+            if (modele.MiseAJour == null)
+                return true;
+            else
+                return MiseAJour == modele.MiseAJour;
         }
     }
 }

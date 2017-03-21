@@ -13,6 +13,7 @@ namespace HouseMadera.Modeles
         public DateTime? Suppression { get; set; }
         public DateTime? Creation { get; set; }
 
+        #region OVERRIDE
         public override string ToString()
         {
             return string.Format("Id : {0} Nom : {1}", Id, Nom);
@@ -27,6 +28,7 @@ namespace HouseMadera.Modeles
 
             return (Nom == c.Nom) && (Creation == c.Creation);
         }
+        #endregion
 
         public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {

@@ -1,26 +1,25 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
-    public class PlanDAL : DAL, IPlanDAL
+    public class GammeDAL : DAL, IDAL<Gamme>
     {
-        public PlanDAL(string nomBdd) : base(nomBdd)
+        public GammeDAL(string nomBdd) : base(nomBdd)
         {
-
         }
 
-
         #region SYNCHRONISATION
-        public int DeleteModele(Plan modele)
+        public int DeleteModele(Gamme modele)
         {
             string sql = @"
-                        UPDATE Plan
+                        UPDATE Gamme
                         SET Suppression= @2
                         WHERE Id=@1
                       ";
@@ -44,40 +43,40 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public List<Plan> GetAllModeles()
+        public List<Gamme> GetAllModeles()
         {
-            List<Plan> listePlans = new List<Plan>();
+            List<Gamme> listeGammes = new List<Gamme>();
             try
             {
 
-                string sql = @"SELECT p.*,g.Id AS Gamme_Id , g.Nom AS Gamme_Nom, c.Id AS CoupePrincipe_Id ,c.Nom AS CoupePrincipe_Nom
-                               FROM Plan p
-                               LEFT JOIN Gamme g ON p.Gamme_Id = g.Id
-                               LEFT JOIN CoupePrincipe c ON p.CoupePrincipe_Id = c.Id";
+                string sql = @"SELECT g.*,f.Id AS Finition_Id , f.Nom AS Finition_Nom, i.Id AS Isolant_Id ,i.Nom AS Isolant_Nom
+                               FROM Gamme g
+                               LEFT JOIN Finition f ON g.Finition_Id = f.Id
+                               LEFT JOIN Isolant  i ON g.Isolant_Id = i.Id";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
                     while (reader.Read())
                     {
-                        Plan p = new Plan()
+                        Gamme g = new Gamme()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
-                            Gamme = new Gamme()
+                            Finition = new Finition()
                             {
-                                Id = Convert.ToInt32(reader["Gamme_Id"]),
-                                Nom = Convert.ToString(reader["Gamme_Nom"])
+                                Id = Convert.ToInt32(reader["Finition_Id"]),
+                                Nom = Convert.ToString(reader["Finition_Nom"])
                             },
-                            CoupePrincipe = new CoupePrincipe()
+                            Isolant = new Isolant()
                             {
-                                Id = Convert.ToInt32(reader[" CoupePrincipe_Id"]),
-                                Nom = Convert.ToString(reader["CoupePrincipe_Nom"])
+                                Id = Convert.ToInt32(reader["Isolant_Id"]),
+                                Nom = Convert.ToString(reader["Isolant_Nom"])
                             }
                         };
-                        listePlans.Add(p);
+                        listeGammes.Add(g);
                     }
                 }
             }
@@ -87,41 +86,41 @@ namespace HouseMadera.DAL
                 //Logger.WriteEx(ex);
             }
 
-            return listePlans;
+            return listeGammes;
         }
 
-        public int InsertModele(Plan modele)
+        public int InsertModele(Gamme modele)
         {
             int result = 0;
             try
             {
                 //Vérification des clés étrangères
-                if (modele.Gamme == null)
-                    throw new Exception("Tentative d'insertion dans la table Plan avec la clé étrangère Gamme nulle");
-                if (modele.CoupePrincipe == null)
-                    throw new Exception("Tentative d'insertion dans la table Plan avec la clé étrangère CoupePrincipe nulle");
+                if (modele.Finition == null)
+                    throw new Exception("Tentative d'insertion dans la table Gamme avec la clé étrangère Finition nulle");
+                if (modele.Isolant == null)
+                    throw new Exception("Tentative d'insertion dans la table Gamme avec la clé étrangère Isolant nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int gammeId;
-                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out gammeId))
+                int finitionId;
+                if (!Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(modele.Finition.Id, out finitionId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Gamme.Id).Key;
+                    finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Finition.Id).Key;
                 }
-                int coupePrincipeId;
-                if (!Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(modele.CoupePrincipe.Id, out coupePrincipeId))
+                int isolantId;
+                if (!Synchronisation<IsolantDAL,Isolant>.CorrespondanceModeleId.TryGetValue(modele.Isolant.Id, out isolantId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    coupePrincipeId = Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.CoupePrincipe.Id).Key;
+                    isolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Isolant.Id).Key;
                 }
 
 
-                string sql = @"INSERT INTO Gamme (Nom,Gamme_Id,CoupePrincipe_Id,MiseAJour,Suppression,Creation)
+                string sql = @"INSERT INTO Gamme (Nom,Finition_Id,Isolant_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
-                {"@2",gammeId },
-                {"@3",coupePrincipeId },
+                {"@2",finitionId },
+                {"@3",isolantId },
                 {"@4", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
                 {"@5", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
                 {"@6", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
@@ -141,43 +140,41 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Plan planLocal, Plan planDistant)
+        public int UpdateModele(Gamme gammeLocal, Gamme gammeDistant)
         {
-
             //Vérification des clés étrangères
-            if (planDistant.Gamme == null)
-                throw new Exception("Tentative d'insertion dans la table Plan avec la clé étrangère Gamme nulle");
-            if (planDistant.CoupePrincipe == null)
-                throw new Exception("Tentative d'insertion dans la table Plan avec la clé étrangère CoupePrincipe nulle");
+            if (gammeDistant.Finition == null)
+                throw new Exception("Tentative d'insertion dans la table Gamme avec la clé étrangère Finition nulle");
+            if (gammeDistant.Isolant == null)
+                throw new Exception("Tentative d'insertion dans la table Gamme avec la clé étrangère Isolant nulle");
 
             //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-            int gammeId;
-            if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(planDistant.Gamme.Id, out gammeId))
+            int finitionId;
+            if (!Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(gammeDistant.Finition.Id, out finitionId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.Gamme.Id).Key;
+                finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Finition.Id).Key;
             }
-            int coupePrincipeId;
-            if (!Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(planDistant.CoupePrincipe.Id, out coupePrincipeId))
+            int isolantId;
+            if (!Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(gammeDistant.Isolant.Id, out isolantId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                coupePrincipeId = Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.CoupePrincipe.Id).Key;
+                isolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Isolant.Id).Key;
             }
-
             //recopie des données du client distant dans le client local
-            planLocal.Copy(planDistant);
+            gammeLocal.Copy(gammeDistant);
             string sql = @"
-                        UPDATE plan
-                        SET Nom=@1,Gamme_Id=@2,CoupePrincipe_Id=@3,MiseAJour=@4
+                        UPDATE Gamme
+                        SET Nom=@1,Finition_Id=@2,Isolant_Id=@3,MiseAJour=@4
                         WHERE Id=@5
                       ";
 
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",planLocal.Nom},
-                {"@2",gammeId},
-                {"@3",coupePrincipeId},
-                {"@4",DateTimeDbAdaptor.FormatDateTime( planLocal.MiseAJour,Bdd) },
-                {"@5",planLocal.Id },
+                {"@1",gammeLocal.Nom},
+                {"@2",finitionId},
+                {"@3",isolantId},
+                {"@4",DateTimeDbAdaptor.FormatDateTime( gammeLocal.MiseAJour,Bdd) },
+                {"@5",gammeLocal.Id },
                 };
             int result = 0;
             try
@@ -194,6 +191,4 @@ namespace HouseMadera.DAL
         }
         #endregion
     }
-
 }
-

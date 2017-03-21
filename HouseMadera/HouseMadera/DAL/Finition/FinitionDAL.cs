@@ -5,19 +5,18 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 
-
 namespace HouseMadera.DAL
 {
-    public class IsolantDAL : DAL, IDAL<Isolant>
+    public class FinitionDAL : DAL, IDAL<Finition>
     {
-        public IsolantDAL(string nomBdd) : base(nomBdd)
+        public FinitionDAL(string nomBdd) : base(nomBdd)
         {
         }
 
-        public int DeleteModele(Isolant modele)
+        public int DeleteModele(Finition modele)
         {
             string sql = @"
-                        UPDATE Isolant
+                        UPDATE Finition
                         SET Suppression= @2
                         WHERE Id=@1
                       ";
@@ -41,35 +40,35 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public List<Isolant> GetAllModeles()
+        public List<Finition> GetAllModeles()
         {
-            List<Isolant> listeIsolants = new List<Isolant>();
+            List<Finition> listeFinitions = new List<Finition>();
             try
             {
 
-                string sql = @"SELECT i.*,t.Id AS typeIso_Id , t.Nom AS typeIso_Nom
-                               FROM Isolant i
-                               LEFT JOIN TypeIsolant t ON i.TypeIsolant_Id = t.Id";
+                string sql = @"SELECT f.*,t.Id AS typeFin_Id , t.Nom AS typeFin_Nom
+                               FROM Finition f
+                               LEFT JOIN TypeFinition t ON f.TypeFinition_Id = t.Id";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
                     while (reader.Read())
                     {
-                        Isolant i = new Isolant()
+                        Finition f = new Finition()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
-                            TypeIsolant = new TypeIsolant()
+                            TypeFinition = new TypeFinition()
                             {
-                                Id = Convert.ToInt32(reader["typeIso_Id"]),
-                                Nom = Convert.ToString(reader["typeIso_Nom"]),
-                            } 
+                                Id = Convert.ToInt32(reader["typeFin_Id"]),
+                                Nom = Convert.ToString(reader["typeFin_Nom"]),
+                            }
 
                         };
-                        listeIsolants.Add(i);
+                        listeFinitions.Add(f);
                     }
                 }
             }
@@ -79,33 +78,33 @@ namespace HouseMadera.DAL
                 //Logger.WriteEx(ex);
             }
 
-            return listeIsolants;
+            return listeFinitions;
         }
 
-        public int InsertModele(Isolant modele)
+        public int InsertModele(Finition modele)
         {
             int result = 0;
             try
             {
                 //Vérification des clés étrangères
-                if (modele.TypeIsolant == null)
-                    throw new Exception("Tentative d'insertion dans la table Isolant avec la clé étrangère TypeIsolant nulle");
-              
+                if (modele.TypeFinition == null)
+                    throw new Exception("Tentative d'insertion dans la base Finition avec la clé étrangère TypeFinition nulle");
+
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int typeIsolantId;
-                if (!Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(modele.TypeIsolant.Id, out typeIsolantId))
+                int typeFinitionId;
+                if (!Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.TryGetValue(modele.TypeFinition.Id, out typeFinitionId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    typeIsolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeIsolant.Id).Key;
+                    typeFinitionId = Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeFinition.Id).Key;
 
                 }
 
-                string sql = @"INSERT INTO Isolant (Nom,TypeIsolant_Id,MiseAJour,Suppression,Creation)
+                string sql = @"INSERT INTO Finition (Nom,TypeFinition_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
-                {"@2",typeIsolantId },
+                {"@2",typeFinitionId },
                 {"@3", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
                 {"@4", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
                 {"@5", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
@@ -125,33 +124,33 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Isolant isolantLocal, Isolant isolantDistant)
+        public int UpdateModele(Finition finitionLocal, Finition finitionDistant)
         {
             //Vérification des clés étrangères
-            if (isolantDistant.TypeIsolant == null)
+            if (finitionDistant.TypeFinition == null)
                 throw new Exception("Tentative de mise a jour dans la table Isolant avec la clé étrangère TypeIsolant nulle");
 
             //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            int typeIsolantId;
-            if (!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(isolantDistant.TypeIsolant.Id, out typeIsolantId))
+            int typeFinitionId;
+            if (!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(finitionDistant.TypeFinition.Id, out typeFinitionId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                typeIsolantId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == isolantDistant.TypeIsolant.Id).Key;
+                typeFinitionId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == finitionDistant.TypeFinition.Id).Key;
             }
 
             //recopie des données du client distant dans le client local
-            isolantLocal.Copy(isolantDistant);
+            finitionLocal.Copy(finitionDistant);
             string sql = @"
-                        UPDATE Isolant
-                        SET Nom=@1,TypeIsolant_Id=@2,MiseAJour=@3
+                        UPDATE Finition
+                        SET Nom=@1,TypeFinition_Id=@2,MiseAJour=@3
                         WHERE Id=@4
                       ";
 
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",isolantLocal.Nom},
-                {"@2",typeIsolantId},
-                {"@3",DateTimeDbAdaptor.FormatDateTime( isolantLocal.MiseAJour,Bdd) },
-                {"@4",isolantLocal.Id },
+                {"@1",finitionLocal.Nom},
+                {"@2",typeFinitionId},
+                {"@3",DateTimeDbAdaptor.FormatDateTime( finitionLocal.MiseAJour,Bdd) },
+                {"@4",finitionLocal.Id },
                 };
             int result = 0;
             try
