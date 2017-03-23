@@ -141,11 +141,14 @@
     <Compile Include="DAL\Interfaces\ISynchronizable.cs" />
     <Compile Include="DAL\Interfaces\ITypeIsolantDAL.cs" />
     <Compile Include="DAL\Isolant\IsolantDAL.cs" />
+    <Compile Include="DAL\ModulePLace\ModulePlaceDAL.cs" />
+    <Compile Include="DAL\Module\ModuleDAL.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
     <Compile Include="DAL\Plan\PlanDAL.cs" />
     <Compile Include="DAL\Produit\ProduitDAL.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
     <Compile Include="DAL\Qualite\QualiteDAL.cs" />
+    <Compile Include="DAL\SlotPlace\SlotPlaceDAL.cs" />
     <Compile Include="DAL\Slot\SlotDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
     <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
@@ -164,6 +167,8 @@
     <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="DAL\TypeFinition\TypeFinitionDAL.cs" />
     <Compile Include="DAL\StatutProduit\StatutProduitDAL.cs" />
+    <Compile Include="Modeles\TypeModulePlacable.cs" />
+    <Compile Include="Modeles\TypeModuleTypeSlot.cs" />
     <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
     <Compile Include="Utilities\DateTimeDbAdaptor.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />

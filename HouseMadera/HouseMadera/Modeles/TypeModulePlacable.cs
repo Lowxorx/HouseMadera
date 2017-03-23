@@ -1,24 +1,22 @@
 ﻿using HouseMadera.DAL;
-using System.Collections.Generic;
 using System;
 
 namespace HouseMadera.Modeles
 {
-    public class SlotPlace : ISynchronizable
+    public class TypeModulePlacable : ISynchronizable
     {
         public int Id { get; set; }
-        public string Libelle { get; set; }
-        public Module Module { get; set; }
-        public Slot Slot { get; set; }
-        public TypeModulePlacable TypeModulePlacable { get; set; }
+        public string Nom { get; set; }
+        public byte[] Icone { get; set; }
+        public DateTime? Creation { get; set; }
         public DateTime? MiseAJour { get; set; }
         public DateTime? Suppression { get; set; }
-        public DateTime? Creation { get; set; }
+
 
         #region OVERRIDE
         public override string ToString()
         {
-            return string.Format("Libelle {0} ", Libelle);
+            return string.Format("Nom {1}", Nom);
         }
 
         public override bool Equals(object obj)
@@ -26,26 +24,21 @@ namespace HouseMadera.Modeles
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
-            SlotPlace s = (SlotPlace)obj;
+            TypeModulePlacable t = (TypeModulePlacable)obj;
 
-            return (Creation == s.Creation) &&
-                (Libelle == s.Libelle) &&
-                (Module.Id == s.Module.Id) &&
-                (Slot.Id == s.Slot.Id) &&
-                (TypeModulePlacable.Id == s.TypeModulePlacable.Id);
+            return (Creation == t.Creation) && (Nom == t.Nom);
         }
         #endregion
 
+
         public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
-            SlotPlace slotPLace = modele as SlotPlace;
-            Module = slotPLace.Module;
-            Slot = slotPLace.Slot;
-            TypeModulePlacable = slotPLace.TypeModulePlacable;
-            Libelle = slotPLace.Libelle;
-            MiseAJour = slotPLace.MiseAJour;
-            Creation = slotPLace.Creation;
-            Suppression = slotPLace.Suppression;
+            TypeModulePlacable typeModulePlacable = modele as TypeModulePlacable;
+            Nom = typeModulePlacable.Nom;
+            Icone = typeModulePlacable.Icone;
+            MiseAJour = typeModulePlacable.MiseAJour;
+            Creation = typeModulePlacable.Creation;
+            Suppression = typeModulePlacable.Suppression;
         }
 
         public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
