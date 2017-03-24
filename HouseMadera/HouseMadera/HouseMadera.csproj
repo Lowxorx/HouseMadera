@@ -155,6 +155,7 @@
     <Compile Include="DAL\Synchronisation.cs" />
     <Compile Include="DAL\TypeComposant\TypeComposantDAL.cs" />
     <Compile Include="DAL\TypeIsolant\TypeIsolantDAL.cs" />
+    <Compile Include="DAL\TypeModulePlacable\TypeModulePlacableDAL.cs" />
     <Compile Include="DAL\TypeModule\TypeModuleDAL.cs" />
     <Compile Include="DAL\TypeSlot\TypeSlotDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
