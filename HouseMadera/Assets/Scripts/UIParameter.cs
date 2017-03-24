@@ -8,8 +8,9 @@ using UnityEngine;
 
 public class UIParameter : MonoBehaviour {
 
-	// Use this for initialization
-	void Start ()
+    public string projets = "";
+    public string produits = "";
+    void Start ()
     {
         ReadParameters();
 	}
@@ -24,8 +25,7 @@ public class UIParameter : MonoBehaviour {
         try
         {
             string[] args = System.Environment.GetCommandLineArgs();
-            string projets = "";
-            string produits = "";
+            
             if (args.Length > 0)
             {
                 for (int i = 0; i < args.Length; i++)

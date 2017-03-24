@@ -26,11 +26,11 @@ public class PanelModule : MonoBehaviour {
     {
         try
         {
-            string conn = "URI=file:" + Application.dataPath + "/HouseMaderaDB.db";
+            string conn = "URI=file:C:\\HouseMaderaDB-qslite\\HouseMaderaDB.db";
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(conn);
             dbconn.Open();
-            string sqlQuery = "SELECT Id, Nom  FROM modules";
+            string sqlQuery = "SELECT Id, Nom, icone  FROM typemoduleplacable";
             IDbCommand dbcmd = dbconn.CreateCommand();
             dbcmd.CommandText = sqlQuery;
             IDataReader reader = dbcmd.ExecuteReader();
@@ -41,34 +41,67 @@ public class PanelModule : MonoBehaviour {
                 GameObject module = new GameObject();
                 module = Instantiate(Resources.Load("module", typeof(GameObject))) as GameObject;
                 module.transform.SetParent(slot.transform);
-                module.name = reader.GetInt32(0).ToString();
+                module.name = reader.GetString(1);
                 module.transform.localScale = new Vector3(1, 1, 1);
-                module.GetComponent<Image>().sprite = fenêtre;
+                byte[] img = (byte[])reader["icone"];
+                Texture2D tex = new Texture2D(64, 64);
+                tex.LoadImage(img);
+                module.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, 500, 500), new Vector2(0.5f, 0.5f));
                 //module.transform.position = slot.transform.position;
                 Debug.Log("id : "+reader.GetInt32(0) + " Slot : " + reader.GetString(1));
                 module.GetComponent<Button>().onClick.AddListener(delegate 
                 {
-
-                    string sqlSlotPlaces = "SELECT Slot_Id FROM slotplaces WHERE Module_Id = " + EventSystem.current.currentSelectedGameObject.name;
-                    Debug.Log(sqlSlotPlaces);
-                    IDbCommand dbcmdSlotPlaces = dbconn.CreateCommand();
-                    dbcmdSlotPlaces.CommandText = sqlSlotPlaces;
-                    IDataReader readerSlotPlaces = dbcmdSlotPlaces.ExecuteReader();
+                    int types = module.name.ToString().Split('-').Length - 1;
+                    //string sqlSlotPlaces = "SELECT Slot_Id FROM slotplace WHERE Module_Id = " + EventSystem.current.currentSelectedGameObject.name;
+                    //Debug.Log(sqlSlotPlaces);
+                    //IDbCommand dbcmdSlotPlaces = dbconn.CreateCommand();
+                    //dbcmdSlotPlaces.CommandText = sqlSlotPlaces;
+                    //IDataReader readerSlotPlaces = dbcmdSlotPlaces.ExecuteReader();
                     List<GameObject> objectToInstantiate = new List<GameObject>();
-                    while (readerSlotPlaces.Read())
+                    //while (readerSlotPlaces.Read())
+                    //{
+                    //    if (readerSlotPlaces.GetInt32(0).Equals(1))
+                    //    {
+                    //        GameObject window = new GameObject();
+                    //        window.name = "window";
+                    //        objectToInstantiate.Add(window);
+                    //    }
+                    //    else if (readerSlotPlaces.GetInt32(0).Equals(2))
+                    //    {
+                    //        GameObject door = new GameObject();
+                    //        door.name = "door";
+                    //        objectToInstantiate.Add(door);
+                    //    }
+                    //}
+                    switch (types)
                     {
-                        if (readerSlotPlaces.GetInt32(0).Equals(1))
-                        {
-                            GameObject window = new GameObject();
-                            window.name = "window";
-                            objectToInstantiate.Add(window);
-                        }
-                        else if (readerSlotPlaces.GetInt32(0).Equals(2))
-                        {
+                        case 0:
                             GameObject door = new GameObject();
                             door.name = "door";
                             objectToInstantiate.Add(door);
-                        }
+                            break;
+                        case 1:
+                            GameObject window = new GameObject();
+                            window.name = "window";
+                            objectToInstantiate.Add(window);
+
+                            GameObject window2 = new GameObject();
+                            window2.name = "window";
+                            objectToInstantiate.Add(window2);
+                            break;
+                        case 2:
+                            GameObject window3 = new GameObject();
+                            window3.name = "window";
+                            objectToInstantiate.Add(window3);
+
+                            GameObject door2 = new GameObject();
+                            door2.name = "door";
+                            objectToInstantiate.Add(door2);
+
+                            GameObject window4 = new GameObject();
+                            window4.name = "window";
+                            objectToInstantiate.Add(window4);
+                            break;
                     }
                     float leftSideValue = 0 - ((GameObject.Find("Event").GetComponent<EditWall>().wallSelected.GetComponent<BoxCollider>().size.z) / 2);
                     float separator = GameObject.Find("Event").GetComponent<EditWall>().wallSelected.GetComponent<BoxCollider>().size.z / objectToInstantiate.Count();
@@ -157,11 +190,12 @@ public class PanelModule : MonoBehaviour {
                 });
             }
             //dbconn.Close();
-         }
+        }
         catch (Exception e)
         {
             Debug.LogError(e);
         }
+        
     }
 	
 	// Update is called once per frame

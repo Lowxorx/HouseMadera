@@ -11,6 +11,7 @@ public class WallSelection : MonoBehaviour {
     private bool wallSelected = false;
     public bool canBeActivate = true;
     public GameObject _switch;
+    public int gamme;
 	void Start ()
     {
         _switch = GameObject.Find("Switch");
