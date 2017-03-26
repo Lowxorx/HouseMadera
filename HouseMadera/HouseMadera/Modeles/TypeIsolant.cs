@@ -9,6 +9,7 @@ namespace HouseMadera.Modeles
         
         public int Id { get; set; }
         public string Nom { get; set; }
+        public Qualite Qualite { get; set; }
         public DateTime? MiseAJour { get; set; }
         public DateTime? Creation { get; set; }
         public DateTime? Suppression { get; set; }
@@ -16,7 +17,7 @@ namespace HouseMadera.Modeles
         #region OVERRIDE
         public override string ToString()
         {
-            return string.Format("Nom {0}", Nom);
+            return string.Format("Nom {0} Qualite {1}", Nom, Qualite.Nom);
         }
 
         public override bool Equals(object obj)
@@ -35,6 +36,7 @@ namespace HouseMadera.Modeles
         {
             TypeIsolant typeIsolant = modele as TypeIsolant;
             Nom = typeIsolant.Nom;
+            Qualite = typeIsolant.Qualite;
             MiseAJour = typeIsolant.MiseAJour;
             Creation = typeIsolant.Creation;
             Suppression = typeIsolant.Suppression;

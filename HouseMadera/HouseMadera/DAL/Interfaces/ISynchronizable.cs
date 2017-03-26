@@ -2,7 +2,7 @@
 
 namespace HouseMadera.DAL
 {
-    public  interface ISynchronizable
+    public interface ISynchronizable
     {
         int Id { get; set; }
         DateTime ? MiseAJour { get; set; }

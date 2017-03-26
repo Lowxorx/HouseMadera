@@ -28,11 +28,7 @@ namespace HouseMadera.Modeles
 
             SlotPlace s = (SlotPlace)obj;
 
-            return (Creation == s.Creation) &&
-                (Libelle == s.Libelle) &&
-                (Module.Id == s.Module.Id) &&
-                (Slot.Id == s.Slot.Id) &&
-                (TypeModulePlacable.Id == s.TypeModulePlacable.Id);
+            return (Creation == s.Creation) && (Libelle == s.Libelle);
         }
         #endregion
 

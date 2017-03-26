@@ -29,9 +29,8 @@ namespace HouseMadera.Modeles
 
             TypeModuleTypeSlot t = (TypeModuleTypeSlot)obj;
 
-            return (Creation == t.Creation) &&
-                (TypeSlot.Id == t.TypeSlot.Id) &&
-                (TypeModule.Id == t.TypeModule.Id);
+            return (Creation == t.Creation);
+              
         }
         #endregion
 

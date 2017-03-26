@@ -94,10 +94,10 @@ namespace HouseMadera.DAL
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
                 int typeIsolantId;
-                if (!Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(modele.TypeIsolant.Id, out typeIsolantId))
+                if (!Synchronisation<TypeIsolantDAL, TypeIsolant>.CorrespondanceModeleId.TryGetValue(modele.TypeIsolant.Id, out typeIsolantId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    typeIsolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeIsolant.Id).Key;
+                    typeIsolantId = Synchronisation<TypeIsolantDAL, TypeIsolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeIsolant.Id).Key;
 
                 }
 

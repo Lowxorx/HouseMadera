@@ -28,7 +28,7 @@ namespace HouseMadera.Modeles
 
             Gamme g = (Gamme)obj;
 
-            return (Nom == g.Nom) && (Creation == g.Creation) && (Finition.Id == g.Finition.Id) && (Isolant.Id == g.Isolant.Id);
+            return (Nom == g.Nom) && (Creation == g.Creation);
         }
 
         #endregion

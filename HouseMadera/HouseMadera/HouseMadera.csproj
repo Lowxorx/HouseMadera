@@ -120,6 +120,7 @@
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
+    <Compile Include="DAL\ComposantModule\ComposantModuleDAL.cs" />
     <Compile Include="DAL\Composant\ComposantDAL.cs" />
     <Compile Include="DAL\CoupePrincipe\CoupePrincipeDAL.cs" />
     <Compile Include="DAL\Finition\FinitionDAL.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Commune.cs" />
     <Compile Include="Modeles\Composant.cs" />
+    <Compile Include="Modeles\ComposantModule.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
     <Compile Include="DAL\StatutClient\StatutClientDAL.cs" />

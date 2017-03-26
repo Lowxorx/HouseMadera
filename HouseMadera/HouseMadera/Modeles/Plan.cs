@@ -28,7 +28,7 @@ namespace HouseMadera.Modeles
 
             Plan p = (Plan)obj;
 
-            return (Nom == p.Nom) && (Creation == p.Creation) && (Gamme.Id == p.Gamme.Id) && (CoupePrincipe.Id == p.CoupePrincipe.Id);
+            return (Nom == p.Nom) && (Creation == p.Creation);
         }
         #endregion
 

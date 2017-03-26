@@ -31,8 +31,7 @@ namespace HouseMadera.Modeles
             return (Nom == s.Nom) &&
                 (Creation == s.Creation) &&
                 (Largeur == s.Largeur) &&
-                (Hauteur == s.Hauteur) &&
-                (TypeSlot.Id == s.TypeSlot.Id);
+                (Hauteur == s.Hauteur);
         }
         #endregion
 

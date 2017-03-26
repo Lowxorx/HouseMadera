@@ -27,7 +27,7 @@ namespace HouseMadera.Modeles
 
             TypeComposant t = (TypeComposant)obj;
 
-            return (Nom == t.Nom) && (Creation == t.Creation) && (Qualite.Id == t.Qualite.Id);
+            return (Nom == t.Nom) && (Creation == t.Creation);
         }
 
         #endregion

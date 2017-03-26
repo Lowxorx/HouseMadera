@@ -1,4 +1,5 @@
 ﻿
+using HouseMadera.Modeles;
 using System;
 using System.Collections.Generic;
 
@@ -16,15 +17,17 @@ namespace HouseMadera.DAL
         private TDAL dalBddLocale;
         private TDAL dalBddDistante;
         public string NomModele { get; set; }
+        private bool _isTableLiaison;
 
         private List<TMODELE> listeModeleDistante = new List<TMODELE>();
         private List<TMODELE> listeModeleLocale = new List<TMODELE>();
         public static Dictionary<int, int> CorrespondanceModeleId = new Dictionary<int, int>();
         private bool changements = false;
 
-        public Synchronisation(TMODELE modele)
+        public Synchronisation(TMODELE modele, bool isTableLiaison = false)
         {
             NomModele = typeof(TMODELE).Name;
+            _isTableLiaison = isTableLiaison;
             Console.WriteLine(string.Format("************ Synchronisation du modele {0} ************", NomModele));
             recupererDonnees();
         }
@@ -38,7 +41,8 @@ namespace HouseMadera.DAL
             comparerDonnees(listeModeleLocale, listeModeleDistante, "SORTANTE");
             comparerDonnees(listeModeleDistante, listeModeleLocale, "ENTRANTE");
             //enregistrer les id dans une table de correspondance
-            creerTableCorrespondance();
+            if (!_isTableLiaison)
+                creerTableCorrespondance();
             afficherResultat();
         }
 
@@ -95,7 +99,7 @@ namespace HouseMadera.DAL
 
             Console.WriteLine("validation  {0} : ", sens);
 
-            if (liste1.Count ==0)
+            if (liste1.Count == 0)
                 Console.WriteLine("La table ne comporte aucun enregistrement");
 
             foreach (var modeleListe1 in liste1)

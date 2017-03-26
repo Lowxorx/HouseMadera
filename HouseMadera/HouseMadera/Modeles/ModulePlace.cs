@@ -32,9 +32,6 @@ namespace HouseMadera.Modeles
             ModulePlace m = (ModulePlace)obj;
 
             return (Creation == m.Creation) &&
-                (Module.Id == m.Module.Id) &&
-                (SlotPlace.Id == m.SlotPlace.Id) &&
-                (Produit.Id == m.Produit.Id) &&
                 (Libelle == m.Libelle) &&
                 (Horizontal == m.Horizontal) &&
                 (Vertical == m.Vertical) ;

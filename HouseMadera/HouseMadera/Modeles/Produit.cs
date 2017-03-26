@@ -34,12 +34,7 @@ namespace HouseMadera.Modeles
 
             Produit p = (Produit)obj;
 
-            return (Nom == p.Nom) &&
-                (Creation == p.Creation) &&
-                (Projet.Id == p.Projet.Id) &&
-                (Devis.Id == p.Devis.Id) &&
-                (Plan.Id == p.Plan.Id) &&
-                (StatutProduit.Id == p.StatutProduit.Id);
+            return (Nom == p.Nom) &&(Creation == p.Creation);
         }
         #endregion
 

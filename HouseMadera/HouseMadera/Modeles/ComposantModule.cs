@@ -7,23 +7,22 @@ using System.Threading.Tasks;
 
 namespace HouseMadera.Modeles
 {
-    public class Devis:ISynchronizable
+    public class ComposantModule : ISynchronizable
     {
+
         public int Id { get; set; }
-        public string Nom { get; set; }
-        public DateTime DateCreation { get; set; }
-        public decimal PrixHT { get; set; }
-        public decimal PrixTTC { get; set; }
-        public StatutDevis StatutDevis { get; set; }
-        public byte[] Pdf { get; set; }
         public DateTime? MiseAJour { get; set; }
-        public DateTime? Suppression { get; set; }
         public DateTime? Creation { get; set; }
+        public DateTime? Suppression { get; set; }
+        public Composant Composant { get; set; }
+        public Module Module { get; set; }
+        public int Nombre { get; set; }
 
         #region OVERRIDE
+
         public override string ToString()
         {
-            return string.Format("Devis : {0} \n Prix HT : {1} \n Prix TTC {2}",Nom,PrixHT,PrixTTC);
+            return string.Format("Composant {0} - Module {1}", Composant.Nom, Module.Nom);
         }
 
         public override bool Equals(object obj)
@@ -31,11 +30,22 @@ namespace HouseMadera.Modeles
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
-            Devis d = (Devis)obj;
+            ComposantModule c = (ComposantModule)obj;
 
-            return (Nom == d.Nom ) && (PrixHT == d.PrixHT) && (PrixTTC == d.PrixTTC)&&(Creation == d.Creation);
+            return (Nombre == c.Nombre) && (Creation == c.Creation);
         }
         #endregion
+
+        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+            ComposantModule composantModule = modele as ComposantModule;
+            Nombre = composantModule.Nombre;
+            MiseAJour = composantModule.MiseAJour;
+            Creation = composantModule.Creation;
+            Suppression = composantModule.Suppression;
+            Composant = composantModule.Composant;
+            Module = composantModule.Module;
+        }
 
         public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
         {
@@ -54,19 +64,6 @@ namespace HouseMadera.Modeles
             }
 
             return false;
-        }
-
-        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
-        {
-            Devis devis = modele as Devis;
-            Nom = devis.Nom;
-            PrixHT = devis.PrixHT;
-            PrixTTC = devis.PrixTTC;
-            Pdf = devis.Pdf;
-            StatutDevis = devis.StatutDevis;
-            MiseAJour = devis.MiseAJour;
-            Creation = devis.Creation;
-            Suppression = devis.Suppression;
         }
     }
 }

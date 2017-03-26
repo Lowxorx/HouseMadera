@@ -6,7 +6,7 @@ using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    class TypeModuleDAL : DAL, IDAL<TypeModule>
+    public class TypeModuleDAL : DAL, IDAL<TypeModule>
     {
         public TypeModuleDAL(string nomBdd) : base(nomBdd)
         {

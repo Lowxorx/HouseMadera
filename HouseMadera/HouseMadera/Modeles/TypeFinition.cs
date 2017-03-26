@@ -27,7 +27,7 @@ namespace HouseMadera.Modeles
 
             TypeFinition t = (TypeFinition)obj;
 
-            return (Nom == t.Nom) && (Creation == t.Creation) && (Qualite.Id == t.Qualite.Id);
+            return (Nom == t.Nom) && (Creation == t.Creation);
         }
         #endregion
 
