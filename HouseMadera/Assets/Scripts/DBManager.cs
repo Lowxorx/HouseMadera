@@ -15,6 +15,7 @@ public class DBManager : MonoBehaviour
     int idDoor;
     int idWindow;
     int idCloison;
+    int gammeChoosed = 1;
 
     void Start()
     {
@@ -57,9 +58,41 @@ public class DBManager : MonoBehaviour
         InsertCloison();
     }
 
+    void Insertion(string name)
+    {
+        foreach (GameObject target in listModule)
+        {
+            ModulePlace module = new ModulePlace();
+            module.Produit_Id = 1;
+            module.Libelle = target.name;
+            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
+            string nomGamme = gamme[0].Nom;
+            List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
+            foreach(Module mod in modules)
+            {
+                if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains("Cloison"))
+                {
+
+                }
+            }
+        }
+    }
+
     void InsertModule()
     {
+        foreach (GameObject target in listModule)
+        {
+            ModulePlace module = new ModulePlace();
+            module.Produit_Id = 1;
+            module.Libelle = target.name;
+            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
+            string nomGamme = gamme[0].Nom;
+            List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
+            foreach(Module mod in modules)
+            {
 
+            }
+        }
     }
 
     //new
@@ -70,6 +103,25 @@ public class DBManager : MonoBehaviour
             ModulePlace module = new ModulePlace();
             module.Produit_Id = 1;
             module.Libelle = target.name;
+            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
+            string nomGamme = gamme[0].Nom;
+            List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>()  select mModule);
+            foreach(Module mod in modules)
+            {
+                if (mod.Nom.Contains(nomGamme) && mod.Nom.Contains("Cloison"))
+                {
+                    module.Module_Id = mod.Id;
+                    Debug.Log(mod.Id);
+                } 
+            }
+            List<SlotPlace> slotPlaces = new List<SlotPlace>(from mSlotPlace in dbManager.Table<SlotPlace>() select mSlotPlace);
+            foreach(SlotPlace slo in slotPlaces)
+            {
+                if(slo.Libelle.Contains(Regex.Match(target.name, @"\d+").Value))
+                {
+                    module.SlotPlace_Id = slo.Id;
+                }
+            }
             if (target.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
             {
                 module.Vertical = 1;
@@ -87,10 +139,7 @@ public class DBManager : MonoBehaviour
             {
                 module.Horizontal = 0;
             }
-
-            module.Module_Id = 1;
-            module.SlotPlace_Id = 1;
-            dbManager.Insert(module);
+            //dbManager.Insert(module);
         }
     }
 

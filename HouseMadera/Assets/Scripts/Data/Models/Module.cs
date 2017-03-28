@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class modules
+public class Module
 {
     public int Id { get; set; }
     public string Nom { get; set; }
@@ -10,7 +10,7 @@ public class modules
     public int Gamme_Id { get; set; }
     public int TypeModule_Id { get; set; }
 
-    public modules()
+    public Module()
     {
         Id = 0;
         Nom = "";

@@ -16,7 +16,7 @@ public class PanelModule : MonoBehaviour {
     public Sprite fenêtre;
     public GameObject dataBase;
     int currentId;
-    List<modules> listModule = new List<modules>(); 
+    List<Module> listModule = new List<Module>(); 
 	void Start ()
     {
         SelectModules();
@@ -26,7 +26,7 @@ public class PanelModule : MonoBehaviour {
     {
         try
         {
-            string conn = "URI=file:C:\\HouseMaderaDB-qslite\\HouseMaderaDB.db";
+            string conn = "URI=file:C:\\Users\\Jacky-Marley\\AppData\\LocalLow\\MaderaCorp\\HouseMadera\\HouseMaderaDB.db";
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(conn);
             dbconn.Open();
