@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
-    class TypeModulePlacableDAL : DAL, IDAL<TypeModulePlacable>
+    public class TypeModulePlacableDAL : DAL, IDAL<TypeModulePlacable>
     {
         public TypeModulePlacableDAL(string nomBdd) : base(nomBdd)
         {
@@ -82,7 +82,7 @@ namespace HouseMadera.DAL
             try
             {
                 string sql = @"INSERT INTO TypeModulePlacable (Nom,Icone,Suppression,MiseAJour,Creation)
-                        VALUES(@1,@2,@3,@4,@5,@6)";
+                        VALUES(@1,@2,@3,@4,@5)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                     {"@1",modele.Nom },
                     {"@2",modele.Icone },

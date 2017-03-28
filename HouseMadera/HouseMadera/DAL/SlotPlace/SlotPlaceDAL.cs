@@ -78,7 +78,7 @@ namespace HouseMadera.DAL
                             },
                             TypeModulePlacable = new TypeModulePlacable()
                             {
-                                Id = Convert.ToInt32(reader["typeModulePlacable_Id"]),
+                                Id = reader["typeModulePlacable_Id"] == null ? 0 : Convert.ToInt32(reader["module_Id"]),
                                 Nom = Convert.ToString(reader["typeModulePlacable_Nom"]),
                             }
                         };
@@ -130,12 +130,12 @@ namespace HouseMadera.DAL
 
 
                 string sql = @"INSERT INTO SlotPlace (Libelle,Module_Id,Slot_Id,TypeModulePlacable_Id,MiseAJour,Suppression,Creation)
-                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
+                        VALUES(@1,@2,@3,@4,@5,@6,@7)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Libelle },
                 {"@2",moduleId },
                 {"@3",slotId },
-                {"@4",moduleId },
+                {"@4",typeModulePlacableId },
                 {"@5", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
                 {"@6", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
                 {"@7", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }

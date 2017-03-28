@@ -51,7 +51,7 @@ namespace HouseMadera.DAL
 
                 string sql = @"SELECT s.*,t.Id AS typeSlot_Id , t.Nom AS typeSlot_Nom
                                FROM Slot s
-                               LEFT JOIN TypeSlot t ON s.typeSlot_Id = t.Id";
+                               LEFT JOIN TypeSlot t ON s.TypeSlot_Id = t.Id";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
@@ -105,7 +105,7 @@ namespace HouseMadera.DAL
                 }
 
                 string sql = @"INSERT INTO Slot (Nom,Hauteur,Largeur,TypeSlot_Id,MiseAJour,Suppression,Creation)
-                        VALUES(@1,@2,@3,@4,@5)";
+                        VALUES(@1,@2,@3,@4,@5,@6,@7)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
                 {"@2",modele.Hauteur },

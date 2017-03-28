@@ -50,7 +50,7 @@ namespace HouseMadera.DAL
             try
             {
 
-                string sql = @"SELECT p.*,g.Id AS Gamme_Id , g.Nom AS Gamme_Nom, c.Id AS CoupePrincipe_Id ,c.Nom AS CoupePrincipe_Nom
+                string sql = @"SELECT p.*,g.Id AS gamme_Id , g.Nom AS gamme_Nom, c.Id AS coupePrincipe_Id ,c.Nom AS coupePrincipe_Nom 
                                FROM Plan p
                                LEFT JOIN Gamme g ON p.Gamme_Id = g.Id
                                LEFT JOIN CoupePrincipe c ON p.CoupePrincipe_Id = c.Id";
@@ -68,13 +68,13 @@ namespace HouseMadera.DAL
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
                             Gamme = new Gamme()
                             {
-                                Id = Convert.ToInt32(reader["Gamme_Id"]),
-                                Nom = Convert.ToString(reader["Gamme_Nom"])
+                                Id = Convert.ToInt32(reader["gamme_Id"]),
+                                Nom = Convert.ToString(reader["gamme_Nom"])
                             },
                             CoupePrincipe = new CoupePrincipe()
                             {
-                                Id = Convert.ToInt32(reader[" CoupePrincipe_Id"]),
-                                Nom = Convert.ToString(reader["CoupePrincipe_Nom"])
+                                Id = Convert.ToInt32(reader["coupePrincipe_Id"]),
+                                Nom = Convert.ToString(reader["coupePrincipe_Nom"])
                             }
                         };
                         listePlans.Add(p);
@@ -116,7 +116,7 @@ namespace HouseMadera.DAL
                 }
 
 
-                string sql = @"INSERT INTO Gamme (Nom,Gamme_Id,CoupePrincipe_Id,MiseAJour,Suppression,Creation)
+                string sql = @"INSERT INTO Plan (Nom,Gamme_Id,CoupePrincipe_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
@@ -167,7 +167,7 @@ namespace HouseMadera.DAL
             //recopie des données du Plan distant dans le Plan local
             planLocal.Copy(planDistant);
             string sql = @"
-                        UPDATE plan
+                        UPDATE Plan
                         SET Nom=@1,Gamme_Id=@2,CoupePrincipe_Id=@3,MiseAJour=@4
                         WHERE Id=@5
                       ";
