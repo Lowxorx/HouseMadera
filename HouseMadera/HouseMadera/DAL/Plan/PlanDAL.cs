@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace HouseMadera.DAL
 {
-    public class PlanDAL : DAL, IPlanDAL
+    public class PlanDAL : DAL, IDAL<Plan>
     {
         public PlanDAL(string nomBdd) : base(nomBdd)
         {

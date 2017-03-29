@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
-    class TypeModulePlacableDAL : DAL, IDAL<TypeModulePlacable>
+    public class TypeModulePlacableDAL : DAL, IDAL<TypeModulePlacable>
     {
         public TypeModulePlacableDAL(string nomBdd) : base(nomBdd)
         {

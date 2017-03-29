@@ -142,6 +142,7 @@
     <Compile Include="DAL\Interfaces\ISynchronizable.cs" />
     <Compile Include="DAL\Interfaces\ITypeIsolantDAL.cs" />
     <Compile Include="DAL\Isolant\IsolantDAL.cs" />
+    <Compile Include="DAL\ModulePlacePlan\ModulePlacePlanDAL.cs" />
     <Compile Include="DAL\ModulePLace\ModulePlaceDAL.cs" />
     <Compile Include="DAL\Module\ModuleDAL.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Modeles\CoupePrincipe.cs" />
     <Compile Include="Modeles\Devis.cs" />
     <Compile Include="DAL\StatutClient\StatutClientDAL.cs" />
+    <Compile Include="Modeles\ModulePlacePlan.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="DAL\TypeFinition\TypeFinitionDAL.cs" />
     <Compile Include="DAL\StatutProduit\StatutProduitDAL.cs" />
