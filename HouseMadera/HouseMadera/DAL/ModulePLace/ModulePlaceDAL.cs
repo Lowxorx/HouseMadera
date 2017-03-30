@@ -63,8 +63,9 @@ namespace HouseMadera.DAL
                         ModulePlace m = new ModulePlace()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
-                            Horizontal = Convert.ToBoolean(reader["Horizontal"]),
-                            Vertical = Convert.ToBoolean(reader["Vertical"]),
+                           
+                            Horizontal = reader["Horizontal"]!=null ? Convert.ToBoolean(reader["Horizontal"]) : false,
+                            Vertical = reader["Vertical"] != null ? Convert.ToBoolean(reader["Vertical"]) : false,
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),

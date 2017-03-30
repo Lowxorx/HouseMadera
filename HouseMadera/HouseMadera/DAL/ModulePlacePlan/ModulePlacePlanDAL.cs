@@ -48,7 +48,7 @@ namespace HouseMadera.DAL
             try
             {
 
-                string sql = @"SELECT mpp.*,m.Id AS modulePlace_Id , m.Nom AS modulePlace_Nom,p.Id AS plan_Id,p.Nom AS plan_Nom
+                string sql = @"SELECT mpp.*,m.Id AS modulePlace_Id , m.Libelle AS modulePlace_libelle,p.Id AS plan_Id,p.Nom AS plan_Nom
                                FROM ModulePlacePlan mpp
                                LEFT JOIN ModulePlace m ON mpp.ModulePlace_Id = m.Id
                                LEFT JOIN Plan p ON mpp.Plan_Id = p.Id";
@@ -65,7 +65,7 @@ namespace HouseMadera.DAL
                             ModulePlace = new ModulePlace()
                             {
                                 Id = Convert.ToInt32(reader["modulePlace_Id"]),
-                                Libelle = Convert.ToString(reader["modulePlace_Id"])
+                                Libelle = Convert.ToString(reader["modulePlace_libelle"])
                             },
                             Plan = new Plan()
                             {

@@ -27,11 +27,11 @@ namespace HouseMadera.DAL
             ObservableCollection<Produit> listeProduit = new ObservableCollection<Produit>();
             try
             {
-                string sql = @"SELECT p.*, d.Id AS id_devis, d.Nom AS nom_devis, sp.Nom AS statut_produit, d.PrixTTC AS prixttc_devis, d.PrixHT AS prixht_devis, pl.Nom AS nom_plan, pl.CreateDate AS date_plan, pr.Nom AS nom_projet, sd.Nom AS statut_devis 
+                string sql = @"SELECT p.*, sp.Nom AS statut_produit,d.Id AS id_devis, d.Nom AS nom_devis, d.PrixTTC AS prixttc_devis, d.PrixHT AS prixht_devis,sd.Nom AS statut_devis , pl.Nom AS nom_plan, pl.CreateDate AS date_plan, pr.Nom AS nom_projet
                                FROM Produit p 
                                LEFT JOIN Devis d ON p.Devis_Id=d.Id
+                               LEFT JOIN StatutDevis sd ON d.StatutDevis_Id = sd.Id
                                LEFT JOIN StatutProduit sp ON p.StatutProduit_Id=sp.Id
-                               LEFT JOIN StatutDevis sd ON d.StatutDevis_Id=sd.Id
                                LEFT JOIN Plan pl ON p.Plan_Id=pl.Id 
                                LEFT JOIN Projet pr ON p.Projet_Id=pr.Id 
                                WHERE Projet_Id=@1";
@@ -52,7 +52,7 @@ namespace HouseMadera.DAL
                         Id = Convert.ToInt32(reader["id_devis"]),
                         PrixTTC = Convert.ToDecimal(reader["prixttc_devis"]),
                         PrixHT = Convert.ToDecimal(reader["prixht_devis"]),
-                        StatutDevis = new StatutDevis() { Nom = reader["statut_devis"].ToString() }
+                        StatutDevis = new StatutDevis() { Nom = reader["nom_statutDevis"].ToString() }
                     };
                     produit.Plan = new Plan()
                     {
@@ -147,7 +147,7 @@ namespace HouseMadera.DAL
                                d.Id AS devis_id, d.Nom AS devis_nom,
                                sp.Id AS statut_produit_id ,sp.Nom AS statut_produit_nom,
                                pl.Id AS plan_id ,pl.Nom AS plan_nom,
-                               pr.Id AS projet_id, pr.Nom AS projet_nom,
+                               pr.Id AS projet_id, pr.Nom AS projet_nom
                                FROM Produit p
                                LEFT JOIN Devis d ON p.Devis_Id = d.Id
                                LEFT JOIN StatutProduit sp ON p.StatutProduit_Id = sp.Id
@@ -238,17 +238,17 @@ namespace HouseMadera.DAL
                     statutProduitId = Synchronisation<StatutProduitDAL, StatutProduit>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.StatutProduit.Id).Key;
                 }
 
-                string sql = @"INSERT INTO Gamme (Nom,Projet_Id,Plan_Id,Devis_Id,StatutProduit_Id,MiseAJour,Suppression,Creation)
+                string sql = @"INSERT INTO Produit (Nom,Projet_Id,Plan_Id,Devis_Id,StatutProduit_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7,@8)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
                 {"@2",projetId },
                 {"@3",planId },
-                {"@3",devisId },
-                {"@3",statutProduitId },
-                {"@4", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
-                {"@5", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
-                {"@6", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
+                {"@4",devisId },
+                {"@5",statutProduitId },
+                {"@6", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
+                {"@8", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
             };
 
                 result = Insert(sql, parameters);
