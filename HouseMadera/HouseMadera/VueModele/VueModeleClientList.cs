@@ -204,7 +204,7 @@ namespace HouseMadera.VueModele
         public List<Client> AfficherClient()
         {
             List<Client> clients = new List<Client>();
-            using (var dal = new ClientDAL("SQLITE"))
+            using (var dal = new ClientDAL(DAL.DAL.Bdd))
             {
                 clients = dal.GetAllModeles();
             }
@@ -221,7 +221,7 @@ namespace HouseMadera.VueModele
         {
             List<Client> clients = new List<Client>();
             //TODO SQLITE à remplacer par Bdd
-            using (var dal = new ClientDAL("SQLITE"))
+            using (var dal = new ClientDAL(DAL.DAL.Bdd))
             {
                 clients = dal.GetFilteredClient(filtre, valeur);
             }
