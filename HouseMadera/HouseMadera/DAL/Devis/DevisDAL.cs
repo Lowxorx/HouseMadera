@@ -222,7 +222,7 @@ namespace HouseMadera.DAL
                         devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
                         devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
                         devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
-                       //TODO Pdf -> blob
+                       
                         devis.StatutDevis = new StatutDevis()
                         {
                             Id = Convert.ToInt32(reader["Statut_Id"]),

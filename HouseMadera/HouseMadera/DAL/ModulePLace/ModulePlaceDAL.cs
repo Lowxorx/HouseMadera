@@ -63,9 +63,9 @@ namespace HouseMadera.DAL
                         ModulePlace m = new ModulePlace()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
-                           
-                            Horizontal = reader["Horizontal"]!=null ? Convert.ToBoolean(reader["Horizontal"]) : false,
-                            Vertical = reader["Vertical"] != null ? Convert.ToBoolean(reader["Vertical"]) : false,
+
+                            Horizontal = string.IsNullOrEmpty(reader["Horizontal"].ToString()) ? false : Convert.ToBoolean(reader["Horizontal"]),
+                            Vertical = string.IsNullOrEmpty(reader["Vertical"].ToString()) ? false : Convert.ToBoolean(reader["Vertical"]),
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
@@ -122,7 +122,7 @@ namespace HouseMadera.DAL
                 if (!Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.TryGetValue(modele.SlotPlace.Id, out slotPlaceId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    slotPlaceId = Synchronisation< SlotPlaceDAL, SlotPlace >.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.SlotPlace.Id).Key;
+                    slotPlaceId = Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.SlotPlace.Id).Key;
                 }
                 int produitId;
                 if (!Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.TryGetValue(modele.Produit.Id, out produitId))

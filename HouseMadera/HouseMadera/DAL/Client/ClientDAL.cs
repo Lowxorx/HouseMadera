@@ -17,7 +17,7 @@ namespace HouseMadera.DAL
 
         }
 
-        #region CRUD
+      
 
         /// <summary>
         /// Selectionne le premier client avec l'ID en paramètre
@@ -105,7 +105,8 @@ namespace HouseMadera.DAL
             return clients;
 
         }
-       
+        
+        #region SYNCHRONISATION
 
         /// <summary>
         /// Methode implémentée de l'interface IClientDAL permettant de récupérer tous les clients de la base
@@ -156,7 +157,6 @@ namespace HouseMadera.DAL
                 {"@9",client.Telephone },
                 {"@10",client.Mobile },
                 {"@11",client.StatutClient },
-                //{"@12",client.MiseAJour},
                 {"@12", DateTimeDbAdaptor.FormatDateTime( client.MiseAJour,Bdd) },
                 {"@13", DateTimeDbAdaptor.FormatDateTime( client.Suppression,Bdd) },
                 {"@14", DateTimeDbAdaptor.FormatDateTime( client.Creation,Bdd) }

@@ -9,7 +9,7 @@ namespace HouseMadera.Utilities
         public static string FormatDateTime(DateTime ? datetime, string bdd)
         {
             if (datetime == null)
-                return string.Empty;
+                return bdd == "MYSQL" ? null:string.Empty ;
 
             DateTime value = datetime.Value ;
             string dateTimeFormat = string.Empty;

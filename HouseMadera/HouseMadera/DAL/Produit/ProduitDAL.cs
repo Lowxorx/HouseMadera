@@ -181,7 +181,10 @@ namespace HouseMadera.DAL
                             {
                                 Id = Convert.ToInt32(reader["statut_produit_id"]),
                                 Nom = Convert.ToString(reader["statut_produit_nom"])
-                            }
+                            },
+                            MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
+                            Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
+                            Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
                         };
                         listeProduits.Add(p);
                     }
@@ -214,7 +217,7 @@ namespace HouseMadera.DAL
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
                 int projetId;
-                if (!Synchronisation<ProjetDAL,Projet>.CorrespondanceModeleId.TryGetValue(modele.Projet.Id, out projetId))
+                if (!Synchronisation<ProjetDAL, Projet>.CorrespondanceModeleId.TryGetValue(modele.Projet.Id, out projetId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     projetId = Synchronisation<ProjetDAL, Projet>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Projet.Id).Key;
