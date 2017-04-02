@@ -41,6 +41,20 @@
                 HorizontalAlignment="Center"
                 />
             <Button
+                 x:Name="btRetour"
+                 Width="65"
+                 Height="65"
+                 Margin="1378,10,0,0"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                Background="#FFA29A9A"
+                Foreground="#464646"
+                 BorderThickness="0"
+                 Command="{Binding Retour}"
+                 Content="{iconPacks:PackIconFontAwesome Kind=ArrowCircleOutlineLeft,
+                                                    Width=32,
+                                                    Height=32}" />
+            <Button
                 x:Name="button"
                 Width="65"
                 Height="65"

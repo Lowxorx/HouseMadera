@@ -70,6 +70,7 @@ namespace HouseMadera.VueModele
         public ICommand EditClient { get; private set; }
         public ICommand ModifClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
+        public ICommand Retour { get; private set; }
 
         /// <summary>
         /// Clients lié à la datagrid
@@ -127,6 +128,7 @@ namespace HouseMadera.VueModele
             EditClient = new RelayCommand(EClient);
             Deconnexion = new RelayCommand(Deconnecter);
             ModifClient = new RelayCommand(ModifierClient);
+            Retour = new RelayCommand(RetourAccueil);
             Clients = new ObservableCollection<Client>(AfficherClient());
             IsClientSelected = false;
             correspondanceFiltresColonnes = new Dictionary<string, string>()
@@ -184,6 +186,18 @@ namespace HouseMadera.VueModele
         }
 
         /// <summary>
+        /// Ferme la fenetre courante et affiche la fenêtre accueil
+        /// </summary>
+        private void RetourAccueil()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            VueChoixAdmin vca = new VueChoixAdmin();
+            vca.Show();
+            window.Close();
+        }
+
+
+        /// <summary>
         /// Recupère en base tous les clients
         /// </summary>
         /// <returns>La liste de tous les clients</returns>
@@ -192,7 +206,7 @@ namespace HouseMadera.VueModele
             List<Client> clients = new List<Client>();
             using (var dal = new ClientDAL("SQLITE"))
             {
-                clients = dal.GetAllClients();
+                clients = dal.GetAllModeles();
             }
             return clients;
         }

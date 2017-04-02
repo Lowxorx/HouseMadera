@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -327,7 +328,7 @@ namespace HouseMadera.VueModele
                         break;
                     case "Telephone":
                         result = reg.IsValidTelephoneNumber(Telephone) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
-                        // isChampsTelephoneOk = Telephone == null || result != string.Empty ? false : true;
+                        isChampsTelephoneOk = Telephone == null || result != string.Empty ? false : true;
                         isChampsTelephoneOk = true;
                         break;
                     case "Email":
@@ -393,7 +394,7 @@ namespace HouseMadera.VueModele
         /// <returns> 'true' si tous les champs respectent les conditions sinon 'false' </returns>
         private bool VerifierTouslesChamps()
         {
-            if (isChampsNomOk && isChampsPrenomOk && isChampsVoieOk && isChampsComplementOk && isChampsCodePostalOk && isChampsLocaliteOk && isChampsMobileOk && isChampsTelephoneOk && isChampsEmailOk)
+            if (isChampsNomOk && isChampsPrenomOk && isChampsVoieOk && isChampsComplementOk && isChampsCodePostalOk && isChampsLocaliteOk && (isChampsMobileOk || isChampsTelephoneOk) && isChampsEmailOk)
                 return true;
             else
                 return false;
@@ -404,6 +405,8 @@ namespace HouseMadera.VueModele
         /// </summary>
         private void EnregistrerClient()
         {
+            var window = Application.Current.Windows.OfType<MetroWindow>().First();
+
             if (IsFormulaireOk)
             {
                 Client client = new Client()
@@ -418,21 +421,29 @@ namespace HouseMadera.VueModele
                     Telephone = Telephone,
                     Mobile = Mobile,
                     Email = Email,
-                    StatutClient = StatutClient ? ACTIF : INACTIF
+                    StatutClient = StatutClient ? ACTIF : INACTIF,
+                    MiseAJour = isMiseAJourClient ? DateTime.Now : (DateTime?)null,
+                    Suppression = null,
+                    Creation = !isMiseAJourClient ? DateTime.Now : (DateTime?)null
+
                 };
                 try
                 {
                     using (ClientDAL dal = new ClientDAL("SQLITE"))
                     {
-                        int success = isMiseAJourClient ? dal.UpdateClient(client) : dal.InsertClient(client);
+                        int success = isMiseAJourClient ? dal.UpdateModele(client, null) : dal.InsertModele(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
+                        //Redirection vers la vue des clients
+                        AfficherPagePrecedente();
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     IsClientEnregistre = false;
-                    Console.WriteLine("Le client n'a pas pu être enregistré en base");
+                    if (window != null)
+                        window.ShowMessageAsync("Erreur", "Les données du client n'ont pas pu être enregistrées");
+                    Logger.WriteEx(ex);
                 }
             }
 
@@ -453,10 +464,18 @@ namespace HouseMadera.VueModele
             //TODO modifier "SQLITE" par Bdd
             if (codePostal != string.Empty && isCodePostal)
             {
-                using (var dal = new CommuneDAL("SQLITE"))
+                try
                 {
-                    communes = dal.GetFilteredCommunes(Convert.ToInt32(codePostal));
+                    using (var dal = new CommuneDAL("SQLITE"))
+                    {
+                        communes = dal.GetFilteredCommunes(Convert.ToInt32(codePostal));
+                    }
                 }
+                catch (Exception ex)
+                {
+                    Logger.WriteEx(ex);
+                }
+
             }
 
             return communes;
