@@ -138,7 +138,7 @@ namespace HouseMadera.DAL
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne insérée</returns>
         public int InsertClient(Client client)
         {
-            if (!isDataCorrect(client))
+            if (!IsDataCorrect(client))
                 throw new Exception(erreur);
             if (IsClientExist(client))
                 throw new Exception("le client est déjà enregistré");
@@ -181,7 +181,7 @@ namespace HouseMadera.DAL
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne affectée</returns>
         public int UpdateClient(Client client)
         {
-            if (!isDataCorrect(client))
+            if (!IsDataCorrect(client))
                 throw new Exception(erreur);
 
             var sql = @"
@@ -318,7 +318,5 @@ namespace HouseMadera.DAL
             client.StatutClient = Convert.ToInt32(reader["statutClient_id"]);
             return client;
         }
-        #endregion
-
     }
 }

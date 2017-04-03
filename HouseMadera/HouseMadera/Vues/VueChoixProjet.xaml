@@ -1,8 +1,8 @@
-﻿<Controls:MetroWindow
+﻿<controls:MetroWindow
     x:Class="HouseMadera.Vues.VueChoixProjet"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -34,7 +34,7 @@
     <Grid>
         <Grid Margin="0,0,0,928" Background="#FFA29A9A">
             <Label
-                x:Name="label"
+                x:Name="Label"
                 Height="65"
                 Margin="572,10,572,0"
                 VerticalAlignment="Top"
@@ -43,7 +43,7 @@
                 FontFamily="Verdana"
                 FontSize="36" />
             <Button
-                x:Name="btLogout"
+                x:Name="BtLogout"
                 Width="65"
                 Height="65"
                 Margin="1453,10,0,0"
@@ -56,7 +56,7 @@
                                                         Width=32,
                                                         Height=32}" />
             <Button
-                x:Name="btRetour"
+                x:Name="BtRetour"
                 Width="65"
                 Height="65"
                 Margin="1378,10,0,0"
@@ -72,13 +72,13 @@
         <Grid Margin="0,53">
 
             <Image
-                x:Name="image"
+                x:Name="Image"
                 Height="82"
                 Margin="10,-50,1296,0"
                 VerticalAlignment="Top"
                 Source="../Resources/logomaderacolorgreyclean.png" />
             <Button
-                x:Name="btReprendreProjet"
+                x:Name="BtReprendreProjet"
                 Height="185"
                 Margin="851,0,150,48"
                 VerticalAlignment="Bottom"
@@ -86,7 +86,7 @@
                 Content="Reprendre un projet"
                 FontSize="23" />
             <Button
-                x:Name="btNouveauProjet"
+                x:Name="BtNouveauProjet"
                 Width="527"
                 Height="185"
                 Margin="150,0,0,48"
@@ -96,7 +96,7 @@
                 Content="Nouveau Projet"
                 FontSize="23" />
             <ComboBox
-                x:Name="cbListeCommerciaux"
+                x:Name="CbListeCommerciaux"
                 Width="490"
                 Height="58"
                 Margin="10,101,0,0"
@@ -119,7 +119,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <DataGrid
-                x:Name="lbListeProjets"
+                x:Name="LbListeProjets"
                 Width="1508"
                 Height="460"
                 Margin="10,191,0,0"
@@ -172,21 +172,21 @@
                 </DataGrid.Columns>
             </DataGrid>
             <TextBox
-                x:Name="tbFiltreProjets"
+                x:Name="TbFiltreProjets"
                 Width="490"
                 Height="58"
                 Margin="505,101,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
-                Controls:TextBoxHelper.Watermark="Rechercher un projet"
+                controls:TextBoxHelper.Watermark="Rechercher un projet"
                 FontSize="25"
                 Text="{Binding FiltreProjet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 TextWrapping="Wrap" />
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A">
             <Label
-                x:Name="labelCommercialCo"
+                x:Name="LabelCommercialCo"
                 Width="994"
                 Margin="4,7,0,4"
                 HorizontalAlignment="Left"
@@ -196,4 +196,4 @@
                 FontSize="25" />
         </Grid>
     </Grid>
-</Controls:MetroWindow>
+</controls:MetroWindow>

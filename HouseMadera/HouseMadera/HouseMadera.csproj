@@ -58,6 +58,9 @@
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -120,6 +123,7 @@
     </Compile>
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
+    <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\Devis\DevisDAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
@@ -130,12 +134,17 @@
     <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
+    <Compile Include="Modeles\Commune.cs" />
     <Compile Include="Modeles\Composant.cs" />
     <Compile Include="Modeles\ComposantModule.cs" />
     <Compile Include="Modeles\CoupePrincipe.cs" />
+    <Compile Include="Modeles\DataGenerationDevis.cs" />
     <Compile Include="Modeles\Devis.cs" />
+    <Compile Include="Modeles\DevisGenere.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="Modeles\TypeModulePlacable.cs" />
+    <Compile Include="Utilities\AppInfo.cs" />
+    <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
     <Compile Include="Modeles\Finition.cs" />
     <Compile Include="Modeles\Gamme.cs" />
@@ -161,19 +170,36 @@
     <Compile Include="Utilities\RegexUtilities.cs" />
     <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
     <Compile Include="VueModele\VueModeleChoixProjet.cs" />
+    <Compile Include="VueModele\VueModeleClientEdit.cs" />
+    <Compile Include="VueModele\VueModeleClientList.cs" />
+    <Compile Include="VueModele\VueModeleCommune.cs" />
     <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
+    <Compile Include="VueModele\VueModeleGenererDevis.cs" />
     <Compile Include="VueModele\VueModeleLogin.cs" />
+    <Compile Include="VueModele\VueModeleNouveauProjet.cs" />
     <Compile Include="Vues\VueChoixAdmin.xaml.cs">
       <DependentUpon>VueChoixAdmin.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vues\VueChoixProjet.xaml.cs">
       <DependentUpon>VueChoixProjet.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\VueClientEdit.xaml.cs">
+      <DependentUpon>VueClientEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueClientList.xaml.cs">
+      <DependentUpon>VueClientList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\VueDetailsProjet.xaml.cs">
       <DependentUpon>VueDetailsProjet.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vues\VueGenererDevis.xaml.cs">
+      <DependentUpon>VueGenererDevis.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\VueLogin.xaml.cs">
       <DependentUpon>VueLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueNouveauProjet.xaml.cs">
+      <DependentUpon>VueNouveauProjet.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +226,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\Entypo.ttf" />
     <None Include="Resources\HouseMaderaSqlite.db" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +238,14 @@
     <Folder Include="DAL\Plan\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\IconsNonShared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Vues\VueChoixAdmin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -219,13 +254,29 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Vues\VueClientEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Vues\VueClientList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Vues\VueDetailsProjet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Vues\VueGenererDevis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Vues\VueLogin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueNouveauProjet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -235,9 +286,12 @@
     <Content Include="Resources\adminprojet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Entypo-license.txt" />
     <Content Include="Resources\logomaderacolor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\logomaderacolorgrey.png" />
+    <Resource Include="Resources\WindowsIcons-license.txt" />
     <Resource Include="Resources\logomaderacolorgreyclean.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

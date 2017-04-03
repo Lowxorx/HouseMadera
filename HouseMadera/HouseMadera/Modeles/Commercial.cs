@@ -1,4 +1,4 @@
-﻿&using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using System.Collections.Generic;
 
 namespace HouseMadera.Modeles
