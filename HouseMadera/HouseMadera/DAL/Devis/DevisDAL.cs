@@ -192,7 +192,7 @@ namespace HouseMadera.DAL
                 {"@2",devis.DateCreation },
                 {"@3",devis.PrixHT },
                 {"@4",devis.PrixTTC },
-                {"@5",devis.StatutDevis },
+                {"@5",devis.StatutDevis.Id },
                 {"@6",devis.Pdf }
             };
             var result = 0;

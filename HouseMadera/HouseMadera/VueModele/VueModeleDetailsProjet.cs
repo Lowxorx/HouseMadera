@@ -42,7 +42,6 @@ namespace HouseMadera.VueModele
         public ICommand GenererPlan { get; private set; }
         public ICommand SelectedProduitCmd { get; private set; }
 
-
         private MetroWindow vuePrecedente;
         public MetroWindow VuePrecedente
         {
@@ -149,7 +148,6 @@ namespace HouseMadera.VueModele
         }
 
         private string detailsStatutProduit;
-
         public string DetailsStatutProduit
         {
             get { return  detailsStatutProduit; }
@@ -158,23 +156,6 @@ namespace HouseMadera.VueModele
                 detailsStatutProduit = value;
                 RaisePropertyChanged(() => DetailsStatutProduit);
             }
-        }
-
-        private void WindowLoadedEvent()
-        {
-            Console.WriteLine("window loaded event");
-            // Actions à effectuer au lancement du form :
-            RecupProduitsParProjet();
-            ActualiserTitreForm();
-        }
-
-        private void RecupProduitsParProjet()
-        {
-            using (var dal = new ProduitDAL(DAL.DAL.Bdd))
-            {
-                listeProduit = dal.GetAllProduitsByProjet(selectedProjet);
-            }
-            RaisePropertyChanged(() => ListeProduit);
         }
 
         private bool genBtnActif = false;
@@ -338,8 +319,8 @@ namespace HouseMadera.VueModele
                 Nom = listDg.First().NomProduit,
                 PrixHT = prixTotal,
                 PrixTTC = Convert.ToDecimal(Convert.ToDouble(prixTotal) * tva),
-                StatutDevis = new StatutDevis() { Id = 2, Nom = "Validé" },
-                Pdf = File.ReadAllBytes(DevisActuel + ".pdf")
+                StatutDevis = new StatutDevis() {Id = 2},
+                Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel)
             };
 
             int insertDevis = 0;
@@ -349,20 +330,20 @@ namespace HouseMadera.VueModele
                insertDevis = dDAl.InsertDevis(d);
             }
 
-            if (insertDevis != 0)
+            if (insertDevis > 0)
+            {
+                VueGenererDevis vgd = new VueGenererDevis();
+                ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
+                ((VueModeleGenererDevis)vgd.DataContext).DGen = DGen;
+                vgd.Show();
+            }
+            else
             {
                 var window = Application.Current.Windows.OfType<MetroWindow>().Last();
                 if (window != null)
                 {
                     await window.ShowMessageAsync("Erreur", "Le devis n'a pas été inséré en base.");
                 }
-            }
-            else
-            {
-                VueGenererDevis vgd = new VueGenererDevis();
-                ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
-                ((VueModeleGenererDevis)vgd.DataContext).DGen = DGen;
-                vgd.Show();
             }
         }
 
@@ -401,5 +382,21 @@ namespace HouseMadera.VueModele
             RaisePropertyChanged(() => TitreProjet);
         }
 
+        private void WindowLoadedEvent()
+        {
+            Console.WriteLine("window loaded event");
+            // Actions à effectuer au lancement du form :
+            RecupProduitsParProjet();
+            ActualiserTitreForm();
+        }
+
+        private void RecupProduitsParProjet()
+        {
+            using (var dal = new ProduitDAL(DAL.DAL.Bdd))
+            {
+                listeProduit = dal.GetAllProduitsByProjet(selectedProjet);
+            }
+            RaisePropertyChanged(() => ListeProduit);
+        }
     }
 }
