@@ -2,7 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -422,7 +422,7 @@ namespace HouseMadera.VueModele
                 };
                 try
                 {
-                    using (ClientDAL dal = new ClientDAL("SQLITE"))
+                    using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
                     {
                         int success = isMiseAJourClient ? dal.UpdateClient(client) : dal.InsertClient(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
@@ -446,14 +446,13 @@ namespace HouseMadera.VueModele
         /// <returns></returns>
         private List<Commune> RechercherCommunes(string codePostal)
         {
-            int i;
-            var isCodePostal = int.TryParse(codePostal, out i);
+            var isCodePostal = int.TryParse(codePostal, out int i);
 
             List<Commune> communes = new List<Commune>();
             //TODO modifier "SQLITE" par Bdd
             if (codePostal != string.Empty && isCodePostal)
             {
-                using (var dal = new CommuneDAL("SQLITE"))
+                using (var dal = new CommuneDAL(DAL.DAL.Bdd))
                 {
                     communes = dal.GetFilteredCommunes(Convert.ToInt32(codePostal));
                 }

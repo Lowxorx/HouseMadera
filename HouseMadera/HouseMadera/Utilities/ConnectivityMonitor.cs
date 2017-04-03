@@ -1,7 +1,7 @@
 using System;
 using System.Net.NetworkInformation;
 
-namespace HouseMadera.Utilites
+namespace HouseMadera.Utilities
 {
     public class ConnectivityMonitor
     {

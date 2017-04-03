@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using System.Collections.Generic;
@@ -190,7 +190,7 @@ namespace HouseMadera.VueModele
         public List<Client> AfficherClient()
         {
             List<Client> clients = new List<Client>();
-            using (var dal = new ClientDAL("SQLITE"))
+            using (var dal = new ClientDAL(DAL.DAL.Bdd))
             {
                 clients = dal.GetAllClients();
             }
@@ -207,7 +207,7 @@ namespace HouseMadera.VueModele
         {
             List<Client> clients = new List<Client>();
             //TODO SQLITE à remplacer par Bdd
-            using (var dal = new ClientDAL("SQLITE"))
+            using (var dal = new ClientDAL(DAL.DAL.Bdd))
             {
                 clients = dal.GetFilteredClient(filtre, valeur);
             }

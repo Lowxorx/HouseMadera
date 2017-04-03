@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace HouseMadera.Utilites
+namespace HouseMadera.Utilities
 {
     internal class Logger
     {

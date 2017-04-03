@@ -4,7 +4,7 @@ using System.Windows;
 using HouseMadera.DAL;
 using System.Windows.Controls;
 using HouseMadera.VueModele;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 
 namespace HouseMadera.Vues
 {

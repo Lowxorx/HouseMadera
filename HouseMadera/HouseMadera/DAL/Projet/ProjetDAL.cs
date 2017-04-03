@@ -1,5 +1,5 @@
 ﻿using HouseMadera.Modeles;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -68,13 +68,12 @@ namespace HouseMadera.DAL
             }
         }
 
-
         /// <summary>
         /// Selectionne le premier projet avec l'ID du projet en paramètre
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Un objet Projet</returns>
-        public static Projet SelectionnerProjet(string nomProjet)
+        public Projet SelectionnerProjet(string nomProjet)
         {
             try
             {
@@ -92,7 +91,10 @@ namespace HouseMadera.DAL
                     p.Reference = reader.GetString(reader.GetOrdinal("Reference"));
                     p.UpdateDate = reader.GetDateTime(reader.GetOrdinal("UpdateDate"));
                     p.CreateDate = reader.GetDateTime(reader.GetOrdinal("CreateDate"));
-                    p.Client = ClientDAL.GetClient(reader.GetOrdinal("Client_Id"));
+                    using (ClientDAL cDal = new ClientDAL(Bdd))
+                    {
+                        p.Client = cDal.GetClient(reader.GetOrdinal("Client_Id"));
+                    }
                     p.Commercial = CommercialDAL.GetCommercial(Convert.ToInt32(reader.GetOrdinal("Commercial_Id")));
                 }
                 reader.Close();
@@ -115,7 +117,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="client"></param>
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne insérée</returns>
-        public bool CreerProjet(Modeles.Projet projet)
+        public bool CreerProjet(Projet projet)
         {
             try
             {

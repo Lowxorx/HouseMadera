@@ -72,5 +72,11 @@ namespace HouseMadera.Modeles
         /// Liste des projets du Client
         /// </summary>
         public List<Projet> Projets { get; set; }
+        public override string ToString()
+        {
+            return Prenom + " " + Nom + " de " + Ville;
+        }
+
     }
+
 }

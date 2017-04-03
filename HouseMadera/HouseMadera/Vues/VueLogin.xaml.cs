@@ -1,6 +1,5 @@
-﻿using HouseMadera.Utilites;
+﻿using HouseMadera.Utilities;
 using MahApps.Metro.Controls;
-using System;
 
 namespace HouseMadera.Vues
 {

@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using MySql.Data.MySqlClient;
 using System.Data.SQLite;
 using System.Collections.Generic;
-using HouseMadera.Utilites;
+using HouseMadera.Utilities;
 using HouseMadera.Modeles;
 
 namespace HouseMadera.DAL
