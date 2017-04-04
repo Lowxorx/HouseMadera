@@ -93,8 +93,7 @@ namespace HouseMadera.DAL
 
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int qualiteId;
-                if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(modele.Qualite.Id, out qualiteId))
+                if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(modele.Qualite.Id, out int qualiteId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     qualiteId = Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Qualite.Id).Key;
@@ -132,8 +131,7 @@ namespace HouseMadera.DAL
                 throw new Exception(string.Format("Tentative de mise a jour dans la table {0} avec la clé étrangère Qualite nulle",typeFinitionLocal.GetType()));
 
             //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            int qualiteId;
-            if (!Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.TryGetValue(typeFinitionDistant.Qualite.Id, out qualiteId))
+            if (!Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.TryGetValue(typeFinitionDistant.Qualite.Id, out int qualiteId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 qualiteId = Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == typeFinitionDistant.Qualite.Id).Key;

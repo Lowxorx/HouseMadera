@@ -301,8 +301,7 @@ namespace HouseMadera.DAL
                 throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
 
             //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            int StatutDevisId;
-            if (!Synchronisation<StatutDevisDAL, StatutDevis >.CorrespondanceModeleId.TryGetValue(devis.StatutDevis.Id, out StatutDevisId))
+            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devis.StatutDevis.Id, out int StatutDevisId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 StatutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devis.StatutDevis.Id).Key;
@@ -345,8 +344,7 @@ namespace HouseMadera.DAL
                 throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
 
             //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            int statutDevisId;
-            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devisDistant.StatutDevis.Id, out statutDevisId))
+            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devisDistant.StatutDevis.Id, out int statutDevisId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 statutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devisDistant.StatutDevis.Id).Key;

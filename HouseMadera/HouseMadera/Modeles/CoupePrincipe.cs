@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 namespace HouseMadera.Modeles
 {
+#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     /// <summary>
     /// Classe représentant les Coupes de Principe
     /// </summary>
-    public class CoupePrincipe:ISynchronizable
+    public class CoupePrincipe : ISynchronizable
+#pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
         /// <summary>
         /// Id de la Coupe de Principe

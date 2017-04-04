@@ -101,15 +101,13 @@ namespace HouseMadera.DAL
                 if (modele.Module == null)
                     throw new Exception("Tentative d'insertion dans la table ComposantModule avec la clé étrangère Module nulle");
 
-                int composantId;
-                if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modele.Composant.Id, out composantId))
+                if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modele.Composant.Id, out int composantId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Composant.Id).Key;
                 }
 
-                int moduleId;
-                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modele.Module.Id, out moduleId))
+                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modele.Module.Id, out int moduleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Module.Id).Key;
@@ -153,15 +151,13 @@ namespace HouseMadera.DAL
                 if (modeleDistant.Module == null)
                     throw new Exception("Tentative d'insertion dans la table ComposantModule avec la clé étrangère Module nulle");
 
-                int composantId;
-                if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modeleDistant.Composant.Id, out composantId))
+                if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modeleDistant.Composant.Id, out int composantId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modeleDistant.Composant.Id).Key;
                 }
 
-                int moduleId;
-                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modeleDistant.Module.Id, out moduleId))
+                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modeleDistant.Module.Id, out int moduleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modeleDistant.Module.Id).Key;

@@ -93,8 +93,7 @@ namespace HouseMadera.DAL
 
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int qualiteId;
-                if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(modele.Qualite.Id, out qualiteId))
+                if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(modele.Qualite.Id, out int qualiteId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     qualiteId = Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Qualite.Id).Key;
@@ -135,8 +134,7 @@ namespace HouseMadera.DAL
 
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int qualiteId;
-                if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(typeIsolantDistant.Qualite.Id, out qualiteId))
+                if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(typeIsolantDistant.Qualite.Id, out int qualiteId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     qualiteId = Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == typeIsolantDistant.Qualite.Id).Key;

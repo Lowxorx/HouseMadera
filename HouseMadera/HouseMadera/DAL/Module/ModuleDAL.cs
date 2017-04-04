@@ -104,14 +104,12 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table Module avec la clé étrangère Gamme nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int typeModuleId;
-                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele.TypeModule.Id, out typeModuleId))
+                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele.TypeModule.Id, out int typeModuleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
                 }
-                int gammeId;
-                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out gammeId))
+                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out int gammeId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeModuleId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
@@ -154,14 +152,12 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table Module avec la clé étrangère Gamme nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int typeModuleId;
-                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(moduleDistant.TypeModule.Id, out typeModuleId))
+                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(moduleDistant.TypeModule.Id, out int typeModuleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == moduleDistant.TypeModule.Id).Key;
                 }
-                int gammeId;
-                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(moduleDistant.Gamme.Id, out gammeId))
+                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(moduleDistant.Gamme.Id, out int gammeId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeModuleId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == moduleDistant.TypeModule.Id).Key;

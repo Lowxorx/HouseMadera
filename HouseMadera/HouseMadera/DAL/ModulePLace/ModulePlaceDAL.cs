@@ -112,20 +112,17 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table ModulePlace avec la clé étrangère Produit nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int moduleId;
-                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modele.Module.Id, out moduleId))
+                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modele.Module.Id, out int moduleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Module.Id).Key;
                 }
-                int slotPlaceId;
-                if (!Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.TryGetValue(modele.SlotPlace.Id, out slotPlaceId))
+                if (!Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.TryGetValue(modele.SlotPlace.Id, out int slotPlaceId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     slotPlaceId = Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.SlotPlace.Id).Key;
                 }
-                int produitId;
-                if (!Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.TryGetValue(modele.Produit.Id, out produitId))
+                if (!Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.TryGetValue(modele.Produit.Id, out int produitId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     produitId = Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Produit.Id).Key;
@@ -174,20 +171,17 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table ModulePlace avec la clé étrangère Produit nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int moduleId;
-                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modulePlaceDistant.Module.Id, out moduleId))
+                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modulePlaceDistant.Module.Id, out int moduleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modulePlaceDistant.Module.Id).Key;
                 }
-                int slotPlaceId;
-                if (!Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.TryGetValue(modulePlaceDistant.SlotPlace.Id, out slotPlaceId))
+                if (!Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.TryGetValue(modulePlaceDistant.SlotPlace.Id, out int slotPlaceId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     slotPlaceId = Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modulePlaceDistant.SlotPlace.Id).Key;
                 }
-                int produitId;
-                if (!Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.TryGetValue(modulePlaceDistant.Produit.Id, out produitId))
+                if (!Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.TryGetValue(modulePlaceDistant.Produit.Id, out int produitId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     produitId = Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modulePlaceDistant.Produit.Id).Key;

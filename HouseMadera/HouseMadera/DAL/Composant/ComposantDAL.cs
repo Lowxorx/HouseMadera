@@ -96,8 +96,7 @@ namespace HouseMadera.DAL
 
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int typeComposantId;
-                if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(modele.TypeComposant.Id, out typeComposantId))
+                if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(modele.TypeComposant.Id, out int typeComposantId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeComposantId = Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeComposant.Id).Key;
@@ -136,8 +135,7 @@ namespace HouseMadera.DAL
                 throw new Exception("Tentative d'insertion dans la table Composant avec la clé étrangère TypeComposant nulle");
 
             //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-            int typeComposantId;
-            if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(composantDistant.TypeComposant.Id, out typeComposantId))
+            if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(composantDistant.TypeComposant.Id, out int typeComposantId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 typeComposantId = Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == composantDistant.TypeComposant.Id).Key;

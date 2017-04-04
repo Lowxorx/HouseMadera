@@ -32,7 +32,7 @@ namespace HouseMadera.VueModele
         [PreferredConstructor]
         public VueModeleChoixAdmin()
         {
-            Deconnexion = new RelayCommand(Deco);
+            Logout = new RelayCommand(Deco);
             AdminProjet = new RelayCommand(AProjet);
             AdminClient = new RelayCommand(AClient);
             LancerSynchro = new RelayCommand(Synchroniser);

@@ -90,11 +90,10 @@ namespace HouseMadera.DAL
                 //Vérification des clés étrangères
                 if (modele.TypeIsolant == null)
                     throw new Exception("Tentative d'insertion dans la table Isolant avec la clé étrangère TypeIsolant nulle");
-              
+
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int typeIsolantId;
-                if (!Synchronisation<TypeIsolantDAL, TypeIsolant>.CorrespondanceModeleId.TryGetValue(modele.TypeIsolant.Id, out typeIsolantId))
+                if (!Synchronisation<TypeIsolantDAL, TypeIsolant>.CorrespondanceModeleId.TryGetValue(modele.TypeIsolant.Id, out int typeIsolantId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeIsolantId = Synchronisation<TypeIsolantDAL, TypeIsolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeIsolant.Id).Key;
@@ -132,8 +131,7 @@ namespace HouseMadera.DAL
                 throw new Exception("Tentative de mise a jour dans la table Isolant avec la clé étrangère TypeIsolant nulle");
 
             //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            int typeIsolantId;
-            if (!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(isolantDistant.TypeIsolant.Id, out typeIsolantId))
+            if (!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(isolantDistant.TypeIsolant.Id, out int typeIsolantId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 typeIsolantId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == isolantDistant.TypeIsolant.Id).Key;

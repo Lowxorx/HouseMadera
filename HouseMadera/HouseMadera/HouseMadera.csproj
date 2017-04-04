@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -124,14 +124,39 @@
     <Compile Include="DAL\Client\ClientDAL.cs" />
     <Compile Include="DAL\Commercial\CommercialDAL.cs" />
     <Compile Include="DAL\Commune\CommuneDAL.cs" />
+    <Compile Include="DAL\ComposantModule\ComposantModuleDAL.cs" />
+    <Compile Include="DAL\Composant\ComposantDAL.cs" />
+    <Compile Include="DAL\CoupePrincipe\CoupePrincipeDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\Devis\DevisDAL.cs" />
+    <Compile Include="DAL\Finition\FinitionDAL.cs" />
+    <Compile Include="DAL\Gamme\GammeDAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
+    <Compile Include="DAL\Interfaces\IDAL.cs" />
+    <Compile Include="DAL\Interfaces\ISynchronizable.cs" />
+    <Compile Include="DAL\Isolant\IsolantDAL.cs" />
+    <Compile Include="DAL\MainSynchronisation.cs" />
+    <Compile Include="DAL\ModulePlacePlan\ModulePlacePlanDAL.cs" />
+    <Compile Include="DAL\ModulePLace\ModulePlaceDAL.cs" />
+    <Compile Include="DAL\Module\ModuleDAL.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
+    <Compile Include="DAL\Plan\PlanDAL.cs" />
     <Compile Include="DAL\Produit\ProduitDAL.cs" />
     <Compile Include="DAL\Projet\ProjetDAL.cs" />
+    <Compile Include="DAL\Qualite\QualiteDAL.cs" />
+    <Compile Include="DAL\SlotPlace\SlotPlaceDAL.cs" />
+    <Compile Include="DAL\Slot\SlotDAL.cs" />
     <Compile Include="DAL\SQLiteConnect.cs" />
+    <Compile Include="DAL\StatutClient\StatutClientDAL.cs" />
     <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
+    <Compile Include="DAL\StatutProduit\StatutProduitDAL.cs" />
+    <Compile Include="DAL\Synchronisation.cs" />
+    <Compile Include="DAL\TypeComposant\TypeComposantDAL.cs" />
+    <Compile Include="DAL\TypeFinition\TypeFinitionDAL.cs" />
+    <Compile Include="DAL\TypeIsolant\TypeIsolantDAL.cs" />
+    <Compile Include="DAL\TypeModulePlacable\TypeModulePlacableDAL.cs" />
+    <Compile Include="DAL\TypeModule\TypeModuleDAL.cs" />
+    <Compile Include="DAL\TypeSlot\TypeSlotDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Commune.cs" />
@@ -141,10 +166,13 @@
     <Compile Include="Modeles\DataGenerationDevis.cs" />
     <Compile Include="Modeles\Devis.cs" />
     <Compile Include="Modeles\DevisGenere.cs" />
+    <Compile Include="Modeles\ModulePlacePlan.cs" />
     <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="Modeles\TypeModulePlacable.cs" />
+    <Compile Include="Modeles\TypeModuleTypeSlot.cs" />
     <Compile Include="Utilities\AppInfo.cs" />
     <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
+    <Compile Include="Utilities\DateTimeDbAdaptor.cs" />
     <Compile Include="Utilities\EncryptPw.cs" />
     <Compile Include="Modeles\Finition.cs" />
     <Compile Include="Modeles\Gamme.cs" />
@@ -234,9 +262,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DAL\Plan\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Resources\Icons.xaml">
       <Generator>MSBuild:Compile</Generator>

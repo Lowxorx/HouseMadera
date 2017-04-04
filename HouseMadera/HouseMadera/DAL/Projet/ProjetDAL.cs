@@ -171,18 +171,17 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion  dans la base Projet avec la clé étrangère Commercial nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int clientId;
-                if(!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id, out clientId)){
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    clientId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
-                   
-                }
-
-                int commercialId;
-                if(!Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out commercialId))
+                if (!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id, out int clientId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    commercialId = Synchronisation<CommercialDAL, Commercial >.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
+                    clientId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
+
+                }
+
+                if (!Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out int commercialId))
+                {
+                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    commercialId = Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
                 }
 
                 string sql = @"INSERT INTO Projet (Nom,Reference,Client_Id,Commercial_Id,MiseAJour,Suppression,Creation)

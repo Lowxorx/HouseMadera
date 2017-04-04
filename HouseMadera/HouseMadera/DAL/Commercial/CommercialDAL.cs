@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using HouseMadera.Utilities;
 using HouseMadera.Modeles;
 using System.Data.Common;
-using HouseMadera.Utilities;
 
 namespace HouseMadera.DAL
 {

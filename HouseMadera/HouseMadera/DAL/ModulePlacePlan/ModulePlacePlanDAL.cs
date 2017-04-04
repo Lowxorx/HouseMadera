@@ -99,14 +99,12 @@ namespace HouseMadera.DAL
 
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int modulePlaceId;
-                if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele.ModulePlace.Id, out modulePlaceId))
+                if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele.ModulePlace.Id, out int modulePlaceId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.ModulePlace.Id).Key;
                 }
-                int planId;
-                if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele.Plan.Id, out planId))
+                if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele.Plan.Id, out int planId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     planId = Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Plan.Id).Key;
@@ -151,14 +149,12 @@ namespace HouseMadera.DAL
 
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int modulePlaceId;
-                if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele2.ModulePlace.Id, out modulePlaceId))
+                if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele2.ModulePlace.Id, out int modulePlaceId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.ModulePlace.Id).Key;
                 }
-                int planId;
-                if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele2.Plan.Id, out planId))
+                if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele2.Plan.Id, out int planId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     planId = Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.Plan.Id).Key;

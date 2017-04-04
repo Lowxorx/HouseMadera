@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 
 namespace HouseMadera.Modeles
+{ 
     public class Client : ISynchronizable
     /// <summary>
     /// Classe représentant les Clients
@@ -75,6 +76,7 @@ namespace HouseMadera.Modeles
         /// Liste des projets du Client
         /// </summary>
         public List<Projet> Projets { get; set; }
+        public DateTime? MiseAJour { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #region OVERRIDE
         public override bool Equals(object obj)

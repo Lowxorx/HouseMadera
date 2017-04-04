@@ -3,7 +3,9 @@ using System;
 
 namespace HouseMadera.Modeles
 {
+#pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     public class TypeModulePlacable : ISynchronizable
+#pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
         public int Id { get; set; }
         public string Nom { get; set; }

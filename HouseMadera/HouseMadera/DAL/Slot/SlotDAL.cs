@@ -93,8 +93,7 @@ namespace HouseMadera.DAL
 
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                int typeSlotId;
-                if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out typeSlotId))
+                if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out int typeSlotId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeSlot.Id).Key;
@@ -131,8 +130,7 @@ namespace HouseMadera.DAL
                 throw new Exception("Tentative de mise a jour dans la table Slot avec la clé étrangère TypeSlot nulle");
 
             //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            int typeSlotId;
-            if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(slotDistant.TypeSlot.Id, out typeSlotId))
+            if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(slotDistant.TypeSlot.Id, out int typeSlotId))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == slotDistant.TypeSlot.Id).Key;
