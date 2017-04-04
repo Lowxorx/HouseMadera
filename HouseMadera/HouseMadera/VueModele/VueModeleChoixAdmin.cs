@@ -74,7 +74,7 @@ namespace HouseMadera.VueModele
             ((VueModeleChoixProjet)vcp.DataContext).CommercialConnecte = CommercialConnecte;
             ((VueModeleChoixProjet)vcp.DataContext).VuePrecedente = window;
             vcp.Show();
-            window.Hide();
+            window.Close();
         }
     }
 }

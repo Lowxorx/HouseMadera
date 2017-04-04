@@ -22,7 +22,7 @@ namespace HouseMadera.VueModele
             NouveauProjet = new RelayCommand(CreationProjet);
             ReprendreProjet = new RelayCommand(RepriseProjet);
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
-            Retour = new RelayCommand(RetourAdminProjet);
+            Retour = new RelayCommand(RetourChoixAdmin);
             Deconnexion = new RelayCommand(Logout);
 
             // Actions à effectuer au chargement de la vue :
@@ -201,7 +201,7 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private async void RetourAdminProjet()
+        private async void RetourChoixAdmin()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
@@ -216,8 +216,10 @@ namespace HouseMadera.VueModele
 
                 if (result == MessageDialogResult.Affirmative)
                 {
+                    VueChoixAdmin vca = new VueChoixAdmin();
+                    ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = commercialConnecte;
+                    vca.Show();
                     window.Close();
-                    vuePrecedente.Show();
                 }
             }
         }

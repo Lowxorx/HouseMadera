@@ -80,8 +80,8 @@ namespace HouseMadera.VueModele
                 {
                     VueChoixProjet vcp = new VueChoixProjet();
                     ((VueModeleChoixProjet)vcp.DataContext).CommercialConnecte = commercialConnecte;
-                    window.Close();
                     vcp.Show();
+                    window.Close();
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace HouseMadera.VueModele
             IsFormulaireOk = VerifierTouslesChamps();
             if (IsFormulaireOk)
             {
-
+                // TODO
             }
 
         }
@@ -127,7 +127,7 @@ namespace HouseMadera.VueModele
         private void ChoisirOuCreerClient()
         {
             VueClientList vcl = new VueClientList();
-
+            // TODO
         }
 
 

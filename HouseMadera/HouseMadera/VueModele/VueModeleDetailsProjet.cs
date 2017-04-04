@@ -32,6 +32,7 @@ namespace HouseMadera.VueModele
             GenererDevis = new RelayCommand(GenDevis);
             GenererPlan = new RelayCommand(GenPlan);
             SelectedProduitCmd = new RelayCommand(ChangeDetailsProduits);
+            NouveauProduit = new RelayCommand(CreerUnProduit);
         }
 
         public ICommand WindowLoaded { get; private set; }
@@ -41,6 +42,8 @@ namespace HouseMadera.VueModele
         public ICommand GenererDevis { get; private set; }
         public ICommand GenererPlan { get; private set; }
         public ICommand SelectedProduitCmd { get; private set; }
+        public ICommand NouveauProduit { get; private set; }
+
 
         private MetroWindow vuePrecedente;
         public MetroWindow VuePrecedente
@@ -235,31 +238,19 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private async void EditionProduit()
+        private void EditionProduit()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            if (window != null)
-            {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
+            // Lancement appli 3D avec param : PROJET ID et PRODUIT ID
+        }
 
-                if (result == MessageDialogResult.Affirmative)
-                {
-                    VueLogin vl = new VueLogin();
-                    window.Close();
-                    vl.Show();
-
-                }
-            }
+        private void CreerUnProduit()
+        {
+            // Lancement appli 3D avec param : PROJET ID 
         }
 
         private async void GenDevis()
         {
+            var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             // Génération du devis 
             List<DataGenerationDevis> listDg = new List<DataGenerationDevis>();
             using (DevisDAL dDal = new DevisDAL(DAL.DAL.Bdd))
@@ -323,28 +314,38 @@ namespace HouseMadera.VueModele
                 Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel)
             };
 
-            int insertDevis = 0;
 
-            using (DevisDAL dDAl = new DevisDAL(DAL.DAL.Bdd))
+            try
             {
-               insertDevis = dDAl.InsertDevis(d);
-            }
+                int insertDevis = 0;
 
-            if (insertDevis > 0)
-            {
-                VueGenererDevis vgd = new VueGenererDevis();
-                ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
-                ((VueModeleGenererDevis)vgd.DataContext).DGen = DGen;
-                vgd.Show();
-            }
-            else
-            {
-                var window = Application.Current.Windows.OfType<MetroWindow>().Last();
-                if (window != null)
+                using (DevisDAL dDAl = new DevisDAL(DAL.DAL.Bdd))
                 {
-                    await window.ShowMessageAsync("Erreur", "Le devis n'a pas été inséré en base.");
+                    insertDevis = dDAl.InsertDevis(d);
+                }
+
+                if (insertDevis > 0)
+                {
+                    VueGenererDevis vgd = new VueGenererDevis();
+                    ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
+                    ((VueModeleGenererDevis)vgd.DataContext).DGen = DGen;
+                    vgd.Show();
+                }
+                else
+                {
+                    if (window != null)
+                    {
+                        await window.ShowMessageAsync("Erreur", "Le devis n'a pas été inséré en base.");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+
+                await window.ShowMessageAsync("Erreur", ex.Message);
+                Logger.WriteEx(ex);
+            }
+
         }
 
         private string GenererPdfDevis()
@@ -371,9 +372,13 @@ namespace HouseMadera.VueModele
             return DevisActuel;
         }
 
-        private void GenPlan()
+        private async void GenPlan()
         {
-
+            var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+            if (window != null)
+            {
+                await window.ShowMessageAsync("Avertissement", "Cette fonctionnalité n'est pas encore implémentée");
+            }
         }
 
         private void ActualiserTitreForm()
