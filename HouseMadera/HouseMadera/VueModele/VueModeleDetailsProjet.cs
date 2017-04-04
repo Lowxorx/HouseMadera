@@ -26,7 +26,7 @@ namespace HouseMadera.VueModele
         public VueModeleDetailsProjet()
         {
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
-            Deconnexion = new RelayCommand(Logout);
+            Deconnexion = new RelayCommand(Deco);
             Retour = new RelayCommand(RetourAdminProjet);
             EditerProduit = new RelayCommand(EditionProduit);
             GenererDevis = new RelayCommand(GenDevis);
@@ -192,7 +192,7 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private async void Logout()
+        private async void Deco()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
             if (window != null)

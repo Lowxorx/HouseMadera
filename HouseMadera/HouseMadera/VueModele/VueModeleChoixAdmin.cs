@@ -16,7 +16,7 @@ namespace HouseMadera.VueModele
     {
         public ICommand AdminProjet { get; private set; }
         public ICommand AdminClient { get; private set; }
-        public ICommand Logout { get; private set; }
+        public ICommand Deconnexion { get; private set; }
         public ICommand LancerSynchro { get; set; }
         private bool isSynchronisationActive;
         public bool IsSynchronisationActive
@@ -32,7 +32,7 @@ namespace HouseMadera.VueModele
         [PreferredConstructor]
         public VueModeleChoixAdmin()
         {
-            Logout = new RelayCommand(Deco);
+            Deconnexion = new RelayCommand(Deco);
             AdminProjet = new RelayCommand(AProjet);
             AdminClient = new RelayCommand(AClient);
             LancerSynchro = new RelayCommand(Synchroniser);

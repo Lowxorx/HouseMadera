@@ -57,7 +57,6 @@
                                                    Width=32,
                                                    Height=32}" />
             <Button
-                x:Name="BtLogout"
                 Width="65"
                 Height="65"
                 Margin="1453,10,0,0"

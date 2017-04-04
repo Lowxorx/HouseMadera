@@ -29,7 +29,6 @@
     <Grid>
         <Grid Margin="0,0,0,928" Background="#FFA29A9A">
             <Button
-                x:Name="BtLogout"
                 Width="65"
                 Height="65"
                 Margin="1453,10,0,0"

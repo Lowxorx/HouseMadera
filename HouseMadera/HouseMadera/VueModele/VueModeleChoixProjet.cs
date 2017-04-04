@@ -23,7 +23,7 @@ namespace HouseMadera.VueModele
             ReprendreProjet = new RelayCommand(RepriseProjet);
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
             Retour = new RelayCommand(RetourChoixAdmin);
-            Deconnexion = new RelayCommand(Logout);
+            Deconnexion = new RelayCommand(Deco);
 
             // Actions à effectuer au chargement de la vue :
             ChargerProjet();
@@ -279,7 +279,7 @@ namespace HouseMadera.VueModele
             SelectionnerCommercialDefaut();
         }
 
-        private async void Logout()
+        private async void Deco()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().First();
             if (window != null)

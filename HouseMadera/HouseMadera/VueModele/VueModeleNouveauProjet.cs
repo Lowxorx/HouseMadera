@@ -23,7 +23,7 @@ namespace HouseMadera.VueModele
             Retour = new RelayCommand(RetourArriere);
             ValiderProjet = new RelayCommand(VerifierEtValiderProjet);
             SelectionnerClient = new RelayCommand(ChoisirOuCreerClient);
-            Deconnexion = new RelayCommand(Logout);
+            Deconnexion = new RelayCommand(Deco);
 
             // Actions à effectuer au chargement de la vue :
             ProjetDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -91,7 +91,7 @@ namespace HouseMadera.VueModele
             Console.WriteLine("window loaded event");
         }
 
-        private async void Logout()
+        private async void Deco()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
