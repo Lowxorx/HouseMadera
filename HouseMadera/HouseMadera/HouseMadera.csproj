@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -9,12 +9,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HouseMadera</RootNamespace>
     <AssemblyName>HouseMadera</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -56,6 +58,9 @@
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.11.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.11\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
@@ -68,16 +73,28 @@
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MySql.Data">
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data.Entity.EF6">
-      <HintPath>..\packages\MySql.Data.Entity.6.9.9\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.103\lib\net46\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.EF6.1.0.103\lib\net46\System.Data.SQLite.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Linq.1.0.103\lib\net46\System.Data.SQLite.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -104,33 +121,85 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Modèles\Client.cs" />
-    <Compile Include="Modèles\Commercial.cs" />
-    <Compile Include="Modèles\Composant.cs" />
-    <Compile Include="Modèles\CoupePrincipe.cs" />
-    <Compile Include="Modèles\Devis.cs" />
-    <Compile Include="Modèles\Finition.cs" />
-    <Compile Include="Modèles\Gamme.cs" />
-    <Compile Include="Modèles\Isolant.cs" />
-    <Compile Include="Modèles\Module.cs" />
-    <Compile Include="Modèles\ModulePlace.cs" />
-    <Compile Include="Modèles\MysqlConnector.cs" />
-    <Compile Include="Modèles\Plan.cs" />
-    <Compile Include="Modèles\Produit.cs" />
-    <Compile Include="Modèles\Projet.cs" />
-    <Compile Include="Modèles\Qualite.cs" />
-    <Compile Include="Modèles\Slot.cs" />
-    <Compile Include="Modèles\SlotPlace.cs" />
-    <Compile Include="Modèles\StatutClient.cs" />
-    <Compile Include="Modèles\StatutDevis.cs" />
-    <Compile Include="Modèles\TypeComposant.cs" />
-    <Compile Include="Modèles\TypeFinition.cs" />
-    <Compile Include="Modèles\TypeIsolant.cs" />
-    <Compile Include="Modèles\TypeModule.cs" />
-    <Compile Include="Modèles\TypeSlot.cs" />
-    <Compile Include="Vue - Modèle\VueModeleChoixProjet.cs" />
+    <Compile Include="DAL\Client\ClientDAL.cs" />
+    <Compile Include="DAL\Commercial\CommercialDAL.cs" />
+    <Compile Include="DAL\Commune\CommuneDAL.cs" />
+    <Compile Include="DAL\DAL.cs" />
+    <Compile Include="DAL\Devis\DevisDAL.cs" />
+    <Compile Include="DAL\IDbConnection.cs" />
+    <Compile Include="DAL\MySqlConnect.cs" />
+    <Compile Include="DAL\Produit\ProduitDAL.cs" />
+    <Compile Include="DAL\Projet\ProjetDAL.cs" />
+    <Compile Include="DAL\SQLiteConnect.cs" />
+    <Compile Include="DAL\StatutDevis\StatutDevisDAL.cs" />
+    <Compile Include="Modeles\Client.cs" />
+    <Compile Include="Modeles\Commercial.cs" />
+    <Compile Include="Modeles\Commune.cs" />
+    <Compile Include="Modeles\Composant.cs" />
+    <Compile Include="Modeles\ComposantModule.cs" />
+    <Compile Include="Modeles\CoupePrincipe.cs" />
+    <Compile Include="Modeles\DataGenerationDevis.cs" />
+    <Compile Include="Modeles\Devis.cs" />
+    <Compile Include="Modeles\DevisGenere.cs" />
+    <Compile Include="Modeles\StatutProduit.cs" />
+    <Compile Include="Modeles\TypeModulePlacable.cs" />
+    <Compile Include="Utilities\AppInfo.cs" />
+    <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
+    <Compile Include="Utilities\EncryptPw.cs" />
+    <Compile Include="Modeles\Finition.cs" />
+    <Compile Include="Modeles\Gamme.cs" />
+    <Compile Include="Modeles\Isolant.cs" />
+    <Compile Include="Modeles\Module.cs" />
+    <Compile Include="Modeles\ModulePlace.cs" />
+    <Compile Include="Modeles\Plan.cs" />
+    <Compile Include="Modeles\Produit.cs" />
+    <Compile Include="Modeles\Projet.cs" />
+    <Compile Include="Utilities\Logger.cs" />
+    <Compile Include="Utilities\PwBoxAssistant.cs" />
+    <Compile Include="Modeles\Qualite.cs" />
+    <Compile Include="Modeles\Slot.cs" />
+    <Compile Include="Modeles\SlotPlace.cs" />
+    <Compile Include="Modeles\StatutClient.cs" />
+    <Compile Include="Modeles\StatutDevis.cs" />
+    <Compile Include="Modeles\TypeComposant.cs" />
+    <Compile Include="Modeles\TypeFinition.cs" />
+    <Compile Include="Modeles\TypeIsolant.cs" />
+    <Compile Include="Modeles\TypeModule.cs" />
+    <Compile Include="Modeles\TypeSlot.cs" />
+    <Compile Include="Utilities\ConnectivityMonitor.cs" />
+    <Compile Include="Utilities\RegexUtilities.cs" />
+    <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
+    <Compile Include="VueModele\VueModeleChoixProjet.cs" />
+    <Compile Include="VueModele\VueModeleClientEdit.cs" />
+    <Compile Include="VueModele\VueModeleClientList.cs" />
+    <Compile Include="VueModele\VueModeleCommune.cs" />
+    <Compile Include="VueModele\VueModeleDetailsProjet.cs" />
+    <Compile Include="VueModele\VueModeleGenererDevis.cs" />
+    <Compile Include="VueModele\VueModeleLogin.cs" />
+    <Compile Include="VueModele\VueModeleNouveauProjet.cs" />
+    <Compile Include="Vues\VueChoixAdmin.xaml.cs">
+      <DependentUpon>VueChoixAdmin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vues\VueChoixProjet.xaml.cs">
       <DependentUpon>VueChoixProjet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueClientEdit.xaml.cs">
+      <DependentUpon>VueClientEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueClientList.xaml.cs">
+      <DependentUpon>VueClientList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueDetailsProjet.xaml.cs">
+      <DependentUpon>VueDetailsProjet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueGenererDevis.xaml.cs">
+      <DependentUpon>VueGenererDevis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueLogin.xaml.cs">
+      <DependentUpon>VueLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vues\VueNouveauProjet.xaml.cs">
+      <DependentUpon>VueNouveauProjet.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -158,11 +227,15 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Resources\Entypo.ttf" />
+    <None Include="Resources\HouseMaderaSqlite.db" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DAL\Plan\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\Icons.xaml">
@@ -173,23 +246,62 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Vues\VueChoixAdmin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Vues\VueChoixProjet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Vues\VueClientEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Vues\VueClientList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Vues\VueDetailsProjet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueGenererDevis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Vues\VueLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vues\VueNouveauProjet.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\logomaderacolorgreyclean.png">
+    <Content Include="Resources\adminclient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\adminprojet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\Entypo-license.txt" />
     <Content Include="Resources\logomaderacolor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\logomaderacolorgrey.png" />
     <Resource Include="Resources\WindowsIcons-license.txt" />
+    <Resource Include="Resources\logomaderacolorgreyclean.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.103\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
