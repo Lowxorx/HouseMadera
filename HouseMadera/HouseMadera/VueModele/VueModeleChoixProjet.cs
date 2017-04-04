@@ -185,7 +185,7 @@ namespace HouseMadera.VueModele
         {
             using (CommercialDAL dal = new CommercialDAL(DAL.DAL.Bdd))
             {
-                ListCommerciaux = new ObservableCollection<Commercial>(dal.ChargerCommerciaux());
+                ListCommerciaux = new ObservableCollection<Commercial>(dal.GetAllModeles());
                 RaisePropertyChanged(() => ListCommerciaux);
             }
         }

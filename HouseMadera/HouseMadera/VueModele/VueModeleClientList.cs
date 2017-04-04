@@ -192,7 +192,7 @@ namespace HouseMadera.VueModele
             List<Client> clients = new List<Client>();
             using (var dal = new ClientDAL(DAL.DAL.Bdd))
             {
-                clients = dal.GetAllClients();
+                clients = dal.GetAllModeles();
             }
             return clients;
         }

@@ -1,40 +1,69 @@
-﻿using System.Collections.Generic;
+﻿using HouseMadera.DAL;
+using System.Collections.Generic;
+using System;
 
 namespace HouseMadera.Modeles
 {
-    /// <summary>
-    /// Classe représentant les Slots Placés
-    /// </summary>
-    public class SlotPlace
+    public class SlotPlace : ISynchronizable
     {
         /// <summary>
         /// Id du Slot Place
         /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Abscisse du Slot Place
-        /// </summary>
-        public int Abscisse { get; set; }
-
-        /// <summary>
-        /// Ordonnee du Slot Place
-        /// </summary>
-        public int Ordonnee { get; set; }
-
-        /// <summary>
-        /// Module du Slot Place
-        /// </summary>
+        public string Libelle { get; set; }
         public Module Module { get; set; }
-
-        /// <summary>
-        /// Slot du Slot Place
-        /// </summary>
         public Slot Slot { get; set; }
+        public TypeModulePlacable TypeModulePlacable { get; set; }
+        public DateTime? MiseAJour { get; set; }
+        public DateTime? Suppression { get; set; }
+        public DateTime? Creation { get; set; }
 
-        /// <summary>
-        /// Id tu Type Module Placable
-        /// </summary>
-        public int TypeModulePlacable_Id { get; set; }
+        #region OVERRIDE
+        public override string ToString()
+        {
+            return string.Format("Libelle {0} ", Libelle);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            SlotPlace s = (SlotPlace)obj;
+
+            return (Creation == s.Creation) && (Libelle == s.Libelle);
+        }
+        #endregion
+
+        public void Copy<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+            SlotPlace slotPLace = modele as SlotPlace;
+            Module = slotPLace.Module;
+            Slot = slotPLace.Slot;
+            TypeModulePlacable = slotPLace.TypeModulePlacable;
+            Libelle = slotPLace.Libelle;
+            MiseAJour = slotPLace.MiseAJour;
+            Creation = slotPLace.Creation;
+            Suppression = slotPLace.Suppression;
+        }
+
+        public bool IsUpToDate<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+            if (modele.MiseAJour == null)
+                return true;
+            else
+                return MiseAJour == modele.MiseAJour;
+        }
+
+        public bool IsDeleted<TMODELE>(TMODELE modele) where TMODELE : ISynchronizable
+        {
+            if (modele.Suppression != null && !Suppression.HasValue)
+            {
+                Suppression = modele.Suppression;
+                return true;
+            }
+
+            return false;
+        }
     }
 }

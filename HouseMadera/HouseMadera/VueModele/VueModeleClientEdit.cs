@@ -418,13 +418,17 @@ namespace HouseMadera.VueModele
                     Telephone = Telephone,
                     Mobile = Mobile,
                     Email = Email,
-                    StatutClient = StatutClient ? ACTIF : INACTIF
+                    StatutClient = StatutClient ? ACTIF : INACTIF,
+                    MiseAJour = isMiseAJourClient ? DateTime.Now : (DateTime?)null,
+                    Suppression = null,
+                    Creation = !isMiseAJourClient ? (DateTime?)null:DateTime.Now
+
                 };
                 try
                 {
                     using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
                     {
-                        int success = isMiseAJourClient ? dal.UpdateClient(client) : dal.InsertClient(client);
+                        int success = isMiseAJourClient ? dal.UpdateModele(client,null) : dal.InsertModele(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
                     }

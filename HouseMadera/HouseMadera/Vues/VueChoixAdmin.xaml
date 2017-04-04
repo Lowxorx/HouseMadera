@@ -26,12 +26,31 @@
         <vuemod:VueModeleChoixAdmin />
     </Window.DataContext>
     <Grid>
-        <Grid Margin="0,0,0,928" Background="#FFA29A9A">
+        <Grid Margin="0,0,0,968" Background="#FF676767">
             <Button
-                x:Name="BtLogout"
-                Width="65"
-                Height="65"
-                Margin="1453,10,0,0"
+                x:Name="btnSynchroniser"
+                Width="44"
+                Height="44"
+                Margin="1482,4,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                BorderThickness="0"
+                Command="{Binding LancerSynchro}"
+                Content="{iconPacks:PackIconFontAwesome Kind=Download,
+                                                     Width=32,
+                                                     Height=32}">
+                <Button.BorderBrush>
+                    <SolidColorBrush Opacity="0" Color="{DynamicResource Gray6}" />
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Opacity="0" Color="#FFF7F7F7" />
+                </Button.Background>
+            </Button>
+            <Button
+                x:Name="btLogout"
+                Width="44"
+                Height="44"
+                Margin="1482,4,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="#FFF7F7F7"
@@ -96,7 +115,10 @@
                 </StackPanel>
             </Button>
         </Grid>
-        <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
+        <Grid Margin="0,968,0,0" Background="#FF676767" >
+
+        </Grid>
+
     </Grid>
 </controls:MetroWindow>
 

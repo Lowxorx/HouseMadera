@@ -14,7 +14,7 @@ namespace HouseMadera.Utilities
         private static string EncodeIso(string s)
         {
             // Encodage de la chaine de caractères en iso
-            var bytes = Encoding.Default.GetBytes(s);
+            byte[] bytes = Encoding.Default.GetBytes(s);
             s = Encoding.GetEncoding("iso-8859-1").GetString(bytes);
             return s;
         }
@@ -23,12 +23,12 @@ namespace HouseMadera.Utilities
         {
             if (IsEnabled)
             {
-                var s = EncodeIso(sE);
+                string s = EncodeIso(sE);
                 try
                 {
                     if (File.Exists(logPath))
                         using (
-                            var sw = new StreamWriter(File.Open(logPath, FileMode.Append),
+                            StreamWriter sw = new StreamWriter(File.Open(logPath, FileMode.Append),
                                 Encoding.GetEncoding("iso-8859-1")))
                         {
                             sw.WriteLine(DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToLongTimeString() +
@@ -36,7 +36,7 @@ namespace HouseMadera.Utilities
                         }
                     else
                         using (
-                            var sw = new StreamWriter(File.Open(logPath, FileMode.Create),
+                            StreamWriter sw = new StreamWriter(File.Open(logPath, FileMode.Create),
                                 Encoding.GetEncoding("iso-8859-1")))
                         {
                             sw.WriteLine(DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToLongTimeString() +
@@ -62,7 +62,7 @@ namespace HouseMadera.Utilities
                 {
                     if (File.Exists(logPath))
                         using (
-                            var sw = new StreamWriter(File.Open(logPath, FileMode.Append),
+                            StreamWriter sw = new StreamWriter(File.Open(logPath, FileMode.Append),
                                 Encoding.GetEncoding("iso-8859-1")))
                         {
                             sw.WriteLine(DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToLongTimeString() +
@@ -84,7 +84,7 @@ namespace HouseMadera.Utilities
                         }
                     else
                         using (
-                            var sw = new StreamWriter(File.Open(logPath, FileMode.Create),
+                            StreamWriter sw = new StreamWriter(File.Open(logPath, FileMode.Create),
                                 Encoding.GetEncoding("iso-8859-1")))
                         {
                             sw.WriteLine(DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToLongTimeString() +
