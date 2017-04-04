@@ -1,4 +1,3 @@
-﻿
 using MahApps.Metro.Controls;
 
 namespace HouseMadera.Vues
