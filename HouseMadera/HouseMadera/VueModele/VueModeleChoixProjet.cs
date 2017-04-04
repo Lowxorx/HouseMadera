@@ -66,6 +66,14 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private MetroWindow vuePrecedente;
+
+        public MetroWindow VuePrecedente
+        {
+            get { return vuePrecedente; }
+            set { vuePrecedente = value; }
+        }
+
 
         private Commercial commercialSelectionne;
         public Commercial CommercialSelectionne
@@ -209,6 +217,7 @@ namespace HouseMadera.VueModele
                 if (result == MessageDialogResult.Affirmative)
                 {
                     window.Close();
+                    vuePrecedente.Show();
                 }
             }
         }

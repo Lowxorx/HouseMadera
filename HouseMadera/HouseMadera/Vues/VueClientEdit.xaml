@@ -5,9 +5,7 @@
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:local="clr-namespace:HouseMadera.Vues"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:utilites="clr-namespace:HouseMadera.Utilites"
     xmlns:vuemod="clr-namespace:HouseMadera.VueModele"
     Width="1536"
     Height="1024"
@@ -47,7 +45,7 @@
 
 
     <Grid>
-        <Grid Margin="0,-3,0,931" Background="#FFA29A9A">
+        <Grid Margin="0,0,0,928" Background="#FFA29A9A">
             <Label
                 x:Name="Label"
                 Margin="618,10,616,0"

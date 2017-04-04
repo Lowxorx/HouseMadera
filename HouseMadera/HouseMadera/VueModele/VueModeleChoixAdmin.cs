@@ -19,13 +19,13 @@ namespace HouseMadera.VueModele
     {
         public ICommand AdminProjet { get; private set; }
         public ICommand AdminClient { get; private set; }
-        public ICommand Logout { get; private set; }
+        public ICommand Deconnexion { get; private set; }
 
 
         [PreferredConstructor]
         public VueModeleChoixAdmin()
         {
-            Logout = new RelayCommand(Deco);
+            Deconnexion = new RelayCommand(Deco);
             AdminProjet = new RelayCommand(AProjet);
             AdminClient = new RelayCommand(AClient);
         }
@@ -72,8 +72,9 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             VueChoixProjet vcp = new VueChoixProjet();
             ((VueModeleChoixProjet)vcp.DataContext).CommercialConnecte = CommercialConnecte;
+            ((VueModeleChoixProjet)vcp.DataContext).VuePrecedente = window;
             vcp.Show();
-            window.Close();
+            window.Hide();
         }
     }
 }
