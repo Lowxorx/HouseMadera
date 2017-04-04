@@ -218,9 +218,8 @@ namespace HouseMadera.DAL
             if (produitDistant.StatutProduit == null)
                 throw new Exception("Tentative d'insertion dans la table Produit avec la clé étrangère StatutProduit nulle");
 
-
             //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-            if (!Synchronisation<ProjetDAL, Projet>.CorrespondanceModeleId.TryGetValue(produitDistant.Projet.Id, out int projetId))
+            if (!Synchronisation<ProjetDAL, Projet>.CorrespondanceModeleId.TryGetValue(produitDistant.Projet.Id, out int projetId ))
             {
                 //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                 projetId = Synchronisation<ProjetDAL, Projet>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == produitDistant.Projet.Id).Key;

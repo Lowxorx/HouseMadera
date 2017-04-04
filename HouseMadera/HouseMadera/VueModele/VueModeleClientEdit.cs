@@ -307,15 +307,15 @@ namespace HouseMadera.VueModele
                 {
                     case "Nom":
                         result = reg.IsNomInvalide(Nom) ? "Le nom ne doit pas contenir de chiffre" : string.Empty;
-                        isChampsNomOk = Nom == null || result != string.Empty ? false : true;
+                        isChampsNomOk = string.IsNullOrEmpty(Nom) || result != string.Empty ? false : true;
                         break;
                     case "Prenom":
                         result = reg.IsNomInvalide(Prenom) ? "Le prenom ne doit pas contenir de chiffre" : string.Empty;
-                        isChampsPrenomOk = Prenom == null || result != string.Empty ? false : true;
+                        isChampsPrenomOk = string.IsNullOrEmpty(Prenom) || result != string.Empty ? false : true;
                         break;
                     case "Voie":
                         result = reg.HasSpecialCharacters(Voie) ? "Caractères spéciaux non admis " : string.Empty;
-                        isChampsVoieOk = Voie == null || result != string.Empty ? false : true;
+                        isChampsVoieOk = string.IsNullOrEmpty(Voie) || result != string.Empty ? false : true;
                         break;
                     case "Complement":
                         result = reg.HasSpecialCharacters(Complement) ? "Caractères spéciaux non admis " : string.Empty;
@@ -323,7 +323,7 @@ namespace HouseMadera.VueModele
                         break;
                     case "Mobile":
                         result = reg.IsValidTelephoneNumber(Mobile) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
-                        isChampsMobileOk = Mobile == null || result != string.Empty ? false : true;
+                        isChampsMobileOk = string.IsNullOrEmpty(Mobile) || result != string.Empty ? false : true;
                         break;
                     case "Telephone":
                         result = reg.IsValidTelephoneNumber(Telephone) ? string.Empty : "Format admis ex: 0xxxxxxxxx";
@@ -332,15 +332,15 @@ namespace HouseMadera.VueModele
                         break;
                     case "Email":
                         result = reg.IsValidEmail(Email) ? string.Empty : "Format de l'e-mail non valide ex: jean.dupont@exemple.fr ";
-                        isChampsEmailOk = Email == null || result != string.Empty ? false : true;
+                        isChampsEmailOk = string.IsNullOrEmpty(Email) || result != string.Empty ? false : true;
                         break;
                     case "Localite":
                         result = reg.HasSpecialCharacters(Localite) ? "Caractères spéciaux non admis " : string.Empty;
-                        isChampsLocaliteOk = Localite == null || result != string.Empty ? false : true;
+                        isChampsLocaliteOk = string.IsNullOrEmpty(Localite) || result != string.Empty ? false : true;
                         break;
                     case "CodePostal":
                         result = reg.HasSpecialCharacters(CodePostal) ? "Caractères spéciaux non admis " : string.Empty;
-                        isChampsCodePostalOk = CodePostal == null || result != string.Empty ? false : true;
+                        isChampsCodePostalOk = string.IsNullOrEmpty(CodePostal) || result != string.Empty ? false : true;
                         break;
                 }
 

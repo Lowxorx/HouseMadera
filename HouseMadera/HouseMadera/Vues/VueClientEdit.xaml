@@ -126,7 +126,7 @@
                     Canvas.Top="58"
                     Width="560"
                     Height="25"
-                    Text="{Binding Nom, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
 
@@ -143,7 +143,7 @@
                     Canvas.Right="20"
                     Width="560"
                     Height="25"
-                    Text="{Binding Prenom, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    Text="{Binding Prenom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
 
@@ -198,6 +198,7 @@
                     Width="183"
                     Height="25"
                     Text="{Binding CodePostal, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}"
                     TextWrapping="Wrap" />
                 <ListBox
                     x:Name="ListBoxSuggestion"
@@ -219,7 +220,7 @@
                     Canvas.Top="310"
                     Width="235"
                     Height="25"
-                    IsReadOnly="False"
+                    IsReadOnly="True"
                     Text="{Binding Localite, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap" />
                 <Label
@@ -242,7 +243,7 @@
                     Canvas.Top="433"
                     Width="180"
                     Height="25"
-                    Text="{Binding Mobile, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    Text="{Binding Mobile, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
                 <Label
@@ -256,7 +257,8 @@
                     Canvas.Top="431"
                     Width="180"
                     Height="25"
-                    Text="{Binding Telephone, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    Text="{Binding Telephone, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}"
                     TextWrapping="Wrap" />
                 <Label
                     x:Name="LabelEmailSignUp"
@@ -278,7 +280,7 @@
                     Canvas.Top="544"
                     Width="180"
                     Height="25"
-                    Text="{Binding Email, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
+                    Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
 

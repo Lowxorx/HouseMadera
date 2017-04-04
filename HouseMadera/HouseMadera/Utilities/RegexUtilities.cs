@@ -28,7 +28,6 @@ namespace HouseMadera.Utilities
                 return false;
             try
             {
-                //TODO à modifier
                 return Regex.IsMatch(email,
                       @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" +
                       @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$",
@@ -60,7 +59,7 @@ namespace HouseMadera.Utilities
         public bool IsValidTelephoneNumber(string telephone)
         {
             invalid = false;
-            //TODO à modifier
+            
             try
             {
                 if (string.IsNullOrEmpty(telephone))
@@ -80,7 +79,7 @@ namespace HouseMadera.Utilities
 
             if (string.IsNullOrEmpty(value))
                 return false;
-            var match = Regex.Match(value, @"\d+"); //Le nom ne doit pas contenir de numero
+            var match = Regex.Match(value, @"[_`("")\'!@#;.+/`\(\^\{\)\]@\[\]§%€\$\*\d+£+?;,=²&°µ:<>]"); //Le nom ne doit pas contenir de numero
             return match.Success;
                
         }

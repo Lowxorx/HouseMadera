@@ -68,15 +68,16 @@ namespace HouseMadera.Modeles
         /// <summary>
         /// Statut du Client
         /// </summary>
-        public DateTime? Suppression { get; set; }
-        public DateTime? Creation { get; set; }
+      
         public int StatutClient { get; set; }
 
         /// <summary>
         /// Liste des projets du Client
         /// </summary>
         public List<Projet> Projets { get; set; }
-        public DateTime? MiseAJour { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime? Suppression { get; set; }
+        public DateTime? Creation { get; set; }
+        public DateTime? MiseAJour { get; set; }
 
         #region OVERRIDE
         public override bool Equals(object obj)

@@ -37,6 +37,7 @@
                 Background="#FFF7F7F7"
                 BorderThickness="0"
                 Command="{Binding LancerSynchro}"
+                 IsEnabled="{Binding IsSynchronisationEffectuee}"
                 Content="{iconPacks:PackIconFontAwesome Kind=Download,
                                                         Width=32,
                                                         Height=32}" />

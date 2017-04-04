@@ -70,6 +70,7 @@ namespace HouseMadera.VueModele
         public ICommand EditClient { get; private set; }
         public ICommand ModifClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
+        public ICommand Retour { get; private set; }
 
         /// <summary>
         /// Clients lié à la datagrid
@@ -127,6 +128,7 @@ namespace HouseMadera.VueModele
             EditClient = new RelayCommand(EClient);
             Deconnexion = new RelayCommand(Deconnecter);
             ModifClient = new RelayCommand(ModifierClient);
+            Retour = new RelayCommand(RetourAccueil);
             Clients = new ObservableCollection<Client>(AfficherClient());
             IsClientSelected = false;
             correspondanceFiltresColonnes = new Dictionary<string, string>()
@@ -143,6 +145,18 @@ namespace HouseMadera.VueModele
         }
 
         #region METHODES
+        /// <summary>
+        /// Ferme la fenetre courante et affiche la fenêtre accueil
+        /// </summary>
+        private void RetourAccueil()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            VueChoixAdmin vca = new VueChoixAdmin();
+            vca.Show();
+            window.Close();
+        }
+
+
         /// <summary>
         ///  Récupère les filtres à afficher dans la combobox
         /// </summary>
