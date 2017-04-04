@@ -1,5 +1,4 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 
 namespace HouseMadera.DAL
 {
-    public class TypeIsolantDAL : DAL, ITypeIsolantDAL
+    public class TypeIsolantDAL : DAL, IDAL<TypeIsolant>
     {
         public TypeIsolantDAL(string nomBdd) : base(nomBdd)
         {

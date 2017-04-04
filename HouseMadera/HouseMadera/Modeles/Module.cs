@@ -7,8 +7,6 @@ namespace HouseMadera.Modeles
     {
         public int Id { get; set; }
         public string Nom { get; set; }
-        public decimal Hauteur { get; set; }
-        public decimal Largeur { get; set; }
         public Gamme Gamme { get; set; }
         public TypeModule TypeModule { get; set; }
         public DateTime? MiseAJour { get; set; }
@@ -30,9 +28,7 @@ namespace HouseMadera.Modeles
             Module m = (Module)obj;
 
             return (Nom == m.Nom) &&
-                (Creation == m.Creation) &&
-                (Largeur == m.Largeur) &&
-                (Hauteur == m.Hauteur);
+                (Creation == m.Creation);
         }
         #endregion
 
@@ -59,8 +55,6 @@ namespace HouseMadera.Modeles
         {
             Module module = modele as Module;
             Nom = module.Nom;
-            Hauteur = module.Hauteur;
-            Largeur = module.Largeur;
             Gamme = module.Gamme;
             TypeModule = module.TypeModule;
             MiseAJour = module.MiseAJour;

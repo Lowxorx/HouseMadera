@@ -10,7 +10,7 @@ using HouseMadera.Utilities;
 
 namespace HouseMadera.DAL
 {
-    public class CommercialDAL : DAL, ICommercialDAL
+    public class CommercialDAL : DAL, IDAL<Commercial>
     {
         public CommercialDAL(string nomBdd) : base(nomBdd)
         {

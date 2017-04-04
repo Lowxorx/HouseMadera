@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
@@ -61,8 +59,6 @@ namespace HouseMadera.DAL
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
-                            Hauteur = Convert.ToDecimal(reader["Hauteur"]),
-                            Largeur = Convert.ToDecimal(reader["Largeur"]),
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
@@ -104,16 +100,14 @@ namespace HouseMadera.DAL
                     typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeSlot.Id).Key;
                 }
 
-                string sql = @"INSERT INTO Slot (Nom,Hauteur,Largeur,TypeSlot_Id,MiseAJour,Suppression,Creation)
-                        VALUES(@1,@2,@3,@4,@5,@6,@7)";
+                string sql = @"INSERT INTO Slot (Nom,TypeSlot_Id,MiseAJour,Suppression,Creation)
+                        VALUES(@1,@2,@3,@4,@5)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
-                {"@2",modele.Hauteur },
-                {"@3",modele.Largeur },
-                {"@4",typeSlotId },
-                {"@5", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
-                {"@6", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
-                {"@7", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
+                {"@2",typeSlotId },
+                {"@3", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
+                {"@4", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
+                {"@5", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
             };
 
                 result = Insert(sql, parameters);
@@ -147,16 +141,14 @@ namespace HouseMadera.DAL
             slotLocal.Copy(slotDistant);
             string sql = @"
                         UPDATE Slot
-                        SET Nom=@1,Hauteur = @2,Largeur=@3,TypeSlot_Id=@4,MiseAJour=@5
+                        SET Nom=@1,TypeSlot_Id=@4,MiseAJour=@5
                         WHERE Id=@6";
 
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",slotLocal.Nom},
-                {"@2",slotLocal.Hauteur},
-                {"@3",slotLocal.Largeur},
-                {"@4",typeSlotId},
-                {"@5",DateTimeDbAdaptor.FormatDateTime( slotLocal.MiseAJour,Bdd) },
-                {"@6",slotLocal.Id },
+                {"@2",typeSlotId},
+                {"@3",DateTimeDbAdaptor.FormatDateTime( slotLocal.MiseAJour,Bdd) },
+                {"@4",slotLocal.Id },
                 };
             int result = 0;
             try

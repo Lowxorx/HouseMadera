@@ -16,7 +16,7 @@ namespace HouseMadera.DAL
         }
 
 
-        #region synchronisation
+        #region SYNCHRONISATION
         public int DeleteModele(Module modele)
         {
             {
@@ -65,8 +65,6 @@ namespace HouseMadera.DAL
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
-                            Hauteur = Convert.ToDecimal(reader["Hauteur"]),
-                            Largeur = Convert.ToDecimal(reader["Largeur"]),
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
@@ -119,17 +117,15 @@ namespace HouseMadera.DAL
                     typeModuleId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
                 }
 
-                string sql = @"INSERT INTO Module (Nom,Hauteur,Largeur,Gamme_Id,TypeModule_Id,MiseAJour,Suppression,Creation)
-                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8)";
+                string sql = @"INSERT INTO Module (Nom,Gamme_Id,TypeModule_Id,MiseAJour,Suppression,Creation)
+                        VALUES(@1,@2,@3,@4,@5,@6)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",modele.Nom },
-                {"@2",modele.Hauteur },
-                {"@3",modele.Largeur },
-                {"@4",gammeId },
-                {"@5",typeModuleId },
-                {"@6", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
-                {"@7", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
-                {"@8", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
+                {"@2",gammeId },
+                {"@3",typeModuleId },
+                {"@4", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
+                {"@5", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
+                {"@6", DateTimeDbAdaptor.FormatDateTime( modele.Creation,Bdd) }
             };
 
                 result = Insert(sql, parameters);
@@ -173,17 +169,15 @@ namespace HouseMadera.DAL
                 moduleLocal.Copy(moduleDistant);
                 string sql = @"
                         UPDATE Module
-                        SET Nom=@1,Hauteur = @2,Largeur=@3,Gamme_Id=@4,TypeModule_Id=@5,MiseAJour=@6
-                        WHERE Id=@7";
+                        SET Nom=@1,Gamme_Id=@2,TypeModule_Id=@3,MiseAJour=@4
+                        WHERE Id=@5";
 
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",moduleLocal.Nom},
-                {"@2",moduleLocal.Hauteur},
-                {"@3",moduleLocal.Largeur},
-                {"@4",gammeId},
-                {"@5",typeModuleId},
-                {"@6",DateTimeDbAdaptor.FormatDateTime( moduleLocal.MiseAJour,Bdd) },
-                {"@7",moduleLocal.Id },
+                {"@2",gammeId},
+                {"@3",typeModuleId},
+                {"@4",DateTimeDbAdaptor.FormatDateTime( moduleLocal.MiseAJour,Bdd) },
+                {"@5",moduleLocal.Id },
                 };
 
                 result = Update(sql, parameters);

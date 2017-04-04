@@ -1,5 +1,4 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilites;
 using HouseMadera.Utilities;
 using System;
@@ -10,7 +9,7 @@ using System.Linq;
 
 namespace HouseMadera.DAL
 {
-    public class DevisDAL : DAL, IDevisDAL
+    public class DevisDAL : DAL, IDAL<Devis>
     {
 
         const string NON_RENSEIGNE = "NULL";

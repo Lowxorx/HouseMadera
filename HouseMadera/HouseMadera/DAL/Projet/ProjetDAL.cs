@@ -1,5 +1,4 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilites;
 using HouseMadera.Utilities;
 using MySql.Data.MySqlClient;
@@ -10,7 +9,7 @@ using System.Linq;
 
 namespace HouseMadera.DAL
 {
-    public class ProjetDAL : DAL, IProjetDAL
+    public class ProjetDAL : DAL, IDAL<Projet>
     {
         public ProjetDAL(string nomBdd) : base(nomBdd)
         {

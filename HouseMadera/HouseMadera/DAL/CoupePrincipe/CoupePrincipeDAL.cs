@@ -9,7 +9,7 @@ using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    public class CoupePrincipeDAL : DAL, ICoupePrincipeDAL
+    public class CoupePrincipeDAL : DAL,IDAL<CoupePrincipe>
     {
         public CoupePrincipeDAL(string nomBdd) : base(nomBdd)
         {

@@ -7,7 +7,7 @@ using HouseMadera.Utilities;
 
 namespace HouseMadera.DAL
 {
-    public class ClientDAL : DAL, IClientDAL
+    public class ClientDAL : DAL, IDAL<Client>
     {
         private string erreur;
         const string NON_RENSEIGNE = "NULL";
@@ -188,7 +188,7 @@ namespace HouseMadera.DAL
 
             //recopie des données du client distant dans le client local
             if (clientDistant != null)
-                clientLocal.Copy<Client>(clientDistant);
+                clientLocal.Copy(clientDistant);
             
             //Vérifie la cohérence des données à mettre à jour
             if (!isDataCorrect(clientLocal))

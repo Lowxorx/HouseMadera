@@ -84,14 +84,6 @@
                     Foreground="#FF65C973"
                     Command="{Binding EditClient}"/>
             <Canvas Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="90" Margin="192,284,0,0" VerticalAlignment="Top" Width="982" Background="LightGray" Grid.Column="1">
-                <Label
-                    x:Name="label_recherche"
-                    Content="{iconPacks:PackIconFontAwesome Kind=Search,  Width=16 ,Height=16 }"
-                    Height="41"
-                    Canvas.Left="920"
-                    Canvas.Top="25"
-                    Width="32"
-                    RenderTransformOrigin="0.498,0.431" />
             </Canvas>
             <ComboBox
                 x:Name="comboBox_recherche"

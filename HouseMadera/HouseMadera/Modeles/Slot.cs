@@ -1,6 +1,5 @@
 ﻿using HouseMadera.DAL;
 using System;
-using System.Collections.Generic;
 
 namespace HouseMadera.Modeles
 {
@@ -8,8 +7,6 @@ namespace HouseMadera.Modeles
     {
         public int Id { get; set; }
         public string Nom { get; set; }
-        public decimal Hauteur { get; set; }
-        public decimal Largeur { get; set; }
         public TypeSlot TypeSlot { get; set; }
         public DateTime? MiseAJour { get; set; }
         public DateTime? Suppression { get; set; }
@@ -28,10 +25,7 @@ namespace HouseMadera.Modeles
 
             Slot s = (Slot)obj;
 
-            return (Nom == s.Nom) &&
-                (Creation == s.Creation) &&
-                (Largeur == s.Largeur) &&
-                (Hauteur == s.Hauteur);
+            return (Nom == s.Nom) && (Creation == s.Creation);
         }
         #endregion
 
@@ -39,8 +33,6 @@ namespace HouseMadera.Modeles
         {
             Slot slot = modele as Slot;
             Nom = slot.Nom;
-            Hauteur = slot.Hauteur;
-            Largeur = slot.Largeur;
             TypeSlot = slot.TypeSlot;
             MiseAJour = slot.MiseAJour;
             Creation = slot.Creation;

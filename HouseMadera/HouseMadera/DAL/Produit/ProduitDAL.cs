@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using HouseMadera.Modeles;
 using System.Collections.ObjectModel;
 using HouseMadera.Utilites;
-using HouseMadera.DAL.Interfaces;
 using HouseMadera.Utilities;
 using System.Data.Common;
 using System.Linq;
 
 namespace HouseMadera.DAL
 {
-    public class ProduitDAL : DAL, IProduitDAL
+    public class ProduitDAL : DAL, IDAL<Produit>
     {
 
         public ProduitDAL(string nomBdd) : base(nomBdd)

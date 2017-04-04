@@ -1,5 +1,4 @@
-﻿using HouseMadera.DAL.Interfaces;
-using HouseMadera.Modeles;
+﻿using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Data.Common;
 
 namespace HouseMadera.DAL
 {
-    public class QualiteDAL : DAL, IQualiteDAL
+    public class QualiteDAL : DAL, IDAL<Qualite>
     {
         public QualiteDAL(string nomBdd) : base(nomBdd)
         {

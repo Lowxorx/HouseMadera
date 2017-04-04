@@ -78,6 +78,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.SQLite, Version=1.0.104.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.104.0\lib\net46\System.Data.SQLite.dll</HintPath>
       <Private>True</Private>
@@ -125,23 +126,14 @@
     <Compile Include="DAL\CoupePrincipe\CoupePrincipeDAL.cs" />
     <Compile Include="DAL\Finition\FinitionDAL.cs" />
     <Compile Include="DAL\Gamme\GammeDAL.cs" />
-    <Compile Include="DAL\Interfaces\ICommercialDAL.cs" />
     <Compile Include="DAL\Commune\CommuneDAL.cs" />
     <Compile Include="DAL\DAL.cs" />
     <Compile Include="DAL\Devis\DevisDAL.cs" />
     <Compile Include="DAL\IDbConnection.cs" />
-    <Compile Include="DAL\Interfaces\IClientDAL.cs" />
-    <Compile Include="DAL\Interfaces\ICoupePrincipeDAL.cs" />
     <Compile Include="DAL\Interfaces\IDAL.cs" />
-    <Compile Include="DAL\Interfaces\IDevisDAL.cs" />
-    <Compile Include="DAL\Interfaces\IIsolantDAL.cs" />
-    <Compile Include="DAL\Interfaces\IPlanDAL.cs" />
-    <Compile Include="DAL\Interfaces\IProduitDAL.cs" />
-    <Compile Include="DAL\Interfaces\IProjetDAL.cs" />
-    <Compile Include="DAL\Interfaces\IQualiteDAL.cs" />
     <Compile Include="DAL\Interfaces\ISynchronizable.cs" />
-    <Compile Include="DAL\Interfaces\ITypeIsolantDAL.cs" />
     <Compile Include="DAL\Isolant\IsolantDAL.cs" />
+    <Compile Include="DAL\MainSynchronisation.cs" />
     <Compile Include="DAL\ModulePlacePlan\ModulePlacePlanDAL.cs" />
     <Compile Include="DAL\ModulePLace\ModulePlaceDAL.cs" />
     <Compile Include="DAL\Module\ModuleDAL.cs" />
@@ -243,6 +235,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
