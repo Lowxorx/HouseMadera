@@ -51,10 +51,10 @@
                 Margin="618,10,616,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Content="Client"
+                VerticalContentAlignment="Center"
+                Content="Edition Client"
                 FontFamily="Verdana"
-                FontSize="36"
-                Foreground="#464646" />
+                FontSize="36" />
             <Button
                 x:Name="BtRetour"
                 Width="65"
@@ -62,70 +62,61 @@
                 Margin="1378,10,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="#FFA29A9A"
+                Background="#FFF7F7F7"
                 BorderThickness="0"
                 Command="{Binding Retour}"
-                Content="{iconPacks:PackIconFontAwesome Kind=ArrowCircleOutlineLeft,
-                                                        Width=32,
-                                                        Height=32}"
-                Foreground="#464646" />
+                Content="{iconPacks:PackIconEntypo back,
+                                                   Width=32,
+                                                   Height=32}" />
             <Button
-                x:Name="Button"
                 Width="65"
                 Height="65"
                 Margin="1453,10,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Background="#FFA29A9A"
+                Background="#FFF7F7F7"
                 BorderThickness="0"
                 Command="{Binding Deconnexion}"
-                Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
+                Content="{iconPacks:PackIconFontAwesome signout,
                                                         Width=32,
-                                                        Height=32}"
-                Foreground="#464646" />
+                                                        Height=32}" />
         </Grid>
-        <Grid Margin="0,53" Panel.ZIndex="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="121" />
-                <ColumnDefinition Width="503*" />
-                <ColumnDefinition Width="866*" />
-                <ColumnDefinition Width="38*" />
-            </Grid.ColumnDefinitions>
-
+        <Grid Margin="0,53">
             <Image
                 x:Name="Image"
-                Grid.ColumnSpan="2"
                 Height="82"
-                Margin="10,-50,410,0"
+                Margin="10,-50,1296,0"
                 VerticalAlignment="Top"
                 Source="../Resources/logomaderacolorgreyclean.png" />
 
-            <Canvas
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                Width="700"
-                Height="750"
-                Margin="313,79,356,81"
-                HorizontalAlignment="Center">
+            <Canvas Height="750" Margin="36,80">
                 <Label
                     x:Name="LabelClientSignUp"
-                    Width="50"
-                    Height="50"
+                    Canvas.Top="10"
+                    Width="84"
+                    Height="136"
+                    VerticalContentAlignment="Center"
                     Content="{iconPacks:PackIconFontAwesome Kind=User,
-                                                            Width=32,
-                                                            Height=32}"
+                                                            Width=70,
+                                                            Height=70}"
                     Foreground="#464646" />
                 <Label
                     x:Name="LabelNom"
-                    Canvas.Left="20"
-                    Canvas.Top="58"
-                    Content="Nom " />
+                    Canvas.Left="95"
+                    Canvas.Top="10"
+                    Width="123"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Nom "
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxNom"
-                    Canvas.Left="120"
-                    Canvas.Top="58"
+                    Canvas.Left="282"
+                    Canvas.Top="10"
                     Width="560"
-                    Height="25"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
@@ -133,168 +124,207 @@
 
                 <Label
                     x:Name="LabelPrenom"
-                    Canvas.Left="20"
-                    Canvas.Top="108"
-                    Content="Prénom " />
+                    Canvas.Left="95"
+                    Canvas.Top="90"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Prénom "
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxPrenom"
-                    Canvas.Left="120"
-                    Canvas.Top="108"
+                    Canvas.Left="282"
+                    Canvas.Top="90"
                     Canvas.Right="20"
                     Width="560"
-                    Height="25"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding Prenom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
 
                 <Label
                     x:Name="LabelAdresseSignUp"
-                    Canvas.Top="156"
-                    Width="50"
-                    Height="50"
+                    Canvas.Top="211"
+                    Width="84"
+                    Height="184"
+                    VerticalContentAlignment="Center"
                     Content="{iconPacks:PackIconFontAwesome Kind=Home,
-                                                            Width=32,
-                                                            Height=32}"
+                                                            Width=70,
+                                                            Height=70}"
                     Foreground="#464646" />
 
                 <Label
                     x:Name="LabelVoie"
-                    Canvas.Left="20"
+                    Canvas.Left="95"
                     Canvas.Top="211"
-                    Content="N° et voie " />
+                    Width="177"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="N° et voie "
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxVoie"
-                    Canvas.Left="123"
+                    Canvas.Left="282"
                     Canvas.Top="211"
-                    Width="557"
-                    Height="25"
+                    Width="560"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding Voie, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
 
                 <Label
                     x:Name="LabelAdresseComplement"
-                    Canvas.Left="20"
-                    Canvas.Top="261"
-                    Content="Complément" />
+                    Canvas.Left="90"
+                    Canvas.Top="291"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Complément"
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxComplementVoie"
-                    Canvas.Left="120"
-                    Canvas.Top="261"
+                    Canvas.Left="282"
+                    Canvas.Top="291"
                     Width="560"
-                    Height="25"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding Complement, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
                 <Label
                     x:Name="LabelCodePostal"
-                    Canvas.Left="20"
-                    Canvas.Top="311"
-                    Content="Code Postal " />
+                    Canvas.Left="95"
+                    Canvas.Top="371"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Code Postal "
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxCodePostal"
-                    Canvas.Left="120"
-                    Canvas.Top="311"
+                    Canvas.Left="282"
+                    Canvas.Top="371"
                     Width="183"
-                    Height="25"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding CodePostal, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
                 <ListBox
                     x:Name="ListBoxSuggestion"
-                    Canvas.Left="120"
-                    Canvas.Top="338"
+                    Canvas.Left="282"
+                    Canvas.Top="434"
                     Width="183"
-                    Height="68"
+                    Height="103"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     ItemsSource="{Binding Communes}"
                     SelectedItem="{Binding CommuneSelectionnee}"
                     Visibility="{Binding SuggestionCommunes}" />
                 <Label
                     x:Name="LabelLocalite"
-                    Canvas.Left="360"
-                    Canvas.Top="311"
-                    Content="Localite " />
+                    Canvas.Left="470"
+                    Canvas.Top="371"
+                    Width="132"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Localite "
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxLocalite"
-                    Canvas.Left="445"
-                    Canvas.Top="310"
+                    Canvas.Left="607"
+                    Canvas.Top="371"
                     Width="235"
-                    Height="25"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     IsReadOnly="True"
                     Text="{Binding Localite, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap" />
                 <Label
                     x:Name="LabelTelephoneSignUp"
-                    Canvas.Top="370"
-                    Width="50"
-                    Height="50"
+                    Canvas.Top="540"
+                    Width="85"
+                    Height="146"
+                    VerticalContentAlignment="Center"
                     Content="{iconPacks:PackIconFontAwesome Kind=Mobile,
-                                                            Width=32,
-                                                            Height=32}"
+                                                            Width=70,
+                                                            Height=70}"
                     Foreground="#464646" />
                 <Label
                     x:Name="LabelMobile"
-                    Canvas.Left="20"
-                    Canvas.Top="433"
-                    Content="Mobile " />
+                    Canvas.Left="95"
+                    Canvas.Top="550"
+                    Width="177"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Mobile "
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxMobile"
-                    Canvas.Left="120"
-                    Canvas.Top="433"
+                    Canvas.Left="282"
+                    Canvas.Top="550"
                     Width="180"
-                    Height="25"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding Mobile, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
                 <Label
                     x:Name="LabelTelephone"
-                    Canvas.Left="360"
-                    Canvas.Top="432"
-                    Content="Telephone" />
+                    Canvas.Left="470"
+                    Canvas.Top="550"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Telephone"
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxTelephone"
-                    Canvas.Left="500"
-                    Canvas.Top="431"
-                    Width="180"
-                    Height="25"
+                    Canvas.Left="622"
+                    Canvas.Top="550"
+                    Width="220"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding Telephone, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
                 <Label
-                    x:Name="LabelEmailSignUp"
-                    Canvas.Top="485"
-                    Width="50"
-                    Height="50"
-                    Content="{iconPacks:PackIconFontAwesome Kind=Envelope,
-                                                            Width=32,
-                                                            Height=32}"
-                    Foreground="#464646" />
-                <Label
                     x:Name="LabelEmail"
-                    Canvas.Left="20"
-                    Canvas.Top="545"
-                    Content="Email" />
+                    Canvas.Left="95"
+                    Canvas.Top="640"
+                    Width="177"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    Content="Email"
+                    FontSize="27" />
                 <TextBox
                     x:Name="TextBoxEmail"
-                    Canvas.Left="123"
-                    Canvas.Top="544"
-                    Width="180"
-                    Height="25"
+                    Canvas.Left="285"
+                    Canvas.Top="640"
+                    Width="557"
+                    Height="58"
+                    VerticalContentAlignment="Center"
+                    FontSize="25"
                     Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap"
                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
 
                 <Button
                     Name="Enregistrer"
-                    Canvas.Left="426"
-                    Canvas.Top="661"
-                    Width="180"
-                    Height="50"
+                    Canvas.Left="897"
+                    Canvas.Top="352"
+                    Width="527"
+                    Height="185"
                     Background="LightGray"
                     Command="{Binding Enregistrer}"
                     Content="{iconPacks:PackIconFontAwesome Kind=FloppyOutline,
-                                                            Width=32,
-                                                            Height=32}"
+                                                            Width=110,
+                                                            Height=110}"
                     IsEnabled="{Binding IsFormulaireOk}" />
                 <Label
                     x:Name="Label1"
@@ -310,10 +340,12 @@
                     Foreground="ForestGreen"
                     Visibility="{Binding IsClientEnregistre, Converter={StaticResource BoolToVisConverter}}" />
                 <controls:ToggleSwitch
-                    Canvas.Left="20"
-                    Canvas.Top="659"
-                    Width="283"
-                    Height="50"
+                    Canvas.Left="897"
+                    Canvas.Top="260"
+                    Width="527"
+                    Height="52"
+                    VerticalAlignment="Center"
+                    FontSize="27"
                     IsChecked="{Binding StatutClient}"
                     OffLabel="Statut Inactif"
                     OnLabel="Statut Actif" />
