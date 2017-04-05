@@ -12,10 +12,7 @@ public class DBManager : MonoBehaviour
     public List<GameObject> listCloison = new List<GameObject>();
     public List<GameObject> listModule = new List<GameObject>();
     public SimpleSQLManager dbManager;
-    int idDoor;
-    int idWindow;
-    int idCloison;
-    int gammeChoosed = 1;
+    int gammeChoosed = 2;
 
     void Start()
     {
@@ -42,55 +39,125 @@ public class DBManager : MonoBehaviour
     //new
     void DeleteModulePlace()
     {
-        List<ModulePlace> modulePlace = new List<ModulePlace>(from mPlace in dbManager.Table<ModulePlace>() select mPlace);
-        foreach (ModulePlace target in modulePlace)
-        {
-            if (target.Produit_Id.ToString().Equals(GameObject.Find("UIManager").GetComponent<UIParameter>().produits))
-            {
-                dbManager.Delete(target);
-            }
-        }
+        string sql = "UPDATE moduleplace SET Suppression = ? WHERE Produit_Id = 1";
+        dbManager.Execute(sql, System.DateTime.Now.ToString());
     }
 
     //new
     void InsertModulePlace()
     {
         InsertCloison();
+        InsertModule();
     }
 
-    void Insertion(string name)
+    // finir l'Insertion (cloison finis, reste mur/porte/fenêtre)
+    void Insertion(GameObject objet, string type)
     {
-        foreach (GameObject target in listModule)
-        {
-            ModulePlace module = new ModulePlace();
-            module.Produit_Id = 1;
-            module.Libelle = target.name;
-            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
-            string nomGamme = gamme[0].Nom;
-            List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
-            foreach(Module mod in modules)
-            {
-                if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains("Cloison"))
-                {
+        Debug.Log("Insertion");
+        ModulePlace module = new ModulePlace();
+        module.Produit_Id = 1;
+        module.Libelle = objet.name;
+        List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
+        string nomGamme = gamme[0].Nom;
+        List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
 
+        switch (type)
+        {
+            case "Cloison":
+                foreach(Module mod in modules)
+                {
+                    if(mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                    {
+                        module.Module_Id = mod.Id;
+                    }
+                }
+                if (objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
+                {
+                    module.Vertical = 1;
+                }
+                else
+                {
+                    module.Vertical = 0;
+                }
+
+                if (objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                {
+                    module.Horizontal = 1;
+                }
+                else
+                {
+                    module.Horizontal = 0;
+                }
+                break;
+            case "Porte":
+                foreach (Module mod in modules)
+                {
+                    if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                    {
+                        module.Module_Id = mod.Id;
+                    }
+                }
+                break;
+            case "Fenetre":
+                foreach (Module mod in modules)
+                {
+                    if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                    {
+                        module.Module_Id = mod.Id;
+                    }
+                }
+                break;
+            case "Mur":
+                foreach (Module mod in modules)
+                {
+                    if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                    {
+                        module.Module_Id = mod.Id;
+                    }
+                }
+                break;
+        }
+
+        List<SlotPlace> slotPlaces = new List<SlotPlace>(from mSlotPlace in dbManager.Table<SlotPlace>() select mSlotPlace);
+        foreach (SlotPlace slo in slotPlaces)
+        {
+            if (type.Equals("Cloison") || type.Equals("Mur"))
+            {
+                if(slo.Libelle.Contains(Regex.Match(objet.name, @"\d+").Value))
+                {
+                    module.SlotPlace_Id = slo.Id;
                 }
             }
         }
+        dbManager.Insert(module);
+        Debug.Log("Insered");
     }
 
     void InsertModule()
     {
+        //foreach (GameObject target in listModule)
+        //{
+        //    ModulePlace module = new ModulePlace();
+        //    module.Produit_Id = 1;
+        //    module.Libelle = target.name;
+        //    List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
+        //    string nomGamme = gamme[0].Nom;
+        //    List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
+        //    foreach(Module mod in modules)
+        //    {
+
+        //    }
+        //}
+
         foreach (GameObject target in listModule)
         {
-            ModulePlace module = new ModulePlace();
-            module.Produit_Id = 1;
-            module.Libelle = target.name;
-            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
-            string nomGamme = gamme[0].Nom;
-            List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
-            foreach(Module mod in modules)
+            if (target.name.Contains("Window"))
             {
-
+                Insertion(target, "Fenetre");
+            }
+            else if (target.name.Contains("Door"))
+            {
+                Insertion(target, "Porte");
             }
         }
     }
@@ -100,46 +167,7 @@ public class DBManager : MonoBehaviour
     {
         foreach (GameObject target in listCloison)
         {
-            ModulePlace module = new ModulePlace();
-            module.Produit_Id = 1;
-            module.Libelle = target.name;
-            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
-            string nomGamme = gamme[0].Nom;
-            List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>()  select mModule);
-            foreach(Module mod in modules)
-            {
-                if (mod.Nom.Contains(nomGamme) && mod.Nom.Contains("Cloison"))
-                {
-                    module.Module_Id = mod.Id;
-                    Debug.Log(mod.Id);
-                } 
-            }
-            List<SlotPlace> slotPlaces = new List<SlotPlace>(from mSlotPlace in dbManager.Table<SlotPlace>() select mSlotPlace);
-            foreach(SlotPlace slo in slotPlaces)
-            {
-                if(slo.Libelle.Contains(Regex.Match(target.name, @"\d+").Value))
-                {
-                    module.SlotPlace_Id = slo.Id;
-                }
-            }
-            if (target.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
-            {
-                module.Vertical = 1;
-            }
-            else
-            {
-                module.Vertical = 0;
-            }
-
-            if (target.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
-            {
-                module.Horizontal = 1;
-            }
-            else
-            {
-                module.Horizontal = 0;
-            }
-            //dbManager.Insert(module);
+            Insertion(target, "Cloison");
         }
     }
 
@@ -153,6 +181,7 @@ public class DBManager : MonoBehaviour
     //new
     void FillListCloison()
     {
+        listCloison.Clear();
         GameObject house = GameObject.Find("House");
         foreach (Transform target in house.transform)
         {
@@ -169,6 +198,7 @@ public class DBManager : MonoBehaviour
     //new
     void FillListModule()
     {
+        listModule.Clear();
         GameObject house = GameObject.Find("House");
         foreach (Transform target in house.transform)
         {

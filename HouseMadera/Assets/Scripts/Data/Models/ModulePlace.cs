@@ -12,5 +12,8 @@ public class ModulePlace
     public string Libelle { get; set; }
     public int Horizontal { get; set; }
     public int Vertical { get; set; }
+    public string MiseAJour { get; set; }
+    public string Suppression { get; set; }
+    public string Creation { get; set; }
     public int Produit_Id { get; set; }
 }
