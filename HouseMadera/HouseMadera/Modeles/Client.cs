@@ -71,10 +71,6 @@ namespace HouseMadera.Modeles
       
         public int StatutClient { get; set; }
 
-        /// <summary>
-        /// Liste des projets du Client
-        /// </summary>
-        public List<Projet> Projets { get; set; }
         public DateTime? Suppression { get; set; }
         public DateTime? Creation { get; set; }
         public DateTime? MiseAJour { get; set; }

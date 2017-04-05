@@ -65,7 +65,7 @@ namespace HouseMadera.VueModele
 
         private async void RetourArriere()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
             if (window != null)
             {
                 var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
@@ -93,7 +93,7 @@ namespace HouseMadera.VueModele
 
         private async void Deco()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
             if (window != null)
             {
                 var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings

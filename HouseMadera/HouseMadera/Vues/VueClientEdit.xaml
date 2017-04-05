@@ -198,8 +198,8 @@
                     Width="183"
                     Height="25"
                     Text="{Binding CodePostal, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
-                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
                 <ListBox
                     x:Name="ListBoxSuggestion"
                     Canvas.Left="120"
@@ -258,8 +258,8 @@
                     Width="180"
                     Height="25"
                     Text="{Binding Telephone, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
-                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap"
+                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
                 <Label
                     x:Name="LabelEmailSignUp"
                     Canvas.Top="485"

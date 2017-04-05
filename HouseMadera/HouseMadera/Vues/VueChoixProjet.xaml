@@ -79,11 +79,15 @@
                 Source="../Resources/logomaderacolorgreyclean.png" />
             <Button
                 x:Name="BtReprendreProjet"
+                Width="526"
                 Height="185"
-                Margin="851,0,150,48"
+                Margin="0,0,150,48"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Command="{Binding ReprendreProjet}"
-                Content="Reprendre un projet"
+                Content="{iconPacks:PackIconEntypo Height=110,
+                                                   Kind=NewMessage,
+                                                   Width=110}"
                 FontSize="23" />
             <Button
                 x:Name="BtNouveauProjet"
@@ -93,13 +97,22 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Command="{Binding NouveauProjet}"
-                Content="Nouveau Projet"
+                Content="{iconPacks:PackIconEntypo Height=110,
+                                                   Kind=Plus,
+                                                   Width=110}"
                 FontSize="23" />
+            <Canvas
+                Width="1070"
+                Height="90"
+                Margin="10,86,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="LightGray" />
             <ComboBox
                 x:Name="CbListeCommerciaux"
                 Width="490"
                 Height="58"
-                Margin="10,101,0,0"
+                Margin="21,101,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="25"
@@ -119,19 +132,21 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <DataGrid
-                x:Name="LbListeProjets"
                 Width="1508"
                 Height="460"
                 Margin="10,191,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
+                AlternatingRowBackground="Gainsboro"
+                AlternationCount="2"
                 AutoGenerateColumns="False"
                 BorderThickness="1"
                 DisplayMemberPath="Nom"
                 FontSize="20"
                 IsReadOnly="True"
                 ItemsSource="{Binding ListeProjetsFiltre}"
-                SelectedItem="{Binding SelectedProjet}">
+                SelectedItem="{Binding SelectedProjet}"
+                Style="{StaticResource AzureDataGrid}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="200"
@@ -173,9 +188,9 @@
             </DataGrid>
             <TextBox
                 x:Name="TbFiltreProjets"
-                Width="490"
+                Width="547"
                 Height="58"
-                Margin="505,101,0,0"
+                Margin="520,101,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"
