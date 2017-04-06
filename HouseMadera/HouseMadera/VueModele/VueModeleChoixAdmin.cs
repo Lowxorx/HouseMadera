@@ -3,11 +3,11 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
+using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -21,16 +21,6 @@ namespace HouseMadera.VueModele
         public ICommand AdminClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public ICommand LancerSynchro { get; set; }
-        private bool isSynchronisationEffectuee;
-        public bool IsSynchronisationEffectuee
-        {
-            get { return isSynchronisationEffectuee; }
-            set
-            {
-                isSynchronisationEffectuee = value;
-                RaisePropertyChanged(() => IsSynchronisationEffectuee);
-            }
-        }
 
         [PreferredConstructor]
         public VueModeleChoixAdmin()
@@ -42,13 +32,34 @@ namespace HouseMadera.VueModele
             LancerSynchro = new RelayCommand(Synchroniser);
         }
 
+        private Commercial commercialConnecte;
+        public Commercial CommercialConnecte
+        {
+            get { return commercialConnecte; }
+            set { commercialConnecte = value; }
+        }
+
+        private bool isSynchronisationEffectuee;
+        public bool IsSynchronisationEffectuee
+        {
+            get { return isSynchronisationEffectuee; }
+            set
+            {
+                isSynchronisationEffectuee = value;
+                RaisePropertyChanged(() => IsSynchronisationEffectuee);
+            }
+        }
+
+        private double Pourcentage(int value)
+        {
+            return (double)((value * 100) / NB_MODELE);
+        }
+
         /// <summary>
         /// Cette méthode permet de synchroniser tous les modèles synchronisable en commençant par les modèles que n'ont pas de clé étrangère
         /// </summary>
         private async void Synchroniser()
         {
-
-
             Synchronisation.NbErreurs = 0;
             Synchronisation.NbModeleSynchronise = 0;
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
@@ -264,13 +275,6 @@ namespace HouseMadera.VueModele
 
         }
 
-        private Commercial commercialConnecte;
-        public Commercial CommercialConnecte
-        {
-            get { return commercialConnecte; }
-            set { commercialConnecte = value; }
-        }
-
         private async void Deco()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
@@ -311,9 +315,5 @@ namespace HouseMadera.VueModele
             window.Close();
         }
 
-        private double Pourcentage(int value)
-        {
-            return (double)((value * 100) / NB_MODELE);
-        }
     }
 }
