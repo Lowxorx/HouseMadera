@@ -1,12 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
+using HouseMadera.DAL;
 using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -22,11 +24,11 @@ namespace HouseMadera.VueModele
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
             Retour = new RelayCommand(RetourArriere);
             ValiderProjet = new RelayCommand(VerifierEtValiderProjet);
-            SelectionnerClient = new RelayCommand(ChoisirOuCreerClient);
+            SelectionnerClient = new RelayCommand(AjouterUnClient);
             Deconnexion = new RelayCommand(Deco);
 
             // Actions à effectuer au chargement de la vue :
-            ProjetDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            ProjetDate = DateTime.Now;
             IsFormulaireOk = false;
 
         }
@@ -44,28 +46,37 @@ namespace HouseMadera.VueModele
             set { commercialConnecte = value; }
         }
 
-        private string clientSelect;
+        private ObservableCollection<Client> listClient;
+        public ObservableCollection<Client> ListClient
+        {
+            get
+            {
+                return listClient;
+            }
+            set
+            {
+                if (listClient == value)
+                    return;
+                listClient = value;
+                RaisePropertyChanged("ListClient");
+            }
+        }
 
-        public string ClientSelect
+        private Client clientSelect;
+        public Client ClientSelect
         {
             get { return clientSelect; }
             set
             {
+                ClientNom = String.Format("{0} {1}", value.Prenom, value.Nom);
                 clientSelect = value;
                 RaisePropertyChanged(() => ClientSelect);
             }
         }
 
-        private Client clientActuel;
-        public Client ClientActuel
-        {
-            get { return clientActuel; }
-            set { clientActuel = value; }
-        }
-
         private async void RetourArriere()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             if (window != null)
             {
                 var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
@@ -89,11 +100,21 @@ namespace HouseMadera.VueModele
         private void WindowLoadedEvent()
         {
             Console.WriteLine("window loaded event");
+            ChargerClients();
+        }
+
+        private void ChargerClients()
+        {
+            using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
+            {
+                ListClient = new ObservableCollection<Client>(dal.GetAllModeles());
+                RaisePropertyChanged(() => ListClient);
+            }
         }
 
         private async void Deco()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             if (window != null)
             {
                 var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment vous déconnecter ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
@@ -114,20 +135,58 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private void VerifierEtValiderProjet()
+        private async void VerifierEtValiderProjet()
         {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             IsFormulaireOk = VerifierTouslesChamps();
-            if (IsFormulaireOk)
+            if (IsFormulaireOk && ClientSelect != null)
             {
-                // TODO
+                Projet p = new Projet()
+                {
+                    Nom = ProjetNom,
+                    Reference = ProjetRef,
+                    CreateDate = Convert.ToDateTime(ProjetDate),
+                    Client = ClientSelect,
+                    Commercial = CommercialConnecte,
+                    Creation = Convert.ToDateTime(ProjetDate),
+                    MiseAJour = Convert.ToDateTime(ProjetDate)
+                };
+                int insertProjet = -2;
+                try
+                {
+                    using (ProjetDAL dal = new ProjetDAL(DAL.DAL.Bdd))
+                    {
+                        insertProjet = dal.CreerProjet(p);
+                        Console.WriteLine("résultat insert projet : " + insertProjet);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.WriteEx(ex);
+                    await window.ShowMessageAsync("Erreur", "Impossible d'insérer le projet en base");
+                }
+
+                if (insertProjet != -1)
+                {
+                    await window.ShowMessageAsync("Information", "Le projet a été correctement inséré en base");        
+                }
+                else
+                {
+                    await window.ShowMessageAsync("Erreur", "Impossible d'insérer le projet en base");
+                }
+            }
+            else
+            {
+                await window.ShowMessageAsync("Avertissement", "Merci de compléter tous les champs");
             }
 
         }
 
-        private void ChoisirOuCreerClient()
+        private void AjouterUnClient()
         {
-            VueClientList vcl = new VueClientList();
-            // TODO
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            VueClientEdit vce = new VueClientEdit();
+            vce.Show();
         }
 
 
@@ -154,8 +213,11 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private string projetDate;
-        public string ProjetDate
+        private bool isProjetRefValid;
+        private bool isProjetNomValid;
+
+        private DateTime projetDate;
+        public DateTime ProjetDate
         {
             get { return projetDate; }
             set
@@ -165,7 +227,6 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private bool isProjetRefValid;
         private string projetRef;
         public string ProjetRef
         {
@@ -173,13 +234,20 @@ namespace HouseMadera.VueModele
             set { projetRef = value; }
         }
 
-        private bool isProjetNomValid;
         private string projetNom;
         public string ProjetNom
         {
             get { return projetNom; }
             set { projetNom = value; }
         }
+
+        private string clientNom;
+        public string ClientNom
+        {
+            get { return clientNom; }
+            set { clientNom = value; }
+        }
+
 
         public string Error => throw new NotImplementedException();
 
