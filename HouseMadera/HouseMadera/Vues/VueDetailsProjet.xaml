@@ -36,7 +36,7 @@
             <Label
                 x:Name="Label"
                 Height="65"
-                Margin="245,10,80,0"
+                Margin="200,10,80,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 VerticalContentAlignment="Center"

@@ -240,7 +240,7 @@
                     Width="235"
                     Height="58"
                     VerticalContentAlignment="Center"
-                    FontSize="25"
+                    FontSize="20"
                     IsReadOnly="True"
                     Text="{Binding Localite, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap" />
@@ -328,8 +328,8 @@
                     IsEnabled="{Binding IsFormulaireOk}" />
                 <Label
                     x:Name="Label1"
-                    Canvas.Left="630"
-                    Canvas.Top="661"
+                    Canvas.Left="1146"
+                    Canvas.Top="558"
                     Width="50"
                     Height="50"
                     HorizontalAlignment="center"

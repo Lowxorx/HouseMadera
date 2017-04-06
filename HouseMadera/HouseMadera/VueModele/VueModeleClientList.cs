@@ -188,7 +188,6 @@ namespace HouseMadera.VueModele
             }
         }
 
-
         /// <summary>
         ///  Récupère les filtres à afficher dans la combobox
         /// </summary>
