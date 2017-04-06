@@ -379,12 +379,26 @@ namespace HouseMadera.VueModele
         /// <summary>
         /// Instancie la vue précédente et ferme la vue courante
         /// </summary>
-        private void AfficherPagePrecedente()
+        private async void AfficherPagePrecedente()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            VueClientList vcl = new VueClientList();
-            vcl.Show();
-            window.Close();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    VueClientList vcl = new VueClientList();
+                    vcl.Show();
+                    window.Close();
+                }
+            }
         }
 
         /// <summary>

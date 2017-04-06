@@ -3,7 +3,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
-using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using System.Collections.Generic;
@@ -11,9 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System;
 using MahApps.Metro.Controls.Dialogs;
-using HouseMadera.VueModele;
 
 namespace HouseMadera.VueModele
 {
@@ -148,12 +145,26 @@ namespace HouseMadera.VueModele
         /// <summary>
         /// Ferme la fenetre courante et affiche la fenêtre accueil
         /// </summary>
-        private void RetourAccueil()
+        private async void RetourAccueil()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
-            VueChoixAdmin vca = new VueChoixAdmin();
-            vca.Show();
-            window.Close();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    VueChoixAdmin vca = new VueChoixAdmin();
+                    vca.Show();
+                    window.Close();
+                }
+            }
         }
 
 
