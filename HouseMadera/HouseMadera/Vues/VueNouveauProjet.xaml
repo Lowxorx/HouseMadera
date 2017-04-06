@@ -131,7 +131,7 @@
                 Margin="410,186,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Content="{Binding ProjetDate}"
+                Content="{Binding ProjetDateStr}"
                 FontSize="25" />
             <Button
                 Width="527"

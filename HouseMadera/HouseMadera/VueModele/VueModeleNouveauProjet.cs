@@ -29,6 +29,7 @@ namespace HouseMadera.VueModele
 
             // Actions à effectuer au chargement de la vue :
             ProjetDate = DateTime.Now;
+            ProjetDateStr = ProjetDate.ToLongDateString();
             IsFormulaireOk = false;
 
         }
@@ -216,6 +217,17 @@ namespace HouseMadera.VueModele
 
         private bool isProjetRefValid;
         private bool isProjetNomValid;
+
+        private string projetDateStr;
+        public string ProjetDateStr
+        {
+            get { return projetDateStr; }
+            set
+            {
+                projetDateStr = value;
+                RaisePropertyChanged(() => ProjetDateStr);
+            }
+        }
 
         private DateTime projetDate;
         public DateTime ProjetDate
