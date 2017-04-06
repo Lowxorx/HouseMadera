@@ -36,15 +36,6 @@ public class UIManager : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        // code pour le passage d'arguments lors du lancement
-        #region args
-        //string[] args = System.Environment.GetCommandLineArgs();
-        //string input = "";
-        //for (int i = 0; i < args.Length; i++)
-        //{
-        //    text.text = "ARGS : " + args[i];
-        //}
-        #endregion
 
 
         textureInitialPosition = panelTexture.transform.position;
@@ -173,29 +164,41 @@ public class UIManager : MonoBehaviour {
 
     public void CancelCloison()
     {
-        GameObject arch = Instantiate(Resources.Load("Arch", typeof(GameObject))) as GameObject;
-        arch.transform.parent = cloisonSelected.transform.parent;
-        arch.transform.position = cloisonSelected.transform.position;
         if (cloisonSelected.name.Contains("Vertical"))
         {
-            arch.transform.rotation = Quaternion.Euler(0,90,0);
-            arch.transform.GetComponent<Transform>().localScale = new Vector3(cloisonSelected.transform.GetComponent<Transform>().localScale.z, cloisonSelected.transform.GetComponent<Transform>().localScale.y, cloisonSelected.transform.GetComponent<Transform>().localScale.x);
-            cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
+            cloisonSelected.SetActive(false);
+            cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
+        }
+
+        if (cloisonSelected.name.Contains("Horizontal"))
+        {
+            cloisonSelected.SetActive(false);
             cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
         }
-        else
-        {
-            arch.transform.rotation = Quaternion.Euler(0, 0, 0);
-            arch.transform.GetComponent<Transform>().localScale = cloisonSelected.transform.GetComponent<Transform>().localScale;
-            cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
-            cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
-        }
-        
-        
-        cloisonSelected.transform.parent.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
-        cloisonSelected.transform.parent.GetChild(3).GetComponent<Renderer>().material.color = Color.white;
-        cloisonSelected.transform.parent.GetChild(2).gameObject.SetActive(false);
-        cloisonSelected.transform.parent.GetChild(3).gameObject.SetActive(false);
+
+        //GameObject arch = Instantiate(Resources.Load("Arch", typeof(GameObject))) as GameObject;
+        //arch.transform.parent = cloisonSelected.transform.parent;
+        //arch.transform.position = cloisonSelected.transform.position;
+        //if (cloisonSelected.name.Contains("Vertical"))
+        //{
+        //    arch.transform.rotation = Quaternion.Euler(0,90,0);
+        //    arch.transform.GetComponent<Transform>().localScale = new Vector3(cloisonSelected.transform.GetComponent<Transform>().localScale.z, cloisonSelected.transform.GetComponent<Transform>().localScale.y, cloisonSelected.transform.GetComponent<Transform>().localScale.x);
+        //    cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
+        //    cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
+        //}
+        //else
+        //{
+        //    arch.transform.rotation = Quaternion.Euler(0, 0, 0);
+        //    arch.transform.GetComponent<Transform>().localScale = cloisonSelected.transform.GetComponent<Transform>().localScale;
+        //    cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
+        //    cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
+        //}
+
+
+        //cloisonSelected.transform.parent.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+        //cloisonSelected.transform.parent.GetChild(3).GetComponent<Renderer>().material.color = Color.white;
+        //cloisonSelected.transform.parent.GetChild(2).gameObject.SetActive(false);
+        //cloisonSelected.transform.parent.GetChild(3).gameObject.SetActive(false);
     }
 
     public void AddCloisonDoor()

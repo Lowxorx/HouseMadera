@@ -125,85 +125,55 @@ public class PanelModule : MonoBehaviour {
 
     public void InstantiateModule(List<GameObject> numberModule, GameObject parentModule)
     {
+        Debug.Log(numberModule.Count);
         switch (numberModule.Count)
         {
             case 1:
-                //for (int i = 0; i < numberModule.Count; i++)
-                //{
-                //    if (numberModule[i].name.Equals("window"))
-                //    {
-                //        numberModule[i] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                //        numberModule[i].transform.position = parentModule.transform.GetChild(3).transform.position;
-                //        numberModule[i].transform.rotation = parentModule.transform.GetChild(0).gameObject.transform.rotation;
-                //        numberModule[i].tag = "Window";
-                //    }
-                //    else
-                //    {
-                //        numberModule[i] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                //        numberModule[i].transform.position = parentModule.transform.GetChild(3).transform.position;
-                //        numberModule[i].transform.rotation = parentModule.transform.GetChild(0).gameObject.transform.rotation;
-                //        numberModule[i].tag = "Door";
-                //    }
-                //    numberModule[i].gameObject.transform.SetParent(parentModule.transform.GetChild(2));
-                //    numberModule[i].gameObject.GetComponent<Renderer>().material.color = Color.red;
-                //}
-                //break;
                 GameObject door = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
                 door.transform.position = parentModule.transform.GetChild(3).transform.position;
                 door.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
+                door.GetComponent<Renderer>().material.color = Color.red;
+                door.transform.SetParent(parentModule.transform.GetChild(3));
                 door.tag = "Door";
+                break;
 
             case 2:
-                for (int i = 0; i < numberModule.Count; i++)
-                {
-                    if (numberModule[i].name.Equals("window"))
-                    {
-                        int index = i;
-                        if (index != 0) { index++; }
-                        numberModule[i] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                        numberModule[i].transform.position = parentModule.transform.GetChild(2 + index).transform.position;
-                        numberModule[i].transform.rotation = parentModule.transform.GetChild(0).gameObject.transform.rotation;
-                        numberModule[i].tag = "Window";
-                    }
-                    else
-                    {
-                        int index = i;
-                        if (index != 0) { index++; }
-                        numberModule[i] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                        numberModule[i].transform.position = parentModule.transform.GetChild(2 + index).transform.position;
-                        numberModule[i].transform.rotation = parentModule.transform.GetChild(0).gameObject.transform.rotation;
-                        numberModule[i].tag = "Door";
-                    }
+                GameObject window = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window.transform.position = parentModule.transform.GetChild(2).transform.position;
+                window.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
+                window.GetComponent<Renderer>().material.color = Color.red;
+                window.transform.SetParent(parentModule.transform.GetChild(2));
+                window.tag = "Window";
 
-                    numberModule[i].gameObject.GetComponent<Renderer>().material.color = Color.red;
-                    if (i == 0) { numberModule[i].gameObject.transform.SetParent(parentModule.transform.GetChild(2)); }
-                    if (i == 1) { numberModule[i].gameObject.transform.SetParent(parentModule.transform.GetChild(3)); }
-                }
+                GameObject window2 = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window2.transform.position = parentModule.transform.GetChild(4).transform.position;
+                window2.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
+                window2.GetComponent<Renderer>().material.color = Color.red;
+                window2.transform.SetParent(parentModule.transform.GetChild(4));
+                window2.tag = "Window";
                 break;
 
             case 3:
-                for (int i = 0; i < numberModule.Count; i++)
-                {
-                    Debug.Log("Iteration :" + i);
-                    if (numberModule[i].name.Equals("window"))
-                    {
-                        numberModule[i] = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
-                        numberModule[i].transform.position = parentModule.transform.GetChild(2 + i).transform.position;
-                        numberModule[i].transform.rotation = parentModule.transform.GetChild(0).gameObject.transform.rotation;
-                        numberModule[i].tag = "Window";
-                    }
-                    else
-                    {
-                        numberModule[i] = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
-                        numberModule[i].transform.position = parentModule.transform.GetChild(2 + i).transform.position;
-                        numberModule[i].transform.rotation = parentModule.transform.GetChild(0).gameObject.transform.rotation;
-                        numberModule[i].tag = "Door";
-                    }
-                    if (i == 0) { numberModule[i].gameObject.transform.SetParent(parentModule.transform.GetChild(2)); }
-                    if (i == 1) { numberModule[i].gameObject.transform.SetParent(parentModule.transform.GetChild(3)); }
-                    if (i == 2) { numberModule[i].gameObject.transform.SetParent(parentModule.transform.GetChild(4)); }
-                    numberModule[i].gameObject.GetComponent<Renderer>().material.color = Color.red;
-                }
+                GameObject window3 = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window3.transform.position = parentModule.transform.GetChild(2).transform.position;
+                window3.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
+                window3.GetComponent<Renderer>().material.color = Color.red;
+                window3.transform.SetParent(parentModule.transform.GetChild(2));
+                window3.tag = "Window";
+
+                GameObject door2 = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
+                door2.transform.position = parentModule.transform.GetChild(3).transform.position;
+                door2.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
+                door2.GetComponent<Renderer>().material.color = Color.red;
+                door2.transform.SetParent(parentModule.transform.GetChild(3));
+                door2.tag = "Door";
+
+                GameObject window4 = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window4.transform.position = parentModule.transform.GetChild(4).transform.position;
+                window4.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
+                window4.GetComponent<Renderer>().material.color = Color.red;
+                window4.transform.SetParent(parentModule.transform.GetChild(4));
+                window4.tag = "Window";
                 break;
         }
     }

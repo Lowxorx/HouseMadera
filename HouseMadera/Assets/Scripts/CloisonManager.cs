@@ -13,6 +13,8 @@ public class CloisonManager : MonoBehaviour
     public bool collisionDetected = false;
     public bool verticalActive = false;
     public bool horizontalActive = false;
+    public bool verticalArch = false;
+    public bool horizontalArch = false;
     public GameObject target;
     public List<Collider> colliderList = new List<Collider>();
     void Start()

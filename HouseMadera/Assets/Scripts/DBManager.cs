@@ -296,12 +296,12 @@ public class DBManager : MonoBehaviour
             int wall2count = moduleWall2.Count();
             int wall13count = moduleWall3.Count();
             int wall4count = moduleWall4.Count();
-
-            GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall1, GameObject.Find("Wall1"));
-            GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall2, GameObject.Find("Wall2"));
-            GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall3, GameObject.Find("Wall3"));
-            GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall4, GameObject.Find("Wall4"));
+            
         }
+        GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall1, GameObject.Find("Wall1"));
+        GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall2, GameObject.Find("Wall2"));
+        GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall3, GameObject.Find("Wall3"));
+        GameObject.Find("SelectionModuleGeneral").GetComponent<PanelModule>().InstantiateModule(moduleWall4, GameObject.Find("Wall4"));
     }
 
     void LoadWall()
