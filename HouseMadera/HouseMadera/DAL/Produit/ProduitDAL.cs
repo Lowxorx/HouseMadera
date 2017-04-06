@@ -59,7 +59,7 @@ namespace HouseMadera.DAL
                         Plan = new Plan()
                         {
                             Nom = Convert.ToString(reader["nom_plan"]),
-                            CreateDate = Convert.ToDateTime(reader["date_plan"])
+                            CreateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["date_plan"]))
                         },
                         Projet = new Projet()
                         {

@@ -268,7 +268,7 @@ namespace HouseMadera.DAL
                         var devis = new Devis();
                         devis.Id = Convert.ToInt32(reader["Id"]);
                         devis.Nom = Convert.ToString(reader["Nom"]);
-                        devis.DateCreation = Convert.ToDateTime(reader["DateCreation"]);
+                        devis.DateCreation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["DateCreation"]));
                         devis.PrixHT = Convert.ToDecimal(reader["PrixHT"]);
                         devis.PrixTTC = Convert.ToDecimal(reader["PrixTTC"]);
                        

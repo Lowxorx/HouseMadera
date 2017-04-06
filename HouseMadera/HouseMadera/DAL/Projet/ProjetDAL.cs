@@ -42,8 +42,8 @@ namespace HouseMadera.DAL
                         Id = Convert.ToInt32(reader["Id"]),
                         Nom = Convert.ToString(reader["Nom"]),
                         Reference = Convert.ToString(reader["Reference"]),
-                        CreateDate = Convert.ToDateTime(reader["CreateDate"]),
-                        UpdateDate = Convert.ToDateTime(reader["UpdateDate"]),
+                        CreateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["CreateDate"])),
+                        UpdateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["UpdateDate"])),
                         Commercial = new Commercial()
                         {
                             Id = Convert.ToInt32(reader["com_id"]),
@@ -62,9 +62,9 @@ namespace HouseMadera.DAL
                 reader.Close();
                 return listeProjetEnCours;
             }
-            catch (MySqlException)
+            catch (Exception ex)
             {
-                Console.WriteLine("Timeout connexion bdd");
+                Console.WriteLine(ex);
                 return null;
             }
         }

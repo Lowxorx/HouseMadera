@@ -23,7 +23,7 @@ namespace HouseMadera.Modeles
         /// <summary>
         /// Date de création du Devis
         /// </summary>
-        public DateTime DateCreation { get; set; }
+        public DateTime? DateCreation { get; set; }
         public decimal PrixHT { get; set; }
         public decimal PrixTTC { get; set; }
         public StatutDevis StatutDevis { get; set; }

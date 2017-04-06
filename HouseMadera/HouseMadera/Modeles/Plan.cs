@@ -21,7 +21,7 @@ namespace HouseMadera.Modeles
         /// <summary>
         /// Date de création du Plan
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         /// <summary>
         /// Gamme du Plan

@@ -27,12 +27,12 @@ namespace HouseMadera.Modeles
         /// <summary>
         /// Date de mise à jour du Projet
         /// </summary>
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         /// <summary>
         /// Date de création du Projet
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
 
         /// <summary>
         /// Commercial
