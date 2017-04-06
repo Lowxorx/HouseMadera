@@ -9,7 +9,7 @@ using UnityEngine;
 public class UIParameter : MonoBehaviour {
 
     public string projets = "";
-    public string produits = "";
+    public string produits = "1";
     void Start ()
     {
         ReadParameters();
@@ -54,6 +54,7 @@ public class UIParameter : MonoBehaviour {
                     int value;
                     Int32.TryParse(projets, out value);
                     GetProductInformation(value);
+                    
                 }
             }
 
@@ -63,6 +64,7 @@ public class UIParameter : MonoBehaviour {
         {
             //GameObject.Find("UIManager").GetComponent<UIManager>().errorMessage.text = e.ToString();
         }
+        GameObject.Find("DBManager").GetComponent<DBManager>().LoadProduit();
     }
 
     void GetCommercialInformations(int index)
