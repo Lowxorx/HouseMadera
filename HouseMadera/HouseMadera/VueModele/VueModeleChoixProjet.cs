@@ -24,6 +24,7 @@ namespace HouseMadera.VueModele
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
             Retour = new RelayCommand(RetourChoixAdmin);
             Deconnexion = new RelayCommand(Deco);
+            SupprimerProjet = new RelayCommand(DelProjet);
 
             // Actions à effectuer au chargement de la vue :
             ChargerProjet();
@@ -35,6 +36,7 @@ namespace HouseMadera.VueModele
         public ICommand WindowLoaded { get; private set; }
         public ICommand Retour { get; private set; }
         public ICommand Deconnexion { get; private set; }
+        public ICommand SupprimerProjet { get; private set; }
 
         private Projet selectedProjet;
         public Projet SelectedProjet
@@ -221,6 +223,50 @@ namespace HouseMadera.VueModele
                     vca.Show();
                     window.Close();
                 }
+            }
+        }
+
+        private async void DelProjet()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+            if (window != null)
+            {
+                if (selectedProjet != null)
+                {
+                    MessageDialogResult result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment supprimer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    {
+                        AffirmativeButtonText = "Oui",
+                        NegativeButtonText = "Non",
+                        AnimateHide = false,
+                        AnimateShow = true
+                    });
+
+                    int delProjet = 0;
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        using (var dal = new ProjetDAL(DAL.DAL.Bdd))
+                        {
+                            delProjet = dal.DeleteModele(SelectedProjet);
+                            ListeProjets = new ObservableCollection<Projet>(dal.ChargerProjets());
+                            RaisePropertyChanged(() => ListeProjets);
+                        }
+
+                        if (delProjet > 0)
+                        {
+                            await window.ShowMessageAsync("Information", "Le projet est bien marqué pour suppression.");
+                        }
+                        else
+                        {
+                            await window.ShowMessageAsync("Erreur", "Le projet n'a pas pu être supprimé.");
+
+                        }
+                    }
+                }
+                else
+                {
+                    await window.ShowMessageAsync("Avertissement", "Merci de sélectionner un projet");
+                }
+
             }
         }
 

@@ -240,7 +240,7 @@
                     Width="235"
                     Height="58"
                     VerticalContentAlignment="Center"
-                    FontSize="25"
+                    FontSize="20"
                     IsReadOnly="True"
                     Text="{Binding Localite, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=true, NotifyOnValidationError=true}"
                     TextWrapping="Wrap" />

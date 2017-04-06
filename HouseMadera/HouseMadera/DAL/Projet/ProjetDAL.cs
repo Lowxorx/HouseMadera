@@ -157,7 +157,33 @@ namespace HouseMadera.DAL
         #endregion
 
         #region DELETE
+        /// <summary>
+        /// Met à jour en base la date de suppression du projet (suppression logique)
+        /// </summary>
+        /// <param name="projet">Représente le projet à effacer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int DeleteModele(Projet p)
+        {
 
+            string sql = @"UPDATE Client SET Suppression= @2 WHERE Id=@1";
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                {"@1",p.Id},
+                {"@2",DateTimeDbAdaptor.FormatDateTime(p.Suppression,Bdd)}
+            };
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
         #endregion
 
         #region SYNCHRONISATION
@@ -242,36 +268,6 @@ namespace HouseMadera.DAL
             {
                 result = -1;
                 Console.WriteLine(e.Message);
-            }
-
-            return result;
-        }
-
-        public int DeleteModele(Projet projet)
-        {
-            int result = 0;
-            try
-            {
-                if (projet == null)
-                    throw new Exception("Passage d'un paramètre Projet null");
-                string sql = @"
-                        UPDATE Projet
-                        SET Suppression= @2
-                        WHERE Id=@1
-                      ";
-                Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1",projet.Id},
-                {"@2",DateTimeDbAdaptor.FormatDateTime(projet.Suppression,Bdd)}
-
-            };
-                result = Update(sql, parameters);
-            }
-            catch (Exception e)
-            {
-                result = -1;
-                Console.WriteLine(e.Message);
-                //TODO
-                Logger.WriteEx(e);
             }
 
             return result;

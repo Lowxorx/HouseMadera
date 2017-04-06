@@ -158,7 +158,6 @@ namespace HouseMadera.VueModele
                     using (ProjetDAL dal = new ProjetDAL(DAL.DAL.Bdd))
                     {
                         insertProjet = dal.CreerProjet(p);
-                        Console.WriteLine("résultat insert projet : " + insertProjet);
                     }
                 }
                 catch (Exception ex)
@@ -169,7 +168,11 @@ namespace HouseMadera.VueModele
 
                 if (insertProjet != -1)
                 {
-                    await window.ShowMessageAsync("Information", "Le projet a été correctement inséré en base");        
+                    await window.ShowMessageAsync("Information", "Le projet a été correctement inséré en base");
+                    VueChoixProjet vcp = new VueChoixProjet();
+                    ((VueModeleChoixProjet)vcp.DataContext).CommercialConnecte = CommercialConnecte;
+                    vcp.Show();
+                    window.Close();
                 }
                 else
                 {
