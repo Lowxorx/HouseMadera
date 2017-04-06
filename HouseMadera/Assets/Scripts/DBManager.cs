@@ -16,6 +16,7 @@ public class DBManager : MonoBehaviour
 
     void Start()
     {
+         
         try
         {
             var modulePlace = new List<ModulePlace>(from mPlace in dbManager.Table<ModulePlace>() select mPlace);
@@ -56,7 +57,7 @@ public class DBManager : MonoBehaviour
         Debug.Log("Insertion");
         ModulePlace module = new ModulePlace();
         module.Produit_Id = 1;
-        module.Libelle = objet.name;
+        module.Creation = System.DateTime.Now.ToString();
         List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
         string nomGamme = gamme[0].Nom;
         List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
@@ -64,7 +65,8 @@ public class DBManager : MonoBehaviour
         switch (type)
         {
             case "Cloison":
-                foreach(Module mod in modules)
+                module.Libelle = objet.name;
+                foreach (Module mod in modules)
                 {
                     if(mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
                     {
@@ -90,6 +92,8 @@ public class DBManager : MonoBehaviour
                 }
                 break;
             case "Porte":
+                string wallNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
+                module.Libelle = "Door - " + wallNumber;
                 foreach (Module mod in modules)
                 {
                     if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
@@ -99,6 +103,8 @@ public class DBManager : MonoBehaviour
                 }
                 break;
             case "Fenetre":
+                string windowNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
+                module.Libelle = "Fenetre - " + windowNumber;
                 foreach (Module mod in modules)
                 {
                     if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
@@ -124,6 +130,13 @@ public class DBManager : MonoBehaviour
             if (type.Equals("Cloison") || type.Equals("Mur"))
             {
                 if(slo.Libelle.Contains(Regex.Match(objet.name, @"\d+").Value))
+                {
+                    module.SlotPlace_Id = slo.Id;
+                }
+            }
+            else if (type.Equals("Porte") || type.Equals("Fenetre"))
+            {
+                if (slo.Libelle.Contains(Regex.Match(objet.transform.parent.parent.name, @"\d+").Value) && slo.Libelle.Contains("Wall"))
                 {
                     module.SlotPlace_Id = slo.Id;
                 }
