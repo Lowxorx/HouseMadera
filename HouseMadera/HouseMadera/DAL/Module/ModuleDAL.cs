@@ -85,8 +85,7 @@ namespace HouseMadera.DAL
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
-                //Logger.WriteEx(ex);
+                Logger.WriteEx(ex);
             }
 
             return listeModules;
@@ -104,15 +103,17 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table Module avec la clé étrangère Gamme nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele.TypeModule.Id, out int typeModuleId))
+                int typeModuleId = 0;
+                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele.TypeModule.Id, out typeModuleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
                 }
-                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out int gammeId))
+                int gammeId = 0;
+                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out gammeId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    typeModuleId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
+                    gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Gamme.Id).Key;
                 }
 
                 string sql = @"INSERT INTO Module (Nom,Gamme_Id,TypeModule_Id,MiseAJour,Suppression,Creation)
@@ -131,9 +132,8 @@ namespace HouseMadera.DAL
             catch (Exception e)
             {
                 result = -1;
-                Console.WriteLine(e.Message);
-                //TODO
-                //Logger.WriteEx(e);
+                
+                Logger.WriteEx(e);
 
             }
 
@@ -152,15 +152,17 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table Module avec la clé étrangère Gamme nulle");
 
                 //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(moduleDistant.TypeModule.Id, out int typeModuleId))
+                int typeModuleId = 0;
+                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(moduleDistant.TypeModule.Id, out typeModuleId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
                     typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == moduleDistant.TypeModule.Id).Key;
                 }
-                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(moduleDistant.Gamme.Id, out int gammeId))
+                int gammeId = 0;
+                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(moduleDistant.Gamme.Id, out gammeId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    typeModuleId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == moduleDistant.TypeModule.Id).Key;
+                    gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == moduleDistant.Gamme.Id).Key;
                 }
                 moduleLocal.Copy(moduleDistant);
                 string sql = @"
@@ -181,7 +183,7 @@ namespace HouseMadera.DAL
             catch (Exception e)
             {
                 result = -1;
-                Console.WriteLine(e.Message);
+                Logger.WriteEx(e);
             }
 
             return result;

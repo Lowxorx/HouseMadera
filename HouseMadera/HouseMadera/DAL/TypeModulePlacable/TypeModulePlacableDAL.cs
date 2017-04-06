@@ -58,7 +58,7 @@ namespace HouseMadera.DAL
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
-                            //TODO Icone -> blob
+                             //Icone -> blob
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),

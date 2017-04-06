@@ -8,7 +8,6 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -278,6 +277,25 @@ namespace HouseMadera.VueModele
         private int idClientAMettreAJour;
         public RegexUtilities reg { get; set; }
 
+        private Commercial commercialConnecte;
+        public Commercial CommercialConnecte
+        {
+            get { return commercialConnecte; }
+            set
+            {
+                commercialConnecte = value;
+            }
+        }
+
+        private MetroWindow vuePrecedente;
+        public MetroWindow VuePrecedente
+        {
+            get { return vuePrecedente; }
+            set { vuePrecedente = value; }
+        }
+
+
+
         /// <summary>
         /// Commandes liées aux boutons de la vue
         /// </summary>
@@ -395,6 +413,8 @@ namespace HouseMadera.VueModele
                 if (result == MessageDialogResult.Affirmative)
                 {
                     VueClientList vcl = new VueClientList();
+                    ((VueModeleClientList)vcl.DataContext).VuePrecedente = window;
+                    ((VueModeleClientList)vcl.DataContext).CommercialConnecte = CommercialConnecte;
                     vcl.Show();
                     window.Close();
                 }
@@ -467,7 +487,6 @@ namespace HouseMadera.VueModele
             var isCodePostal = int.TryParse(codePostal, out int i);
 
             List<Commune> communes = new List<Commune>();
-            //TODO modifier "SQLITE" par Bdd
             if (codePostal != string.Empty && isCodePostal)
             {
                 using (var dal = new CommuneDAL(DAL.DAL.Bdd))

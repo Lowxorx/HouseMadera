@@ -11,6 +11,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
+using System;
+using System.Reflection;
 
 namespace HouseMadera.VueModele
 {
@@ -118,6 +120,23 @@ namespace HouseMadera.VueModele
                 RaisePropertyChanged(() => IsClientSelected);
             }
         }
+
+        private Commercial commercialConnecte;
+        public Commercial CommercialConnecte
+        {
+            get { return commercialConnecte; }
+            set
+            {
+                commercialConnecte = value;
+            }
+        }
+
+        private MetroWindow vuePrecedente;
+        public MetroWindow VuePrecedente
+        {
+            get { return vuePrecedente; }
+            set { vuePrecedente = value; }
+        }
         #endregion
 
         public VueModeleClientList()
@@ -160,7 +179,9 @@ namespace HouseMadera.VueModele
 
                 if (result == MessageDialogResult.Affirmative)
                 {
+
                     VueChoixAdmin vca = new VueChoixAdmin();
+                    ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = CommercialConnecte;
                     vca.Show();
                     window.Close();
                 }
@@ -202,8 +223,11 @@ namespace HouseMadera.VueModele
         /// </summary>
         private void EClient()
         {
+           
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             VueClientEdit vce = new VueClientEdit();
+            ((VueModeleClientEdit)vce.DataContext).CommercialConnecte = CommercialConnecte;
+            ((VueModeleClientEdit)vce.DataContext).VuePrecedente = window;
             vce.Show();
             window.Close();
         }
@@ -230,15 +254,16 @@ namespace HouseMadera.VueModele
         /// <returns>Une liste de clients</returns>
         public List<Client> AfficherClientFiltre(string filtre, string valeur)
         {
-            List<Client> clients = new List<Client>();
-            //TODO SQLITE à remplacer par Bdd
-            using (var dal = new ClientDAL(DAL.DAL.Bdd))
-            {
-                clients = dal.GetFilteredClient(filtre, valeur);
-            }
-
-            return clients;
+           return Clients.Where(c => SelectionnerProprieteClient(c, filtre).Contains(valeur)).Select(c=> c).ToList();
         }
+
+        private string SelectionnerProprieteClient(Client c,string filtre)
+        {
+            if (c == null)
+                return string.Empty;
+            return c.GetType().GetRuntimeProperty(filtre).GetValue(c).ToString();
+        }
+
         /// <summary>
         /// Affiche un dialogue de confirmation puis redirige vers la page de connexion
         /// </summary>

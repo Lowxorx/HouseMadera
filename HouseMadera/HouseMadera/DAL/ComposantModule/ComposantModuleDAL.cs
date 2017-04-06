@@ -131,7 +131,7 @@ namespace HouseMadera.DAL
             {
                 result = -1;
                 Console.WriteLine(e.Message);
-                //TODO
+                
                 //Logger.WriteEx(e);
 
             }
@@ -181,7 +181,7 @@ namespace HouseMadera.DAL
             {
                 result = -1;
                 Console.WriteLine(e.Message);
-                //TODO
+                
                 //Logger.WriteEx(e);
 
             }
