@@ -186,6 +186,7 @@ namespace HouseMadera.VueModele
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             VueClientEdit vce = new VueClientEdit();
+            ((VueModeleClientEdit)vce.DataContext).VmNouveauProjet = this;
             vce.Show();
         }
 
