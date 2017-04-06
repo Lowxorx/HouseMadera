@@ -12,6 +12,7 @@ using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -240,12 +241,24 @@ namespace HouseMadera.VueModele
 
         private void EditionProduit()
         {
-            // Lancement appli 3D avec param : PROJET ID et PRODUIT ID
+
         }
 
         private void CreerUnProduit()
         {
-            // Lancement appli 3D avec param : PROJET ID 
+            try
+            {
+                string arg = String.Format("{0}", SelectedProjet.Id);
+                Console.WriteLine(arg);
+                Process HouseEditor = new Process();
+                HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
+                HouseEditor.StartInfo.Arguments = arg;
+                HouseEditor.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private async void GenDevis()
@@ -375,9 +388,20 @@ namespace HouseMadera.VueModele
         private async void GenPlan()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
-            if (window != null)
+            var rand = new Random();
+            var files = Directory.GetFiles(AppInfo.AppPath + @"\Plans\","*.pdf");
+            try
             {
-                await window.ShowMessageAsync("Avertissement", "Cette fonctionnalité n'est pas encore implémentée");
+                int i = rand.Next(files.Length);
+                if (i == 0)
+                {
+                    i = 1;
+                }
+                Process.Start(AppInfo.AppPath + @"\Plans\" + i + ".pdf");
+            }
+            catch (Exception)
+            {
+                await window.ShowMessageAsync("Erreur", "Impossible d'ouvrir le plan");
             }
         }
 

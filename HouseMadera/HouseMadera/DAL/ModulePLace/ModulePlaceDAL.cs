@@ -125,7 +125,7 @@ namespace HouseMadera.DAL
                 if (!Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.TryGetValue(modele.Produit.Id, out int produitId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    produitId = Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Produit.Id).Key;
+                    produitId = Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Produit.Id).Key;
                 }
 
 
@@ -184,7 +184,7 @@ namespace HouseMadera.DAL
                 if (!Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.TryGetValue(modulePlaceDistant.Produit.Id, out int produitId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    produitId = Synchronisation<SlotPlaceDAL, SlotPlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modulePlaceDistant.Produit.Id).Key;
+                    produitId = Synchronisation<ProduitDAL, Produit>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modulePlaceDistant.Produit.Id).Key;
                 }
 
                 modulePlaceLocal.Copy(modulePlaceDistant);
