@@ -164,28 +164,28 @@ namespace HouseMadera.VueModele
         /// <summary>
         /// Ferme la fenetre courante et affiche la fenêtre accueil
         /// </summary>
-        private async void RetourAccueil()
+        private void RetourAccueil()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             if (window != null)
             {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
+                //    var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                //    {
+                //        AffirmativeButtonText = "Oui",
+                //        NegativeButtonText = "Non",
+                //        AnimateHide = false,
+                //        AnimateShow = true
+                //    });
 
-                if (result == MessageDialogResult.Affirmative)
-                {
+                //    if (result == MessageDialogResult.Affirmative)
+                //    {
 
-                    VueChoixAdmin vca = new VueChoixAdmin();
+                VueChoixAdmin vca = new VueChoixAdmin();
                     ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = CommercialConnecte;
                     vca.Show();
                     window.Close();
-                }
             }
+            //}
         }
 
         /// <summary>
