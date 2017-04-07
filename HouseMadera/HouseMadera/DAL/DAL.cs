@@ -24,6 +24,7 @@ namespace HouseMadera.DAL
         {
             connectionStringMySql = ConfigurationManager.ConnectionStrings["HouseMaderaDBMySql"].ConnectionString;
             connectionStringSQLite = ConfigurationManager.ConnectionStrings["HouseMaderaDBSQlite"].ConnectionString;
+            Console.WriteLine(connectionStringSQLite.Replace("%USERNAME%", Environment.GetEnvironmentVariable("username")));
             Bdd = nomBdd;
             switch (Bdd)
             {
@@ -32,7 +33,7 @@ namespace HouseMadera.DAL
                     Connection.Open();
                     break;
                 case "SQLITE":
-                    Connection = new SQLiteConnect(connectionStringSQLite);
+                    Connection = new SQLiteConnect(connectionStringSQLite.Replace("%USERNAME%", Environment.GetEnvironmentVariable("username")));
                     Connection.Open();
                     break;
                 default: break;
