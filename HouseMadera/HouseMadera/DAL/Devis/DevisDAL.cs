@@ -257,7 +257,7 @@ namespace HouseMadera.DAL
             string sql = @"
                             SELECT d.*, sd.Id as Statut_Id , sd.Nom as Statut_libelle
                             FROM Devis d
-                            LEFT JOIN statutdevis sd ON d.StatutDevis_Id=sd.Id";
+                            LEFT JOIN StatutDevis sd ON d.StatutDevis_Id=sd.Id";
             List<Devis> listeDevis = new List<Devis>();
             try
             {
