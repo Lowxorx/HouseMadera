@@ -18,24 +18,12 @@ namespace HouseMadera.VueModele
 {
     class VueModeleChoixAdmin : ViewModelBase
     {
+        #region PROPRIETES
         private const int NB_MODELE = 27;
         public ICommand AdminProjet { get; private set; }
         public ICommand AdminClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public ICommand LancerSynchro { get; set; }
-
-        [PreferredConstructor]
-        public VueModeleChoixAdmin()
-        {
-            // Check de la connexion
-            ConnectivityMonitor testConnection = new ConnectivityMonitor();
-            bool isOnline = testConnection.IsOnline();
-            IsSynchronisationEffectuee = isOnline ? true : false;
-            Deconnexion = new RelayCommand(Deco);
-            AdminProjet = new RelayCommand(AProjet);
-            AdminClient = new RelayCommand(AClient);
-            LancerSynchro = new RelayCommand(Synchroniser);
-        }
 
         private Commercial commercialConnecte;
         public Commercial CommercialConnecte
@@ -55,6 +43,27 @@ namespace HouseMadera.VueModele
             }
         }
 
+        #endregion
+
+        [PreferredConstructor]
+        public VueModeleChoixAdmin()
+        {
+            // Check de la connexion
+            ConnectivityMonitor testConnection = new ConnectivityMonitor();
+            bool isOnline = testConnection.IsOnline();
+            IsSynchronisationEffectuee = isOnline ? true : false;
+            Deconnexion = new RelayCommand(Deco);
+            AdminProjet = new RelayCommand(AProjet);
+            AdminClient = new RelayCommand(AClient);
+            LancerSynchro = new RelayCommand(Synchroniser);
+        }
+
+        #region METHODES
+        /// <summary>
+        /// Retourne une valeur de pourcentage
+        /// </summary>
+        /// <param name="value">int</param>
+        /// <returns>Pourcentagede type double</returns>
         private double Pourcentage(int value)
         {
             return (double)((value * 100) / NB_MODELE);
@@ -76,11 +85,14 @@ namespace HouseMadera.VueModele
                 Synchronisation.NbErreurs = 0;
                 Synchronisation.NbModeleSynchronise = 0;
                 ICollection<Dictionary<int, int>> collectionCorrespondance = new List<Dictionary<int, int>>();
-                Synchronisation<CommercialDAL, Commercial> syncCommercial = new Synchronisation<CommercialDAL, Commercial>(new Commercial());
-                syncCommercial.synchroniserDonnees();
+
                 //la progression se fait de 0% à 100%
                 controller.Minimum = 0;
                 controller.Maximum = 100;
+
+                Synchronisation<CommercialDAL, Commercial> syncCommercial = new Synchronisation<CommercialDAL, Commercial>(new Commercial());
+                syncCommercial.synchroniserDonnees();
+                collectionCorrespondance.Add(Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
 
                 Synchronisation<StatutDevisDAL, StatutDevis> syncStatutDevis = new Synchronisation<StatutDevisDAL, StatutDevis>(new StatutDevis());
@@ -173,9 +185,9 @@ namespace HouseMadera.VueModele
                 collectionCorrespondance.Add(Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
 
-                Synchronisation<ModuleDAL, Modeles.Module> syncModule = new Synchronisation<ModuleDAL, Modeles.Module>(new Modeles.Module());
+                Synchronisation<ModuleDAL,Module> syncModule = new Synchronisation<ModuleDAL, Module>(new Module());
                 syncModule.synchroniserDonnees();
-                collectionCorrespondance.Add(Synchronisation<ModuleDAL, Modeles.Module>.CorrespondanceModeleId);
+                collectionCorrespondance.Add(Synchronisation<ModuleDAL,Module>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
 
                 Synchronisation<ComposantModuleDAL, ComposantModule> syncComposantModule = new Synchronisation<ComposantModuleDAL, ComposantModule>(new ComposantModule(), true);
@@ -244,6 +256,9 @@ namespace HouseMadera.VueModele
             }
         }
 
+        /// <summary>
+        /// Ouvre un dialogue de confirmation de deconnexion
+        /// </summary>
         private async void Deco()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
@@ -266,6 +281,9 @@ namespace HouseMadera.VueModele
             }
         }
 
+        /// <summary>
+        /// Ferme la fenêtre courante et affiche la vue d'administration client 
+        /// </summary>
         private void AClient()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
@@ -276,6 +294,9 @@ namespace HouseMadera.VueModele
             window.Close();
         }
 
+        /// <summary>
+        ///  Ferme la fenêtre courante et affiche la vue d'administration projet
+        /// </summary>
         private void AProjet()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
@@ -285,6 +306,7 @@ namespace HouseMadera.VueModele
             vcp.Show();
             window.Close();
         }
+        #endregion
 
     }
 }
