@@ -47,8 +47,8 @@ namespace HouseMadera.DAL
                 creerTableCorrespondance();
             NbModeleSynchronise++;
 #if DEBUG
-            
-            //afficherResultat();
+
+            afficherResultat();
 #endif
         }
 
@@ -77,6 +77,9 @@ namespace HouseMadera.DAL
             {
                 NbErreurs++;
                 string titre = string.Format("Synchronisation de : {0} --> Création de la table de correspondance \n", NomModele);
+#if DEBUG
+                Console.WriteLine(titre + ex.Message);
+#endif
                 Logger.WriteTrace(titre);
                 Logger.WriteEx(ex);
             }
@@ -136,9 +139,13 @@ namespace HouseMadera.DAL
                             {
                                 using (dalBddLocale = (TDAL)Activator.CreateInstance(typeof(TDAL), locale))
                                 {
-                                    //Console.WriteLine("\nl'entité {0} avec l'ID {1} a été effacé sur la bdd  {2}\n", NomModele, modeleListe1.Id, bdd);
+#if DEBUG
+                                    Console.WriteLine("\nl'entité {0} avec l'ID {1} a été effacé sur la bdd  {2}\n", NomModele, modeleListe1.Id, bdd);
+#endif 
                                     dalBddLocale.DeleteModele(modeleListe1);
-                                    //Console.WriteLine("\nSuppression ----- OK");
+#if DEBUG
+                                    Console.WriteLine("\nSuppression ----- OK");
+#endif
                                 }
                             }
                             else
@@ -150,9 +157,13 @@ namespace HouseMadera.DAL
                                 {
                                     using (dalBddLocale = (TDAL)Activator.CreateInstance(typeof(TDAL), locale))
                                     {
-                                        //Console.WriteLine("\nL'entité {0} avec l'ID {1} a été modifié sur la bdd {2}\n", NomModele, modeleListe1.Id, bdd);
+#if DEBUG
+                                        Console.WriteLine("\nL'entité {0} avec l'ID {1} a été modifié sur la bdd {2}\n", NomModele, modeleListe1.Id, bdd);
+#endif
                                         dalBddLocale.UpdateModele(modeleListe1, modeleListe2);
-                                        //Console.WriteLine("\nModification -------> OK");
+#if DEBUG
+                                        Console.WriteLine("\nModification -------> OK");
+#endif
                                     }
                                 }
                             }
@@ -167,7 +178,9 @@ namespace HouseMadera.DAL
                             int nbLigneInseree = dalBddDistante.InsertModele(modeleListe1);
                             if (nbLigneInseree > 0)
                             {
-                                //Console.WriteLine("Enregistrement dans {0} --------> OK\n", distante);
+#if DEBUG
+                                Console.WriteLine("Enregistrement dans {0} --------> OK\n", distante);
+#endif
                                 changements = true;
                             }
                         }
@@ -177,8 +190,12 @@ namespace HouseMadera.DAL
             catch (Exception ex)
             {
                 NbErreurs++;
+
                 string precision = (sens == "SORTANTE") ? LOCALE + " vers " + DISTANTE : DISTANTE + " vers " + LOCALE;
                 string titre = string.Format("Synchronisation de : {0}--> Comparaison des données {1}\n", NomModele, precision);
+#if DEBUG
+                Console.WriteLine(titre + ex.Message );
+#endif
                 Logger.WriteTrace(titre);
                 Logger.WriteEx(ex);
             }
@@ -200,6 +217,9 @@ namespace HouseMadera.DAL
                 {
                     NbErreurs++;
                     string titre = string.Format("Synchronisation de : {0} --> Récupération des données de la bdd {1}\n", NomModele, DISTANTE);
+#if DEBUG
+                    Console.WriteLine(titre + e.Message);
+#endif
                     Logger.WriteTrace(titre);
                     Logger.WriteEx(e);
                 }
@@ -215,6 +235,9 @@ namespace HouseMadera.DAL
                 {
                     NbErreurs++;
                     string titre = string.Format("Synchronisation de : {0} --> Récupération des données de la bdd {1}\n", NomModele, LOCALE);
+#if DEBUG
+                    Console.WriteLine(titre + e.Message);
+#endif
                     Logger.WriteTrace(titre);
                     Logger.WriteEx(e);
                 }
@@ -235,7 +258,6 @@ namespace HouseMadera.DAL
             {
                 Console.WriteLine(cor.Key.ToString().PadRight(10) + cor.Value);
             }
-            Console.ReadKey();
         }
 #endif
 
