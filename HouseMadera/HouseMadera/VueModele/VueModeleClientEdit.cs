@@ -41,19 +41,6 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private VueModeleNouveauProjet vmNouveauProjet;
-
-        public VueModeleNouveauProjet VmNouveauProjet
-        {
-            get { return vmNouveauProjet; }
-            set
-            {
-                vmNouveauProjet = value;
-                RaisePropertyChanged(() => VmNouveauProjet);
-            }
-        }
-
-
         /// <summary>
         /// Prenom
         /// </summary>
@@ -290,6 +277,25 @@ namespace HouseMadera.VueModele
         private int idClientAMettreAJour;
         public RegexUtilities reg { get; set; }
 
+        private Commercial commercialConnecte;
+        public Commercial CommercialConnecte
+        {
+            get { return commercialConnecte; }
+            set
+            {
+                commercialConnecte = value;
+            }
+        }
+
+        private MetroWindow vuePrecedente;
+        public MetroWindow VuePrecedente
+        {
+            get { return vuePrecedente; }
+            set { vuePrecedente = value; }
+        }
+
+
+
         /// <summary>
         /// Commandes liées aux boutons de la vue
         /// </summary>
@@ -393,29 +399,24 @@ namespace HouseMadera.VueModele
         /// </summary>
         private async void AfficherPagePrecedente()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             if (window != null)
             {
-                if (VmNouveauProjet != null)
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
                 {
-                    window.Close();
-                }
-                else
-                {
-                    var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                    {
-                        AffirmativeButtonText = "Oui",
-                        NegativeButtonText = "Non",
-                        AnimateHide = false,
-                        AnimateShow = true
-                    });
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
 
-                    if (result == MessageDialogResult.Affirmative)
-                    {
-                        VueClientList vcl = new VueClientList();
-                        vcl.Show();
-                        window.Close();
-                    }
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    VueClientList vcl = new VueClientList();
+                    ((VueModeleClientList)vcl.DataContext).VuePrecedente = window;
+                    ((VueModeleClientList)vcl.DataContext).CommercialConnecte = CommercialConnecte;
+                    vcl.Show();
+                    window.Close();
                 }
             }
         }
@@ -462,7 +463,6 @@ namespace HouseMadera.VueModele
                     using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
                     {
                         int success = isMiseAJourClient ? dal.UpdateModele(client,null) : dal.InsertModele(client);
-                        VmNouveauProjet.ListClient.Add(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
                     }
@@ -487,7 +487,6 @@ namespace HouseMadera.VueModele
             var isCodePostal = int.TryParse(codePostal, out int i);
 
             List<Commune> communes = new List<Commune>();
-            //TODO modifier "SQLITE" par Bdd
             if (codePostal != string.Empty && isCodePostal)
             {
                 using (var dal = new CommuneDAL(DAL.DAL.Bdd))

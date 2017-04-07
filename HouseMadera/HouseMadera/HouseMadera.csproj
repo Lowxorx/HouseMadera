@@ -156,6 +156,7 @@
     <Compile Include="DAL\TypeFinition\TypeFinitionDAL.cs" />
     <Compile Include="DAL\TypeIsolant\TypeIsolantDAL.cs" />
     <Compile Include="DAL\TypeModulePlacable\TypeModulePlacableDAL.cs" />
+    <Compile Include="DAL\TypeModuleTypeSlot\TypeModuleTypeSlot.cs" />
     <Compile Include="DAL\TypeModule\TypeModuleDAL.cs" />
     <Compile Include="DAL\TypeSlot\TypeSlotDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
