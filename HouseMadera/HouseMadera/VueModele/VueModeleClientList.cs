@@ -158,6 +158,7 @@ namespace HouseMadera.VueModele
                 { "Email","Email"}
                 };
             Filtres = getFiltresFromDictionnary(correspondanceFiltresColonnes);
+            Filtre = Filtres[0];
         }
 
         #region METHODES
@@ -253,14 +254,19 @@ namespace HouseMadera.VueModele
         /// <returns>Une liste de clients</returns>
         public List<Client> AfficherClientFiltre(string filtre, string valeur)
         {
-           return Clients.Where(c => SelectionnerProprieteClient(c, filtre).Contains(valeur)).Select(c=> c).ToList();
+           return Clients.Where(c => SelectionnerProprieteClient(c, filtre).Contains(valeur.ToLower())).Select(c=> c).ToList();
         }
-
+        /// <summary>
+        /// Trouve la propriété du modele correspondant au filtre et retourne la valeur de cette propriété 
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="filtre"></param>
+        /// <returns>Une chaine caractère représentant la valeur de la propriété</returns>
         private string SelectionnerProprieteClient(Client c,string filtre)
         {
             if (c == null)
                 return string.Empty;
-            return c.GetType().GetRuntimeProperty(filtre).GetValue(c).ToString();
+            return c.GetType().GetRuntimeProperty(filtre).GetValue(c).ToString().ToLower();
         }
 
         /// <summary>

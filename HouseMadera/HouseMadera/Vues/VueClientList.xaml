@@ -94,10 +94,13 @@
                 Width="150"
                 Height="58"
                 Margin="21,101,0,0"
+                FontSize="25"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 ItemsSource="{Binding Filtres, Mode=OneWay}"
-                SelectedItem="{Binding Filtre}" />
+                SelectedItem="{Binding Filtre}"
+                />
+                
 
             <TextBox
                 x:Name="TextBoxRecherche"
