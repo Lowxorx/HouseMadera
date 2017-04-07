@@ -218,24 +218,24 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private async void RetourAdminProjet()
+        private void RetourAdminProjet()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
             {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
+                //var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                //{
+                //    AffirmativeButtonText = "Oui",
+                //    NegativeButtonText = "Non",
+                //    AnimateHide = false,
+                //    AnimateShow = true
+                //});
 
-                if (result == MessageDialogResult.Affirmative)
-                {
+                //if (result == MessageDialogResult.Affirmative)
+                //{
                     vuePrecedente.Show();
                     window.Close();
-                }
+                //}
             }
         }
 
