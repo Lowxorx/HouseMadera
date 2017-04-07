@@ -34,7 +34,7 @@ namespace HouseMadera.DAL
                                FROM Projet p
                                LEFT JOIN Commercial c ON p.Commercial_Id=c.Id
                                LEFT JOIN Client cli ON p.Client_Id=cli.Id
-                               WHERE p.Suppression IS NOT NULL";
+                               WHERE p.Suppression = '' OR p.Suppression IS NULL";
                 var reader = Get(sql, null);
                 while (reader.Read())
                 {
@@ -115,35 +115,38 @@ namespace HouseMadera.DAL
         #region CREATE
 
         /// <summary>
-        /// Réalise des test sur les propriétés de l'objet Client
+        /// Réalise des test sur les propriétés de l'objet Projet
         /// avant insertion en base.
         /// </summary>
         /// <param name="projet"></param>
         /// <returns>Le nombre de ligne affecté en base. -1 si aucune ligne insérée</returns>
-        public bool CreerProjet(Projet projet)
+        public int CreerProjet(Projet p)
         {
+
+            string sql = @"INSERT INTO Projet (Nom,Reference,UpdateDate,CreateDate,Client_Id,Commercial_Id,MiseAJour,Suppression,Creation)
+                        VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1",p.Nom },
+                {"@2",p.Reference },
+                {"@3", DateTimeDbAdaptor.FormatDateTime(p.UpdateDate,Bdd) },
+                {"@4", DateTimeDbAdaptor.FormatDateTime(p.CreateDate,Bdd) },
+                {"@5",p.Client.Id },
+                {"@6",p.Commercial.Id },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( p.MiseAJour,Bdd) },
+                {"@8", DateTimeDbAdaptor.FormatDateTime( p.Suppression,Bdd) },
+                {"@9", DateTimeDbAdaptor.FormatDateTime( p.Creation,Bdd) }
+            };
+            int result = 0;
             try
             {
-                Console.WriteLine("Connexion BDD");
-                MySqlConnection connexion = new MySqlConnection("Server=212.129.41.100;Port=16081;Database=HouseMaderaDb;Uid=root;Pwd=Rila2016");
-                connexion.Open();
-                MySqlCommand command = connexion.CreateCommand();
-                Console.WriteLine("Requete BDD");
-                command.CommandText = "SELECT * FROM Projets";
-                MySqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    Console.WriteLine(String.Format("{0}", reader[0]));
-                }
-                reader.Close();
-                connexion.Close();
-                return true;
+                result = Insert(sql, parameters);
             }
-            catch (MySqlException)
+            catch (Exception e)
             {
-                Console.WriteLine("Timeout connexion bdd");
-                return false;
+                result = -1;
+                Console.WriteLine(e.Message);
             }
+            return result;
         }
 
 
@@ -155,6 +158,13 @@ namespace HouseMadera.DAL
         #endregion
 
         #region DELETE
+        /// <summary>
+        /// Met à jour en base la date de suppression du projet (suppression logique)
+        /// </summary>
+        /// <param name="projet">Représente le projet à effacer</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int DeleteModele(Projet p)
+        {
 
             string sql = @"UPDATE Projet SET Suppression= @2 WHERE Id=@1";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
@@ -222,7 +232,7 @@ namespace HouseMadera.DAL
             {
                 result = -1;
                 Console.WriteLine(e.Message);
-                
+                //TODO
                 //Logger.WriteEx(e);
 
             }
@@ -313,3 +323,4 @@ namespace HouseMadera.DAL
         #endregion
     }
 }
+

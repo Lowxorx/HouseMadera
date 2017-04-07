@@ -270,6 +270,15 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private VueModeleNouveauProjet vmNouveauProjet;
+
+        public VueModeleNouveauProjet VmNouveauProjet
+        {
+            get { return vmNouveauProjet; }
+            set { vmNouveauProjet = value; }
+        }
+
+
         /// <summary>
         /// Variables
         /// </summary>
