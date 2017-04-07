@@ -33,7 +33,8 @@ namespace HouseMadera.DAL
                 string sql = @"SELECT p.*, c.Id AS com_id, c.Nom AS com_nom, c.Prenom AS com_prenom, cli.Id AS cli_id, cli.Nom AS cli_nom, cli.Prenom AS cli_prenom
                                FROM Projet p
                                LEFT JOIN Commercial c ON p.Commercial_Id=c.Id
-                               LEFT JOIN Client cli ON p.Client_Id=cli.Id";
+                               LEFT JOIN Client cli ON p.Client_Id=cli.Id
+                               WHERE p.Suppression IS NOT NULL";
                 var reader = Get(sql, null);
                 while (reader.Read())
                 {
@@ -165,7 +166,7 @@ namespace HouseMadera.DAL
         public int DeleteModele(Projet p)
         {
 
-            string sql = @"UPDATE Client SET Suppression= @2 WHERE Id=@1";
+            string sql = @"UPDATE Projet SET Suppression= @2 WHERE Id=@1";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"@1",p.Id},

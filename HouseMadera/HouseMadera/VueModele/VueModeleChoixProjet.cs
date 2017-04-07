@@ -246,7 +246,10 @@ namespace HouseMadera.VueModele
                     {
                         using (var dal = new ProjetDAL(DAL.DAL.Bdd))
                         {
+                            SelectedProjet.Suppression = DateTime.Now;
                             delProjet = dal.DeleteModele(SelectedProjet);
+                            ListeProjets.Clear();
+                            RaisePropertyChanged(() => ListeProjets);
                             ListeProjets = new ObservableCollection<Projet>(dal.ChargerProjets());
                             RaisePropertyChanged(() => ListeProjets);
                         }
