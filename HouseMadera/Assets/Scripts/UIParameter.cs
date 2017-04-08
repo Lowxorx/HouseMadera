@@ -1,17 +1,25 @@
 ﻿using Mono.Data.Sqlite;
+using SimpleSQL;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIParameter : MonoBehaviour {
 
     public string projets = "";
-    public string produits = "1";
+    public string produits = "";
+    public string commercialId = "";
+    public GameObject panelCreation;
+    public InputField nameInput;
+    public SimpleSQLManager dbManager;
     void Start ()
     {
+        //GameObject.Find("UIManager").GetComponent<UIManager>().commercialName.text = "TOTO";
         ReadParameters();
 	}
 	
@@ -22,9 +30,7 @@ public class UIParameter : MonoBehaviour {
 
     void ReadParameters()
     {
-        try
-        {
-            string[] args = System.Environment.GetCommandLineArgs();
+            string[] args = Environment.GetCommandLineArgs();
             
             if (args.Length > 0)
             {
@@ -46,65 +52,95 @@ public class UIParameter : MonoBehaviour {
                     //GameObject.Find("UIManager").GetComponent<UIManager>().errorMessage.text = projets +" "+produits;
                     int value;
                     Int32.TryParse(projets, out value);
+                    GetProductInformation(value);
                     GetCommercialInformations(value);
                 }
 
                 if (produits != "")
                 {
                     int value;
-                    Int32.TryParse(projets, out value);
+                    Int32.TryParse(produits, out value);
                     GetProductInformation(value);
-                    
+                }
+                else
+                {
+                    panelCreation.SetActive(true);
                 }
             }
-
-            
-        }
-        catch(Exception e)
-        {
-            //GameObject.Find("UIManager").GetComponent<UIManager>().errorMessage.text = e.ToString();
-        }
         GameObject.Find("DBManager").GetComponent<DBManager>().LoadProduit();
     }
 
     void GetCommercialInformations(int index)
     {
-        string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(conn);
-        dbconn.Open();
-        string sqlQuery = "SELECT Commercial_Id FROM projets WHERE Id = " + index;
-        IDbCommand dbcmd = dbconn.CreateCommand();
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-        while (reader.Read())
+        var projet = new List<Projet>(from mProjet in dbManager.Table<Projet>() where mProjet.Id == index select mProjet);
+        foreach (Projet target in projet)
         {
-            string sqlQueryCommercial = "SELECT Nom, Prenom FROM commercials WHERE Id = " + reader.GetInt32(0);
-            IDbCommand dbcmdCommercial = dbconn.CreateCommand();
-            dbcmdCommercial.CommandText = sqlQueryCommercial;
-            IDataReader readerCommercial = dbcmdCommercial.ExecuteReader();
-            while (readerCommercial.Read())
+            var commercial = new List<Commercial>(from mCommercial in dbManager.Table<Commercial>() where mCommercial.Id == target.Commercial_Id select mCommercial);
+            foreach (Commercial com in commercial)
             {
-                GameObject.Find("UIManager").GetComponent<UIManager>().commercialName.text = readerCommercial.GetString(0) + " " + readerCommercial.GetString(1);
+                GameObject.Find("UIManager").GetComponent<UIManager>().commercialName.text = com.Nom + " " + com.Prenom;
             }
         }
-        dbconn.Close();
+        //string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
+        //IDbConnection dbconn;
+        //dbconn = (IDbConnection)new SqliteConnection(conn);
+        //dbconn.Open();
+        //string sqlQuery = "SELECT Commercial_Id FROM projets WHERE Id = " + index;
+        //IDbCommand dbcmd = dbconn.CreateCommand();
+        //dbcmd.CommandText = sqlQuery;
+        //IDataReader reader = dbcmd.ExecuteReader();
+        //while (reader.Read())
+        //{
+        //    string sqlQueryCommercial = "SELECT Nom, Prenom FROM commercials WHERE Id = " + reader.GetInt32(0);
+        //    IDbCommand dbcmdCommercial = dbconn.CreateCommand();
+        //    dbcmdCommercial.CommandText = sqlQueryCommercial;
+        //    IDataReader readerCommercial = dbcmdCommercial.ExecuteReader();
+        //    while (readerCommercial.Read())
+        //    {
+        //        GameObject.Find("UIManager").GetComponent<UIManager>().commercialName.text = readerCommercial.GetString(0) + " " + readerCommercial.GetString(1);
+        //    }
+        //}
+        //dbconn.Close();
+    }
+
+    public void NewProduit()
+    {
+        Produit product = new Produit();
+        product.Nom = nameInput.text;
+        product.Projet_Id = Int32.Parse(projets);
+        product.Devis_Id = 1;
+        DateTime date = DateTime.Now;
+        product.Creation = date.ToString("yyyy-MM-dd HH:mm:ss.fff");
+        product.Plan_Id = 1;
+        product.StatutProduit_Id = 1;
+        dbManager.Insert(product);
+        panelCreation.SetActive(false);
+        var produit = new List<Produit>(from mProduit in dbManager.Table<Produit>() where mProduit.Nom == product.Nom && mProduit.Projet_Id == product.Projet_Id select mProduit);
+        foreach (Produit prod in produit)
+        {
+            produits = prod.Id.ToString();
+        }
     }
 
     void GetProductInformation(int index)
     {
-        string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(conn);
-        dbconn.Open();
-        string sqlQuery = "SELECT Nom FROM produits WHERE Id = " + index;
-        IDbCommand dbcmd = dbconn.CreateCommand();
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-        while (reader.Read())
+        var projet = new List<Projet>(from mProjet in dbManager.Table<Projet>() where mProjet.Id == index select mProjet);
+        foreach (Projet target in projet)
         {
-            GameObject.Find("UIManager").GetComponent<UIManager>().projectName.text = reader.GetString(0);
+            GameObject.Find("UIManager").GetComponent<UIManager>().projectName.text = target.Nom;
         }
-        dbconn.Close();
+        //string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
+        //IDbConnection dbconn;
+        //dbconn = (IDbConnection)new SqliteConnection(conn);
+        //dbconn.Open();
+        //string sqlQuery = "SELECT Nom FROM produits WHERE Id = " + index;
+        //IDbCommand dbcmd = dbconn.CreateCommand();
+        //dbcmd.CommandText = sqlQuery;
+        //IDataReader reader = dbcmd.ExecuteReader();
+        //while (reader.Read())
+        //{
+        //    GameObject.Find("UIManager").GetComponent<UIManager>().projectName.text = reader.GetString(0);
+        //}
+        //dbconn.Close();
     }
 }

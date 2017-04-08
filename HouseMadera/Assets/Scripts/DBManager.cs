@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DBManager : MonoBehaviour
 {
@@ -58,97 +59,119 @@ public class DBManager : MonoBehaviour
     // finir l'Insertion (cloison finis, reste mur/porte/fenêtre)
     void Insertion(GameObject objet, string type)
     {
-        Debug.Log("Insertion");
-        ModulePlace module = new ModulePlace();
-        module.Produit_Id = 1;
-        DateTime time = DateTime.Now;
-        module.Creation = time.ToString("yyyy-MM-dd HH:mm:ss.fff");
-        List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
-        string nomGamme = gamme[0].Nom;
-        List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
-
-        switch (type)
+        try
         {
-            case "Cloison":
-                module.Libelle = objet.name;
-                foreach (Module mod in modules)
-                {
-                    if(mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
-                    {
-                        module.Module_Id = mod.Id;
-                    }
-                }
-                if (objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
-                {
-                    module.Vertical = 1;
-                }
-                else
-                {
-                    module.Vertical = 0;
-                }
+            Debug.Log("Insertion");
+            ModulePlace module = new ModulePlace();
+            module.Produit_Id = 1;
+            DateTime time = DateTime.Now;
+            module.Creation = time.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
+            string nomGamme = gamme[0].Nom;
+            List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
 
-                if (objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
-                {
-                    module.Horizontal = 1;
-                }
-                else
-                {
-                    module.Horizontal = 0;
-                }
-                break;
-            case "Porte":
-                string wallNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
-                module.Libelle = "Door - " + wallNumber;
-                foreach (Module mod in modules)
-                {
-                    if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
-                    {
-                        module.Module_Id = mod.Id;
-                    }
-                }
-                break;
-            case "Fenetre":
-                string windowNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
-                module.Libelle = "Fenetre - " + windowNumber;
-                foreach (Module mod in modules)
-                {
-                    if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
-                    {
-                        module.Module_Id = mod.Id;
-                    }
-                }
-                break;
-            case "Mur":
-                foreach (Module mod in modules)
-                {
-                    if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
-                    {
-                        module.Module_Id = mod.Id;
-                    }
-                }
-                break;
-        }
-
-        List<SlotPlace> slotPlaces = new List<SlotPlace>(from mSlotPlace in dbManager.Table<SlotPlace>() select mSlotPlace);
-        foreach (SlotPlace slo in slotPlaces)
-        {
-            if (type.Equals("Cloison") || type.Equals("Mur"))
+            switch (type)
             {
-                if(slo.Libelle.Contains(Regex.Match(objet.name, @"\d+").Value))
+                case "Cloison":
+                    module.Libelle = objet.name;
+                    foreach (Module mod in modules)
+                    {
+                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                        {
+                            module.Module_Id = mod.Id;
+                        }
+                    }
+                    if (objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
+                    {
+                        if (objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalArch)
+                        {
+                            module.Vertical = 2;
+                        }
+                        else
+                        {
+                            module.Vertical = 1;
+                        }
+                    }
+                    else
+                    {
+                        module.Vertical = 0;
+                    }
+
+                    if (objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                    {
+                        if (objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalArch)
+                        {
+                            module.Horizontal = 2;
+                        }
+                        else
+                        {
+                            module.Horizontal = 1;
+                        }
+                    }
+                    else
+                    {
+                        module.Horizontal = 0;
+                    }
+                    break;
+                case "Porte":
+                    string wallNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
+                    module.Libelle = "Door - " + wallNumber;
+                    foreach (Module mod in modules)
+                    {
+                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                        {
+                            module.Module_Id = mod.Id;
+                        }
+                    }
+                    break;
+                case "Fenetre":
+                    string windowNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
+                    module.Libelle = "Fenetre - " + windowNumber;
+                    foreach (Module mod in modules)
+                    {
+                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                        {
+                            module.Module_Id = mod.Id;
+                        }
+                    }
+                    break;
+                case "Mur":
+                    foreach (Module mod in modules)
+                    {
+                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                        {
+                            module.Module_Id = mod.Id;
+                        }
+                    }
+                    break;
+            }
+
+            List<SlotPlace> slotPlaces = new List<SlotPlace>(from mSlotPlace in dbManager.Table<SlotPlace>() select mSlotPlace);
+            foreach (SlotPlace slo in slotPlaces)
+            {
+                if (type.Equals("Cloison") || type.Equals("Mur"))
                 {
-                    module.SlotPlace_Id = slo.Id;
+                    if (slo.Libelle.Contains(Regex.Match(objet.name, @"\d+").Value))
+                    {
+                        module.SlotPlace_Id = slo.Id;
+                    }
+                }
+                else if (type.Equals("Porte") || type.Equals("Fenetre"))
+                {
+                    if (slo.Libelle.Contains(Regex.Match(objet.transform.parent.parent.name, @"\d+").Value) && slo.Libelle.Contains("Wall"))
+                    {
+                        module.SlotPlace_Id = slo.Id;
+                    }
                 }
             }
-            else if (type.Equals("Porte") || type.Equals("Fenetre"))
-            {
-                if (slo.Libelle.Contains(Regex.Match(objet.transform.parent.parent.name, @"\d+").Value) && slo.Libelle.Contains("Wall"))
-                {
-                    module.SlotPlace_Id = slo.Id;
-                }
-            }
+            dbManager.Insert(module);
+            Debug.Log("Insered");
         }
-        dbManager.Insert(module);
-        Debug.Log("Insered");
+        catch(Exception e)
+        {
+            GameObject.Find("ERROR").GetComponent<Text>().text = e.ToString();
+        }
+        
     }
 
     void InsertModule()
