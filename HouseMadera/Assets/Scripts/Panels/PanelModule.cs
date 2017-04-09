@@ -37,7 +37,6 @@ public class PanelModule : MonoBehaviour {
             while (reader.Read())
             {
                 currentId = reader.GetInt32(0);
-                Debug.Log(currentId);
                 GameObject module = new GameObject();
                 module = Instantiate(Resources.Load("module", typeof(GameObject))) as GameObject;
                 module.transform.SetParent(slot.transform);
@@ -48,31 +47,10 @@ public class PanelModule : MonoBehaviour {
                 tex.LoadImage(img);
                 module.GetComponent<Image>().sprite = Sprite.Create(tex, new Rect(0, 0, 500, 500), new Vector2(0.5f, 0.5f));
                 //module.transform.position = slot.transform.position;
-                Debug.Log("id : "+reader.GetInt32(0) + " Slot : " + reader.GetString(1));
                 module.GetComponent<Button>().onClick.AddListener(delegate 
                 {
                     int types = module.name.ToString().Split('-').Length - 1;
-                    //string sqlSlotPlaces = "SELECT Slot_Id FROM slotplace WHERE Module_Id = " + EventSystem.current.currentSelectedGameObject.name;
-                    //Debug.Log(sqlSlotPlaces);
-                    //IDbCommand dbcmdSlotPlaces = dbconn.CreateCommand();
-                    //dbcmdSlotPlaces.CommandText = sqlSlotPlaces;
-                    //IDataReader readerSlotPlaces = dbcmdSlotPlaces.ExecuteReader();
                     List<GameObject> objectToInstantiate = new List<GameObject>();
-                    //while (readerSlotPlaces.Read())
-                    //{
-                    //    if (readerSlotPlaces.GetInt32(0).Equals(1))
-                    //    {
-                    //        GameObject window = new GameObject();
-                    //        window.name = "window";
-                    //        objectToInstantiate.Add(window);
-                    //    }
-                    //    else if (readerSlotPlaces.GetInt32(0).Equals(2))
-                    //    {
-                    //        GameObject door = new GameObject();
-                    //        door.name = "door";
-                    //        objectToInstantiate.Add(door);
-                    //    }
-                    //}
                     switch (types)
                     {
                         case 0:
@@ -125,7 +103,6 @@ public class PanelModule : MonoBehaviour {
 
     public void InstantiateModule(List<GameObject> numberModule, GameObject parentModule)
     {
-        Debug.Log(numberModule.Count);
         switch (numberModule.Count)
         {
             case 1:

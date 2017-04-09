@@ -193,8 +193,8 @@ public class UIManager : MonoBehaviour {
                 cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
                 cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
 
-                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalArch = true;
-                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = true;
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalArch = true;
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalArch = true;
             }
             else
             {
@@ -202,6 +202,9 @@ public class UIManager : MonoBehaviour {
                 arch.transform.GetComponent<Transform>().localScale = cloisonSelected.transform.GetComponent<Transform>().localScale;
                 cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
                 cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
+
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalArch = true;
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalArch = true;
             }
 
 

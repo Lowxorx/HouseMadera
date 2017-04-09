@@ -131,7 +131,6 @@ public class DBInformations : MonoBehaviour
             var listeModulePlacable = new List<TypeModulePlacable>(from mTypeModule in dbManager.Table<TypeModulePlacable>() select mTypeModule);
             foreach (TypeModulePlacable type in listeModulePlacable)
             {
-                Debug.Log(type.nom);
                 switch (type.nom)
                 {
                     case "Fenêtre - Porte - Fenêtre":

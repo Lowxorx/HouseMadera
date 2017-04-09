@@ -25,7 +25,6 @@ public class DBManager : MonoBehaviour
         try
         {
             var modulePlace = new List<ModulePlace>(from mPlace in dbManager.Table<ModulePlace>() select mPlace);
-            Debug.Log("Database Readed");
         }
         catch
         {
@@ -81,7 +80,7 @@ public class DBManager : MonoBehaviour
                             module.Module_Id = mod.Id;
                         }
                     }
-                    if (objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
+                    if (objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive || objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalArch)
                     {
                         if (objet.transform.GetChild(0).GetComponent<CloisonManager>().verticalArch)
                         {
@@ -97,7 +96,7 @@ public class DBManager : MonoBehaviour
                         module.Vertical = 0;
                     }
 
-                    if (objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                    if (objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive || objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalArch)
                     {
                         if (objet.transform.GetChild(0).GetComponent<CloisonManager>().horizontalArch)
                         {
@@ -272,7 +271,6 @@ public class DBManager : MonoBehaviour
             }
             else if (test.Libelle.Contains("Fenetre"))
             {
-                Debug.Log("Fenetre");
                 GameObject window = new GameObject();
                 window.name = "window";
                 if (test.Libelle.Contains("1"))
@@ -294,7 +292,6 @@ public class DBManager : MonoBehaviour
             }
             else if (test.Libelle.Contains("Door"))
             {
-                Debug.Log("Porte");
                 GameObject door = new GameObject();
                 door.name = "door";
                 if (test.Libelle.Contains("1"))
