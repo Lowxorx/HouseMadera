@@ -55,7 +55,6 @@ public class DBManager : MonoBehaviour
         InsertModule();
     }
 
-    // finir l'Insertion (cloison finis, reste mur/porte/fenêtre)
     void Insertion(GameObject objet, string type)
     {
         try
@@ -213,7 +212,7 @@ public class DBManager : MonoBehaviour
         {
             if (target.name.Contains("Cloison"))
             {
-                if (target.GetChild(0).GetComponent<CloisonManager>().verticalActive || target.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                if (target.GetChild(0).GetComponent<CloisonManager>().verticalActive || target.GetChild(0).GetComponent<CloisonManager>().horizontalActive || target.GetChild(0).GetComponent<CloisonManager>().verticalActive || target.GetChild(0).GetComponent<CloisonManager>().horizontalArch)
                 {
                     listCloison.Add(target.gameObject);
                 }
@@ -250,6 +249,40 @@ public class DBManager : MonoBehaviour
         LoadCloison();
     }
 
+    void InstantiateDoor(GameObject parent)
+    {
+        GameObject arch = Instantiate(Resources.Load("Arch", typeof(GameObject))) as GameObject;
+        arch.transform.parent = parent.transform.parent;
+        arch.transform.position = parent.transform.position;
+        if (parent.name.Contains("Vertical"))
+        {
+            arch.transform.rotation = Quaternion.Euler(0, 90, 0);
+            arch.transform.GetComponent<Transform>().localScale = new Vector3(parent.transform.GetComponent<Transform>().localScale.z, parent.transform.GetComponent<Transform>().localScale.y, parent.transform.GetComponent<Transform>().localScale.x);
+            parent.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
+            parent.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
+
+            parent.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalArch = true;
+            parent.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalArch = true;
+        }
+        else
+        {
+            arch.transform.rotation = Quaternion.Euler(0, 0, 0);
+            arch.transform.GetComponent<Transform>().localScale = parent.transform.GetComponent<Transform>().localScale;
+            parent.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
+            parent.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
+
+            parent.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalArch = true;
+            parent.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalArch = true;
+        }
+
+
+        parent.transform.parent.GetChild(2).GetComponent<Renderer>().material.color = Color.white;
+        parent.transform.parent.GetChild(3).GetComponent<Renderer>().material.color = Color.white;
+        parent.transform.parent.GetChild(2).gameObject.SetActive(false);
+        parent.transform.parent.GetChild(3).gameObject.SetActive(false);
+        parent = null;
+    }
+
     void LoadCloison()
     {
         int idProduit = Int32.Parse(GameObject.Find("UIManager").GetComponent<UIParameter>().produits);
@@ -267,6 +300,14 @@ public class DBManager : MonoBehaviour
                 if (test.Horizontal == 1)
                 {
                     cloison.transform.GetChild(3).gameObject.SetActive(true);
+                }
+                if (test.Vertical == 2)
+                {
+                    InstantiateDoor(cloison.transform.GetChild(2).gameObject);
+                }
+                if (test.Horizontal == 2)
+                {
+                    InstantiateDoor(cloison.transform.GetChild(3).gameObject);
                 }
             }
             else if (test.Libelle.Contains("Fenetre"))

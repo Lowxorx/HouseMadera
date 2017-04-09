@@ -49,6 +49,7 @@ public class PanelModule : MonoBehaviour {
                 //module.transform.position = slot.transform.position;
                 module.GetComponent<Button>().onClick.AddListener(delegate 
                 {
+                    ClearWallSlots(GameObject.Find("Event").GetComponent<EditWall>().wallSelected);
                     int types = module.name.ToString().Split('-').Length - 1;
                     List<GameObject> objectToInstantiate = new List<GameObject>();
                     switch (types)
@@ -99,6 +100,24 @@ public class PanelModule : MonoBehaviour {
             Debug.LogError(e);
         }
         
+    }
+
+    void ClearWallSlots(GameObject wall)
+    {
+        if(wall.transform.GetChild(2).transform.childCount > 0)
+        {
+            Destroy(wall.transform.GetChild(2).transform.GetChild(0).gameObject);
+        }
+
+        if (wall.transform.GetChild(3).transform.childCount > 0)
+        {
+            Destroy(wall.transform.GetChild(3).transform.GetChild(0).gameObject);
+        }
+
+        if (wall.transform.GetChild(4).transform.childCount > 0)
+        {
+            Destroy(wall.transform.GetChild(4).transform.GetChild(0).gameObject);
+        }
     }
 
     public void InstantiateModule(List<GameObject> numberModule, GameObject parentModule)
