@@ -33,6 +33,13 @@ public class DBInformations : MonoBehaviour
     public int ff;
     #endregion
 
+    #region TypeModule
+    public int porteLuxe;
+    public int porteLowCost;
+    public int fenetreLuxe;
+    public int fenetreLowcost;
+    #endregion
+
     public SimpleSQLManager dbManager;
 
     void Start()
@@ -40,6 +47,7 @@ public class DBInformations : MonoBehaviour
         FillTypeModule();
         FillSlot();
         FillGamme();
+        FillModule();
         FillModulePlacable();
     }
 
@@ -70,6 +78,29 @@ public class DBInformations : MonoBehaviour
         catch
         {
 
+        }
+    }
+
+    void FillModule()
+    {
+        var typeModule = new List<Module>(from mPlace in dbManager.Table<Module>() select mPlace);
+        foreach (Module mod in typeModule)
+        {
+            switch (mod.Nom)
+            {
+                case "Fenetre Luxe":
+                    fenetreLuxe = mod.Id;
+                    break;
+                case "Fenetre Low-Cost":
+                    fenetreLowcost = mod.Id;
+                    break;
+                case "Porte Luxe":
+                    porteLuxe = mod.Id;
+                    break;
+                case "Porte Low-Cost":
+                    porteLowCost = mod.Id;
+                    break;
+            }
         }
     }
 

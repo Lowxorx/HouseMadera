@@ -9,7 +9,7 @@ public class Produit
     [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
     public string Nom { get; set; }
-    public int Devis_Id { get; set; }
+    public int? Devis_Id { get; set; }
     public int Plan_Id { get; set; }
     public int Projet_Id { get; set; }
     public string MiseAJour { get; set; }

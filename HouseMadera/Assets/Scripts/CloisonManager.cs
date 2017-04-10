@@ -24,6 +24,11 @@ public class CloisonManager : MonoBehaviour
         cloisonHorizontal = this.transform.parent.GetChild(3).gameObject;
     }
 
+    void CancelCloison()
+    {
+
+    }
+
     void OnTriggerEnter(Collider collider)
     {
         if (verticalActive)
@@ -35,7 +40,6 @@ public class CloisonManager : MonoBehaviour
             cloisonHorizontal.SetActive(false);
         }
         collisionDetected = true;
-        RefillCloison();
     }
     // Update is called once per frame
     void Update()
@@ -64,9 +68,6 @@ public class CloisonManager : MonoBehaviour
             {
                 horizontalActive = true;
             }
-            RefillCloison();
-
-
         }
     }
 
@@ -120,7 +121,6 @@ public class CloisonManager : MonoBehaviour
                 }
             }
         }
-        RefillCloison();
     }
 
     void ClearAll()
@@ -161,6 +161,5 @@ public class CloisonManager : MonoBehaviour
                 //this.transform.parent.GetChild(3).gameObject.SetActive(true);
             }
         }
-        RefillCloison();
     }
 }

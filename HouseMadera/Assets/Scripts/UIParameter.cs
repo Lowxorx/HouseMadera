@@ -30,31 +30,43 @@ public class UIParameter : MonoBehaviour
 
     void ReadParameters()
     {
-        string[] args = Environment.GetCommandLineArgs();
-        Debug.Log(args[0]);
-        if (args.Length > 1)
+        if(produits != "")
         {
+            int value;
+            Int32.TryParse(projets, out value);
+            GetCommercialInformations(value);
+            GetProductInformation(value);
+            GameObject.Find("DBManager").GetComponent<DBManager>().LoadProduit();
+        }
+        else
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            Debug.Log(args[0]);
+            if (args.Length > 1)
+            {
 
-            if (args.Length == 2)
-            {
-                projets = args[1];
-                int value;
-                Int32.TryParse(projets, out value);
-                GetCommercialInformations(value);
-                GetProductInformation(value);
-                panelCreation.SetActive(true);
-            }
-            else if (args.Length == 3)
-            {
-                projets = args[1];
-                produits = args[2];
-                int value;
-                Int32.TryParse(projets, out value);
-                GetCommercialInformations(value);
-                GetProductInformation(value);
-                GameObject.Find("DBManager").GetComponent<DBManager>().LoadProduit();
+                if (args.Length == 2)
+                {
+                    projets = args[1];
+                    int value;
+                    Int32.TryParse(projets, out value);
+                    GetCommercialInformations(value);
+                    GetProductInformation(value);
+                    panelCreation.SetActive(true);
+                }
+                else if (args.Length == 3)
+                {
+                    projets = args[1];
+                    produits = args[2];
+                    int value;
+                    Int32.TryParse(projets, out value);
+                    GetCommercialInformations(value);
+                    GetProductInformation(value);
+                    GameObject.Find("DBManager").GetComponent<DBManager>().LoadProduit();
+                }
             }
         }
+        
         
     }
 
@@ -79,6 +91,7 @@ public class UIParameter : MonoBehaviour
         DateTime date = DateTime.Now;
         product.Creation = date.ToString("yyyy-MM-dd HH:mm:ss.fff");
         product.Plan_Id = 1;
+        product.Devis_Id = null;
         product.StatutProduit_Id = 1;
         dbManager.Insert(product);
         panelCreation.SetActive(false);

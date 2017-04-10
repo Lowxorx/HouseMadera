@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour {
 	void Start ()
     {
 
-
+        
         textureInitialPosition = panelTexture.transform.position;
         modulePositionInitial = panelModule.transform.position;
         optionCloisonPositionInitial = optionCloison.transform.position;

@@ -19,7 +19,8 @@ public class DBManager : MonoBehaviour
     public List<GameObject> moduleWall4 = new List<GameObject>();
     public Switch gammeSwitch;
     public SimpleSQLManager dbManager;
-    int gammeChoosed = 2;
+    int gammeChoosed;
+    public string gammeName;
     public GameObject savePanel;
 
     void Start()
@@ -36,9 +37,38 @@ public class DBManager : MonoBehaviour
         FillListWall();
     }
 
+    void FindGamme()
+    {
+        bool status = gammeSwitch.isOn;
+        List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>()select mGamme);
+        if (status)
+        {
+            foreach (Gamme gam in gamme)
+            {
+                if (gam.Nom.Contains("Luxe"))
+                {
+                    gammeChoosed = gam.Id;
+                    gammeName = gam.Nom;
+                }
+            }
+        }
+        else
+        {
+            foreach (Gamme gam in gamme)
+            {
+                if (gam.Nom.Contains("Low-Cost"))
+                {
+                    gammeChoosed = gam.Id;
+                    gammeName = gam.Nom;
+                }
+            }
+        }
+    }
+
     //new
     public void Save()
     {
+        FindGamme();
         DeleteModulePlace();
         FillInformations();
         InsertModulePlace();
@@ -226,6 +256,162 @@ public class DBManager : MonoBehaviour
         }
     }
 
+    public void GetGammeWithId(int id)
+    {
+        FillListModule();
+        FillListCloison();
+        FillListWall();
+        if (id == 1)
+        {
+            foreach (GameObject walls in listWall)
+            {
+                walls.transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().Murluxe;
+            }
+
+            foreach (GameObject fenetre in listModule)
+            {
+                if (fenetre.name.Contains("Window"))
+                {
+                    fenetre.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().FenetreLuxe;
+                    fenetre.GetComponent<Renderer>().material.color = Color.white;
+                }
+            }
+
+            foreach (GameObject fenetre in listModule)
+            {
+                if (fenetre.name.Contains("Door"))
+                {
+                    fenetre.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLuxe;
+                    fenetre.GetComponent<Renderer>().material.color = Color.white;
+                }
+            }
+
+            GameObject house = GameObject.Find("House");
+            foreach (Transform target in house.transform)
+            {
+                if (target.name.Contains("Cloison"))
+                {
+                    target.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().ParquetLuxe;
+                }
+            }
+
+
+            foreach (GameObject cloison in listCloison)
+            {
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
+                {
+                    cloison.transform.GetChild(2).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                }
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                {
+                    cloison.transform.GetChild(3).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                }
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().verticalArch)
+                {
+                    foreach (Transform arch in cloison.transform)
+                    {
+                        Debug.Log(arch.gameObject.name);
+                        if (arch.name.Contains("Arch"))
+                        {
+                            arch.transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                            arch.transform.GetChild(1).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                            arch.transform.GetChild(2).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                        }
+                    }
+                }
+
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().horizontalArch)
+                {
+                    foreach (Transform arch in cloison.transform)
+                    {
+                        Debug.Log(arch.gameObject.name);
+                        if (arch.name.Contains("Arch"))
+                        {
+                            arch.transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                            arch.transform.GetChild(1).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                            arch.transform.GetChild(2).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+                        }
+                    }
+                }
+            }
+
+        }
+        if (id == 2)
+        {
+            foreach (GameObject walls in listWall)
+            {
+                walls.transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().Murlowcost;
+            }
+
+            foreach (GameObject fenetre in listModule)
+            {
+                if (fenetre.name.Contains("Window"))
+                {
+                    fenetre.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().FenetreLowcost;
+                    fenetre.GetComponent<Renderer>().material.color = Color.white;
+                }
+            }
+
+            foreach (GameObject fenetre in listModule)
+            {
+                if (fenetre.name.Contains("Door"))
+                {
+                    fenetre.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLowcost;
+                    fenetre.GetComponent<Renderer>().material.color = Color.white;
+                }
+            }
+
+            GameObject house = GameObject.Find("House");
+            foreach (Transform target in house.transform)
+            {
+                if (target.name.Contains("Cloison"))
+                {
+                    target.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().parquetLowcost;
+                }
+            }
+
+
+            foreach (GameObject cloison in listCloison)
+            {
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
+                {
+                    cloison.transform.GetChild(2).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                }
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                {
+                    cloison.transform.GetChild(3).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                }
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().verticalArch)
+                {
+                    foreach (Transform arch in cloison.transform)
+                    {
+                        Debug.Log(arch.gameObject.name);
+                        if (arch.name.Contains("Arch"))
+                        {
+                            arch.transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                            arch.transform.GetChild(1).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                            arch.transform.GetChild(2).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                        }
+                    }
+                }
+
+                if (cloison.transform.GetChild(0).GetComponent<CloisonManager>().horizontalArch)
+                {
+                    foreach (Transform arch in cloison.transform)
+                    {
+                        Debug.Log(arch.gameObject.name);
+                        if (arch.name.Contains("Arch"))
+                        {
+                            arch.transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                            arch.transform.GetChild(1).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                            arch.transform.GetChild(2).GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     void Insertion(GameObject objet, string type)
     {
         try
@@ -235,8 +421,8 @@ public class DBManager : MonoBehaviour
             module.Produit_Id = Int32.Parse(GameObject.Find("UIManager").GetComponent<UIParameter>().produits);
             DateTime time = DateTime.Now;
             module.Creation = time.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            List<Gamme> gamme = new List<Gamme>(from mGamme in dbManager.Table<Gamme>() where mGamme.Id == gammeChoosed select mGamme);
-            string nomGamme = gamme[0].Nom;
+            
+            int nomGamme = gammeChoosed;
             List<Module> modules = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
 
             switch (type)
@@ -245,7 +431,7 @@ public class DBManager : MonoBehaviour
                     module.Libelle = objet.name;
                     foreach (Module mod in modules)
                     {
-                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                        if (mod.Nom.Contains(gammeName) && (mod.Nom.Contains(type)))
                         {
                             module.Module_Id = mod.Id;
                         }
@@ -285,29 +471,31 @@ public class DBManager : MonoBehaviour
                 case "Porte":
                     string wallNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
                     module.Libelle = "Door - " + wallNumber;
-                    foreach (Module mod in modules)
+                    if (module.Libelle.Contains("Luxe"))
                     {
-                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
-                        {
-                            module.Module_Id = mod.Id;
-                        }
+                        module.Module_Id = GameObject.Find("DBManager").GetComponent<DBInformations>().porteLuxe;
+                    }
+                    else
+                    {
+                        module.Module_Id = GameObject.Find("DBManager").GetComponent<DBInformations>().porteLowCost;
                     }
                     break;
                 case "Fenetre":
                     string windowNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
                     module.Libelle = "Fenetre - " + windowNumber;
-                    foreach (Module mod in modules)
+                    if (module.Libelle.Contains("Luxe"))
                     {
-                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
-                        {
-                            module.Module_Id = mod.Id;
-                        }
+                        module.Module_Id = GameObject.Find("DBManager").GetComponent<DBInformations>().fenetreLuxe;
+                    }
+                    else
+                    {
+                        module.Module_Id = GameObject.Find("DBManager").GetComponent<DBInformations>().fenetreLowcost;
                     }
                     break;
                 case "Mur":
                     foreach (Module mod in modules)
                     {
-                        if (mod.Nom.Contains(nomGamme) && (mod.Nom.Contains(type)))
+                        if (mod.Nom.Contains(nomGamme.ToString()) && (mod.Nom.Contains(type)))
                         {
                             module.Module_Id = mod.Id;
                         }
@@ -431,6 +619,7 @@ public class DBManager : MonoBehaviour
     {
         LoadWall();
         LoadCloison();
+        GetGammeWithId(gammeChoosed);
     }
 
     void InstantiateDoor(GameObject parent)
@@ -471,9 +660,17 @@ public class DBManager : MonoBehaviour
     {
         int idProduit = Int32.Parse(GameObject.Find("UIManager").GetComponent<UIParameter>().produits);
         var cloisons = new List<ModulePlace>(from mPlace in dbManager.Table<ModulePlace>() where mPlace.Produit_Id == idProduit && mPlace.Suppression == null select mPlace);
+        int  gamme = 0;
 
         foreach (ModulePlace test in cloisons)
         {
+            if(gamme == 0)
+            {
+                int moduleId = test.Module_Id;
+                var modul = new List<Module>(from mModule in dbManager.Table<Module>() select mModule);
+                gamme = modul[0].Gamme_Id;
+                gammeChoosed = gamme;
+            }
             if (test.Libelle.Contains("Cloison"))
             {
                 GameObject cloison = GameObject.Find(test.Libelle);

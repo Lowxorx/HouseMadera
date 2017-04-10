@@ -26,7 +26,8 @@ public class PanelModule : MonoBehaviour {
     {
         try
         {
-            string conn = "URI=file:C:\\Users\\Jacky-Marley\\AppData\\LocalLow\\MaderaCorp\\HouseMadera\\HouseMaderaDB.db";
+            string conn = "URI=file:C:\\Users\\"+ Environment.UserName + "\\AppData\\LocalLow\\HouseMadera\\HouseMadera\\HouseMaderaDB.db";
+            Debug.Log(conn);
             IDbConnection dbconn;
             dbconn = (IDbConnection)new SqliteConnection(conn);
             dbconn.Open();
