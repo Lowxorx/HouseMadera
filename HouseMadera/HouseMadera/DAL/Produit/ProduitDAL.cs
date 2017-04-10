@@ -106,7 +106,7 @@ namespace HouseMadera.DAL
                             Nom = Convert.ToString(reader["Nom"]),
                             Devis = new Devis()
                             {
-                                Id = Convert.ToInt32(reader["devis_id"]),
+                                Id = string.IsNullOrEmpty(reader["devis_id"].ToString()) ? 0: Convert.ToInt32(reader["devis_id"]),
                                 Nom = Convert.ToString(reader["devis_nom"]),
                             },
                             Plan = new Plan()
@@ -185,7 +185,7 @@ namespace HouseMadera.DAL
                 {"@1",modele.Nom },
                 {"@2",projetId },
                 {"@3",planId },
-                {"@4",devisId },
+                {"@4",devisId == 0 ? string.Empty: Convert.ToString(devisId) },
                 {"@5",statutProduitId },
                 {"@6", DateTimeDbAdaptor.FormatDateTime( modele.MiseAJour,Bdd) },
                 {"@7", DateTimeDbAdaptor.FormatDateTime( modele.Suppression,Bdd) },
@@ -252,7 +252,7 @@ namespace HouseMadera.DAL
                 {"@1",produitLocal.Nom},
                 {"@2",projetId},
                 {"@3",planId},
-                {"@4",devisId},
+                {"@4",devisId == 0 ? string.Empty: Convert.ToString(devisId)},
                 {"@5",statutProduitId},
                 {"@6",DateTimeDbAdaptor.FormatDateTime( produitLocal.MiseAJour,Bdd) },
                 {"@7",produitLocal.Id },

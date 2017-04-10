@@ -213,6 +213,8 @@ namespace HouseMadera.VueModele
             VueClientEdit vce = new VueClientEdit();
             VueModeleClientEdit vm = new VueModeleClientEdit();
             vm.InitVueModele(ClientSelectionne);
+            vm.CommercialConnecte = CommercialConnecte;
+            vm.VuePrecedente = window;
             vce.DataContext = vm;
             vce.Show();
             window.Close();

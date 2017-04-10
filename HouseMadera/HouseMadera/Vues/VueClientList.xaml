@@ -89,6 +89,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Background="LightGray" />
+            
             <ComboBox
                 x:Name="ComboBoxRecherche"
                 Width="150"
