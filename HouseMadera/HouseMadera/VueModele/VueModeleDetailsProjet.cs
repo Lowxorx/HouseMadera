@@ -241,15 +241,9 @@ namespace HouseMadera.VueModele
 
         private void EditionProduit()
         {
-
-        }
-
-        private void CreerUnProduit()
-        {
             try
             {
-                string arg = String.Format("{0}", SelectedProjet.Id);
-                Console.WriteLine(arg);
+                string arg = String.Format("{0} {1}", SelectedProjet.Id, SelectedProduit.Id);
                 Process HouseEditor = new Process();
                 HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
                 HouseEditor.StartInfo.Arguments = arg;
@@ -258,6 +252,24 @@ namespace HouseMadera.VueModele
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                Logger.WriteEx(ex);
+            }
+        }
+
+        private void CreerUnProduit()
+        {
+            try
+            {
+                string arg = String.Format("{0}", SelectedProjet.Id);
+                Process HouseEditor = new Process();
+                HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
+                HouseEditor.StartInfo.Arguments = arg;
+                HouseEditor.Start();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Logger.WriteEx(ex);
             }
         }
 
