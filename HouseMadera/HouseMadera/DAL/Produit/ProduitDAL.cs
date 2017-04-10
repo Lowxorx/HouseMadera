@@ -44,30 +44,63 @@ namespace HouseMadera.DAL
                 var reader = Get(sql, parametres);
                 while (reader.Read())
                 {
-                    var produit = new Produit()
+                    Console.WriteLine("id devis " + reader["Devis_Id"]);
+                    if (!String.IsNullOrEmpty(reader["Devis_Id"].ToString()))
                     {
-                        Id = Convert.ToInt32(reader["Id"]),
-                        Nom = Convert.ToString(reader["Nom"]),
-                        Devis = new Devis()
+                        var produit = new Produit()
                         {
-                            Nom = Convert.ToString(reader["nom_devis"]),
-                            Id = Convert.ToInt32(reader["id_devis"]),
-                            PrixTTC = Convert.ToDecimal(reader["prixttc_devis"]),
-                            PrixHT = Convert.ToDecimal(reader["prixht_devis"]),
-                            StatutDevis = new StatutDevis() { Nom = reader["statut_devis"].ToString() }
-                        },
-                        Plan = new Plan()
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nom = Convert.ToString(reader["Nom"]),
+                            Devis = new Devis()
+                            {
+                                Nom = Convert.ToString(reader["nom_devis"]),
+                                Id = Convert.ToInt32(reader["id_devis"]),
+                                PrixTTC = Convert.ToDecimal(reader["prixttc_devis"]),
+                                PrixHT = Convert.ToDecimal(reader["prixht_devis"]),
+                                StatutDevis = new StatutDevis() { Nom = reader["statut_devis"].ToString() }
+                            },
+                            Plan = new Plan()
+                            {
+                                Nom = Convert.ToString(reader["nom_plan"]),
+                                CreateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["date_plan"]))
+                            },
+                            Projet = new Projet()
+                            {
+                                Nom = Convert.ToString(reader["nom_projet"])
+                            },
+                            StatutProduit = new StatutProduit()
+                            {
+                                Nom = reader["statut_produit"].ToString()
+                            }
+                        };
+                        listeProduit.Add(produit);
+                    }
+                    else
+                    {
+                        var produit = new Produit()
                         {
-                            Nom = Convert.ToString(reader["nom_plan"]),
-                            CreateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["date_plan"]))
-                        },
-                        Projet = new Projet()
-                        {
-                            Nom = Convert.ToString(reader["nom_projet"])
-                        },
-                        StatutProduit = new StatutProduit() { Nom = reader["statut_produit"].ToString() }
-                    };
-                    listeProduit.Add(produit);
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nom = Convert.ToString(reader["Nom"]),
+                            Devis = new Devis()
+                            {
+
+                            },
+                            Plan = new Plan()
+                            {
+                                Nom = Convert.ToString(reader["nom_plan"]),
+                                CreateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["date_plan"]))
+                            },
+                            Projet = new Projet()
+                            {
+                                Nom = Convert.ToString(reader["nom_projet"])
+                            },
+                            StatutProduit = new StatutProduit()
+                            {
+                                Nom = reader["statut_produit"].ToString()
+                            }
+                        };
+                        listeProduit.Add(produit);
+                    }
                 }
                 return listeProduit;
             }
@@ -76,6 +109,55 @@ namespace HouseMadera.DAL
                 Logger.WriteEx(e);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Met à jour en base le produit
+        /// </summary>
+        /// <param name="produit">Représente le produit</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int UpdateDevisProduit(Produit p)
+        {
+            string sql = @"UPDATE Produit SET Devis_Id=@2 WHERE Nom=@1";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1", p.Nom},
+                {"@2", p.Devis.Id}
+            };
+            Console.WriteLine(sql + " " + p.Nom + p.Devis.Id) ;
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
+
+        public int UpdateStatutProduit(Produit p)
+        {
+            string sql = @"UPDATE Produit SET StatutDevis_Id=@2 WHERE Nom=@1";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1", p.Nom},
+                {"@2", 2}
+            };
+            Console.WriteLine(sql + " " + p.Nom + p.Devis.Id);
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
         }
 
         #region SYNCHRONISATION

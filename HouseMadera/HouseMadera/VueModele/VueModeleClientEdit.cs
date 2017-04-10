@@ -8,6 +8,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -278,6 +279,15 @@ namespace HouseMadera.VueModele
             set { vmNouveauProjet = value; }
         }
 
+        private bool addFromProjet;
+
+        public bool AddFromProjet
+        {
+            get { return addFromProjet; }
+            set { addFromProjet = value; }
+        }
+
+
 
         /// <summary>
         /// Variables
@@ -408,25 +418,33 @@ namespace HouseMadera.VueModele
         /// </summary>
         private async void AfficherPagePrecedente()
         {
-            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            var window = Application.Current.Windows.OfType<MetroWindow>().LastOrDefault();
             if (window != null)
             {
-                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                if (!AddFromProjet)
                 {
-                    AffirmativeButtonText = "Oui",
-                    NegativeButtonText = "Non",
-                    AnimateHide = false,
-                    AnimateShow = true
-                });
+                    var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    {
+                        AffirmativeButtonText = "Oui",
+                        NegativeButtonText = "Non",
+                        AnimateHide = false,
+                        AnimateShow = true
+                    });
 
-                if (result == MessageDialogResult.Affirmative)
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        VueClientList vcl = new VueClientList();
+                        ((VueModeleClientList)vcl.DataContext).VuePrecedente = window;
+                        ((VueModeleClientList)vcl.DataContext).CommercialConnecte = CommercialConnecte;
+                        vcl.Show();
+                        window.Close();
+                    }
+                }
+                else
                 {
-                    VueClientList vcl = new VueClientList();
-                    ((VueModeleClientList)vcl.DataContext).VuePrecedente = window;
-                    ((VueModeleClientList)vcl.DataContext).CommercialConnecte = CommercialConnecte;
-                    vcl.Show();
                     window.Close();
                 }
+
             }
         }
 
@@ -474,7 +492,9 @@ namespace HouseMadera.VueModele
                         int success = isMiseAJourClient ? dal.UpdateModele(client,null) : dal.InsertModele(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
+                        VmNouveauProjet.ListClient = new ObservableCollection<Client>(dal.GetAllModeles());
                     }
+
                 }
                 catch
                 {

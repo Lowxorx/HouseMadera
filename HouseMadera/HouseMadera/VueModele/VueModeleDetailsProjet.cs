@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 
@@ -175,21 +176,39 @@ namespace HouseMadera.VueModele
 
         private void ChangeDetailsProduits()
         {
-            if (selectedProduit.StatutProduit.Nom == "Valide")
+            try
             {
-                DetailsPrixProduit = string.Format("Prix HT : {0} €", Convert.ToString(selectedProduit.Devis.PrixHT));
-                DetailsPrixTTCProduit = string.Format("Prix TTC : {0} €", Convert.ToString(selectedProduit.Devis.PrixTTC));
-                DetailsStatutDevisProduit = string.Format("Statut du devis : {0}", Convert.ToString(selectedProduit.Devis.StatutDevis.Nom));
-                DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
-                GenBtnActif = true;
+                if (selectedProduit.StatutProduit.Nom == "Valide")
+                {
+                    DetailsPrixProduit = string.Format("Prix HT : {0} €", Convert.ToString(selectedProduit.Devis.PrixHT));
+                    DetailsPrixTTCProduit = string.Format("Prix TTC : {0} €", Convert.ToString(selectedProduit.Devis.PrixTTC));
+                    DetailsStatutDevisProduit = string.Format("Statut du devis : {0}", Convert.ToString(selectedProduit.Devis.StatutDevis.Nom));
+                    DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
+                    GenBtnActif = true;
+                }
+                else
+                {
+                    DetailsPrixProduit = " ----- ";
+                    DetailsPrixTTCProduit = " ----- ";
+                    DetailsStatutDevisProduit = " ----- ";
+                    DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
+                    GenBtnActif = true;
+                }
             }
-            else
+            catch (Exception)
             {
-                DetailsPrixProduit = "";
-                DetailsPrixTTCProduit = "";
-                DetailsStatutDevisProduit = "";
+                DetailsPrixProduit = " ----- ";
+                DetailsPrixTTCProduit = " ----- ";
+                DetailsStatutDevisProduit = " ----- ";
                 DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
-                GenBtnActif = false;
+                if (selectedProduit.StatutProduit.Nom == "Valide")
+                {
+                    GenBtnActif = true;
+                }
+                else
+                {
+                    GenBtnActif = true;
+                }
             }
         }
 
@@ -241,7 +260,24 @@ namespace HouseMadera.VueModele
 
         private void EditionProduit()
         {
-
+            try
+            {
+                string arg = String.Format("{0} {1}", SelectedProjet.Id, SelectedProduit.Id);
+                Console.WriteLine("envoi des arguments vers unity : " + arg);
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = AppInfo.AppPath + @"\MaderaHouseEditor",
+                    Arguments = arg,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+                var process = Process.Start(startInfo);
+                ThreadPool.QueueUserWorkItem(WaitForProc, process);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                Logger.WriteEx(ex);
+            }
         }
 
         private void CreerUnProduit()
@@ -249,15 +285,20 @@ namespace HouseMadera.VueModele
             try
             {
                 string arg = String.Format("{0}", SelectedProjet.Id);
-                Console.WriteLine(arg);
-                Process HouseEditor = new Process();
-                HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
-                HouseEditor.StartInfo.Arguments = arg;
-                HouseEditor.Start();
+                Console.WriteLine("envoi des arguments vers unity : " + arg);
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = AppInfo.AppPath + @"\MaderaHouseEditor",
+                    Arguments = arg,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+                var process = Process.Start(startInfo);
+                ThreadPool.QueueUserWorkItem(WaitForProc, process);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
+                Logger.WriteEx(ex);
             }
         }
 
@@ -301,6 +342,10 @@ namespace HouseMadera.VueModele
                 modulesToGrid.Add(outputModule);
                 outputToDevis += outputModule;
             }
+            string mursPorteurs = "4 x Murs low-cost | Prix HT : 4032 € \n";
+            outputToDevis += mursPorteurs;
+            modulesToGrid.Add(mursPorteurs);
+            prixTotal += 4032;
             string prixFinal = String.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
             outputToDevis += prixFinal;
 
@@ -323,18 +368,32 @@ namespace HouseMadera.VueModele
                 Nom = listDg.First().NomProduit,
                 PrixHT = prixTotal,
                 PrixTTC = Convert.ToDecimal(Convert.ToDouble(prixTotal) * tva),
-                StatutDevis = new StatutDevis() {Id = 2},
-                Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel)
+                StatutDevis = new StatutDevis() { Id = 2 },
+                Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel),
+                MiseAJour = null,
+                Suppression = null,
+                Creation = DateTime.Now
             };
 
 
             try
             {
                 int insertDevis = 0;
-
+                Produit pUpdate = new Produit()
+                {
+                    Nom = listDg.First().NomProduit
+                };
                 using (DevisDAL dDAl = new DevisDAL(DAL.DAL.Bdd))
                 {
                     insertDevis = dDAl.InsertDevis(d);
+                    pUpdate.Devis = dDAl.GetDevisByIdProduit(pUpdate);
+                    Console.WriteLine("update devis " + pUpdate.Nom);
+                }
+                using (ProduitDAL pDal = new ProduitDAL(DAL.DAL.Bdd))
+                {
+                    int i = pDal.UpdateDevisProduit(pUpdate);
+                    pDal.UpdateStatutProduit(pUpdate);
+                    Console.WriteLine("result update devis " + i);
                 }
 
                 if (insertDevis > 0)
@@ -426,6 +485,27 @@ namespace HouseMadera.VueModele
                 listeProduit = dal.GetAllProduitsByProjet(selectedProjet);
             }
             RaisePropertyChanged(() => ListeProduit);
+        }
+
+        private MetroWindow thisWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+
+        private void WaitForProc(object obj)
+        {
+            var proc = (Process)obj;
+            proc.WaitForExit();
+            Console.WriteLine("end proc");
+            thisWindow.BeginInvoke(delegate () 
+            {
+                try
+                {
+                    ListeProduit.Clear();
+                }
+                catch (NullReferenceException)
+                {
+                    // ignore
+                }
+                RecupProduitsParProjet();
+            });
         }
     }
 }

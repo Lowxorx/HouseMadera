@@ -43,8 +43,8 @@ namespace HouseMadera.DAL
                         Id = Convert.ToInt32(reader["Id"]),
                         Nom = Convert.ToString(reader["Nom"]),
                         Reference = Convert.ToString(reader["Reference"]),
-                        CreateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["CreateDate"])),
-                        UpdateDate = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["UpdateDate"])),
+                        //CreateDate = (DateTime)reader["CreateDate"],
+                        //UpdateDate = (DateTime)reader["UpdateDate"],
                         Commercial = new Commercial()
                         {
                             Id = Convert.ToInt32(reader["com_id"]),
@@ -53,7 +53,7 @@ namespace HouseMadera.DAL
                         },
                         Client = new Client()
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("cli_id")),
+                            Id = Convert.ToInt32(reader["cli_id"]),
                             Nom = Convert.ToString(reader["cli_nom"]),
                             Prenom = Convert.ToString(reader["cli_prenom"])
                         }

@@ -147,6 +147,37 @@ namespace HouseMadera.DAL
         }
 
         /// <summary>
+        /// Selectionne le premier devis avec l'ID produit en paramètre
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Un objet Devis</returns>
+        public Devis GetDevisByIdProduit(Produit p)
+        {
+
+            string sql = @"SELECT * FROM Devis WHERE Nom = @1";
+            var parametres = new Dictionary<string, object>()
+            {
+                {"@1", p.Nom}
+            };
+            Devis devis = new Devis();
+            var reader = Get(sql, parametres);
+            while (reader.Read())
+            {
+                devis = new Devis()
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Nom = Convert.ToString(reader["Nom"]),
+                    DateCreation = Convert.ToDateTime(reader["DateCreation"]),
+                    PrixHT = Convert.ToDecimal(reader["PrixHT"]),
+                    PrixTTC = Convert.ToDecimal(reader["PrixTTC"]),
+                    StatutDevis = new StatutDevis() { Id = Convert.ToInt32(reader["StatutDevis_Id"]) },
+                    Pdf = (byte[])reader["pdf"]
+                };
+            }
+            return devis;
+        }
+
+        /// <summary>
         /// Vérifie en interrogeant la base si un devis est déjà enregistré
         /// </summary>
         /// <param name="devis"></param>
@@ -189,14 +220,17 @@ namespace HouseMadera.DAL
             if (IsDevisExist(devis))
                 throw new Exception("Le devis est déjà enregistré.");
 
-            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id,Pdf) VALUES(@1,@2,@3,@4,@5,@6)";
+            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id,Pdf,MiseAJour,Suppression,Creation) VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
             var parameters = new Dictionary<string, object>() {
                 {"@1",devis.Nom },
                 {"@2",devis.DateCreation },
                 {"@3",devis.PrixHT },
                 {"@4",devis.PrixTTC },
                 {"@5",devis.StatutDevis.Id },
-                {"@6",devis.Pdf }
+                {"@6",devis.Pdf },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
+                {"@8", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
+                {"@9", DateTimeDbAdaptor.FormatDateTime( devis.Creation,Bdd) }
             };
             var result = 0;
             try
