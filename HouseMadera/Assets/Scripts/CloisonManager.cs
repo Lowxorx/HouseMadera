@@ -35,6 +35,7 @@ public class CloisonManager : MonoBehaviour
             cloisonHorizontal.SetActive(false);
         }
         collisionDetected = true;
+        RefillCloison();
     }
     // Update is called once per frame
     void Update()
@@ -63,9 +64,30 @@ public class CloisonManager : MonoBehaviour
             {
                 horizontalActive = true;
             }
+            RefillCloison();
 
 
+        }
+    }
 
+    public void RefillCloison()
+    {
+        GameObject house = GameObject.Find("House");
+        foreach (Transform target in house.transform)
+        {
+            if (target.name.Contains("Cloison"))
+            {
+                if (target.transform.GetChild(0).GetComponent<CloisonManager>().verticalActive)
+                {
+                    target.transform.GetChild(2).gameObject.SetActive(true);
+                }
+                if (target.transform.GetChild(0).GetComponent<CloisonManager>().horizontalActive)
+                {
+                    target.transform.GetChild(3).gameObject.SetActive(true);
+                }
+                target.transform.GetChild(0).GetComponent<CloisonManager>().canBeActivate = true;
+                target.transform.GetChild(1).GetComponent<CloisonManager>().canBeActivate = true;
+            }
         }
     }
 
@@ -75,7 +97,7 @@ public class CloisonManager : MonoBehaviour
         {
             if (this.name.Contains("Vertical"))
             {
-                if (!verticalActive)
+                if (!verticalActive && !verticalArch)
                 {
                     cloisonVertical.SetActive(true);
                 }
@@ -87,7 +109,7 @@ public class CloisonManager : MonoBehaviour
             }
             else if (this.name.Contains("Horizontal"))
             {
-                if (!horizontalActive)
+                if (!horizontalActive && !horizontalArch)
                 {
                     cloisonHorizontal.SetActive(true);
                 }
@@ -98,6 +120,7 @@ public class CloisonManager : MonoBehaviour
                 }
             }
         }
+        RefillCloison();
     }
 
     void ClearAll()
@@ -138,5 +161,6 @@ public class CloisonManager : MonoBehaviour
                 //this.transform.parent.GetChild(3).gameObject.SetActive(true);
             }
         }
+        RefillCloison();
     }
 }

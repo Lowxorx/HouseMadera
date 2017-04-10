@@ -190,21 +190,27 @@ public class UIManager : MonoBehaviour {
             {
                 arch.transform.rotation = Quaternion.Euler(0, 90, 0);
                 arch.transform.GetComponent<Transform>().localScale = new Vector3(cloisonSelected.transform.GetComponent<Transform>().localScale.z, cloisonSelected.transform.GetComponent<Transform>().localScale.y, cloisonSelected.transform.GetComponent<Transform>().localScale.x);
-                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
-                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
 
                 cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalArch = true;
                 cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalArch = true;
+
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().canBeActivate = false;
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().canBeActivate = false;
             }
             else
             {
                 arch.transform.rotation = Quaternion.Euler(0, 0, 0);
                 arch.transform.GetComponent<Transform>().localScale = cloisonSelected.transform.GetComponent<Transform>().localScale;
-                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().verticalActive = false;
-                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().verticalActive = false;
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalActive = false;
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalActive = false;
 
                 cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().horizontalArch = true;
                 cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().horizontalArch = true;
+
+                cloisonSelected.transform.parent.GetChild(1).GetComponent<CloisonManager>().canBeActivate = false;
+                cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().canBeActivate = false;
             }
 
 
@@ -212,8 +218,11 @@ public class UIManager : MonoBehaviour {
             cloisonSelected.transform.parent.GetChild(3).GetComponent<Renderer>().material.color = Color.white;
             cloisonSelected.transform.parent.GetChild(2).gameObject.SetActive(false);
             cloisonSelected.transform.parent.GetChild(3).gameObject.SetActive(false);
+            cloisonSelected.transform.parent.GetChild(0).GetComponent<CloisonManager>().RefillCloison();
             cloisonSelected = null;
-        }       
+        }
+
+        
     }
 
     public void SaveHouse()

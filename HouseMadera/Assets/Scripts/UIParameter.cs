@@ -9,7 +9,8 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIParameter : MonoBehaviour {
+public class UIParameter : MonoBehaviour
+{
 
     public string projets = "";
     public string produits = "";
@@ -17,57 +18,44 @@ public class UIParameter : MonoBehaviour {
     public GameObject panelCreation;
     public InputField nameInput;
     public SimpleSQLManager dbManager;
-    void Start ()
+    void Start()
     {
-        //GameObject.Find("UIManager").GetComponent<UIManager>().commercialName.text = "TOTO";
         ReadParameters();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
+
+    void Update()
+    {
+
+    }
 
     void ReadParameters()
     {
-            string[] args = Environment.GetCommandLineArgs();
-            
-            if (args.Length > 0)
+        string[] args = Environment.GetCommandLineArgs();
+        Debug.Log(args[0]);
+        if (args.Length > 1)
+        {
+
+            if (args.Length == 2)
             {
-                for (int i = 0; i < args.Length; i++)
-                {
-                    switch (i)
-                    {
-                        case 1:
-                            projets = args[i];
-                            break;
-                        case 2:
-                            produits = args[i];
-                            break;
-                    }
-                }
-
-                if (projets != "")
-                {
-                    //GameObject.Find("UIManager").GetComponent<UIManager>().errorMessage.text = projets +" "+produits;
-                    int value;
-                    Int32.TryParse(projets, out value);
-                    GetProductInformation(value);
-                    GetCommercialInformations(value);
-                }
-
-                if (produits != "")
-                {
-                    int value;
-                    Int32.TryParse(produits, out value);
-                    GetProductInformation(value);
-                }
-                else
-                {
-                    panelCreation.SetActive(true);
-                }
+                projets = args[1];
+                int value;
+                Int32.TryParse(projets, out value);
+                GetCommercialInformations(value);
+                GetProductInformation(value);
+                panelCreation.SetActive(true);
             }
-        GameObject.Find("DBManager").GetComponent<DBManager>().LoadProduit();
+            else if (args.Length == 3)
+            {
+                projets = args[1];
+                produits = args[2];
+                int value;
+                Int32.TryParse(projets, out value);
+                GetCommercialInformations(value);
+                GetProductInformation(value);
+                GameObject.Find("DBManager").GetComponent<DBManager>().LoadProduit();
+            }
+        }
+        
     }
 
     void GetCommercialInformations(int index)
@@ -81,26 +69,6 @@ public class UIParameter : MonoBehaviour {
                 GameObject.Find("UIManager").GetComponent<UIManager>().commercialName.text = com.Nom + " " + com.Prenom;
             }
         }
-        //string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
-        //IDbConnection dbconn;
-        //dbconn = (IDbConnection)new SqliteConnection(conn);
-        //dbconn.Open();
-        //string sqlQuery = "SELECT Commercial_Id FROM projets WHERE Id = " + index;
-        //IDbCommand dbcmd = dbconn.CreateCommand();
-        //dbcmd.CommandText = sqlQuery;
-        //IDataReader reader = dbcmd.ExecuteReader();
-        //while (reader.Read())
-        //{
-        //    string sqlQueryCommercial = "SELECT Nom, Prenom FROM commercials WHERE Id = " + reader.GetInt32(0);
-        //    IDbCommand dbcmdCommercial = dbconn.CreateCommand();
-        //    dbcmdCommercial.CommandText = sqlQueryCommercial;
-        //    IDataReader readerCommercial = dbcmdCommercial.ExecuteReader();
-        //    while (readerCommercial.Read())
-        //    {
-        //        GameObject.Find("UIManager").GetComponent<UIManager>().commercialName.text = readerCommercial.GetString(0) + " " + readerCommercial.GetString(1);
-        //    }
-        //}
-        //dbconn.Close();
     }
 
     public void NewProduit()
@@ -108,7 +76,6 @@ public class UIParameter : MonoBehaviour {
         Produit product = new Produit();
         product.Nom = nameInput.text;
         product.Projet_Id = Int32.Parse(projets);
-        product.Devis_Id = 1;
         DateTime date = DateTime.Now;
         product.Creation = date.ToString("yyyy-MM-dd HH:mm:ss.fff");
         product.Plan_Id = 1;
@@ -129,18 +96,5 @@ public class UIParameter : MonoBehaviour {
         {
             GameObject.Find("UIManager").GetComponent<UIManager>().projectName.text = target.Nom;
         }
-        //string conn = "URI=file:C:\\HouseMaderaDB-sqlite\\HouseMaderaDB.db";
-        //IDbConnection dbconn;
-        //dbconn = (IDbConnection)new SqliteConnection(conn);
-        //dbconn.Open();
-        //string sqlQuery = "SELECT Nom FROM produits WHERE Id = " + index;
-        //IDbCommand dbcmd = dbconn.CreateCommand();
-        //dbcmd.CommandText = sqlQuery;
-        //IDataReader reader = dbcmd.ExecuteReader();
-        //while (reader.Read())
-        //{
-        //    GameObject.Find("UIManager").GetComponent<UIManager>().projectName.text = reader.GetString(0);
-        //}
-        //dbconn.Close();
     }
 }
