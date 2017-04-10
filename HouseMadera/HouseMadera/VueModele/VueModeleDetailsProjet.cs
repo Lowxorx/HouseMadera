@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 
@@ -263,10 +264,14 @@ namespace HouseMadera.VueModele
             {
                 string arg = String.Format("{0} {1}", SelectedProjet.Id, SelectedProduit.Id);
                 Console.WriteLine("envoi des arguments vers unity : " + arg);
-                Process HouseEditor = new Process();
-                HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
-                HouseEditor.StartInfo.Arguments = arg;
-                HouseEditor.Start();
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = AppInfo.AppPath + @"\MaderaHouseEditor",
+                    Arguments = arg,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+                var process = Process.Start(startInfo);
+                ThreadPool.QueueUserWorkItem(WaitForProc, process);
             }
             catch (Exception ex)
             {
@@ -281,10 +286,14 @@ namespace HouseMadera.VueModele
             {
                 string arg = String.Format("{0}", SelectedProjet.Id);
                 Console.WriteLine("envoi des arguments vers unity : " + arg);
-                Process HouseEditor = new Process();
-                HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
-                HouseEditor.StartInfo.Arguments = arg;
-                HouseEditor.Start();
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                    FileName = AppInfo.AppPath + @"\MaderaHouseEditor",
+                    Arguments = arg,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+                var process = Process.Start(startInfo);
+                ThreadPool.QueueUserWorkItem(WaitForProc, process);
             }
             catch (Exception ex)
             {
@@ -378,10 +387,13 @@ namespace HouseMadera.VueModele
                 {
                     insertDevis = dDAl.InsertDevis(d);
                     pUpdate.Devis = dDAl.GetDevisByIdProduit(pUpdate);
+                    Console.WriteLine("update devis " + pUpdate.Nom);
                 }
                 using (ProduitDAL pDal = new ProduitDAL(DAL.DAL.Bdd))
                 {
-                    pDal.UpdateDevisProduit(pUpdate);
+                    int i = pDal.UpdateDevisProduit(pUpdate);
+                    pDal.UpdateStatutProduit(pUpdate);
+                    Console.WriteLine("result update devis " + i);
                 }
 
                 if (insertDevis > 0)
@@ -473,6 +485,27 @@ namespace HouseMadera.VueModele
                 listeProduit = dal.GetAllProduitsByProjet(selectedProjet);
             }
             RaisePropertyChanged(() => ListeProduit);
+        }
+
+        private MetroWindow thisWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+
+        private void WaitForProc(object obj)
+        {
+            var proc = (Process)obj;
+            proc.WaitForExit();
+            Console.WriteLine("end proc");
+            thisWindow.BeginInvoke(delegate () 
+            {
+                try
+                {
+                    ListeProduit.Clear();
+                }
+                catch (NullReferenceException)
+                {
+                    // ignore
+                }
+                RecupProduitsParProjet();
+            });
         }
     }
 }

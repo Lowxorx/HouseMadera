@@ -118,12 +118,34 @@ namespace HouseMadera.DAL
         /// <returns>Le nombre de lignes affectées</returns>
         public int UpdateDevisProduit(Produit p)
         {
-            string sql = @"UPDATE Produit SET Devis_Id= @1 WHERE Id=@1";
+            string sql = @"UPDATE Produit SET Devis_Id=@2 WHERE Nom=@1";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
-                {"@1", p.Id},
+                {"@1", p.Nom},
                 {"@2", p.Devis.Id}
-
             };
+            Console.WriteLine(sql + " " + p.Nom + p.Devis.Id) ;
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
+
+        public int UpdateStatutProduit(Produit p)
+        {
+            string sql = @"UPDATE Produit SET StatutDevis_Id=@2 WHERE Nom=@1";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1", p.Nom},
+                {"@2", 2}
+            };
+            Console.WriteLine(sql + " " + p.Nom + p.Devis.Id);
             int result = 0;
             try
             {

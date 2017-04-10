@@ -166,7 +166,7 @@ namespace HouseMadera.VueModele
                     await window.ShowMessageAsync("Erreur", "Impossible d'insérer le projet en base");
                 }
 
-                if (insertProjet != -1)
+                if (insertProjet != -1 && insertProjet > 0)
                 {
                     await window.ShowMessageAsync("Information", "Le projet a été correctement inséré en base");
                     VueChoixProjet vcp = new VueChoixProjet();
@@ -191,6 +191,7 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             VueClientEdit vce = new VueClientEdit();
             ((VueModeleClientEdit)vce.DataContext).VmNouveauProjet = this;
+            ((VueModeleClientEdit)vce.DataContext).AddFromProjet = true;
             vce.Show();
         }
 
