@@ -492,7 +492,6 @@ namespace HouseMadera.VueModele
                         int success = isMiseAJourClient ? dal.UpdateModele(client,null) : dal.InsertModele(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
-                        VmNouveauProjet.ListClient = new ObservableCollection<Client>(dal.GetAllModeles());
                     }
 
                 }
