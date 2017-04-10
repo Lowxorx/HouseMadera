@@ -265,8 +265,13 @@ namespace HouseMadera.VueModele
             set { clientNom = value; }
         }
 
-
-        public string Error => throw new NotImplementedException();
+        string IDataErrorInfo.Error
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public string this[string columnName]
         {

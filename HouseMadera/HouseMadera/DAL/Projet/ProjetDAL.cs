@@ -211,7 +211,7 @@ namespace HouseMadera.DAL
                 if (!Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out int commercialId))
                 {
                     //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    commercialId = Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
+                    commercialId = Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Commercial.Id).Key;
                 }
 
                 string sql = @"INSERT INTO Projet (Nom,Reference,Client_Id,Commercial_Id,MiseAJour,Suppression,Creation)
