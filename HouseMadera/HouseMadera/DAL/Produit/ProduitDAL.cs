@@ -111,6 +111,33 @@ namespace HouseMadera.DAL
             }
         }
 
+        /// <summary>
+        /// Met à jour en base le produit
+        /// </summary>
+        /// <param name="produit">Représente le produit</param>
+        /// <returns>Le nombre de lignes affectées</returns>
+        public int UpdateDevisProduit(Produit p)
+        {
+            string sql = @"UPDATE Produit SET Devis_Id= @1 WHERE Id=@1";
+            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                {"@1", p.Id},
+                {"@2", p.Devis.Id}
+
+            };
+            int result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
+
         #region SYNCHRONISATION
         public List<Produit> GetAllModeles()
         {

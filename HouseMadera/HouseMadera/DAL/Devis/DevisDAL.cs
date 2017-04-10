@@ -147,6 +147,37 @@ namespace HouseMadera.DAL
         }
 
         /// <summary>
+        /// Selectionne le premier devis avec l'ID produit en paramètre
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Un objet Devis</returns>
+        public Devis GetDevisByIdProduit(Produit p)
+        {
+
+            string sql = @"SELECT * FROM Devis WHERE Nom = @1";
+            var parametres = new Dictionary<string, object>()
+            {
+                {"@1", p.Nom}
+            };
+            Devis devis = new Devis();
+            var reader = Get(sql, parametres);
+            while (reader.Read())
+            {
+                devis = new Devis()
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Nom = Convert.ToString(reader["Nom"]),
+                    DateCreation = Convert.ToDateTime(reader["DateCreation"]),
+                    PrixHT = Convert.ToDecimal(reader["PrixHT"]),
+                    PrixTTC = Convert.ToDecimal(reader["PrixTTC"]),
+                    StatutDevis = new StatutDevis() { Id = Convert.ToInt32(reader["StatutDevis_Id"]) },
+                    Pdf = (byte[])reader["pdf"]
+                };
+            }
+            return devis;
+        }
+
+        /// <summary>
         /// Vérifie en interrogeant la base si un devis est déjà enregistré
         /// </summary>
         /// <param name="devis"></param>

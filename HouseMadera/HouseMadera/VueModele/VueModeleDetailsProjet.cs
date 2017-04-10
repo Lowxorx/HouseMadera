@@ -370,10 +370,18 @@ namespace HouseMadera.VueModele
             try
             {
                 int insertDevis = 0;
-
+                Produit pUpdate = new Produit()
+                {
+                    Nom = listDg.First().NomProduit
+                };
                 using (DevisDAL dDAl = new DevisDAL(DAL.DAL.Bdd))
                 {
                     insertDevis = dDAl.InsertDevis(d);
+                    pUpdate.Devis = dDAl.GetDevisByIdProduit(pUpdate);
+                }
+                using (ProduitDAL pDal = new ProduitDAL(DAL.DAL.Bdd))
+                {
+                    pDal.UpdateDevisProduit(pUpdate);
                 }
 
                 if (insertDevis > 0)
