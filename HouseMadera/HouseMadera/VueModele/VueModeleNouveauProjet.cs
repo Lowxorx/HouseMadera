@@ -146,11 +146,11 @@ namespace HouseMadera.VueModele
                 {
                     Nom = ProjetNom,
                     Reference = ProjetRef,
-                    CreateDate = Convert.ToDateTime(ProjetDate),
+                    CreateDate = ProjetDate,
                     Client = ClientSelect,
                     Commercial = CommercialConnecte,
-                    Creation = Convert.ToDateTime(ProjetDate),
-                    MiseAJour = Convert.ToDateTime(ProjetDate)
+                    Creation = ProjetDate,
+                    MiseAJour = ProjetDate
                 };
                 int insertProjet = -2;
                 try
