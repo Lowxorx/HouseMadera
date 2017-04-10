@@ -189,14 +189,17 @@ namespace HouseMadera.DAL
             if (IsDevisExist(devis))
                 throw new Exception("Le devis est déjà enregistré.");
 
-            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id,Pdf) VALUES(@1,@2,@3,@4,@5,@6)";
+            var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id,Pdf,MiseAJour,Suppression,Creation) VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
             var parameters = new Dictionary<string, object>() {
                 {"@1",devis.Nom },
                 {"@2",devis.DateCreation },
                 {"@3",devis.PrixHT },
                 {"@4",devis.PrixTTC },
                 {"@5",devis.StatutDevis.Id },
-                {"@6",devis.Pdf }
+                {"@6",devis.Pdf },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
+                {"@8", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
+                {"@9", DateTimeDbAdaptor.FormatDateTime( devis.Creation,Bdd) }
             };
             var result = 0;
             try

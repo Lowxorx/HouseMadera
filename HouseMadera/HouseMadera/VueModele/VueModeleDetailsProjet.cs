@@ -175,21 +175,39 @@ namespace HouseMadera.VueModele
 
         private void ChangeDetailsProduits()
         {
-            if (selectedProduit.StatutProduit.Nom == "Valide")
+            try
             {
-                DetailsPrixProduit = string.Format("Prix HT : {0} €", Convert.ToString(selectedProduit.Devis.PrixHT));
-                DetailsPrixTTCProduit = string.Format("Prix TTC : {0} €", Convert.ToString(selectedProduit.Devis.PrixTTC));
-                DetailsStatutDevisProduit = string.Format("Statut du devis : {0}", Convert.ToString(selectedProduit.Devis.StatutDevis.Nom));
-                DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
-                GenBtnActif = true;
+                if (selectedProduit.StatutProduit.Nom == "Valide")
+                {
+                    DetailsPrixProduit = string.Format("Prix HT : {0} €", Convert.ToString(selectedProduit.Devis.PrixHT));
+                    DetailsPrixTTCProduit = string.Format("Prix TTC : {0} €", Convert.ToString(selectedProduit.Devis.PrixTTC));
+                    DetailsStatutDevisProduit = string.Format("Statut du devis : {0}", Convert.ToString(selectedProduit.Devis.StatutDevis.Nom));
+                    DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
+                    GenBtnActif = true;
+                }
+                else
+                {
+                    DetailsPrixProduit = " ----- ";
+                    DetailsPrixTTCProduit = " ----- ";
+                    DetailsStatutDevisProduit = " ----- ";
+                    DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
+                    GenBtnActif = true;
+                }
             }
-            else
+            catch (Exception)
             {
-                DetailsPrixProduit = "";
-                DetailsPrixTTCProduit = "";
-                DetailsStatutDevisProduit = "";
+                DetailsPrixProduit = " ----- ";
+                DetailsPrixTTCProduit = " ----- ";
+                DetailsStatutDevisProduit = " ----- ";
                 DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
-                GenBtnActif = false;
+                if (selectedProduit.StatutProduit.Nom == "Valide")
+                {
+                    GenBtnActif = true;
+                }
+                else
+                {
+                    GenBtnActif = true;
+                }
             }
         }
 
@@ -244,6 +262,7 @@ namespace HouseMadera.VueModele
             try
             {
                 string arg = String.Format("{0} {1}", SelectedProjet.Id, SelectedProduit.Id);
+                Console.WriteLine("envoi des arguments vers unity : " + arg);
                 Process HouseEditor = new Process();
                 HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
                 HouseEditor.StartInfo.Arguments = arg;
@@ -261,6 +280,7 @@ namespace HouseMadera.VueModele
             try
             {
                 string arg = String.Format("{0}", SelectedProjet.Id);
+                Console.WriteLine("envoi des arguments vers unity : " + arg);
                 Process HouseEditor = new Process();
                 HouseEditor.StartInfo.FileName = AppInfo.AppPath + @"\MaderaHouseEditor";
                 HouseEditor.StartInfo.Arguments = arg;
@@ -313,6 +333,10 @@ namespace HouseMadera.VueModele
                 modulesToGrid.Add(outputModule);
                 outputToDevis += outputModule;
             }
+            string mursPorteurs = "4 x Murs low-cost | Prix HT : 4032 € \n";
+            outputToDevis += mursPorteurs;
+            modulesToGrid.Add(mursPorteurs);
+            prixTotal += 4032;
             string prixFinal = String.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
             outputToDevis += prixFinal;
 
@@ -335,8 +359,11 @@ namespace HouseMadera.VueModele
                 Nom = listDg.First().NomProduit,
                 PrixHT = prixTotal,
                 PrixTTC = Convert.ToDecimal(Convert.ToDouble(prixTotal) * tva),
-                StatutDevis = new StatutDevis() {Id = 2},
-                Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel)
+                StatutDevis = new StatutDevis() { Id = 2 },
+                Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel),
+                MiseAJour = null,
+                Suppression = null,
+                Creation = DateTime.Now
             };
 
 
