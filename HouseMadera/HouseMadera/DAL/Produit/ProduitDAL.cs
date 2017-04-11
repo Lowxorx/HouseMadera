@@ -140,7 +140,7 @@ namespace HouseMadera.DAL
 
         public int UpdateStatutProduit(Produit p)
         {
-            string sql = @"UPDATE Produit SET StatutDevis_Id=@2 WHERE Nom=@1";
+            string sql = @"UPDATE Produit SET StatutProduit_Id=@2 WHERE Nom=@1";
             Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1", p.Nom},
                 {"@2", 2}

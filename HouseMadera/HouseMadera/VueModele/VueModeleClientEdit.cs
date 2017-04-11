@@ -504,6 +504,20 @@ namespace HouseMadera.VueModele
                     IsClientEnregistre = false;
                     Console.WriteLine("Le client n'a pas pu être enregistré en base");
                 }
+                if (AddFromProjet)
+                {
+                    try
+                    {
+                        using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
+                        {
+                            VmNouveauProjet.ListClient = new ObservableCollection<Client>(dal.GetAllModeles());
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
             }
         }
 
