@@ -208,21 +208,10 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
             {
-                //MessageDialogResult result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                //{
-                //    AffirmativeButtonText = "Oui",
-                //    NegativeButtonText = "Non",
-                //    AnimateHide = false,
-                //    AnimateShow = true
-                //});
-
-                //if (result == MessageDialogResult.Affirmative)
-                //{
                     VueChoixAdmin vca = new VueChoixAdmin();
                     ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = commercialConnecte;
                     vca.Show();
                     window.Close();
-                //}
             }
         }
 

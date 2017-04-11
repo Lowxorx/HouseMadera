@@ -287,6 +287,8 @@ namespace HouseMadera.VueModele
             set { addFromProjet = value; }
         }
 
+        private DateTime? dateCreationClientSelectionne;
+
 
 
         /// <summary>
@@ -410,6 +412,7 @@ namespace HouseMadera.VueModele
                 StatutClient = clientSelectionne.StatutClient == 1 ? true : false;
                 IsFormulaireOk = true;
                 isMiseAJourClient = true;
+                dateCreationClientSelectionne = clientSelectionne.Creation;
             }
         }
 
@@ -465,8 +468,10 @@ namespace HouseMadera.VueModele
         /// </summary>
         private void EnregistrerClient()
         {
+            DateTime? dateMiseAJour = DateTime.Now;
             if (IsFormulaireOk)
             {
+
                 Client client = new Client()
                 {
                     Id = idClientAMettreAJour,
@@ -480,21 +485,19 @@ namespace HouseMadera.VueModele
                     Mobile = Mobile,
                     Email = Email,
                     StatutClient = StatutClient ? ACTIF : INACTIF,
-                    MiseAJour = isMiseAJourClient ? DateTime.Now : (DateTime?)null,
+                    MiseAJour = isMiseAJourClient ? dateMiseAJour : null,
                     Suppression = null,
-                    Creation = !isMiseAJourClient ? (DateTime?)null:DateTime.Now
+                    Creation = dateCreationClientSelectionne
 
                 };
                 try
                 {
                     using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
                     {
-                        int success = isMiseAJourClient ? dal.UpdateModele(client,null) : dal.InsertModele(client);
+                        int success = isMiseAJourClient ? dal.UpdateModele(client, null) : dal.InsertModele(client);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
-                        VmNouveauProjet.ListClient = new ObservableCollection<Client>(dal.GetAllModeles());
                     }
-
                 }
                 catch
                 {
@@ -502,8 +505,6 @@ namespace HouseMadera.VueModele
                     Console.WriteLine("Le client n'a pas pu être enregistré en base");
                 }
             }
-
-
         }
 
         /// <summary>
