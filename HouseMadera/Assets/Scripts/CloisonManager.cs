@@ -15,6 +15,8 @@ public class CloisonManager : MonoBehaviour
     public bool horizontalActive = false;
     public bool verticalArch = false;
     public bool horizontalArch = false;
+    public bool touchWallVertical = false;
+    public bool touchWallHorizontal = false;
     public GameObject target;
     public List<Collider> colliderList = new List<Collider>();
     void Start()
@@ -62,11 +64,13 @@ public class CloisonManager : MonoBehaviour
             if (cloisonVertical.activeInHierarchy)
             {
                 verticalActive = true;
+                GameObject.Find("UIManager").GetComponent<UIManager>().DetectCloisonCollision(this.gameObject);
             }
 
             if (cloisonHorizontal.activeInHierarchy)
             {
                 horizontalActive = true;
+                GameObject.Find("UIManager").GetComponent<UIManager>().DetectCloisonCollision(this.gameObject);
             }
         }
     }
@@ -94,9 +98,9 @@ public class CloisonManager : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (canBeActivate && !collisionDetected)
+        if (canBeActivate && collisionDetected)
         {
-            if (this.name.Contains("Vertical"))
+            if (this.name.Contains("Vertical") && touchWallVertical)
             {
                 if (!verticalActive && !verticalArch)
                 {
@@ -108,7 +112,7 @@ public class CloisonManager : MonoBehaviour
                     target = this.transform.parent.GetChild(2).gameObject;
                 }
             }
-            else if (this.name.Contains("Horizontal"))
+            else if (this.name.Contains("Horizontal") && touchWallHorizontal)
             {
                 if (!horizontalActive && !horizontalArch)
                 {

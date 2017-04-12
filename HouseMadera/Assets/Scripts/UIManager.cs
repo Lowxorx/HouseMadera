@@ -162,6 +162,52 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+    public void DetectCloisonCollision(GameObject cloison)
+    {
+        foreach(GameObject target in cloison.GetComponent<Test>().collideList)
+        {
+            if (target.name.Contains("Collider"))
+            {
+                if (target.name.Contains("Vertical"))
+                {
+                    Debug.Log("DONE !");
+                    target.GetComponent<CloisonManager>().touchWallVertical = true;
+                }
+
+                if (target.name.Contains("Horizontal"))
+                {
+                    Debug.Log("DONE !");
+                    target.GetComponent<CloisonManager>().touchWallHorizontal = true;
+                }
+            }
+        }
+        //GameObject house = GameObject.Find("House");
+        //foreach (Transform target in house.transform)
+        //{
+        //    foreach(Transform clois in target.transform)
+        //    {
+        //        if (target.name.Contains("Cloison"))
+        //        {
+        //            Debug.Log(target.name);
+        //            //foreach (GameObject cloison in clois.GetComponent<Test>().collideList)
+        //            //{
+        //            //    if (cloison.name.Contains("Collider"))
+        //            //    {
+        //            //        if (cloison.name.Contains("Vertical"))
+        //            //        {
+        //            //            cloison.GetComponent<CloisonManager>().touchWallVertical = true;
+        //            //        }
+        //            //        if (cloison.name.Contains("Horizontal"))
+        //            //        {
+        //            //            cloison.GetComponent<CloisonManager>().touchWallHorizontal = true;
+        //            //        }
+        //            //    }
+        //            //}
+        //        }
+        //    }
+        //}
+    }
+
     public void CancelCloison()
     {
         if (cloisonSelected.name.Contains("Vertical"))
