@@ -30,6 +30,7 @@ namespace HouseMadera.VueModele
             WindowLoaded = new RelayCommand(WindowLoadedEvent);
             Deconnexion = new RelayCommand(Deco);
             Retour = new RelayCommand(RetourAdminProjet);
+            SupprimerProduit = new RelayCommand(DeleteProduit);
             EditerProduit = new RelayCommand(EditionProduit);
             GenererDevis = new RelayCommand(GenDevis);
             GenererPlan = new RelayCommand(GenPlan);
@@ -38,6 +39,7 @@ namespace HouseMadera.VueModele
         }
 
         public ICommand WindowLoaded { get; private set; }
+        public ICommand SupprimerProduit { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public ICommand Retour { get; private set; }
         public ICommand EditerProduit { get; private set; }
@@ -47,6 +49,9 @@ namespace HouseMadera.VueModele
         public ICommand NouveauProduit { get; private set; }
 
         #region PROPRIETES
+
+        private MetroWindow thisWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+
         private MetroWindow vuePrecedente;
         public MetroWindow VuePrecedente
         {
@@ -186,7 +191,6 @@ namespace HouseMadera.VueModele
         #endregion
 
         #region METHODES
-
         private void ChangeDetailsProduits()
         {
             try
@@ -505,13 +509,18 @@ namespace HouseMadera.VueModele
                 ListeProduit = dal.GetAllProduitsByProjet(selectedProjet);
             }
             RaisePropertyChanged(() => ListeProduit);
-            if (ListeProduit.Count == 0)
+            if (ListeProduit != null)
+            {
+                if (ListeProduit.Count == 0)
+                {
+                    IsProduitPresent = false;
+                }
+            }
+            else
             {
                 IsProduitPresent = false;
             }
         }
-
-        private MetroWindow thisWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
 
         private void WaitForProc(object obj)
         {
@@ -530,6 +539,50 @@ namespace HouseMadera.VueModele
                 }
                 RecupProduitsParProjet();
             });
+        }
+
+        private async void DeleteProduit()
+        {
+            if (thisWindow != null)
+            {
+                if (SelectedProduit != null)
+                {
+                    MessageDialogResult result = await thisWindow.ShowMessageAsync("Avertissement", "Voulez-vous vraiment supprimer ce produit ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                    {
+                        AffirmativeButtonText = "Oui",
+                        NegativeButtonText = "Non",
+                        AnimateHide = false,
+                        AnimateShow = true
+                    });
+
+                    int delProduit = 0;
+                    if (result == MessageDialogResult.Affirmative)
+                    {
+                        using (var dal = new ProduitDAL(DAL.DAL.Bdd))
+                        {
+                            SelectedProduit.Suppression = DateTime.Now;
+                            delProduit = dal.DeleteModele(SelectedProduit);
+                        }
+
+                        if (delProduit > 0)
+                        {
+                            ListeProduit.Remove(SelectedProduit);
+                            RaisePropertyChanged(() => ListeProduit);
+                            await thisWindow.ShowMessageAsync("Information", "Le produit est bien marqué pour suppression.");
+                        }
+                        else
+                        {
+                            await thisWindow.ShowMessageAsync("Erreur", "Le produit n'a pas pu être supprimé.");
+
+                        }
+                    }
+                }
+                else
+                {
+                    await thisWindow.ShowMessageAsync("Avertissement", "Merci de sélectionner un produit");
+                }
+
+            }
         }
 
         #endregion

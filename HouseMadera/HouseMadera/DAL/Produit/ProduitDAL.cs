@@ -29,13 +29,13 @@ namespace HouseMadera.DAL
             try
             {
                 string sql = @"SELECT p.*, sp.Nom AS statut_produit,d.Id AS id_devis, d.Nom AS nom_devis, d.PrixTTC AS prixttc_devis, d.PrixHT AS prixht_devis,sd.Nom AS statut_devis , pl.Nom AS nom_plan, pl.CreateDate AS date_plan, pr.Nom AS nom_projet
-                               FROM Produit p 
+                               FROM Produit p
                                LEFT JOIN Devis d ON p.Devis_Id = d.Id
                                LEFT JOIN StatutProduit sp ON p.StatutProduit_Id = sp.Id
                                LEFT JOIN StatutDevis sd ON d.StatutDevis_Id = sd.Id
                                LEFT JOIN Plan pl ON p.Plan_Id = pl.Id 
                                LEFT JOIN Projet pr ON p.Projet_Id = pr.Id 
-                               WHERE Projet_Id=@1";
+                               WHERE Projet_Id=@1 AND (p.Suppression = '' OR p.Suppression IS NULL)";
 
                 var parametres = new Dictionary<string, object>()
                 {
@@ -374,7 +374,7 @@ namespace HouseMadera.DAL
             {
                 result = -1;
                 Console.WriteLine(e.Message);
-                //Logger.WriteEx(e);
+                Logger.WriteEx(e);
             }
 
             return result;

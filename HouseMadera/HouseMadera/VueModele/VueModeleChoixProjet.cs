@@ -31,6 +31,7 @@ namespace HouseMadera.VueModele
             ChargerCommerciaux();
         }
 
+        #region PROPRIETES
         public ICommand NouveauProjet { get; private set; }
         public ICommand ReprendreProjet { get; private set; }
         public ICommand WindowLoaded { get; private set; }
@@ -143,7 +144,9 @@ namespace HouseMadera.VueModele
                 RaisePropertyChanged("ListCommerciaux");
             }
         }
+        #endregion
 
+        #region METHODES
         private void CreationProjet()
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().First();
@@ -208,10 +211,10 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
             {
-                    VueChoixAdmin vca = new VueChoixAdmin();
-                    ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = commercialConnecte;
-                    vca.Show();
-                    window.Close();
+                VueChoixAdmin vca = new VueChoixAdmin();
+                ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = commercialConnecte;
+                vca.Show();
+                window.Close();
             }
         }
 
@@ -237,14 +240,14 @@ namespace HouseMadera.VueModele
                         {
                             SelectedProjet.Suppression = DateTime.Now;
                             delProjet = dal.DeleteModele(SelectedProjet);
-                            ListeProjets.Clear();
-                            RaisePropertyChanged(() => ListeProjets);
-                            ListeProjets = new ObservableCollection<Projet>(dal.ChargerProjets());
-                            RaisePropertyChanged(() => ListeProjets);
                         }
 
                         if (delProjet > 0)
                         {
+                            ListeProjets.Remove(SelectedProjet);
+                            ListeProjetsFiltre.Remove(SelectedProjet);
+                            RaisePropertyChanged(() => ListeProjets);
+                            RaisePropertyChanged(() => ListeProjetsFiltre);
                             await window.ShowMessageAsync("Information", "Le projet est bien marqué pour suppression.");
                         }
                         else
@@ -301,7 +304,7 @@ namespace HouseMadera.VueModele
 
         private void SelectionnerCommercialDefaut()
         {
-            foreach(Commercial c in ListCommerciaux)
+            foreach (Commercial c in ListCommerciaux)
             {
                 if (c.Login == CommercialConnecte.Login)
                 {
@@ -339,6 +342,10 @@ namespace HouseMadera.VueModele
                 }
             }
         }
+        #endregion
+
+
+
 
     }
 }
