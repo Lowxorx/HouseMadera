@@ -315,6 +315,16 @@ namespace HouseMadera.VueModele
             set { vuePrecedente = value; }
         }
 
+        private string messageUtilisateur;
+        public string MessageUtilisateur
+        {
+            get { return messageUtilisateur; }
+            set
+            {
+                messageUtilisateur = value;
+                RaisePropertyChanged(() => MessageUtilisateur);
+            }
+        }
 
 
         /// <summary>
@@ -469,6 +479,8 @@ namespace HouseMadera.VueModele
         private void EnregistrerClient()
         {
             DateTime? dateMiseAJour = DateTime.Now;
+            DateTime? dateCreation = dateCreationClientSelectionne == null ? DateTime.Now: dateCreationClientSelectionne;
+
             if (IsFormulaireOk)
             {
 
@@ -487,7 +499,7 @@ namespace HouseMadera.VueModele
                     StatutClient = StatutClient ? ACTIF : INACTIF,
                     MiseAJour = isMiseAJourClient ? dateMiseAJour : null,
                     Suppression = null,
-                    Creation = dateCreationClientSelectionne
+                    Creation = dateCreation
 
                 };
                 try
@@ -499,10 +511,14 @@ namespace HouseMadera.VueModele
                         IsClientEnregistre = success > 0 ? true : false;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Type typeException = ex.GetType();
+                    if (typeException == typeof(ClientException))
+                        MessageUtilisateur = ex.Message;
+                    else
+                        Logger.WriteEx(ex);
                     IsClientEnregistre = false;
-                    Console.WriteLine("Le client n'a pas pu être enregistré en base");
                 }
                 if (AddFromProjet)
                 {
@@ -510,12 +526,12 @@ namespace HouseMadera.VueModele
                     {
                         using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
                         {
-                            VmNouveauProjet.ListClient = new ObservableCollection<Client>(dal.GetAllModeles());
+                            VmNouveauProjet.ListClient = new ObservableCollection<Client>(dal.GetAllClients());
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
+                        Logger.WriteEx(ex);
                     }
                 }
             }

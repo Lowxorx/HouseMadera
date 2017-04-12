@@ -1,10 +1,4 @@
-﻿using HouseMadera.DAL;
-using HouseMadera.Modeles;
-using HouseMadera.VueModele;
-using MahApps.Metro.Controls;
-using System;
-using System.Collections.Generic;
-using System.Windows.Controls;
+﻿using MahApps.Metro.Controls;
 
 namespace HouseMadera.Vues
 {

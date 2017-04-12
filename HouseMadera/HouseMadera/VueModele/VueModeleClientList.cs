@@ -170,23 +170,11 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
             if (window != null)
             {
-                //    var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer l'édition de client ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                //    {
-                //        AffirmativeButtonText = "Oui",
-                //        NegativeButtonText = "Non",
-                //        AnimateHide = false,
-                //        AnimateShow = true
-                //    });
-
-                //    if (result == MessageDialogResult.Affirmative)
-                //    {
-
                 VueChoixAdmin vca = new VueChoixAdmin();
                     ((VueModeleChoixAdmin)vca.DataContext).CommercialConnecte = CommercialConnecte;
                     vca.Show();
                     window.Close();
             }
-            //}
         }
 
         /// <summary>
@@ -243,7 +231,7 @@ namespace HouseMadera.VueModele
             List<Client> clients = new List<Client>();
             using (var dal = new ClientDAL(DAL.DAL.Bdd))
             {
-                clients = dal.GetAllModeles();
+                clients = dal.GetAllClients();
             }
             return clients;
         }
