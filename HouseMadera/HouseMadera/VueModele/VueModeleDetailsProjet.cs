@@ -46,7 +46,7 @@ namespace HouseMadera.VueModele
         public ICommand SelectedProduitCmd { get; private set; }
         public ICommand NouveauProduit { get; private set; }
 
-
+        #region PROPRIETES
         private MetroWindow vuePrecedente;
         public MetroWindow VuePrecedente
         {
@@ -87,7 +87,6 @@ namespace HouseMadera.VueModele
         }
 
         private string devisActuel;
-
         public string DevisActuel
         {
             get { return devisActuel; }
@@ -106,7 +105,7 @@ namespace HouseMadera.VueModele
                 listeProduit = value;
                 RaisePropertyChanged(() => ListeProduit);
             }
-        }  
+        }
 
         private string titreProjet;
         public string TitreProjet
@@ -155,7 +154,7 @@ namespace HouseMadera.VueModele
         private string detailsStatutProduit;
         public string DetailsStatutProduit
         {
-            get { return  detailsStatutProduit; }
+            get { return detailsStatutProduit; }
             set
             {
                 detailsStatutProduit = value;
@@ -173,6 +172,20 @@ namespace HouseMadera.VueModele
                 RaisePropertyChanged("GenBtnActif");
             }
         }
+
+        private bool isProduitPresent;
+        public bool IsProduitPresent
+        {
+            get { return isProduitPresent; }
+            set {
+                isProduitPresent = value;
+                RaisePropertyChanged(() => IsProduitPresent);
+            }
+        }
+
+        #endregion
+
+        #region METHODES
 
         private void ChangeDetailsProduits()
         {
@@ -200,6 +213,7 @@ namespace HouseMadera.VueModele
                 DetailsPrixProduit = " ----- ";
                 DetailsPrixTTCProduit = " ----- ";
                 DetailsStatutDevisProduit = " ----- ";
+                DetailsStatutProduit = " ----- ";
             }
         }
 
@@ -243,8 +257,8 @@ namespace HouseMadera.VueModele
 
                 //if (result == MessageDialogResult.Affirmative)
                 //{
-                    vuePrecedente.Show();
-                    window.Close();
+                vuePrecedente.Show();
+                window.Close();
                 //}
             }
         }
@@ -304,112 +318,120 @@ namespace HouseMadera.VueModele
                 {
                     listDg = dDal.GenererDevis(SelectedProduit);
                 }
-                // Traitement des données
-                List<string> modulesDistincts = new List<string>();
-                foreach (DataGenerationDevis dg in listDg)
+                if (listDg.Count > 0)
                 {
-                    if (!modulesDistincts.Contains(dg.NomModule))
-                    {
-                        modulesDistincts.Add(dg.NomModule);
-                    }
-                }
-
-                string outputToDevis = @"Devis pour " + listDg.First().NomProduit + " le " + DateTime.Now.ToLongDateString() + Environment.NewLine;
-                outputToDevis += string.Format(@"Client : {0} {1}" + Environment.NewLine + Environment.NewLine, listDg.First().Client.Nom, listDg.First().Client.Prenom);
-                outputToDevis += @"Détails des modules sélectionnés :" + Environment.NewLine;
-                decimal prixTotal = 0;
-                double tva = 1.2;
-                List<string> modulesToGrid = new List<string>();
-                foreach (string s in modulesDistincts)
-                {
-                    decimal prixModule = 0;
+                    // Traitement des données
+                    List<string> modulesDistincts = new List<string>();
                     foreach (DataGenerationDevis dg in listDg)
                     {
-                        if (s == dg.NomModule)
+                        if (!modulesDistincts.Contains(dg.NomModule))
                         {
-                            prixModule += Convert.ToDecimal(dg.PrixComposant) * dg.NombreComposant;
+                            modulesDistincts.Add(dg.NomModule);
                         }
                     }
-                    prixTotal += prixModule;
-                    string outputModule = String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule));
-                    modulesToGrid.Add(outputModule);
-                    outputToDevis += outputModule;
-                }
-                string mursPorteurs = "4 x Murs low-cost | Prix HT : 4032 € \n";
-                outputToDevis += mursPorteurs;
-                modulesToGrid.Add(mursPorteurs);
-                prixTotal += 4032;
-                string prixFinal = String.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
-                outputToDevis += prixFinal;
 
-                DGen = new DevisGenere()
-                {
-                    Output = outputToDevis,
-                    PrixHT = Convert.ToString(prixTotal),
-                    PrixTTC = Convert.ToString(Convert.ToDouble(prixTotal) * tva),
-                    Modules = modulesToGrid,
-                    client = listDg.First().Client
-                };
-
-                // Création du PDF
-                GenererPdfDevis();
-
-                // Création du devis à insérer en BDD
-                Devis d = new Devis()
-                {
-                    DateCreation = DateTime.Now,
-                    Nom = listDg.First().NomProduit,
-                    PrixHT = prixTotal,
-                    PrixTTC = Convert.ToDecimal(Convert.ToDouble(prixTotal) * tva),
-                    StatutDevis = new StatutDevis() { Id = 2 },
-                    Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel),
-                    MiseAJour = null,
-                    Suppression = null,
-                    Creation = DateTime.Now
-                };
-
-
-                try
-                {
-                    int insertDevis = 0;
-                    Produit pUpdate = new Produit()
+                    string outputToDevis = @"Devis pour " + listDg.First().NomProduit + " le " + DateTime.Now.ToLongDateString() + Environment.NewLine;
+                    outputToDevis += string.Format(@"Client : {0} {1}" + Environment.NewLine + Environment.NewLine, listDg.First().Client.Nom, listDg.First().Client.Prenom);
+                    outputToDevis += @"Détails des modules sélectionnés :" + Environment.NewLine;
+                    decimal prixTotal = 0;
+                    double tva = 1.2;
+                    List<string> modulesToGrid = new List<string>();
+                    foreach (string s in modulesDistincts)
                     {
-                        Nom = listDg.First().NomProduit
+                        decimal prixModule = 0;
+                        foreach (DataGenerationDevis dg in listDg)
+                        {
+                            if (s == dg.NomModule)
+                            {
+                                prixModule += Convert.ToDecimal(dg.PrixComposant) * dg.NombreComposant;
+                            }
+                        }
+                        prixTotal += prixModule;
+                        string outputModule = String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule));
+                        modulesToGrid.Add(outputModule);
+                        outputToDevis += outputModule;
+                    }
+                    string mursPorteurs = "4 x Murs low-cost | Prix HT : 4032 € \n";
+                    outputToDevis += mursPorteurs;
+                    modulesToGrid.Add(mursPorteurs);
+                    prixTotal += 4032;
+                    string prixFinal = String.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
+                    outputToDevis += prixFinal;
+
+                    DGen = new DevisGenere()
+                    {
+                        Output = outputToDevis,
+                        PrixHT = Convert.ToString(prixTotal),
+                        PrixTTC = Convert.ToString(Convert.ToDouble(prixTotal) * tva),
+                        Modules = modulesToGrid,
+                        client = listDg.First().Client
                     };
-                    using (DevisDAL dDAl = new DevisDAL(DAL.DAL.Bdd))
-                    {
-                        insertDevis = dDAl.InsertDevis(d);
-                        pUpdate.Devis = dDAl.GetDevisByIdProduit(pUpdate);
-                        Console.WriteLine("update devis " + pUpdate.Nom);
-                    }
-                    using (ProduitDAL pDal = new ProduitDAL(DAL.DAL.Bdd))
-                    {
-                        int i = pDal.UpdateDevisProduit(pUpdate);
-                        pDal.UpdateStatutProduit(pUpdate);
-                        Console.WriteLine("result update devis " + i);
-                    }
 
-                    if (insertDevis > 0)
+                    // Création du PDF
+                    GenererPdfDevis();
+
+                    // Création du devis à insérer en BDD
+                    Devis d = new Devis()
                     {
-                        VueGenererDevis vgd = new VueGenererDevis();
-                        ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
-                        ((VueModeleGenererDevis)vgd.DataContext).DGen = DGen;
-                        vgd.Show();
-                    }
-                    else
+                        DateCreation = DateTime.Now,
+                        Nom = listDg.First().NomProduit,
+                        PrixHT = prixTotal,
+                        PrixTTC = Convert.ToDecimal(Convert.ToDouble(prixTotal) * tva),
+                        StatutDevis = new StatutDevis() { Id = 2 },
+                        Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel),
+                        MiseAJour = null,
+                        Suppression = null,
+                        Creation = DateTime.Now
+                    };
+
+
+                    try
                     {
-                        if (window != null)
+                        int insertDevis = 0;
+                        Produit pUpdate = new Produit()
                         {
-                            await window.ShowMessageAsync("Erreur", "Le devis n'a pas été inséré en base.");
+                            Nom = listDg.First().NomProduit
+                        };
+                        using (DevisDAL dDAl = new DevisDAL(DAL.DAL.Bdd))
+                        {
+                            insertDevis = dDAl.InsertDevis(d);
+                            pUpdate.Devis = dDAl.GetDevisByIdProduit(pUpdate);
+                            Console.WriteLine("update devis " + pUpdate.Nom);
+                        }
+                        using (ProduitDAL pDal = new ProduitDAL(DAL.DAL.Bdd))
+                        {
+                            int i = pDal.UpdateDevisProduit(pUpdate);
+                            pDal.UpdateStatutProduit(pUpdate);
+                            Console.WriteLine("result update devis " + i);
+                        }
+
+                        if (insertDevis > 0)
+                        {
+                            VueGenererDevis vgd = new VueGenererDevis();
+                            ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
+                            ((VueModeleGenererDevis)vgd.DataContext).DGen = DGen;
+                            vgd.Show();
+                        }
+                        else
+                        {
+                            if (window != null)
+                            {
+                                await window.ShowMessageAsync("Erreur", "Le devis n'a pas été inséré en base.");
+                            }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
+                    catch (Exception ex)
+                    {
 
-                    await window.ShowMessageAsync("Erreur", ex.Message);
-                    Logger.WriteEx(ex);
+                        await window.ShowMessageAsync("Erreur", ex.Message);
+                        Logger.WriteEx(ex);
+                    }
                 }
+                else
+                {
+                    await window.ShowMessageAsync("Erreur", "La maison ne comporte pas de modules pour la génération du devis.");
+                }
+
             }
             catch (InvalidOperationException)
             {
@@ -445,7 +467,7 @@ namespace HouseMadera.VueModele
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             var rand = new Random();
-            var files = Directory.GetFiles(AppInfo.AppPath + @"\Plans\","*.pdf");
+            var files = Directory.GetFiles(AppInfo.AppPath + @"\Plans\", "*.pdf");
             try
             {
                 int i = rand.Next(files.Length);
@@ -477,11 +499,16 @@ namespace HouseMadera.VueModele
 
         private void RecupProduitsParProjet()
         {
+            IsProduitPresent = true;
             using (var dal = new ProduitDAL(DAL.DAL.Bdd))
             {
-                listeProduit = dal.GetAllProduitsByProjet(selectedProjet);
+                ListeProduit = dal.GetAllProduitsByProjet(selectedProjet);
             }
             RaisePropertyChanged(() => ListeProduit);
+            if (ListeProduit.Count == 0)
+            {
+                IsProduitPresent = false;
+            }
         }
 
         private MetroWindow thisWindow = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
@@ -491,7 +518,7 @@ namespace HouseMadera.VueModele
             var proc = (Process)obj;
             proc.WaitForExit();
             Console.WriteLine("end proc");
-            thisWindow.BeginInvoke(delegate () 
+            thisWindow.BeginInvoke(delegate ()
             {
                 try
                 {
@@ -504,5 +531,10 @@ namespace HouseMadera.VueModele
                 RecupProduitsParProjet();
             });
         }
+
+        #endregion
+
+
+
     }
 }

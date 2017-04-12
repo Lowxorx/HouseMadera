@@ -77,7 +77,7 @@
                 VerticalAlignment="Top"
                 Source="../Resources/logomaderacolorgreyclean.png" />
             <Label
-                Width="692"
+                Width="770"
                 Margin="80,94,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -86,7 +86,7 @@
                 FontWeight="Bold" />
             <DataGrid
                 Name="ListeProduits"
-                Width="692"
+                Width="770"
                 Height="347"
                 Margin="80,147,0,0"
                 HorizontalAlignment="Left"
@@ -94,6 +94,7 @@
                 AutoGenerateColumns="False"
                 DisplayMemberPath="Nom"
                 FontSize="20"
+                IsEnabled="{Binding IsProduitPresent}"
                 IsReadOnly="True"
                 ItemsSource="{Binding ListeProduit}"
                 SelectedItem="{Binding SelectedProduit, Mode=TwoWay}">
@@ -103,10 +104,22 @@
                     </intr:EventTrigger>
                 </intr:Interaction.Triggers>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Id}" Header="ID" />
-                    <DataGridTextColumn Binding="{Binding Nom}" Header="Nom" />
-                    <DataGridTextColumn Binding="{Binding Devis.Nom}" Header="Devis" />
-                    <DataGridTextColumn Binding="{Binding Plan.Nom}" Header="Plan" />
+                    <DataGridTextColumn
+                        Width="80"
+                        Binding="{Binding Id}"
+                        Header="ID" />
+                    <DataGridTextColumn
+                        Width="150"
+                        Binding="{Binding Nom}"
+                        Header="Nom" />
+                    <DataGridTextColumn
+                        Width="150"
+                        Binding="{Binding Devis.Nom}"
+                        Header="Devis" />
+                    <DataGridTextColumn
+                        Width="150"
+                        Binding="{Binding Plan.Nom}"
+                        Header="Plan" />
                     <DataGridTextColumn
                         Width="400"
                         Binding="{Binding Projet.Nom}"
