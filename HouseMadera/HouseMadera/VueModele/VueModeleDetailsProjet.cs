@@ -200,15 +200,15 @@ namespace HouseMadera.VueModele
                 DetailsPrixProduit = " ----- ";
                 DetailsPrixTTCProduit = " ----- ";
                 DetailsStatutDevisProduit = " ----- ";
-                DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
-                if (selectedProduit.StatutProduit.Nom == "Valide")
-                {
-                    GenBtnActif = true;
-                }
-                else
-                {
-                    GenBtnActif = true;
-                }
+                //DetailsStatutProduit = string.Format("Statut du Produit : {0}", Convert.ToString(selectedProduit.StatutProduit.Nom));
+                //if (selectedProduit.StatutProduit.Nom == "Valide")
+                //{
+                //    GenBtnActif = true;
+                //}
+                //else
+                //{
+                //    GenBtnActif = true;
+                //}
             }
         }
 
