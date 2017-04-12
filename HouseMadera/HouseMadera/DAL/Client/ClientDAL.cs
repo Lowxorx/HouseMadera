@@ -49,10 +49,12 @@ namespace HouseMadera.DAL
         private bool IsClientExist(Client client)
         {
             bool result = false;
-            string sql = @"SELECT * FROM Client WHERE Nom=@1 AND Prenom=@2 AND Mobile=@3 OR Telephone=@4 AND Email=@5";
+            string sql = @"SELECT * 
+                           FROM Client
+                           WHERE Lower(Nom)=@1 AND Lower(Prenom)=@2 AND ( Mobile=@3 OR Telephone=@4) AND Email=@5 AND (Suppression ='' OR Suppression IS NULL)";
             Dictionary<string, object> parameters = new Dictionary<string, object> {
-                {"@1",client.Nom },
-                {"@2",client.Prenom },
+                {"@1",client.Nom.ToLower().Trim() },
+                {"@2",client.Prenom.ToLower().Trim() },
                 {"@3",client.Mobile },
                 {"@4",client.Telephone },
                 {"@5",client.Email }
@@ -106,6 +108,30 @@ namespace HouseMadera.DAL
 
         }
 
+        /// <summary>
+        /// Retourne la liste des clients de la table Client dont le champ Suppression est null
+        /// </summary>
+        /// <returns>une liste d'objet Client </returns>
+        public List<Client> GetAllClients()
+        {
+            string sql = @"
+                            SELECT * FROM Client 
+                            WHERE Suppression IS NULL OR Suppression =''
+                            ORDER BY Nom DESC";
+            List<Client> clients = new List<Client>();
+            using (DbDataReader reader = Get(sql, null))
+            {
+                while (reader.Read())
+                {
+                    Client client = initialiserClient(reader);
+                    if (client != null)
+                        clients.Add(client);
+                }
+            }
+
+            return clients;
+        }
+
         #region SYNCHRONISATION
 
         /// <summary>
@@ -139,9 +165,9 @@ namespace HouseMadera.DAL
         public int InsertModele(Client client)
         {
             if (!isDataCorrect(client))
-                throw new Exception(erreur);
+                throw new ValidationClientException(erreur);
             if (IsClientExist(client))
-                throw new Exception("le client est déjà enregistré");
+                throw new ClientException();
 
             string sql = @"INSERT INTO Client (Nom,Prenom,Adresse1,Adresse2,Adresse3,CodePostal,Ville,Email,Telephone,Mobile,StatutClient_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12,@13,@14)";

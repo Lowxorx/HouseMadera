@@ -349,6 +349,7 @@
                     IsChecked="{Binding StatutClient}"
                     OffLabel="Statut Inactif"
                     OnLabel="Statut Actif" />
+                <Label x:Name="labelMessage" Content="{Binding MessageUtilisateur}" Foreground="OrangeRed" FontSize="25" Height="58" Canvas.Left="897" Canvas.Top="640" Width="527"/>
             </Canvas>
         </Grid>
         <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
