@@ -44,8 +44,9 @@ namespace HouseMadera.DAL
                 var reader = Get(sql, parametres);
                 while (reader.Read())
                 {
-                    Console.WriteLine("id devis " + reader["Devis_Id"]);
-                    if (!String.IsNullOrEmpty(reader["Devis_Id"].ToString()))
+                    // Console.WriteLine("id devis " + reader["Devis_Id"]);
+                    //if (!String.IsNullOrEmpty(reader["Devis_Id"].ToString()))
+                    if (!string.IsNullOrEmpty(reader["id_devis"].ToString()))
                     {
                         var produit = new Produit()
                         {

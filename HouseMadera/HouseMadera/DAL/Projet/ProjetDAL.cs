@@ -157,7 +157,8 @@ namespace HouseMadera.DAL
 
         #endregion
 
-        #region DELETE
+
+        #region SYNCHRONISATION
         /// <summary>
         /// Met à jour en base la date de suppression du projet (suppression logique)
         /// </summary>
@@ -185,9 +186,7 @@ namespace HouseMadera.DAL
 
             return result;
         }
-        #endregion
 
-        #region SYNCHRONISATION
         public int InsertModele(Projet projet)
         {
 

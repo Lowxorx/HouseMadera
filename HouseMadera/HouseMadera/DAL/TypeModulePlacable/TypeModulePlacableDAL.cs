@@ -3,9 +3,6 @@ using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
@@ -58,7 +55,7 @@ namespace HouseMadera.DAL
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
-                             //Icone -> blob
+                            Icone = (byte[])reader["Icone"],
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
@@ -81,7 +78,7 @@ namespace HouseMadera.DAL
             int result = 0;
             try
             {
-                string sql = @"INSERT INTO TypeModulePlacable (Nom,Icone,Suppression,MiseAJour,Creation)
+                string sql = @"INSERT INTO TypeModulePlacable (Nom,Icone,MiseAJour,Creation,Suppression)
                         VALUES(@1,@2,@3,@4,@5)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                     {"@1",modele.Nom },

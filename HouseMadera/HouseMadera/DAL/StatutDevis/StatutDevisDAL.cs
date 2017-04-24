@@ -74,7 +74,7 @@ namespace HouseMadera.DAL
             try
             {
 
-                string sql = @"SELECT * FROM StatutProduit";
+                string sql = @"SELECT * FROM StatutDevis";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
