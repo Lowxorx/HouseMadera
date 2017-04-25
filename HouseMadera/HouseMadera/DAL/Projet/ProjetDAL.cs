@@ -187,7 +187,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int InsertModele(Projet projet)
+        public int InsertModele(Projet projet, MouvementSynchronisation sens)
         {
 
             int result = 0;
@@ -199,19 +199,32 @@ namespace HouseMadera.DAL
                 if (projet.Commercial == null)
                     throw new Exception("Tentative d'insertion  dans la base Projet avec la clé étrangère Commercial nulle");
 
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id, out int clientId))
+                int clientId = 0;
+                int commercialId = 0;
+                if (sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    clientId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
-
+                    Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id, out clientId);
+                    Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out commercialId);
                 }
-
-                if (!Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out int commercialId))
+                else
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    clientId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
                     commercialId = Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Commercial.Id).Key;
                 }
+
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                //if (!Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projet.Client.Id, out int clientId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    clientId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Client.Id).Key;
+
+                //}
+
+                //if (!Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projet.Commercial.Id, out int commercialId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    commercialId = Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projet.Commercial.Id).Key;
+                //}
 
                 string sql = @"INSERT INTO Projet (Nom,Reference,Client_Id,Commercial_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7)";
@@ -238,19 +251,35 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Projet projetLocal, Projet projetDistant)
+        public int UpdateModele(Projet projetLocal, Projet projetDistant, MouvementSynchronisation sens)
         {
+            int result = 0;
+            try
+            {
+                int clientId = 0;
+                int commercialId = 0;
+                if (sens == MouvementSynchronisation.Sortant)
+                {
+                    Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.TryGetValue(projetDistant.Client.Id, out clientId);
+                    Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.TryGetValue(projetDistant.Commercial.Id, out commercialId);
+                }
+                else
+                {
+                    clientId = Synchronisation<ClientDAL, Client>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projetDistant.Client.Id).Key;
+                    commercialId = Synchronisation<CommercialDAL, Commercial>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == projetDistant.Commercial.Id).Key;
+                }
 
-            //recopie des données du Projet distant dans le Projet local
-            projetLocal.Copy(projetDistant);
 
-            string sql = @"
+                //recopie des données du Projet distant dans le Projet local
+                projetLocal.Copy(projetDistant);
+
+                string sql = @"
                         UPDATE Projet
                         SET Nom=@1,Reference=@2,Client_Id=@3,Commercial_Id=@4,MiseAJour=@5
                         WHERE Id=@6
                       ";
 
-            Dictionary<string, object> parameters = new Dictionary<string, object>() {
+                Dictionary<string, object> parameters = new Dictionary<string, object>() {
                 {"@1",projetLocal.Nom},
                 {"@2",projetLocal.Reference},
                 {"@3",projetLocal.Client.Id},
@@ -258,9 +287,7 @@ namespace HouseMadera.DAL
                 {"@5",DateTimeDbAdaptor.FormatDateTime( projetLocal.MiseAJour,Bdd) },
                 {"@6",projetLocal.Id },
                 };
-            int result = 0;
-            try
-            {
+
                 result = Update(sql, parameters);
             }
             catch (Exception e)

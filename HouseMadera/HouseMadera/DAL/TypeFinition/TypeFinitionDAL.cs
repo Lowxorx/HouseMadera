@@ -82,7 +82,7 @@ namespace HouseMadera.DAL
             return listeTypeFinitions;
         }
 
-        public int InsertModele(TypeFinition modele)
+        public int InsertModele(TypeFinition modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -91,14 +91,18 @@ namespace HouseMadera.DAL
                 if (modele.Qualite == null)
                     throw new Exception("Tentative d'insertion dans la base Projet avec la clé étrangère TypeIsolant nulle");
 
-
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(modele.Qualite.Id, out int qualiteId))
-                {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                int qualiteId = 0;
+                if (sens == MouvementSynchronisation.Sortant)
+                    Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(modele.Qualite.Id, out qualiteId);
+                else
                     qualiteId = Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Qualite.Id).Key;
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                //if (!Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(modele.Qualite.Id, out int qualiteId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    qualiteId = Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Qualite.Id).Key;
 
-                }
+                //}
 
                 string sql = @"INSERT INTO TypeFinition (Nom,Qualite_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5)";
@@ -124,18 +128,24 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeFinition typeFinitionLocal, TypeFinition typeFinitionDistant)
+        public int UpdateModele(TypeFinition typeFinitionLocal, TypeFinition typeFinitionDistant, MouvementSynchronisation sens)
         {
             //Vérification des clés étrangères
             if (typeFinitionLocal.Qualite == null)
                 throw new Exception(string.Format("Tentative de mise a jour dans la table {0} avec la clé étrangère Qualite nulle",typeFinitionLocal.GetType()));
 
-            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            if (!Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.TryGetValue(typeFinitionDistant.Qualite.Id, out int qualiteId))
-            {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                qualiteId = Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == typeFinitionDistant.Qualite.Id).Key;
-            }
+            int qualiteId = 0;
+            if (sens == MouvementSynchronisation.Sortant)
+                Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.TryGetValue(typeFinitionDistant.Qualite.Id, out qualiteId);
+            else
+                qualiteId = Synchronisation<QualiteDAL, Qualite>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == typeFinitionDistant.Qualite.Id).Key;
+
+            ////Valeurs des clés étrangères est modifié avant update via la table de correspondance 
+            //if (!Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.TryGetValue(typeFinitionDistant.Qualite.Id, out int qualiteId))
+            //{
+            //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            //    qualiteId = Synchronisation<TypeFinitionDAL, TypeFinition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == typeFinitionDistant.Qualite.Id).Key;
+            //}
 
             //recopie des données du TypeFinition distant dans le TypeFinition local
             typeFinitionLocal.Copy(typeFinitionDistant);

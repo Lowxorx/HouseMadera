@@ -45,17 +45,19 @@ namespace HouseMadera.DAL
             List<TypeModulePlacable> listeTypeModulePlacable = new List<TypeModulePlacable>();
             try
             {
-                string sql = @"SELECT * FROM TypeModulePlacable ";
+                
+                string sql = string.Format("SELECT * FROM TypeModulePlacable");
 
                 using (DbDataReader reader = Get(sql, null))
                 {
                     while (reader.Read())
                     {
+
                         TypeModulePlacable t = new TypeModulePlacable()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
-                            Icone = (byte[])reader["Icone"],
+                            Icone = string.IsNullOrEmpty(reader["Icone"].ToString()) ? null :(byte[])reader["Icone"],
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
@@ -73,7 +75,7 @@ namespace HouseMadera.DAL
             return listeTypeModulePlacable;
         }
 
-        public int InsertModele(TypeModulePlacable modele)
+        public int InsertModele(TypeModulePlacable modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -99,7 +101,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeModulePlacable typeModulePlacableLocal, TypeModulePlacable typeModulePlacableDistant)
+        public int UpdateModele(TypeModulePlacable typeModulePlacableLocal, TypeModulePlacable typeModulePlacableDistant, MouvementSynchronisation sens)
         {
             int result = 0;
             try

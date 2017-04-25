@@ -73,7 +73,7 @@ namespace HouseMadera.DAL
             return listeTypeModule;
         }
 
-        public int InsertModele(TypeModule modele)
+        public int InsertModele(TypeModule modele, MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO TypeModule (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
@@ -98,7 +98,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeModule typeModuleLocal, TypeModule typeModuleDistant)
+        public int UpdateModele(TypeModule typeModuleLocal, TypeModule typeModuleDistant,MouvementSynchronisation sens)
         {
             // recopie des données du TypeModule distant dans le TypeModule local
             typeModuleLocal.Copy(typeModuleDistant);

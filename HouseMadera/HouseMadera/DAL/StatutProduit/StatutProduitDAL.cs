@@ -76,7 +76,7 @@ namespace HouseMadera.DAL
             return statutsProduit;
         }
 
-        public int InsertModele(StatutProduit modele)
+        public int InsertModele(StatutProduit modele, MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO StatutProduit (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
@@ -101,7 +101,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(StatutProduit statutProduitLocal, StatutProduit statutProduitDistant)
+        public int UpdateModele(StatutProduit statutProduitLocal, StatutProduit statutProduitDistant, MouvementSynchronisation sens)
         {
             //recopie des données du StatutProduit distant dans le StatutProduit local
             statutProduitLocal.Copy(statutProduitDistant);

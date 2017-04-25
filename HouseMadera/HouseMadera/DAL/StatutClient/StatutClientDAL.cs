@@ -75,7 +75,7 @@ namespace HouseMadera.DAL
             return statutsClient;
         }
 
-        public int InsertModele(StatutClient modele)
+        public int InsertModele(StatutClient modele, MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO StatutClient (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
@@ -100,7 +100,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(StatutClient statutClientLocal, StatutClient statutClientDistant)
+        public int UpdateModele(StatutClient statutClientLocal, StatutClient statutClientDistant , MouvementSynchronisation sens)
         {
             //recopie des données du StatutClient distant dans le StatutClient local
             statutClientLocal.Copy(statutClientDistant);

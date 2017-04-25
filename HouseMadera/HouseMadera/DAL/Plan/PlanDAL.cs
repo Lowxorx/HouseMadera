@@ -89,7 +89,7 @@ namespace HouseMadera.DAL
             return listePlans;
         }
 
-        public int InsertModele(Plan modele)
+        public int InsertModele(Plan modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -100,17 +100,31 @@ namespace HouseMadera.DAL
                 if (modele.CoupePrincipe == null)
                     throw new Exception("Tentative d'insertion dans la table Plan avec la clé étrangère CoupePrincipe nulle");
 
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out int gammeId))
+                int gammeId = 0;
+                int coupePrincipeId = 0;
+
+                if(sens== MouvementSynchronisation.Entrant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Gamme.Id).Key;
+                    Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out  gammeId);
+                    Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(modele.CoupePrincipe.Id, out  coupePrincipeId);
                 }
-                if (!Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(modele.CoupePrincipe.Id, out int coupePrincipeId))
+                else
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Gamme.Id).Key;
                     coupePrincipeId = Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.CoupePrincipe.Id).Key;
                 }
+
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                //if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(modele.Gamme.Id, out int gammeId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Gamme.Id).Key;
+                //}
+                //if (!Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(modele.CoupePrincipe.Id, out int coupePrincipeId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    coupePrincipeId = Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.CoupePrincipe.Id).Key;
+                //}
 
 
                 string sql = @"INSERT INTO Plan (Nom,Gamme_Id,CoupePrincipe_Id,MiseAJour,Suppression,Creation)
@@ -138,7 +152,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Plan planLocal, Plan planDistant)
+        public int UpdateModele(Plan planLocal, Plan planDistant , MouvementSynchronisation sens)
         {
 
             //Vérification des clés étrangères
@@ -147,17 +161,31 @@ namespace HouseMadera.DAL
             if (planDistant.CoupePrincipe == null)
                 throw new Exception("Tentative d'insertion dans la table Plan avec la clé étrangère CoupePrincipe nulle");
 
-            //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-            if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(planDistant.Gamme.Id, out int gammeId))
+            int gammeId = 0;
+            int coupePrincipeId = 0;
+
+            if (sens == MouvementSynchronisation.Sortant)
             {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.Gamme.Id).Key;
+                Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(planDistant.Gamme.Id, out gammeId);
+                Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(planDistant.CoupePrincipe.Id, out coupePrincipeId);
             }
-            if (!Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(planDistant.CoupePrincipe.Id, out int coupePrincipeId))
+            else
             {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.Gamme.Id).Key;
                 coupePrincipeId = Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.CoupePrincipe.Id).Key;
             }
+
+            ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+            //if (!Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.TryGetValue(planDistant.Gamme.Id, out int gammeId))
+            //{
+            //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            //    gammeId = Synchronisation<GammeDAL, Gamme>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.Gamme.Id).Key;
+            //}
+            //if (!Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.TryGetValue(planDistant.CoupePrincipe.Id, out int coupePrincipeId))
+            //{
+            //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            //    coupePrincipeId = Synchronisation<CoupePrincipeDAL, CoupePrincipe>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == planDistant.CoupePrincipe.Id).Key;
+            //}
 
             //recopie des données du Plan distant dans le Plan local
             planLocal.Copy(planDistant);

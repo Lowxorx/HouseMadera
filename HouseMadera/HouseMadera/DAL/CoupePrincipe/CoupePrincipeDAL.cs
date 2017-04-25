@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HouseMadera.Modeles;
 using HouseMadera.Utilities;
 using System.Data.Common;
@@ -66,7 +63,7 @@ namespace HouseMadera.DAL
             return coupes;
         }
 
-        public int InsertModele(CoupePrincipe coupe)
+        public int InsertModele(CoupePrincipe coupe,MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO CoupePrincipe (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
@@ -90,7 +87,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(CoupePrincipe coupeLocale, CoupePrincipe coupeDistante)
+        public int UpdateModele(CoupePrincipe coupeLocale, CoupePrincipe coupeDistante, MouvementSynchronisation sens)
         {
             //recopie des données de CoupePrincipe distante dans CoupePrincipe locale
             if (coupeDistante != null)
