@@ -26,12 +26,14 @@ public class EditSlot : MonoBehaviour {
                     {
                         if (target.childCount > 0)
                         {
-                            target.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                            target.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
                         }
                     }
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                     GameObject.Find("Event").GetComponent<EditWall>().moduleSelected = hit.collider.gameObject;
-                    
+                    GameObject.Find("Event").GetComponent<EditWall>().wallSelected = null;
+
+
                 }
                 else if(hit.collider.gameObject.tag == "Window")
                 {
@@ -44,14 +46,15 @@ public class EditSlot : MonoBehaviour {
                             {
                                 if (target2.name.Contains("Slot") && target2.childCount > 0)
                                 {
-                                    target2.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                                    target2.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
                                 }
                             }
                         }
                     }
                     hit.collider.gameObject.GetComponent<Renderer>().material.color = Color.blue;
                     GameObject.Find("Event").GetComponent<EditWall>().moduleSelected = hit.collider.gameObject;
-                    
+                    GameObject.Find("Event").GetComponent<EditWall>().wallSelected = null;
+
                 }
             }
         }
@@ -64,7 +67,9 @@ public class EditSlot : MonoBehaviour {
         {
             if (child.name.Contains("Wall"))
             {
-                foreach(Transform mod in child)
+                child.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                child.transform.GetChild(1).GetComponent<Renderer>().material.color = Color.white;
+                foreach (Transform mod in child)
                 {
                     if (mod.name.Contains("clone"))
                     {

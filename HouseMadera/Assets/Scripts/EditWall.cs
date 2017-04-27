@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 
 using System.Collections.Generic;
 
@@ -54,6 +54,26 @@ public class EditWall : MonoBehaviour {
                     }
                    
                 }
+                else if (hit.collider.gameObject.tag == "Door" || hit.collider.gameObject.tag == "Window")
+                {
+
+                        UIManager.GetComponent<UIManager>().texture = true;
+                        UIManager.GetComponent<UIManager>().moduleGeneral = true;
+
+                        for (int i = 0; i < wallList.Count; i++)
+                        {
+                            wallList[i].transform.GetChild(0).GetComponent<Renderer>().material.color = Color.white;
+                            wallList[i].transform.GetChild(1).GetComponent<Renderer>().material.color = Color.white;
+                        }
+                        hit.transform.GetChild(0).GetComponent<Renderer>().material.color = Color.blue;
+                        hit.transform.GetChild(1).GetComponent<Renderer>().material.color = Color.blue;
+                        wallSelected = hit.transform.gameObject;
+                        if (addElementSelected)
+                        {
+                            //AddElement();
+                        }
+                    
+                }
                 else
                 {
                     UIManager.GetComponent<UIManager>().texture = false;
@@ -86,6 +106,38 @@ public class EditWall : MonoBehaviour {
     public void ChangeTexture3()
     {
         wallSelected.transform.GetChild(0).GetComponent<Renderer>().material.mainTexture = texture3;
+    }
+
+    public void TextureLuxe()
+    {
+        if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected != null)
+        {
+            if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Window"))
+            {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().FenetreLuxe;
+            }
+            else if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Door"))
+            {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLuxe;
+            }
+            
+        }
+    }
+
+    public void TextureLowcost()
+    {
+        if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected != null)
+        {
+            if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Window"))
+            {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().FenetreLowcost;
+            }
+            else if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Door"))
+            {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLowcost;
+            }
+
+        }
     }
 
     public void AddElementSelected()
