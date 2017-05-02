@@ -236,7 +236,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="comercial">Le modèle à insérer</param>
         /// <returns>Le nombre de lignes affectées</returns>
-        public int InsertModele(Commercial commercial)
+        public int InsertModele(Commercial commercial,MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO Commercial (Nom,Prenom,Login,Password,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7)";
@@ -270,10 +270,10 @@ namespace HouseMadera.DAL
         /// <param name="commercialLocal">Représente l'objet issue de la base locale </param>
         /// <param name="commercialDistant">Représente l'objet issue de la base distante</param>
         /// <returns>Le nombre de lignes affectées</returns>
-        public int UpdateModele(Commercial commercialLocal, Commercial commercialDistant)
+        public int UpdateModele(Commercial commercialLocal, Commercial commercialDistant, MouvementSynchronisation sens)
         {
             //recopie des données du Commercial distant dans le Commercial local
-            commercialLocal.Copy<Commercial>(commercialDistant);
+            commercialLocal.Copy(commercialDistant);
 
             string sql = @"
                         UPDATE Commercial

@@ -73,7 +73,7 @@ namespace HouseMadera.DAL
             return listeQualites;
         }
 
-        public int InsertModele(Qualite qualite)
+        public int InsertModele(Qualite qualite, MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO Qualite (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
@@ -98,10 +98,10 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Qualite qualiteLocal, Qualite qualiteDistant)
+        public int UpdateModele(Qualite qualiteLocal, Qualite qualiteDistant, MouvementSynchronisation sens)
         {
             //recopie des données du Qualite distant dans le Qualite local
-            qualiteLocal.Copy<Qualite>(qualiteDistant);
+            qualiteLocal.Copy(qualiteDistant);
 
             string sql = @"
                         UPDATE Qualite

@@ -85,7 +85,7 @@ namespace HouseMadera.DAL
             return listeComposants;
         }
 
-        public int InsertModele(Composant modele)
+        public int InsertModele(Composant modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -94,14 +94,18 @@ namespace HouseMadera.DAL
                 if (modele.TypeComposant == null)
                     throw new Exception("Tentative d'insertion dans la table Composant avec la clé étrangère TypeComposant nulle");
 
-
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(modele.TypeComposant.Id, out int typeComposantId))
-                {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                int typeComposantId = 0;
+                if (sens == MouvementSynchronisation.Sortant)
+                    Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(modele.TypeComposant.Id, out typeComposantId);
+                else
                     typeComposantId = Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeComposant.Id).Key;
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                //if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(modele.TypeComposant.Id, out int typeComposantId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    typeComposantId = Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeComposant.Id).Key;
 
-                }
+                //}
 
                 string sql = @"INSERT INTO Composant (Nom,Prix,TypeComposant_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5,@6)";
@@ -120,7 +124,7 @@ namespace HouseMadera.DAL
             {
                 result = -1;
                 Console.WriteLine(e.Message);
-                
+
                 //Logger.WriteEx(e);
 
             }
@@ -128,18 +132,24 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Composant composantLocal, Composant composantDistant)
+        public int UpdateModele(Composant composantLocal, Composant composantDistant, MouvementSynchronisation sens)
         {
             //Vérification des clés étrangères
             if (composantDistant.TypeComposant == null)
                 throw new Exception("Tentative d'insertion dans la table Composant avec la clé étrangère TypeComposant nulle");
 
-            //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-            if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(composantDistant.TypeComposant.Id, out int typeComposantId))
-            {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            int typeComposantId = 0;
+            if (sens == MouvementSynchronisation.Sortant)
+                Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(composantDistant.TypeComposant.Id, out typeComposantId);
+            else
                 typeComposantId = Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == composantDistant.TypeComposant.Id).Key;
-            }
+
+            ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+            //if (!Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.TryGetValue(composantDistant.TypeComposant.Id, out int typeComposantId))
+            //{
+            //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            //    typeComposantId = Synchronisation<TypeComposantDAL, TypeComposant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == composantDistant.TypeComposant.Id).Key;
+            //}
 
             //recopie des données du Composant distant dans le Composant local
             composantLocal.Copy(composantDistant);

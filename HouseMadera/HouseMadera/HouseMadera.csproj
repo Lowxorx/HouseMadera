@@ -140,6 +140,7 @@
     <Compile Include="DAL\ModulePlacePlan\ModulePlacePlanDAL.cs" />
     <Compile Include="DAL\ModulePLace\ModulePlaceDAL.cs" />
     <Compile Include="DAL\Module\ModuleDAL.cs" />
+    <Compile Include="DAL\MouvementSynchronisation.cs" />
     <Compile Include="DAL\MySqlConnect.cs" />
     <Compile Include="DAL\Plan\PlanDAL.cs" />
     <Compile Include="DAL\Produit\ProduitDAL.cs" />

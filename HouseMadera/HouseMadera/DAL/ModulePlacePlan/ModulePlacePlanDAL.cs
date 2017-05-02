@@ -86,7 +86,7 @@ namespace HouseMadera.DAL
             return listeModulePlacePlan;
         }
 
-        public int InsertModele(ModulePlacePlan modele)
+        public int InsertModele(ModulePlacePlan modele,MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -96,21 +96,32 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table ModulePlacePlan avec la clé étrangère ModulePlace nulle");
                 if (modele.Plan == null)
                     throw new Exception("Tentative d'insertion dans la table ModulePlacePlan avec la clé étrangère Plan nulle");
-
-
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance
                 int modulePlaceId = 0;
-                if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele.ModulePlace.Id, out modulePlaceId))
+                int planId = 0;
+                if(sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.ModulePlace.Id).Key;
+                    Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele.ModulePlace.Id, out modulePlaceId);
+                    Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele.Plan.Id, out planId);
                 }
-                    int planId = 0;
-                if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele.Plan.Id, out  planId))
+                else
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.ModulePlace.Id).Key;
                     planId = Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Plan.Id).Key;
                 }
+
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance
+
+                //if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele.ModulePlace.Id, out modulePlaceId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.ModulePlace.Id).Key;
+                //}
+                   
+                //if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele.Plan.Id, out  planId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    planId = Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Plan.Id).Key;
+                //}
 
 
 
@@ -138,7 +149,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(ModulePlacePlan modele1, ModulePlacePlan modele2)
+        public int UpdateModele(ModulePlacePlan modele1, ModulePlacePlan modele2, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -149,20 +160,33 @@ namespace HouseMadera.DAL
                 if (modele2.Plan == null)
                     throw new Exception("Tentative d'insertion dans la table ModulePlacePlan avec la clé étrangère Plan nulle");
 
-
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance
                 int modulePlaceId = 0;
-                if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele2.ModulePlace.Id, out modulePlaceId))
-                {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.ModulePlace.Id).Key;
-                }
                 int planId = 0;
-                if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele2.Plan.Id, out planId))
+                if (sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele2.ModulePlace.Id, out modulePlaceId);
+                    Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele2.Plan.Id, out planId);
+                }
+                else
+                {
+                    modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.ModulePlace.Id).Key;
                     planId = Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.Plan.Id).Key;
                 }
+
+
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance
+                //int modulePlaceId = 0;
+                //if (!Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.TryGetValue(modele2.ModulePlace.Id, out modulePlaceId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    modulePlaceId = Synchronisation<ModulePlaceDAL, ModulePlace>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.ModulePlace.Id).Key;
+                //}
+                //int planId = 0;
+                //if (!Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.TryGetValue(modele2.Plan.Id, out planId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    planId = Synchronisation<PlanDAL, Plan>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.Plan.Id).Key;
+                //}
 
                 modele1.Copy(modele2);
 

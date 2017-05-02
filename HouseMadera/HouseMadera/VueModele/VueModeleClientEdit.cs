@@ -506,7 +506,7 @@ namespace HouseMadera.VueModele
                 {
                     using (ClientDAL dal = new ClientDAL(DAL.DAL.Bdd))
                     {
-                        int success = isMiseAJourClient ? dal.UpdateModele(client, null) : dal.InsertModele(client);
+                        int success = isMiseAJourClient ? dal.UpdateModele(client, null,MouvementSynchronisation.Aucun) : dal.InsertModele(client,MouvementSynchronisation.Aucun);
                         //Si au moins une ligne a été créé en base alors on notifie le succes de l'enregistrement
                         IsClientEnregistre = success > 0 ? true : false;
                     }
@@ -544,7 +544,8 @@ namespace HouseMadera.VueModele
         /// <returns></returns>
         private List<Commune> RechercherCommunes(string codePostal)
         {
-            var isCodePostal = int.TryParse(codePostal, out int i);
+            int i = 0;
+            var isCodePostal = int.TryParse(codePostal, out  i);
 
             List<Commune> communes = new List<Commune>();
             if (codePostal != string.Empty && isCodePostal)

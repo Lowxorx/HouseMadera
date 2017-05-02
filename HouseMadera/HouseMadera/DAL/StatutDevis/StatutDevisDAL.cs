@@ -74,7 +74,7 @@ namespace HouseMadera.DAL
             try
             {
 
-                string sql = @"SELECT * FROM StatutProduit";
+                string sql = @"SELECT * FROM StatutDevis";
 
                 using (DbDataReader reader = Get(sql, null))
                 {
@@ -101,7 +101,7 @@ namespace HouseMadera.DAL
             return statutsDevis;
         }
 
-        public int InsertModele(StatutDevis modele)
+        public int InsertModele(StatutDevis modele, MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO StatutDevis (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
@@ -126,7 +126,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(StatutDevis statutDevisLocal, StatutDevis statutDevisDistant)
+        public int UpdateModele(StatutDevis statutDevisLocal, StatutDevis statutDevisDistant, MouvementSynchronisation sens)
         {
             //recopie des données du StatutDevis distant dans le StatutDevis local
             statutDevisLocal.Copy(statutDevisDistant);

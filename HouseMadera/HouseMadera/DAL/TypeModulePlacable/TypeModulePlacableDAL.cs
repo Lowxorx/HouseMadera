@@ -3,9 +3,6 @@ using HouseMadera.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HouseMadera.DAL
 {
@@ -48,17 +45,19 @@ namespace HouseMadera.DAL
             List<TypeModulePlacable> listeTypeModulePlacable = new List<TypeModulePlacable>();
             try
             {
-                string sql = @"SELECT * FROM TypeModulePlacable ";
+                
+                string sql = string.Format("SELECT * FROM TypeModulePlacable");
 
                 using (DbDataReader reader = Get(sql, null))
                 {
                     while (reader.Read())
                     {
+
                         TypeModulePlacable t = new TypeModulePlacable()
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nom = Convert.ToString(reader["Nom"]),
-                             //Icone -> blob
+                            Icone = string.IsNullOrEmpty(reader["Icone"].ToString()) ? null :(byte[])reader["Icone"],
                             MiseAJour = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["MiseAJour"])),
                             Suppression = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Suppression"])),
                             Creation = DateTimeDbAdaptor.InitialiserDate(Convert.ToString(reader["Creation"])),
@@ -76,12 +75,12 @@ namespace HouseMadera.DAL
             return listeTypeModulePlacable;
         }
 
-        public int InsertModele(TypeModulePlacable modele)
+        public int InsertModele(TypeModulePlacable modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
             {
-                string sql = @"INSERT INTO TypeModulePlacable (Nom,Icone,Suppression,MiseAJour,Creation)
+                string sql = @"INSERT INTO TypeModulePlacable (Nom,Icone,MiseAJour,Creation,Suppression)
                         VALUES(@1,@2,@3,@4,@5)";
                 Dictionary<string, object> parameters = new Dictionary<string, object>() {
                     {"@1",modele.Nom },
@@ -102,7 +101,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeModulePlacable typeModulePlacableLocal, TypeModulePlacable typeModulePlacableDistant)
+        public int UpdateModele(TypeModulePlacable typeModulePlacableLocal, TypeModulePlacable typeModulePlacableDistant, MouvementSynchronisation sens)
         {
             int result = 0;
             try

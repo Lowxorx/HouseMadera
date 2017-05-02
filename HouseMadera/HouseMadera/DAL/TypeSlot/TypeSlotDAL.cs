@@ -74,7 +74,7 @@ namespace HouseMadera.DAL
             return listeTypeSlot;
         }
 
-        public int InsertModele(TypeSlot modele)
+        public int InsertModele(TypeSlot modele, MouvementSynchronisation sens)
         {
             string sql = @"INSERT INTO TypeSlot (Nom,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4)";
@@ -99,7 +99,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeSlot typeSlotLocal, TypeSlot typeSlotDistant)
+        public int UpdateModele(TypeSlot typeSlotLocal, TypeSlot typeSlotDistant, MouvementSynchronisation sens)
         {
             // recopie des données du TypeSlot distant dans le TypeSlot local
             typeSlotLocal.Copy(typeSlotDistant);

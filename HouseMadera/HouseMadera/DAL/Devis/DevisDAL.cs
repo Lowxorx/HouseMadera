@@ -328,19 +328,16 @@ namespace HouseMadera.DAL
             return listeDevis;
         }
 
-        public int InsertModele(Devis devis)
+        public int InsertModele(Devis devis, MouvementSynchronisation sens)
         {
             //Vérification des clés étrangères
             if (devis.StatutDevis == null)
                 throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
-
-            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devis.StatutDevis.Id, out int StatutDevisId))
-            {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                StatutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devis.StatutDevis.Id).Key;
-            }
-
+            int statutDevisId = 0;
+            if(sens == MouvementSynchronisation.Sortant)
+                Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devis.StatutDevis.Id, out statutDevisId);
+            else
+                statutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devis.StatutDevis.Id).Key;
 
             string sql = @"INSERT INTO Devis (Nom,PrixHT,PrixTTC,StatutDevis_Id,pdf,MiseAJour,Suppression,Creation,DateCreation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
@@ -348,7 +345,7 @@ namespace HouseMadera.DAL
                 {"@1",devis.Nom },
                 {"@2",devis.PrixHT },
                 {"@3",devis.PrixTTC },
-                {"@4",StatutDevisId},
+                {"@4",statutDevisId},
                 {"@5",devis.Pdf },
                 {"@6", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
                 {"@7", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
@@ -370,19 +367,17 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Devis devisLocal, Devis devisDistant)
+        public int UpdateModele(Devis devisLocal, Devis devisDistant, MouvementSynchronisation sens)
         {
 
             //Vérification des clés étrangères
             if (devisDistant.StatutDevis == null)
                 throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
-
-            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devisDistant.StatutDevis.Id, out int statutDevisId))
-            {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            int statutDevisId = 0;
+            if (sens == MouvementSynchronisation.Sortant)
+                Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devisDistant.StatutDevis.Id, out statutDevisId);
+            else
                 statutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devisDistant.StatutDevis.Id).Key;
-            }
 
             //recopie des données du Devis distant dans le Devis local
             if (devisDistant != null)

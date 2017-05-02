@@ -89,7 +89,7 @@ namespace HouseMadera.DAL
             return listeTypeModuleTypeSlot;
         }
 
-        public int InsertModele(TypeModuleTypeSlot modele)
+        public int InsertModele(TypeModuleTypeSlot modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -101,18 +101,30 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table TypeModuleTypeSlot avec la clé étrangère TypeSlot nulle");
 
                 int typeModuleId = 0;
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele.TypeModule.Id, out  typeModuleId))
-                {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
-                }
                 int typeSlotId = 0;
-                if (!Synchronisation<TypeSlotDAL,TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out  typeSlotId))
+                if (sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele.TypeModule.Id, out typeModuleId);
+                    Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out typeSlotId);
+                }
+                else
+                {
+                    typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
                     typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeSlot.Id).Key;
                 }
+
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                //if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele.TypeModule.Id, out  typeModuleId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeModule.Id).Key;
+                //}
+               
+                //if (!Synchronisation<TypeSlotDAL,TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out  typeSlotId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeSlot.Id).Key;
+                //}
 
 
 
@@ -140,7 +152,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(TypeModuleTypeSlot modele1, TypeModuleTypeSlot modele2)
+        public int UpdateModele(TypeModuleTypeSlot modele1, TypeModuleTypeSlot modele2, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -151,20 +163,33 @@ namespace HouseMadera.DAL
                 if (modele2.TypeSlot == null)
                     throw new Exception("Tentative d'insertion dans la table TypeModuleTypeSlot avec la clé étrangère TypeSlot nulle");
 
-
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance
                 int typeModuleId = 0;
-                if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele2.TypeModule.Id, out  typeModuleId))
-                {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.TypeModule.Id).Key;
-                }
                 int typeSlotId = 0;
-                if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele2.TypeSlot.Id, out typeSlotId))
+                if (sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele2.TypeModule.Id, out typeModuleId);
+                    Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele2.TypeSlot.Id, out typeSlotId);
+                }
+                else
+                {
+                    typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.TypeModule.Id).Key;
                     typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.TypeSlot.Id).Key;
                 }
+
+
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance
+                //int typeModuleId = 0;
+                //if (!Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.TryGetValue(modele2.TypeModule.Id, out  typeModuleId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    typeModuleId = Synchronisation<TypeModuleDAL, TypeModule>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.TypeModule.Id).Key;
+                //}
+                //int typeSlotId = 0;
+                //if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele2.TypeSlot.Id, out typeSlotId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele2.TypeSlot.Id).Key;
+                //}
 
 
 
