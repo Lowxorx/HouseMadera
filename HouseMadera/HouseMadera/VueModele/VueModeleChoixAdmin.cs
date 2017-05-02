@@ -13,6 +13,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System;
+using System.Net.Mail;
+using System.Text;
 
 namespace HouseMadera.VueModele
 {
@@ -24,8 +26,11 @@ namespace HouseMadera.VueModele
         public ICommand AdminClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public ICommand LancerSynchro { get; set; }
+        public ICommand EnvoyerLogs { get; set; }
+
         public ICommand WindowLoaded { get; set; }
        
+
 
 
         private Commercial commercialConnecte;
@@ -61,6 +66,7 @@ namespace HouseMadera.VueModele
             AdminProjet = new RelayCommand(AProjet);
             AdminClient = new RelayCommand(AClient);
             LancerSynchro = new RelayCommand(Synchroniser);
+            EnvoyerLogs = new RelayCommand(SendLogsAsync);
             WindowLoaded = new RelayCommand(AfficherAlerteMiseAJour);
         }
 
@@ -348,6 +354,62 @@ namespace HouseMadera.VueModele
             ((VueModeleChoixProjet)vcp.DataContext).VuePrecedente = window;
             vcp.Show();
             window.Close();
+        }
+
+        private async void SendLogsAsync()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment envoyer les logs au support ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    try
+                    {
+                        SmtpClient client = new SmtpClient()
+                        {
+                            Port = 587,
+                            Host = "smtp.gmail.com",
+                            EnableSsl = true,
+                            Timeout = 10000,
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false,
+                            Credentials = new System.Net.NetworkCredential("serviceclient.madera@gmail.com", "Rila2016")
+                        };
+
+                        MailMessage mm = new MailMessage(CommercialConnecte.Login, "serviceclient.madera@gmail.com")
+                        {
+                            Subject = @"Logs for " + CommercialConnecte.Login,
+                            Body = @"Attachement for details"
+                        };
+                        Attachment attachment = new Attachment(@"ex.log");
+                        mm.Attachments.Add(attachment);
+                        mm.BodyEncoding = Encoding.UTF8;
+                        mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+                        client.Send(mm);
+                        mm.Dispose();
+                        if (window != null)
+                        {
+                            await window.ShowMessageAsync("Information", String.Format("Les informations ont bien été envoyées au support"));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteEx(ex);
+                        if (window != null)
+                        {
+                            await window.ShowMessageAsync("Erreur", "Le mail n'a pas pu être envoyé");
+                        }
+                    }
+                }
+            }
         }
         #endregion
 
