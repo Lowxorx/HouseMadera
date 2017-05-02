@@ -160,6 +160,7 @@
     <Compile Include="DAL\TypeModuleTypeSlot\TypeModuleTypeSlot.cs" />
     <Compile Include="DAL\TypeModule\TypeModuleDAL.cs" />
     <Compile Include="DAL\TypeSlot\TypeSlotDAL.cs" />
+    <Compile Include="DAL\VersionLogiciel\VersionLogicielDAL.cs" />
     <Compile Include="Modeles\Client.cs" />
     <Compile Include="Modeles\Commercial.cs" />
     <Compile Include="Modeles\Commune.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Modeles\StatutProduit.cs" />
     <Compile Include="Modeles\TypeModulePlacable.cs" />
     <Compile Include="Modeles\TypeModuleTypeSlot.cs" />
+    <Compile Include="Modeles\VersionLogiciel.cs" />
     <Compile Include="Utilities\AppInfo.cs" />
     <Compile Include="Utilities\BoolToVisibleOrHidden.cs" />
     <Compile Include="Utilities\ClientException.cs" />
@@ -317,7 +319,10 @@
     <Content Include="Resources\adminprojet.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\porte.png" />
     <Resource Include="Resources\Entypo-license.txt" />
+    <Resource Include="Resources\fenetre - fenetre.png" />
+    <Resource Include="Resources\Fenetre-porte-fenetre.png" />
     <Content Include="Resources\logomaderacolor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

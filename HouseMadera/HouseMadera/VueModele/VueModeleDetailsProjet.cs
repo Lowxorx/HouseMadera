@@ -345,7 +345,7 @@ namespace HouseMadera.VueModele
                         decimal prixModule = 0;
                         foreach (DataGenerationDevis dg in listDg)
                         {
-                            if (s == dg.NomModule)
+                            if (s == dg.NomModule && !string.IsNullOrEmpty(dg.PrixComposant) && dg.NombreComposant != 0)
                             {
                                 prixModule += Convert.ToDecimal(dg.PrixComposant) * dg.NombreComposant;
                             }
@@ -560,6 +560,7 @@ namespace HouseMadera.VueModele
                     {
                         using (var dal = new ProduitDAL(DAL.DAL.Bdd))
                         {
+                            SelectedProduit.Suppression = new DateTime();
                             SelectedProduit.Suppression = DateTime.Now;
                             delProduit = dal.DeleteModele(SelectedProduit);
                         }

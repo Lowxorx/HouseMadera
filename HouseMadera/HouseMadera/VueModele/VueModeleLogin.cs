@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Ioc;
 using HouseMadera.DAL;
 using HouseMadera.Modeles;
+using HouseMadera.Utilities;
 using HouseMadera.Vues;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -15,15 +16,9 @@ namespace HouseMadera.VueModele
 {
     public class VueModeleLogin : ViewModelBase
     {
+        #region PROPRIETES
         public ICommand Connexion { get; private set; }
         public ICommand Quitter { get; private set; }
-
-        [PreferredConstructor]
-        public VueModeleLogin()
-        {
-            Connexion = new RelayCommand(ConnexionExec);
-            Quitter = new RelayCommand(Exit);
-        }
 
         private string loginCommercial;
         public string LoginCommercial
@@ -38,6 +33,7 @@ namespace HouseMadera.VueModele
                 }
             }
         }
+
         private string pwCommercial;
         public string PwCommercial
         {
@@ -51,6 +47,21 @@ namespace HouseMadera.VueModele
                 }
             }
         }
+
+        public string Version { get; set; }
+        #endregion
+
+        [PreferredConstructor]
+        public VueModeleLogin()
+        {
+            Connexion = new RelayCommand(ConnexionExec);
+            Quitter = new RelayCommand(Exit);
+            //Récupère la version actuelle
+            AppInfo infoAppli = new AppInfo();
+            Version = infoAppli.ToString();
+        }
+
+       
 
         private async void Exit()
         {

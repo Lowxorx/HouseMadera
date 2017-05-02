@@ -72,7 +72,7 @@ namespace HouseMadera.DAL
                     NumModule = Convert.ToInt32(reader["Module_Id"]),
                     NomModule = Convert.ToString(reader["module_nom"]),
                     NomComposant = Convert.ToString(reader["compo_nom"]),
-                    NombreComposant = Convert.ToInt32(reader["compomod_nbre"]),
+                    NombreComposant = string.IsNullOrEmpty(reader["compomod_nbre"].ToString()) ? 0:Convert.ToInt32(reader["compomod_nbre"]),
                     PrixComposant = Convert.ToString(reader["compo_prix"]),
                     Client = new Client
                     {

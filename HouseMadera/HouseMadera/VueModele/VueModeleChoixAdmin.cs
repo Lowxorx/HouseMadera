@@ -24,6 +24,9 @@ namespace HouseMadera.VueModele
         public ICommand AdminClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public ICommand LancerSynchro { get; set; }
+        public ICommand WindowLoaded { get; set; }
+       
+
 
         private Commercial commercialConnecte;
         public Commercial CommercialConnecte
@@ -43,6 +46,8 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private VersionLogiciel derniereVersion;
+
         #endregion
 
         [PreferredConstructor]
@@ -56,9 +61,47 @@ namespace HouseMadera.VueModele
             AdminProjet = new RelayCommand(AProjet);
             AdminClient = new RelayCommand(AClient);
             LancerSynchro = new RelayCommand(Synchroniser);
+            WindowLoaded = new RelayCommand(AfficherAlerteMiseAJour);
         }
 
         #region METHODES
+        private bool IsLogicielAJour()
+        {
+            bool resultat = false;
+            try
+            {
+                using (VersionLogicielDAL dal = new VersionLogicielDAL("MYSQL"))
+                {
+                    derniereVersion = dal.GetLastVersion();
+                    resultat = dal.IsLogicielAJour(derniereVersion);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteEx(ex);
+            }
+            DAL.DAL.Bdd = "SQLITE";
+            return false;
+        }
+
+        private  async void AfficherAlerteMiseAJour()
+        {
+           if (!IsLogicielAJour()&& IsSynchronisationEffectuee)
+            {
+                
+                var window = Application.Current.Windows.OfType<MetroWindow>().First();
+                if (window != null && derniereVersion != null)
+                {
+                    string message = string.Format("Nouvelle version {0} disponible!", derniereVersion.Numero);
+                    await window.ShowMessageAsync(message, "La fonction synchronisation est désactivée, veuillez contacter le support pour installer la dernière mise à jour");
+                }
+                IsSynchronisationEffectuee = false;
+            }
+
+            
+        }
+
+
         /// <summary>
         /// Retourne une valeur de pourcentage
         /// </summary>
@@ -185,9 +228,9 @@ namespace HouseMadera.VueModele
                 collectionCorrespondance.Add(Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
 
-                Synchronisation<ModuleDAL,Module> syncModule = new Synchronisation<ModuleDAL, Module>(new Module());
+                Synchronisation<ModuleDAL, Module> syncModule = new Synchronisation<ModuleDAL, Module>(new Module());
                 syncModule.synchroniserDonnees();
-                collectionCorrespondance.Add(Synchronisation<ModuleDAL,Module>.CorrespondanceModeleId);
+                collectionCorrespondance.Add(Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
 
                 Synchronisation<ComposantModuleDAL, ComposantModule> syncComposantModule = new Synchronisation<ComposantModuleDAL, ComposantModule>(new ComposantModule(), true);
@@ -224,7 +267,7 @@ namespace HouseMadera.VueModele
                 syncModulePlacePlan.synchroniserDonnees();
                 collectionCorrespondance.Add(Synchronisation<ModulePlacePlanDAL, ModulePlacePlan>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
-               
+
                 //vide tous les dictionnaires contenant les correspondances des id du modele local 
                 ViderDictionnaireCorrespondance(collectionCorrespondance);
 
@@ -247,7 +290,7 @@ namespace HouseMadera.VueModele
         /// <param name="collectionCorrespondance"> Collection de dictionnaires</int></param>
         private void ViderDictionnaireCorrespondance(ICollection<Dictionary<int, int>> collectionCorrespondance)
         {
-            if(collectionCorrespondance != null)
+            if (collectionCorrespondance != null)
             {
                 foreach (Dictionary<int, int> correspondance in collectionCorrespondance)
                 {
