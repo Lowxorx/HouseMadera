@@ -202,6 +202,7 @@
     <Compile Include="Modeles\TypeSlot.cs" />
     <Compile Include="Utilities\ConnectivityMonitor.cs" />
     <Compile Include="Utilities\RegexUtilities.cs" />
+    <Compile Include="Utilities\Remise.cs" />
     <Compile Include="Utilities\ValidationClientException.cs" />
     <Compile Include="VueModele\VueModeleChoixAdmin.cs" />
     <Compile Include="VueModele\VueModeleChoixProjet.cs" />

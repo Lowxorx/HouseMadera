@@ -182,7 +182,8 @@ namespace HouseMadera.VueModele
         public bool IsProduitPresent
         {
             get { return isProduitPresent; }
-            set {
+            set
+            {
                 isProduitPresent = value;
                 RaisePropertyChanged(() => IsProduitPresent);
             }
@@ -312,14 +313,21 @@ namespace HouseMadera.VueModele
         }
 
         private async void GenDevis()
-        {
+        { 
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+            int remise = 0;
+           
             try
             {
+                if (SelectedProduit == null)
+                    throw new Exception("La génération de devis impossible sur un produit NULL");
                 // Génération du devis 
                 List<DataGenerationDevis> listDg = new List<DataGenerationDevis>();
                 using (DevisDAL dDal = new DevisDAL(DAL.DAL.Bdd))
                 {
+                    //Obtenir la réduction
+                    //remise = dDal.CalculerReduction(SelectedProduit.Id);
+                    remise = dDal.CalculerReduction(8);
                     listDg = dDal.GenererDevis(SelectedProduit);
                 }
                 if (listDg.Count > 0)
@@ -359,6 +367,9 @@ namespace HouseMadera.VueModele
                     outputToDevis += mursPorteurs;
                     modulesToGrid.Add(mursPorteurs);
                     prixTotal += 4032;
+                    //Application de la remise
+                    if (remise != 0)
+                        prixTotal = Remise.CalculerPrixRemise(remise, prixTotal);
                     string prixFinal = String.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
                     outputToDevis += prixFinal;
 
