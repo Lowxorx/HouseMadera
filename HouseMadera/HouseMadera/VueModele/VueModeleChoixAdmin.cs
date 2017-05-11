@@ -86,22 +86,22 @@ namespace HouseMadera.VueModele
             {
                 Logger.WriteEx(ex);
             }
+            //On redéfini la bdd en mode local
             DAL.DAL.Bdd = "SQLITE";
-            return false;
+            return resultat;
         }
 
         private  async void AfficherAlerteMiseAJour()
         {
-           if (!IsLogicielAJour()&& IsSynchronisationEffectuee)
+           if (!IsLogicielAJour())
             {
                 
-                var window = Application.Current.Windows.OfType<MetroWindow>().First();
+                var window = Application.Current.Windows.OfType<MetroWindow>().Last();
                 if (window != null && derniereVersion != null)
                 {
                     string message = string.Format("Nouvelle version {0} disponible!", derniereVersion.Numero);
-                    await window.ShowMessageAsync(message, "La fonction synchronisation est désactivée, veuillez contacter le support pour installer la dernière mise à jour");
+                    await window.ShowMessageAsync(message, "Pensez à synchroniser vos données avant installation de la mise à jour");
                 }
-                IsSynchronisationEffectuee = false;
             }
 
             
@@ -115,7 +115,7 @@ namespace HouseMadera.VueModele
         /// <returns>Pourcentagede type double</returns>
         private double Pourcentage(int value)
         {
-            return (double)((value * 100) / NB_MODELE);
+            return (value * 100) / NB_MODELE;
         }
 
         /// <summary>
@@ -355,6 +355,7 @@ namespace HouseMadera.VueModele
             vcp.Show();
             window.Close();
         }
+
 
         private async void SendLogsAsync()
         {

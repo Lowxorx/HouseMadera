@@ -60,7 +60,7 @@
                 Background="#FFF7F7F7"
                 BorderThickness="0"
                 Command="{Binding Deconnexion}"
-                Content="{iconPacks:PackIconFontAwesome signout,
+                Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
                                                         Width=32,
                                                         Height=32}" />
         </Grid>

@@ -31,10 +31,33 @@ namespace HouseMadera.VueModele
             EnvoiDevis = new RelayCommand(EnvoyerDevis);
         }
 
+        #region PROPIETES
         public ICommand WindowLoaded { get; private set; }
         public ICommand Retour { get; private set; }
         public ICommand EnvoiDevis { get; private set; }
         public ICommand OuvrirDevis { get; private set; }
+
+        private string remise;
+        public string Remise
+        {
+            get { return remise; }
+            set
+            {
+                remise = value;
+                RaisePropertyChanged(() => Remise);
+            }
+        }
+
+        private string montant;
+        public string Montant
+        {
+            get { return montant; }
+            set
+            {
+                montant = value;
+                RaisePropertyChanged(() => Montant);
+            }
+        }
 
         private MetroWindow vuePrecedente;
         public MetroWindow VuePrecedente
@@ -58,8 +81,8 @@ namespace HouseMadera.VueModele
             }
         }
 
-        private List<String> listeModules;
-        public List<String> ListeModules
+        private List<string> listeModules;
+        public List<string> ListeModules
         {
             get { return listeModules; }
             set
@@ -99,13 +122,15 @@ namespace HouseMadera.VueModele
         }
 
         private string devisActuel;
-
         public string DevisActuel
         {
             get { return devisActuel; }
             set { devisActuel = value; }
         }
 
+        #endregion
+
+        #region METHODES
         private async void OuvertureDevis()
         {
             try
@@ -230,6 +255,7 @@ namespace HouseMadera.VueModele
             TitreVue = string.Format(@"Devis client - {0} {1}", DGen.client.Prenom, DGen.client.Nom);
             RaisePropertyChanged(() => TitreVue);
         }
+        #endregion
 
     }
 }
