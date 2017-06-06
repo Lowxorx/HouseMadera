@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 public class UIManager : MonoBehaviour {
-
+    
     public GameObject panelTexture;
     public string[] args;
     public GameObject panelModule;

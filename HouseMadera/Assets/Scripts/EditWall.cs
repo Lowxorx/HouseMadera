@@ -123,7 +123,7 @@ public class EditWall : MonoBehaviour {
             
         }
     }
-
+    
     public void TextureLowcost()
     {
         if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected != null)
