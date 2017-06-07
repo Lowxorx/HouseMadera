@@ -127,6 +127,7 @@ public class PanelModule : MonoBehaviour {
         {
             case 1:
                 GameObject door = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
+                door.AddComponent<GammeSelected>();
                 door.transform.position = parentModule.transform.GetChild(3).transform.position;
                 door.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
                 door.GetComponent<Renderer>().material.color = Color.red;
@@ -136,6 +137,7 @@ public class PanelModule : MonoBehaviour {
 
             case 2:
                 GameObject window = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window.AddComponent<GammeSelected>();
                 window.transform.position = parentModule.transform.GetChild(2).transform.position;
                 window.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
                 window.GetComponent<Renderer>().material.color = Color.red;
@@ -143,6 +145,7 @@ public class PanelModule : MonoBehaviour {
                 window.tag = "Window";
 
                 GameObject window2 = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window2.AddComponent<GammeSelected>();
                 window2.transform.position = parentModule.transform.GetChild(4).transform.position;
                 window2.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
                 window2.GetComponent<Renderer>().material.color = Color.red;
@@ -152,6 +155,7 @@ public class PanelModule : MonoBehaviour {
 
             case 3:
                 GameObject window3 = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window3.AddComponent<GammeSelected>();
                 window3.transform.position = parentModule.transform.GetChild(2).transform.position;
                 window3.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
                 window3.GetComponent<Renderer>().material.color = Color.red;
@@ -159,6 +163,7 @@ public class PanelModule : MonoBehaviour {
                 window3.tag = "Window";
 
                 GameObject door2 = Instantiate(Resources.Load("SlotDoor", typeof(GameObject))) as GameObject;
+                door2.AddComponent<GammeSelected>();
                 door2.transform.position = parentModule.transform.GetChild(3).transform.position;
                 door2.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
                 door2.GetComponent<Renderer>().material.color = Color.red;
@@ -166,6 +171,7 @@ public class PanelModule : MonoBehaviour {
                 door2.tag = "Door";
 
                 GameObject window4 = Instantiate(Resources.Load("SlotWindow", typeof(GameObject))) as GameObject;
+                window4.AddComponent<GammeSelected>();
                 window4.transform.position = parentModule.transform.GetChild(4).transform.position;
                 window4.transform.rotation = parentModule.transform.GetChild(0).transform.rotation;
                 window4.GetComponent<Renderer>().material.color = Color.red;

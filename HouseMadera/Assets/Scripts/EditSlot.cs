@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class EditSlot : MonoBehaviour {
 
     public List<GameObject> moduleList;
-	void Start ()
+    GameObject UIManager;
+
+    void Start ()
     {
-	
-	}
+        UIManager = GameObject.Find("UIManager");
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -21,6 +23,7 @@ public class EditSlot : MonoBehaviour {
             {
                 if (hit.collider.gameObject.tag == "Door")
                 {
+                    UIManager.GetComponent<UIManager>().texture = true;
                     ClearModule();
                     foreach (Transform target in hit.collider.transform.parent.transform.parent)
                     {
@@ -37,6 +40,7 @@ public class EditSlot : MonoBehaviour {
                 }
                 else if(hit.collider.gameObject.tag == "Window")
                 {
+                    UIManager.GetComponent<UIManager>().texture = true;
                     ClearModule();
                     foreach (Transform target in hit.collider.transform.parent.transform.parent.transform.parent)
                     {
