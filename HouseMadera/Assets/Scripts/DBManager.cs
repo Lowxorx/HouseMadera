@@ -78,6 +78,7 @@ public class DBManager : MonoBehaviour
     //new
     void DeleteModulePlace()
     {
+        GameObject.Find("UIManager").GetComponent<UIParameter>().produits = "1";
         string sql = "UPDATE moduleplace SET Suppression = ? WHERE Produit_Id = " + GameObject.Find("UIManager").GetComponent<UIParameter>().produits;
         dbManager.Execute(sql, DateTime.Now.ToString());
     }
@@ -471,7 +472,7 @@ public class DBManager : MonoBehaviour
                 case "Porte":
                     string wallNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
                     module.Libelle = "Door - " + wallNumber;
-                    if (module.Libelle.Contains("Luxe"))
+                    if (objet.GetComponent<GammeSelected>().gammeName.Contains("Luxe"))
                     {
                         module.Module_Id = GameObject.Find("DBManager").GetComponent<DBInformations>().porteLuxe;
                     }
@@ -483,7 +484,7 @@ public class DBManager : MonoBehaviour
                 case "Fenetre":
                     string windowNumber = Regex.Match(objet.transform.parent.parent.name, @"\d+").Value;
                     module.Libelle = "Fenetre - " + windowNumber;
-                    if (module.Libelle.Contains("Luxe"))
+                    if (objet.GetComponent<GammeSelected>().gammeName.Contains("Luxe"))
                     {
                         module.Module_Id = GameObject.Find("DBManager").GetComponent<DBInformations>().fenetreLuxe;
                     }

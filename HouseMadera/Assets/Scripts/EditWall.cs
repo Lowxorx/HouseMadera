@@ -115,9 +115,11 @@ public class EditWall : MonoBehaviour {
             if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Window"))
             {
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().FenetreLuxe;
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Luxe";
             }
             else if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Door"))
             {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Luxe";
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLuxe;
             }
             
@@ -130,10 +132,12 @@ public class EditWall : MonoBehaviour {
         {
             if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Window"))
             {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Low-Cost";
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().FenetreLowcost;
             }
             else if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Door"))
             {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Low-Cost";
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLowcost;
             }
 
