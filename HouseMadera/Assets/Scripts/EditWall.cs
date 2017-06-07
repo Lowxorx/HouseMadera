@@ -122,6 +122,11 @@ public class EditWall : MonoBehaviour {
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Luxe";
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLuxe;
             }
+            else if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Cloison"))
+            {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Luxe";
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLuxe;
+            }
             
         }
     }
@@ -139,6 +144,11 @@ public class EditWall : MonoBehaviour {
             {
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Low-Cost";
                 GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().PorteLowcost;
+            }
+            else if (GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.name.Contains("Cloison"))
+            {
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<GammeSelected>().gammeName = "Low-Cost";
+                GameObject.Find("Event").GetComponent<EditWall>().moduleSelected.gameObject.GetComponent<Renderer>().material.mainTexture = GameObject.Find("UIManager").GetComponent<UITextures>().CloisonLowcost;
             }
 
         }

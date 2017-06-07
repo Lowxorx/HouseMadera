@@ -88,7 +88,6 @@ public class UIManager : MonoBehaviour {
 
         if (texture)
         {
-            parametreCloison = false;
             if (panelTexture.transform.position.x < texturePosition.transform.position.x)
             {
                 panelTexture.transform.Translate(Vector3.right * Time.deltaTime * 300);

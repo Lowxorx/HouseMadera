@@ -19,8 +19,10 @@ public class CloisonManager : MonoBehaviour
     public bool touchWallHorizontal = false;
     public GameObject target;
     public List<Collider> colliderList = new List<Collider>();
+    GameObject UIManager;
     void Start()
     {
+        UIManager = GameObject.Find("UIManager");
         _switch = GameObject.Find("Switch");
         cloisonVertical = this.transform.parent.GetChild(2).gameObject;
         cloisonHorizontal = this.transform.parent.GetChild(3).gameObject;
@@ -59,6 +61,8 @@ public class CloisonManager : MonoBehaviour
                     target.GetComponent<Renderer>().material.color = Color.red;
                     GameObject.Find("UIManager").GetComponent<UIManager>().cloisonSelected = target;
                     GameObject.Find("UIManager").GetComponent<UIManager>().parametreCloison = true;
+                    UIManager.GetComponent<UIManager>().texture = true;
+                    GameObject.Find("Event").GetComponent<EditWall>().moduleSelected = target;
             }
 
             if (cloisonVertical.activeInHierarchy)
