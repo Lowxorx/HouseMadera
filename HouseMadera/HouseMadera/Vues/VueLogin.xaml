@@ -114,7 +114,15 @@
                 VerticalAlignment="Bottom"
                 Source="pack://siteoforigin:,,,/Resources/logomaderacolor.png" />
         </Grid>
-        <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
+        <Grid Margin="0,940,0,0" Background="#FFA29A9A">
+            <Label
+                HorizontalAlignment="Center"
+                Width="626"
+                FontSize="30"
+                HorizontalContentAlignment="Center"
+                Content="{Binding Version}" Margin="451,10"
+                />
+        </Grid>
     </Grid>
 </controls:MetroWindow>
 

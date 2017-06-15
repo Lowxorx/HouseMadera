@@ -40,8 +40,10 @@ namespace HouseMadera.DAL
         /// </summary>
         public void synchroniserDonnees()
         {
-            comparerDonnees(listeModeleLocale, listeModeleDistante, "SORTANTE");
-            comparerDonnees(listeModeleDistante, listeModeleLocale, "ENTRANTE");
+            comparerDonnees(listeModeleLocale, listeModeleDistante, MouvementSynchronisation.Sortant);
+            comparerDonnees(listeModeleDistante, listeModeleLocale, MouvementSynchronisation.Entrant);
+            //comparerDonnees(listeModeleLocale, listeModeleDistante, "SORTANT");
+            //comparerDonnees(listeModeleDistante, listeModeleLocale, "ENTRANT");
             //enregistrer les id dans une table de correspondance
             if (!_isTableLiaison)
                 creerTableCorrespondance();
@@ -94,27 +96,29 @@ namespace HouseMadera.DAL
         /// <param name="liste1"> représente la liste principale (locale) à comparer</param>
         /// <param name="liste2">représente la liste secondaire(distante) à comparer</param>
         /// <param name="sens">indique le sens de comparaison local / distant ou distant / local</param>
-        private void comparerDonnees(List<TMODELE> liste1, List<TMODELE> liste2, string sens)
+        private void comparerDonnees(List<TMODELE> liste1, List<TMODELE> liste2, MouvementSynchronisation sens)
         {
             string bdd = string.Empty;
             string locale = string.Empty;
             string distante = string.Empty;
+            
 
-            switch (sens)
+            if(sens == MouvementSynchronisation.Sortant)
             {
                 //du local au distant
-                case "SORTANTE":
-                    bdd = "locale";
-                    locale = LOCALE;
-                    distante = DISTANTE;
-                    break;
-                //du distant au local
-                case "ENTRANTE":
+                bdd = "locale";
+                locale = LOCALE;
+                distante = DISTANTE;
+            }
+            else
+            {
+                if(sens == MouvementSynchronisation.Entrant)
+                {
+                    //du distant au local
                     bdd = "distante";
                     locale = DISTANTE;
                     distante = LOCALE;
-                    break;
-
+                }
             }
 
             Console.WriteLine("validation  {0} : ", sens);
@@ -160,7 +164,7 @@ namespace HouseMadera.DAL
 #if DEBUG
                                         Console.WriteLine("\nL'entité {0} avec l'ID {1} a été modifié sur la bdd {2}\n", NomModele, modeleListe1.Id, bdd);
 #endif
-                                        dalBddLocale.UpdateModele(modeleListe1, modeleListe2);
+                                        dalBddLocale.UpdateModele(modeleListe1, modeleListe2, sens);
 #if DEBUG
                                         Console.WriteLine("\nModification -------> OK");
 #endif
@@ -175,7 +179,7 @@ namespace HouseMadera.DAL
                         //Console.WriteLine("L'entité {0} avec l'ID {1} n'existe pas sur dans la bdd {2}\n", NomModele, modeleListe1.Id, distante);
                         using (dalBddDistante = (TDAL)Activator.CreateInstance(typeof(TDAL), distante))
                         {
-                            int nbLigneInseree = dalBddDistante.InsertModele(modeleListe1);
+                            int nbLigneInseree = dalBddDistante.InsertModele(modeleListe1,sens);
                             if (nbLigneInseree > 0)
                             {
 #if DEBUG
@@ -191,7 +195,7 @@ namespace HouseMadera.DAL
             {
                 NbErreurs++;
 
-                string precision = (sens == "SORTANTE") ? LOCALE + " vers " + DISTANTE : DISTANTE + " vers " + LOCALE;
+                string precision = (sens == MouvementSynchronisation.Sortant) ? LOCALE + " vers " + DISTANTE : DISTANTE + " vers " + LOCALE;
                 string titre = string.Format("Synchronisation de : {0}--> Comparaison des données {1}\n", NomModele, precision);
 #if DEBUG
                 Console.WriteLine(titre + ex.Message );

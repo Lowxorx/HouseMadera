@@ -82,7 +82,7 @@ namespace HouseMadera.DAL
             return listeSlots;
         }
 
-        public int InsertModele(Slot modele)
+        public int InsertModele(Slot modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -91,13 +91,20 @@ namespace HouseMadera.DAL
                 if (modele.TypeSlot == null)
                     throw new Exception("Tentative d'insertion dans la base Finition avec la clé étrangère TypeFinition nulle");
 
+                int typeSlotId = 0;
 
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out int typeSlotId))
-                {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                if (sens == MouvementSynchronisation.Sortant)
+                    Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out typeSlotId);
+                else
                     typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeSlot.Id).Key;
-                }
+
+
+                    ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                    //if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(modele.TypeSlot.Id, out int typeSlotId))
+                    //{
+                    //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    //    typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.TypeSlot.Id).Key;
+                    //}
 
                 string sql = @"INSERT INTO Slot (Nom,TypeSlot_Id,MiseAJour,Suppression,Creation)
                         VALUES(@1,@2,@3,@4,@5)";
@@ -115,7 +122,7 @@ namespace HouseMadera.DAL
             {
                 result = -1;
                 Console.WriteLine(e.Message);
-                
+
                 //Logger.WriteEx(e);
 
             }
@@ -123,18 +130,25 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Slot slotLocal, Slot slotDistant)
+        public int UpdateModele(Slot slotLocal, Slot slotDistant, MouvementSynchronisation sens)
         {
             //Vérification des clés étrangères
             if (slotDistant.TypeSlot == null)
                 throw new Exception("Tentative de mise a jour dans la table Slot avec la clé étrangère TypeSlot nulle");
 
-            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(slotDistant.TypeSlot.Id, out int typeSlotId))
-            {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            int typeSlotId = 0;
+
+            if (sens == MouvementSynchronisation.Sortant)
+                Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(slotDistant.TypeSlot.Id, out typeSlotId);
+            else
                 typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == slotDistant.TypeSlot.Id).Key;
-            }
+
+            ////Valeurs des clés étrangères est modifié avant update via la table de correspondance 
+            //if (!Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.TryGetValue(slotDistant.TypeSlot.Id, out int typeSlotId))
+            //{
+            //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            //    typeSlotId = Synchronisation<TypeSlotDAL, TypeSlot>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == slotDistant.TypeSlot.Id).Key;
+            //}
             //recopie des données du Slot distant dans le Slot local
             slotLocal.Copy(slotDistant);
             string sql = @"

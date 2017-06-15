@@ -12,6 +12,8 @@ namespace HouseMadera.DAL
     {
 
         const string NON_RENSEIGNE = "NULL";
+        const int REDUCTION_MAX = 5;
+        const int REDUCTION_MIN = 1;
 
         public DevisDAL(string nomBdd) : base(nomBdd)
         {
@@ -72,7 +74,7 @@ namespace HouseMadera.DAL
                     NumModule = Convert.ToInt32(reader["Module_Id"]),
                     NomModule = Convert.ToString(reader["module_nom"]),
                     NomComposant = Convert.ToString(reader["compo_nom"]),
-                    NombreComposant = Convert.ToInt32(reader["compomod_nbre"]),
+                    NombreComposant = string.IsNullOrEmpty(reader["compomod_nbre"].ToString()) ? 0:Convert.ToInt32(reader["compomod_nbre"]),
                     PrixComposant = Convert.ToString(reader["compo_prix"]),
                     Client = new Client
                     {
@@ -88,7 +90,57 @@ namespace HouseMadera.DAL
             reader.Close();
             return listeDevis;
         }
+        
+        /// <summary>
+        /// Récupère le nombre de module par gamme pour le produit et calcule le pourcentage de remise
+        /// </summary>
+        /// <param name="produitId">L'Id du produit</param>
+        /// <returns>Entier représentant le pourcentage de remise </returns>
+        public int CalculerReduction (int produitId)
+        {
+            int nb_module_luxe = 0;
+            int nb_module_lowcost = 0;
+            int nb_module_produit = 0;
+            int reduction = 0;
 
+            //Recupérer le nombre de module par gamme du produit
+            string requete = @"SELECT COUNT(mp.Id) AS total_gamme, m.Nom AS Module,g.Nom AS Gamme
+                        FROM ModulePlace AS mp 
+                        LEFT JOIN Module AS m ON Module_Id = m.Id 
+                        LEFT JOIN Gamme AS g ON m.Gamme_Id = g.Id 
+                        WHERE mp.Produit_Id = @1 AND mp.Suppression IS NOT NULL 
+                        GROUP BY g.Nom";
+            Dictionary<string, object> parametres = new Dictionary<string, object>()
+            {
+                {"@1" , produitId }
+            };
+
+            DbDataReader reader = Get(requete, parametres);
+            while(reader.Read())
+            {
+                string gamme = reader["gamme"].ToString();
+                switch (gamme )
+                {
+                    case "Luxe": nb_module_luxe = Convert.ToInt32(reader["total_gamme"]);
+                        break;
+                    case "Low-Cost": nb_module_lowcost = Convert.ToInt32(reader["total_gamme"]);
+                        break;
+                }
+            }
+            //Calculer le montant de la réduction
+            nb_module_produit = nb_module_lowcost + nb_module_luxe;
+            decimal calculRatio_Luxe = (nb_module_luxe * 100) / nb_module_produit;
+            //Si la totalité des modules sont de la gamme luxe
+            if (calculRatio_Luxe == 100)
+                reduction = REDUCTION_MAX;
+            else
+            {
+                if (calculRatio_Luxe > 75)
+                    reduction = REDUCTION_MIN;
+            }
+
+            return reduction;
+        } 
 
         /// <summary>
         /// Selectionne tous les devis associés au projet en paramètre
@@ -284,6 +336,8 @@ namespace HouseMadera.DAL
 
         #endregion
 
+
+
         #region SYNCHRONISATION
 
         public List<Devis> GetAllModeles()
@@ -328,19 +382,16 @@ namespace HouseMadera.DAL
             return listeDevis;
         }
 
-        public int InsertModele(Devis devis)
+        public int InsertModele(Devis devis, MouvementSynchronisation sens)
         {
             //Vérification des clés étrangères
             if (devis.StatutDevis == null)
                 throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
-
-            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devis.StatutDevis.Id, out int StatutDevisId))
-            {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                StatutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devis.StatutDevis.Id).Key;
-            }
-
+            int statutDevisId = 0;
+            if(sens == MouvementSynchronisation.Sortant)
+                Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devis.StatutDevis.Id, out statutDevisId);
+            else
+                statutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devis.StatutDevis.Id).Key;
 
             string sql = @"INSERT INTO Devis (Nom,PrixHT,PrixTTC,StatutDevis_Id,pdf,MiseAJour,Suppression,Creation,DateCreation)
                         VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
@@ -348,7 +399,7 @@ namespace HouseMadera.DAL
                 {"@1",devis.Nom },
                 {"@2",devis.PrixHT },
                 {"@3",devis.PrixTTC },
-                {"@4",StatutDevisId},
+                {"@4",statutDevisId},
                 {"@5",devis.Pdf },
                 {"@6", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) },
                 {"@7", DateTimeDbAdaptor.FormatDateTime( devis.Suppression,Bdd) },
@@ -370,19 +421,17 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Devis devisLocal, Devis devisDistant)
+        public int UpdateModele(Devis devisLocal, Devis devisDistant, MouvementSynchronisation sens)
         {
 
             //Vérification des clés étrangères
             if (devisDistant.StatutDevis == null)
                 throw new Exception("Tentative de mise a jour dans la table Devis avec la clé étrangère StatutDevis nulle");
-
-            //Valeurs des clés étrangères est modifié avant update via la table de correspondance 
-            if (!Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devisDistant.StatutDevis.Id, out int statutDevisId))
-            {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            int statutDevisId = 0;
+            if (sens == MouvementSynchronisation.Sortant)
+                Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.TryGetValue(devisDistant.StatutDevis.Id, out statutDevisId);
+            else
                 statutDevisId = Synchronisation<StatutDevisDAL, StatutDevis>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == devisDistant.StatutDevis.Id).Key;
-            }
 
             //recopie des données du Devis distant dans le Devis local
             if (devisDistant != null)

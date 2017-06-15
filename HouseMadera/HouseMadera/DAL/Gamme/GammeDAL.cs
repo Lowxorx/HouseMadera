@@ -88,7 +88,7 @@ namespace HouseMadera.DAL
             return listeGammes;
         }
 
-        public int InsertModele(Gamme modele)
+        public int InsertModele(Gamme modele,MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -98,18 +98,30 @@ namespace HouseMadera.DAL
                     throw new Exception("Tentative d'insertion dans la table Gamme avec la clé étrangère Finition nulle");
                 if (modele.Isolant == null)
                     throw new Exception("Tentative d'insertion dans la table Gamme avec la clé étrangère Isolant nulle");
-
-                //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-                if (!Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(modele.Finition.Id, out int finitionId))
+                int finitionId = 0;
+                int isolantId = 0;
+                if(sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Finition.Id).Key;
+                    Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(modele.Finition.Id, out finitionId);
+                    Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(modele.Isolant.Id, out  isolantId);
                 }
-                if (!Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(modele.Isolant.Id, out int isolantId))
+                else
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Finition.Id).Key;
                     isolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Isolant.Id).Key;
                 }
+
+                ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+                //if (!Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(modele.Finition.Id, out int finitionId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Finition.Id).Key;
+                //}
+                //if (!Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(modele.Isolant.Id, out int isolantId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    isolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Isolant.Id).Key;
+                //}
 
 
                 string sql = @"INSERT INTO Gamme (Nom,Finition_Id,Isolant_Id,MiseAJour,Suppression,Creation)
@@ -137,7 +149,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(Gamme gammeLocal, Gamme gammeDistant)
+        public int UpdateModele(Gamme gammeLocal, Gamme gammeDistant,MouvementSynchronisation sens)
         {
             //Vérification des clés étrangères
             if (gammeDistant.Finition == null)
@@ -145,17 +157,31 @@ namespace HouseMadera.DAL
             if (gammeDistant.Isolant == null)
                 throw new Exception("Tentative d'insertion dans la table Gamme avec la clé étrangère Isolant nulle");
 
-            //Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
-            if (!Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(gammeDistant.Finition.Id, out int finitionId))
+            int finitionId = 0;
+            int isolantId = 0;
+            if (sens == MouvementSynchronisation.Sortant)
             {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Finition.Id).Key;
+                Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(gammeDistant.Finition.Id, out finitionId);
+                Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(gammeDistant.Isolant.Id, out isolantId);
             }
-            if (!Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(gammeDistant.Isolant.Id, out int isolantId))
+            else
             {
-                //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Finition.Id).Key;
                 isolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Isolant.Id).Key;
             }
+
+
+            ////Valeurs des clés étrangères est modifié avant insertion via la table de correspondance 
+            //if (!Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.TryGetValue(gammeDistant.Finition.Id, out int finitionId))
+            //{
+            //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            //    finitionId = Synchronisation<FinitionDAL, Finition>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Finition.Id).Key;
+            //}
+            //if (!Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.TryGetValue(gammeDistant.Isolant.Id, out int isolantId))
+            //{
+            //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+            //    isolantId = Synchronisation<IsolantDAL, Isolant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == gammeDistant.Isolant.Id).Key;
+            //}
             //recopie des données de la Gamme distante dans la Gamme locale
             gammeLocal.Copy(gammeDistant);
             string sql = @"

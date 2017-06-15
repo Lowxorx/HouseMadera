@@ -13,6 +13,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System;
+using System.Net.Mail;
+using System.Text;
 
 namespace HouseMadera.VueModele
 {
@@ -24,6 +26,12 @@ namespace HouseMadera.VueModele
         public ICommand AdminClient { get; private set; }
         public ICommand Deconnexion { get; private set; }
         public ICommand LancerSynchro { get; set; }
+        public ICommand EnvoyerLogs { get; set; }
+
+        public ICommand WindowLoaded { get; set; }
+       
+
+
 
         private Commercial commercialConnecte;
         public Commercial CommercialConnecte
@@ -43,6 +51,8 @@ namespace HouseMadera.VueModele
             }
         }
 
+        private VersionLogiciel derniereVersion;
+
         #endregion
 
         [PreferredConstructor]
@@ -56,9 +66,48 @@ namespace HouseMadera.VueModele
             AdminProjet = new RelayCommand(AProjet);
             AdminClient = new RelayCommand(AClient);
             LancerSynchro = new RelayCommand(Synchroniser);
+            EnvoyerLogs = new RelayCommand(SendLogsAsync);
+            WindowLoaded = new RelayCommand(AfficherAlerteMiseAJour);
         }
 
         #region METHODES
+        private bool IsLogicielAJour()
+        {
+            bool resultat = false;
+            try
+            {
+                using (VersionLogicielDAL dal = new VersionLogicielDAL("MYSQL"))
+                {
+                    derniereVersion = dal.GetLastVersion();
+                    resultat = dal.IsLogicielAJour(derniereVersion);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteEx(ex);
+            }
+            //On redéfini la bdd en mode local
+            DAL.DAL.Bdd = "SQLITE";
+            return resultat;
+        }
+
+        private  async void AfficherAlerteMiseAJour()
+        {
+           if (!IsLogicielAJour())
+            {
+                
+                var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+                if (window != null && derniereVersion != null)
+                {
+                    string message = string.Format("Nouvelle version {0} disponible!", derniereVersion.Numero);
+                    await window.ShowMessageAsync(message, "Pensez à synchroniser vos données avant installation de la mise à jour");
+                }
+            }
+
+            
+        }
+
+
         /// <summary>
         /// Retourne une valeur de pourcentage
         /// </summary>
@@ -66,7 +115,7 @@ namespace HouseMadera.VueModele
         /// <returns>Pourcentagede type double</returns>
         private double Pourcentage(int value)
         {
-            return (double)((value * 100) / NB_MODELE);
+            return (value * 100) / NB_MODELE;
         }
 
         /// <summary>
@@ -185,9 +234,9 @@ namespace HouseMadera.VueModele
                 collectionCorrespondance.Add(Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
 
-                Synchronisation<ModuleDAL,Module> syncModule = new Synchronisation<ModuleDAL, Module>(new Module());
+                Synchronisation<ModuleDAL, Module> syncModule = new Synchronisation<ModuleDAL, Module>(new Module());
                 syncModule.synchroniserDonnees();
-                collectionCorrespondance.Add(Synchronisation<ModuleDAL,Module>.CorrespondanceModeleId);
+                collectionCorrespondance.Add(Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
 
                 Synchronisation<ComposantModuleDAL, ComposantModule> syncComposantModule = new Synchronisation<ComposantModuleDAL, ComposantModule>(new ComposantModule(), true);
@@ -224,7 +273,7 @@ namespace HouseMadera.VueModele
                 syncModulePlacePlan.synchroniserDonnees();
                 collectionCorrespondance.Add(Synchronisation<ModulePlacePlanDAL, ModulePlacePlan>.CorrespondanceModeleId);
                 controller.SetProgress(Pourcentage(Synchronisation.NbModeleSynchronise));
-               
+
                 //vide tous les dictionnaires contenant les correspondances des id du modele local 
                 ViderDictionnaireCorrespondance(collectionCorrespondance);
 
@@ -247,7 +296,7 @@ namespace HouseMadera.VueModele
         /// <param name="collectionCorrespondance"> Collection de dictionnaires</int></param>
         private void ViderDictionnaireCorrespondance(ICollection<Dictionary<int, int>> collectionCorrespondance)
         {
-            if(collectionCorrespondance != null)
+            if (collectionCorrespondance != null)
             {
                 foreach (Dictionary<int, int> correspondance in collectionCorrespondance)
                 {
@@ -305,6 +354,63 @@ namespace HouseMadera.VueModele
             ((VueModeleChoixProjet)vcp.DataContext).VuePrecedente = window;
             vcp.Show();
             window.Close();
+        }
+
+
+        private async void SendLogsAsync()
+        {
+            var window = Application.Current.Windows.OfType<MetroWindow>().FirstOrDefault();
+            if (window != null)
+            {
+                var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment envoyer les logs au support ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
+                {
+                    AffirmativeButtonText = "Oui",
+                    NegativeButtonText = "Non",
+                    AnimateHide = false,
+                    AnimateShow = true
+                });
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    try
+                    {
+                        SmtpClient client = new SmtpClient()
+                        {
+                            Port = 587,
+                            Host = "smtp.gmail.com",
+                            EnableSsl = true,
+                            Timeout = 10000,
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false,
+                            Credentials = new System.Net.NetworkCredential("serviceclient.madera@gmail.com", "Rila2016")
+                        };
+
+                        MailMessage mm = new MailMessage(CommercialConnecte.Login, "serviceclient.madera@gmail.com")
+                        {
+                            Subject = @"Logs for " + CommercialConnecte.Login,
+                            Body = @"Attachement for details"
+                        };
+                        Attachment attachment = new Attachment(@"ex.log");
+                        mm.Attachments.Add(attachment);
+                        mm.BodyEncoding = Encoding.UTF8;
+                        mm.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+                        client.Send(mm);
+                        mm.Dispose();
+                        if (window != null)
+                        {
+                            await window.ShowMessageAsync("Information", String.Format("Les informations ont bien été envoyées au support"));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteEx(ex);
+                        if (window != null)
+                        {
+                            await window.ShowMessageAsync("Erreur", "Le mail n'a pas pu être envoyé");
+                        }
+                    }
+                }
+            }
         }
         #endregion
 

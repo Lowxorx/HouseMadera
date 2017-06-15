@@ -182,7 +182,8 @@ namespace HouseMadera.VueModele
         public bool IsProduitPresent
         {
             get { return isProduitPresent; }
-            set {
+            set
+            {
                 isProduitPresent = value;
                 RaisePropertyChanged(() => IsProduitPresent);
             }
@@ -251,19 +252,8 @@ namespace HouseMadera.VueModele
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             if (window != null)
             {
-                //var result = await window.ShowMessageAsync("Avertissement", "Voulez-vous vraiment fermer ce projet ?", MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings
-                //{
-                //    AffirmativeButtonText = "Oui",
-                //    NegativeButtonText = "Non",
-                //    AnimateHide = false,
-                //    AnimateShow = true
-                //});
-
-                //if (result == MessageDialogResult.Affirmative)
-                //{
                 vuePrecedente.Show();
                 window.Close();
-                //}
             }
         }
 
@@ -271,7 +261,12 @@ namespace HouseMadera.VueModele
         {
             try
             {
-                string arg = String.Format("{0} {1}", SelectedProjet.Id, SelectedProduit.Id);
+                string arg = string.Empty;
+                if(SelectedProduit == null )
+                    arg = string.Format("{0} {1}", SelectedProjet.Id, 0);
+                else
+                    arg = string.Format("{0} {1}", SelectedProjet.Id, SelectedProduit.Id);
+
                 Console.WriteLine("envoi des arguments vers unity : " + arg);
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
@@ -293,7 +288,7 @@ namespace HouseMadera.VueModele
         {
             try
             {
-                string arg = String.Format("{0}", SelectedProjet.Id);
+                string arg = string.Format("{0}", SelectedProjet.Id);
                 Console.WriteLine("envoi des arguments vers unity : " + arg);
                 ProcessStartInfo startInfo = new ProcessStartInfo()
                 {
@@ -312,14 +307,20 @@ namespace HouseMadera.VueModele
         }
 
         private async void GenDevis()
-        {
+        { 
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
+            int remise = 0;
+           
             try
             {
+                if (SelectedProduit == null)
+                    throw new Exception("La génération de devis impossible sur un produit NULL");
                 // Génération du devis 
                 List<DataGenerationDevis> listDg = new List<DataGenerationDevis>();
                 using (DevisDAL dDal = new DevisDAL(DAL.DAL.Bdd))
                 {
+                    //Obtenir la réduction
+                    remise = dDal.CalculerReduction(SelectedProduit.Id);
                     listDg = dDal.GenererDevis(SelectedProduit);
                 }
                 if (listDg.Count > 0)
@@ -338,20 +339,20 @@ namespace HouseMadera.VueModele
                     outputToDevis += string.Format(@"Client : {0} {1}" + Environment.NewLine + Environment.NewLine, listDg.First().Client.Nom, listDg.First().Client.Prenom);
                     outputToDevis += @"Détails des modules sélectionnés :" + Environment.NewLine;
                     decimal prixTotal = 0;
-                    double tva = 1.2;
+                    decimal tva = 1.2M;
                     List<string> modulesToGrid = new List<string>();
                     foreach (string s in modulesDistincts)
                     {
                         decimal prixModule = 0;
                         foreach (DataGenerationDevis dg in listDg)
                         {
-                            if (s == dg.NomModule)
+                            if (s == dg.NomModule && !string.IsNullOrEmpty(dg.PrixComposant) && dg.NombreComposant != 0)
                             {
                                 prixModule += Convert.ToDecimal(dg.PrixComposant) * dg.NombreComposant;
                             }
                         }
                         prixTotal += prixModule;
-                        string outputModule = String.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule));
+                        string outputModule = string.Format("Module : {0} | Prix HT : {1} € \n", s, Convert.ToString(prixModule));
                         modulesToGrid.Add(outputModule);
                         outputToDevis += outputModule;
                     }
@@ -359,14 +360,21 @@ namespace HouseMadera.VueModele
                     outputToDevis += mursPorteurs;
                     modulesToGrid.Add(mursPorteurs);
                     prixTotal += 4032;
-                    string prixFinal = String.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(Convert.ToDouble(prixTotal) * tva));
-                    outputToDevis += prixFinal;
+                    decimal prixHT = prixTotal;
+                    decimal prixTTC = prixTotal * tva;
+                    decimal prixTTCRemise = Remise.CalculerPrixRemise(remise, prixTTC);
 
+                    string prixFinal = string.Format(Environment.NewLine + "Prix Total HT : {0} € | Prix Total TTC : {1} € \n", Convert.ToString(prixTotal), Convert.ToString(prixTTC));
+                    string valeurRemise = string.Format(Environment.NewLine + "Remise : {0} %", Convert.ToString(remise));
+                    string montant = string.Format(Environment.NewLine + "Montant du devis : {0} €", Convert.ToString(prixTTCRemise));
+                    outputToDevis = outputToDevis + prixFinal + valeurRemise + montant;
+                   
                     DGen = new DevisGenere()
                     {
                         Output = outputToDevis,
-                        PrixHT = Convert.ToString(prixTotal),
-                        PrixTTC = Convert.ToString(Convert.ToDouble(prixTotal) * tva),
+                        PrixHT = Convert.ToString(prixHT),
+                        PrixTTC = Convert.ToString(prixTTC),
+                        PrixTTCRemise = Convert.ToString(prixTTCRemise),
                         Modules = modulesToGrid,
                         client = listDg.First().Client
                     };
@@ -380,7 +388,7 @@ namespace HouseMadera.VueModele
                         DateCreation = DateTime.Now,
                         Nom = listDg.First().NomProduit,
                         PrixHT = prixTotal,
-                        PrixTTC = Convert.ToDecimal(Convert.ToDouble(prixTotal) * tva),
+                        PrixTTC = Convert.ToDecimal(prixTTC),
                         StatutDevis = new StatutDevis() { Id = 2 },
                         Pdf = File.ReadAllBytes(AppInfo.AppPath + @"\Devis\" + DevisActuel),
                         MiseAJour = null,
@@ -414,6 +422,8 @@ namespace HouseMadera.VueModele
                             VueGenererDevis vgd = new VueGenererDevis();
                             ((VueModeleGenererDevis)vgd.DataContext).TitreVue = TitreProjet;
                             ((VueModeleGenererDevis)vgd.DataContext).DGen = DGen;
+                            ((VueModeleGenererDevis)vgd.DataContext).Remise = string.Format("{0} %",Convert.ToString(remise));
+                            ((VueModeleGenererDevis)vgd.DataContext).Montant = string.Format("{0} %", Convert.ToString(prixTTCRemise));
                             vgd.Show();
                         }
                         else
@@ -471,9 +481,10 @@ namespace HouseMadera.VueModele
         {
             var window = Application.Current.Windows.OfType<MetroWindow>().Last();
             var rand = new Random();
-            var files = Directory.GetFiles(AppInfo.AppPath + @"\Plans\", "*.pdf");
+           
             try
             {
+                var files = Directory.GetFiles(AppInfo.AppPath + @"\Plans\", "*.pdf");
                 int i = rand.Next(files.Length);
                 if (i == 0)
                 {
@@ -481,8 +492,9 @@ namespace HouseMadera.VueModele
                 }
                 Process.Start(AppInfo.AppPath + @"\Plans\" + i + ".pdf");
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.WriteEx(e);
                 await window.ShowMessageAsync("Erreur", "Impossible d'ouvrir le plan");
             }
         }
@@ -560,6 +572,7 @@ namespace HouseMadera.VueModele
                     {
                         using (var dal = new ProduitDAL(DAL.DAL.Bdd))
                         {
+                            SelectedProduit.Suppression = new DateTime();
                             SelectedProduit.Suppression = DateTime.Now;
                             delProduit = dal.DeleteModele(SelectedProduit);
                         }

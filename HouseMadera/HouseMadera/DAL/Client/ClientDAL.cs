@@ -162,7 +162,7 @@ namespace HouseMadera.DAL
         /// </summary>
         /// <param name="client">Le modèle à insérer</param>
         /// <returns>Le nombre de lignes affectées</returns>
-        public int InsertModele(Client client)
+        public int InsertModele(Client client,MouvementSynchronisation sens)
         {
             if (!isDataCorrect(client))
                 throw new ValidationClientException(erreur);
@@ -208,7 +208,7 @@ namespace HouseMadera.DAL
         /// <param name="clientLocal">Représente l'objet issue de la base locale </param>
         /// <param name="clientDistant">Représente l'objet issue de la base distante</param>
         /// <returns>Le nombre de lignes affectées</returns>
-        public int UpdateModele(Client clientLocal, Client clientDistant)
+        public int UpdateModele(Client clientLocal, Client clientDistant,MouvementSynchronisation sens)
         {
 
 

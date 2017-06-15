@@ -89,7 +89,7 @@ namespace HouseMadera.DAL
             return listeComposantModule;
         }
 
-        public int InsertModele(ComposantModule modele)
+        public int InsertModele(ComposantModule modele, MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -100,17 +100,32 @@ namespace HouseMadera.DAL
                 if (modele.Module == null)
                     throw new Exception("Tentative d'insertion dans la table ComposantModule avec la clé étrangère Module nulle");
 
-                if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modele.Composant.Id, out int composantId))
+                int composantId = 0;
+                int moduleId = 0;
+                if (sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Composant.Id).Key;
+                    Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modele.Composant.Id, out  composantId);
+                    Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modele.Module.Id, out  moduleId);
                 }
-
-                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modele.Module.Id, out int moduleId))
+                else
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Composant.Id).Key;
                     moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Module.Id).Key;
                 }
+
+
+
+                //if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modele.Composant.Id, out int composantId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Composant.Id).Key;
+                //}
+
+                //if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modele.Module.Id, out int moduleId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modele.Module.Id).Key;
+                //}
 
 
 
@@ -139,7 +154,7 @@ namespace HouseMadera.DAL
             return result;
         }
 
-        public int UpdateModele(ComposantModule modeleLocal, ComposantModule modeleDistant)
+        public int UpdateModele(ComposantModule modeleLocal, ComposantModule modeleDistant,MouvementSynchronisation sens)
         {
             int result = 0;
             try
@@ -150,17 +165,31 @@ namespace HouseMadera.DAL
                 if (modeleDistant.Module == null)
                     throw new Exception("Tentative d'insertion dans la table ComposantModule avec la clé étrangère Module nulle");
 
-                if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modeleDistant.Composant.Id, out int composantId))
+                int composantId = 0;
+                int moduleId = 0;
+                if (sens == MouvementSynchronisation.Sortant)
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
-                    composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modeleDistant.Composant.Id).Key;
+                    Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modeleDistant.Composant.Id, out composantId);
+                    Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modeleDistant.Module.Id, out moduleId);
                 }
-
-                if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modeleDistant.Module.Id, out int moduleId))
+                else
                 {
-                    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                    composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modeleDistant.Composant.Id).Key;
                     moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modeleDistant.Module.Id).Key;
                 }
+
+
+                //if (!Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.TryGetValue(modeleDistant.Composant.Id, out int composantId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    composantId = Synchronisation<ComposantDAL, Composant>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modeleDistant.Composant.Id).Key;
+                //}
+
+                //if (!Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.TryGetValue(modeleDistant.Module.Id, out int moduleId))
+                //{
+                //    //si aucune clé existe avec l'id passé en paramètre alors on recherche par valeur
+                //    moduleId = Synchronisation<ModuleDAL, Module>.CorrespondanceModeleId.FirstOrDefault(c => c.Value == modeleDistant.Module.Id).Key;
+                //}
 
 
                 //recopie des données du Isolant distant dans le Isolant local

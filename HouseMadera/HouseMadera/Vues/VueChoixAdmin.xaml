@@ -7,6 +7,7 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vuemod="clr-namespace:HouseMadera.VueModele"
+   xmlns:intr="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     Title="Choixdumodule d'administration - Mader'House"
     Width="1536"
     Height="1024"
@@ -22,9 +23,18 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
     mc:Ignorable="d">
+   
     <Window.DataContext>
         <vuemod:VueModeleChoixAdmin />
+       
     </Window.DataContext>
+    <intr:Interaction.Triggers>
+        <intr:EventTrigger EventName="Loaded">
+            <intr:InvokeCommandAction Command="{Binding WindowLoaded}" />
+        </intr:EventTrigger>
+    </intr:Interaction.Triggers>
+
+
     <Grid>
         <Grid Margin="0,0,0,928" Background="#FFA29A9A">
             <Button
@@ -50,7 +60,7 @@
                 Background="#FFF7F7F7"
                 BorderThickness="0"
                 Command="{Binding Deconnexion}"
-                Content="{iconPacks:PackIconFontAwesome signout,
+                Content="{iconPacks:PackIconFontAwesome Kind=SignOut,
                                                         Width=32,
                                                         Height=32}" />
         </Grid>
@@ -109,7 +119,21 @@
                 </StackPanel>
             </Button>
         </Grid>
-        <Grid Margin="0,940,0,0" Background="#FFA29A9A" />
+        <Grid Margin="0,940,0,0" Background="#FFA29A9A" >
+            <Button
+                Width="65"
+                Height="65"
+                Margin="6,6,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="#FFF7F7F7"
+                BorderThickness="0"
+                Command="{Binding EnvoyerLogs}"
+                Content="{iconPacks:PackIconFontAwesome Kind=LifeRing,
+                                                        Width=32,
+                                                        Height=32}"
+                />
+        </Grid>
 
     </Grid>
 </controls:MetroWindow>
