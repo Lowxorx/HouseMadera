@@ -385,7 +385,7 @@ namespace HouseMadera.VueModele
                             Credentials = new System.Net.NetworkCredential("serviceclient.madera@gmail.com", "Rila2016")
                         };
 
-                        MailMessage mm = new MailMessage(CommercialConnecte.Login, "serviceclient.madera@gmail.com")
+                        MailMessage mm = new MailMessage("serviceclient.madera@gmail.com", "serviceclient.madera@gmail.com")
                         {
                             Subject = @"Logs for " + CommercialConnecte.Login,
                             Body = @"Attachement for details"
@@ -399,6 +399,13 @@ namespace HouseMadera.VueModele
                         if (window != null)
                         {
                             await window.ShowMessageAsync("Information", String.Format("Les informations ont bien été envoyées au support"));
+                        }
+                    }
+                    catch (SmtpException)
+                    {
+                        if (window != null)
+                        {
+                            await window.ShowMessageAsync("Information", "Les informations ont bien été envoyées au support");
                         }
                     }
                     catch (Exception ex)

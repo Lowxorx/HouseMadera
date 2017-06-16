@@ -129,6 +129,10 @@ namespace HouseMadera.DAL
             }
             //Calculer le montant de la réduction
             nb_module_produit = nb_module_lowcost + nb_module_luxe;
+
+            if (nb_module_produit == 0)
+                return 0;
+
             decimal calculRatio_Luxe = (nb_module_luxe * 100) / nb_module_produit;
             //Si la totalité des modules sont de la gamme luxe
             if (calculRatio_Luxe == 100)
@@ -270,7 +274,7 @@ namespace HouseMadera.DAL
         public int InsertDevis(Devis devis)
         {
             if (IsDevisExist(devis))
-                throw new Exception("Le devis est déjà enregistré.");
+                return UpdateDevis(devis);
 
             var sql = @"INSERT INTO Devis (Nom,DateCreation,PrixHT,PrixTTC,StatutDevis_Id,Pdf,MiseAJour,Suppression,Creation) VALUES(@1,@2,@3,@4,@5,@6,@7,@8,@9)";
             var parameters = new Dictionary<string, object>() {
@@ -302,6 +306,34 @@ namespace HouseMadera.DAL
         #endregion
 
         #region UPDATE
+
+        public int UpdateDevis(Devis devis)
+        {
+            
+            var sql = @"UPDATE Devis SET Nom=@1, DateCreation=@2 ,PrixHT=@3 ,PrixTTC=@4 ,StatutDevis_Id=@5 , Pdf=@6, MiseAJour=@7";
+            var parameters = new Dictionary<string, object>() {
+                {"@1",devis.Nom },
+                {"@2",devis.DateCreation },
+                {"@3",devis.PrixHT },
+                {"@4",devis.PrixTTC },
+                {"@5",devis.StatutDevis.Id },
+                {"@6",devis.Pdf },
+                {"@7", DateTimeDbAdaptor.FormatDateTime( devis.MiseAJour,Bdd) }       
+            };
+            var result = 0;
+            try
+            {
+                result = Update(sql, parameters);
+            }
+            catch (Exception e)
+            {
+                result = -1;
+                Logger.WriteEx(e);
+                Console.WriteLine(e.Message);
+            }
+
+            return result;
+        }
 
         #endregion
 
